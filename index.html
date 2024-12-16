@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mirco Deflorin - Wortbrücken zwischen Welten</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            line-height: 1.6;
+            color: #f0f0f0;
+            background-color: #1a1a1a;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        header {
+            background-color: #000;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-bottom: 2px solid #333;
+        }
+
+        nav {
+            background-color: #222;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        nav button {
+            background: none;
+            border: none;
+            color: white;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        nav button:hover {
+            color: #a83232;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section-title {
+            color: #a83232;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+
+        .content-box {
+            background-color: #222;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .book-card {
+            background-color: #333;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Wortbrücken zwischen Welten</h1>
+        <h2>Mirco Deflorin</h2>
+    </header>
+
+    <nav>
+        <ul>
+            <li><button onclick="showPage('home')">Startseite</button></li>
+            <li><button onclick="showPage('books')">Blackwood Manor</button></li>
+            <li><button onclick="showPage('podcast')">Podcast</button></li>
+            <li><button onclick="showPage('about')">Über mich</button></li>
+        </ul>
+    </nav>
+
+    <main>
+        <div id="home" class="page active">
+            <div class="content-box">
+                <h2 class="section-title">Aktuelle Neuigkeiten</h2>
+                <article>
+                    <h3>🎙️ Neuer Blackwood Manor Podcast</h3>
+                    <p>Der Podcast ist jetzt verfügbar! Auch wenn er auf Englisch ist, werden Sie die gruselige Atmosphäre genießen können.</p>
+                </article>
+            </div>
+        </div>
+
+        <div id="books" class="page">
+            <div class="content-box">
+                <h2 class="section-title">Blackwood Manor Reihe</h2>
+                <div class="book-card">
+                    <h3>Blackwood Manor: Gefangen im Albtraum</h3>
+                    <p>Der neueste Teil der Horror-Reihe</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="podcast" class="page">
+            <div class="content-box">
+                <h2 class="section-title">Blackwood Manor Podcast</h2>
+                <p>Tauchen Sie ein in die Welt von Blackwood Manor mit unserem englischsprachigen Podcast. Erleben Sie die Geschichten in einer völlig neuen Dimension.</p>
+            </div>
+        </div>
+
+        <div id="about" class="page">
+            <div class="content-box">
+                <h2 class="section-title">Über mich</h2>
+                <p>Mirco Deflorin ist der Autor der Blackwood Manor-Reihe. Als leidenschaftlicher Horror-Autor erschafft er fesselnde Geschichten, die seine Leser in ihren Bann ziehen.</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function showPage(pageId) {
+            // Alle Seiten ausblenden
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Gewählte Seite anzeigen
+            document.getElementById(pageId).classList.add('active');
+        }
+    </script>
+</body>
+</html>
