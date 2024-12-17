@@ -1,0 +1,403 @@
+<html><head><base href=".."><base href=".."><title>Mirco Deflorin - Autor</title>
+<style>
+:root {
+  --primary: #2c3e50;
+  --secondary: #34495e;
+  --accent: #e74c3c;
+  --text: #333;
+  --light: #ecf0f1;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Merriweather', serif;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--light);
+}
+
+header {
+  background: var(--primary);
+  color: white;
+  padding: 2rem 0;
+  text-align: center;
+}
+
+nav {
+  background: var(--secondary);
+  padding: 1rem;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.hero {
+  background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1600');
+  background-size: cover;
+  color: white;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.books-section {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.genre-section {
+  margin-bottom: 3rem;
+}
+
+.genre-section h2 {
+  color: var(--primary);
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 0.5rem;
+}
+
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.book-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.book-card:hover {
+  transform: translateY(-5px);
+}
+
+.book-card img {
+  width: 80%;
+  height: auto;
+  border-radius: 4px;
+  margin: 0 auto 1rem;
+  display: block;
+  max-width: 200px;
+}
+
+.book-card h3 {
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.book-card p {
+  margin-bottom: 0.5rem;
+}
+
+.newsletter {
+  background: var(--secondary);
+  color: white;
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.newsletter form {
+  max-width: 500px;
+  margin: 2rem auto;
+}
+
+.newsletter input {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border: none;
+  border-radius: 4px;
+}
+
+button {
+  background: var(--accent);
+  color: white;
+  padding: 0.8rem 2rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: #c0392b;
+}
+
+.contact {
+  padding: 3rem 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.contact form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.contact input,
+.contact textarea {
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.contact textarea {
+  min-height: 150px;
+}
+
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.social-links a {
+  color: var(--primary);
+  font-size: 1.5rem;
+  transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+  color: var(--accent);
+}
+
+.footer {
+  background: var(--primary);
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  margin-top: 2rem;
+}
+
+.thoughts-section {
+  padding: 3rem 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.thoughts-post {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  text-align: justify;
+}
+
+.author-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 2rem;
+  display: block;
+}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+<header>
+  <h1>Mirco Deflorin</h1>
+  <p>Autor & Schriftsteller</p>
+</header>
+
+<nav>
+  <ul>
+    <li><a href="#about">Über Mich</a></li>
+    <li><a href="#books">Bücher</a></li>
+    <li><a href="#thoughts">Meine Gedanken</a></li>
+    <li><a href="#contact">Kontakt</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <h2>Willkommen in meiner Welt des Schreibens</h2>
+  <p>Entdecken Sie meine vielfältige Bibliothek von christlichen Büchern bis Horror-Romanen</p>
+</section>
+
+<section id="about" class="thoughts-section">
+  <h2>Über Mich</h2>
+  <div class="thoughts-post">
+    <img src="Bild über uns.jpg" alt="Mirco Deflorin" class="author-image">
+    <p>Das Schreiben ist meine Leidenschaft - eine Reise durch verschiedene Welten und Genres, die mich immer wieder überrascht. Was als Thriller begann, entwickelte sich zu einer Entdeckungsreise durch die düsteren Korridore des Horrors. So entstand die achtteilige 'Blackwood Manor' Serie, die mich tief in die Abgründe menschlicher Ängste führte.</p>
+
+    <p>Als die Dunkelheit zu intensiv wurde, erschuf ich mit 'Emmagators' eine heitere Gegenwelt - ein augenzwinkerndes Jugendbuch, das mir selbst ein Lächeln entlockte. Meine Krimiromane wie 'Mord im Elfenbeinturm' oder die 'Raben-Trilogie' vereinen meine Vorliebe für komplexe Charaktere mit fesselnden Mysterien.</p>
+
+    <p>Als Christ finde ich Inspiration auch in spirituellen Themen. Mit 'Die Sprüche des Salomon - Neu strukturiert und erläutert' wage ich mich an zeitgemäße Interpretationen zeitloser Weisheiten.</p>
+
+    <p>Mein Beruf als Peer und Genesungsbegleiter in der Psychiatrie sowie meine Tätigkeit in einer Sozialversicherungsanstalt prägen meine Perspektive auf das Leben. Diese Erfahrungen flossen in mein Fachbuch 'Salutogenese und Recovery' ein, in dem ich neue Ansätze für die Gesundheitsversorgung diskutiere.</p>
+
+    <p>Die Kraft des Schreibens entdeckte ich mit Unterstützung künstlicher Intelligenz - ein faszinierendes Werkzeug, das meiner Kreativität neue Dimensionen eröffnet. Bin ich dadurch weniger Schriftsteller? Im Gegenteil: Die Geschichten entstehen in meinem Kopf, nehmen durch meine Erfahrungen Form an und werden durch moderne Technologie bereichert.</p>
+
+    <p>Zuhause bin ich in der Schweiz, wo die majestätischen Berge und klaren Seen meine Inspiration nähren. Mit 48 Jahren und an der Seite meiner Frau genieße ich dieses Privileg, Geschichten zu erschaffen, die Menschen berühren, unterhalten und zum Nachdenken anregen.</p>
+
+    <p>Meine Bücher sind so vielfältig wie das Leben selbst - manchmal düster, manchmal heiter, aber immer authentisch. Ich schreibe, was mich bewegt, und folge dabei keinem vorgegebenen Pfad. Jede Geschichte hat ihre eigene Zeit, ihren eigenen Rhythmus, und ich freue mich darauf, Sie auf diesen literarischen Reisen zu begleiten.</p>
+  </div>
+</section>
+
+<section id="books" class="books-section">
+  
+  <div class="genre-section">
+    <h2>Christliche Bücher</h2>
+    <div class="book-grid">
+      <div class="book-card">
+        <img src="Die_Sprüche_des_Salomon.webp" alt="Die Sprüche des Salomon Cover">
+        <h3>Die Sprüche des Salomon</h3>
+        <p>Neu strukturiert und erläutert</p>
+        <a href="https://buchshop.bod.de/die-sprueche-des-salomon-mirco-deflorin-9783759769374" target="_blank"><button>Mehr erfahren</button></a>
+      </div>
+      <div class="book-card">
+        <img src="Digitaler_Dialog__Christentum_und_Islam.webp" alt="Digitaler Dialog Cover">
+        <h3>Digitaler Dialog: Christentum und Islam</h3>
+        <p>Eine KI-gestützte theologische Debatte über Jesus</p>
+        <a href="https://buchshop.bod.de/digitaler-dialog-christentum-und-islam-mirco-deflorin-9783759768216" target="_blank"><button>Mehr erfahren</button></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="genre-section">
+    <h2>Horror Romane</h2>
+    <div class="book-grid">
+      <div class="book-card">
+        <img src="Blackwood_Manor Band 1.webp" alt="Blackwood Manor Band 1 Cover">
+        <h3>Blackwood Manor: Gefangen im Albtraum</h3>
+        <p>Band 1 der Blackwood Manor Serie</p>
+        <p>Fesselnder erster Teil der Horror-Mystery-Reihe</p>
+        <a href="https://buchshop.bod.de/blackwood-manor-mirco-deflorin-9783759794918" target="_blank"><button>Mehr erfahren</button></a>
+      </div>
+      <div class="book-card">
+        <img src="Blackwood_Manor Band2.webp" alt="Blackwood Manor Band 2 Cover">
+        <h3>Blackwood Manor: Erbe des Wahnsinns</h3>
+        <p>Band 2 der Blackwood Manor Serie</p>
+        <a href="https://buchshop.bod.de/blackwood-manor-mirco-deflorin-9783769314083" target="_blank"><button>Mehr erfahren</button></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="genre-section">
+    <h2>Kriminal Romane</h2>
+    <div class="book-grid">
+      <div class="book-card">
+        <img src="Das_Echo_der_Raben.webp" alt="Das Echo der Raben Cover">
+        <h3>Das Echo der Raben</h3>
+        <p>Teil der Raben-Trilogie</p>
+        <a href="https://buchshop.bod.de/das-echo-der-raben-mirco-deflorin-9783769324617" target="_blank"><button>Mehr erfahren</button></a>
+      </div>
+      <div class="book-card">
+        <img src="Mord_im_Elfenbeinturm.webp" alt="Mord im Elfenbeinturm Cover">
+        <h3>Mord im Elfenbeinturm</h3>
+        <p>Ein spannender Kriminalroman</p>
+        <a href="https://buchshop.bod.de/mord-im-elfenbeinturm-mirco-deflorin-9783769322484" target="_blank"><button>Mehr erfahren</button></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="genre-section">
+    <h2>Für Jugendliche</h2>
+    <div class="book-grid">
+      <div class="book-card">
+        <img src="Emmagators.webp" alt="Emmagators Cover">
+        <h3>Emmagators: Chaos mit Stil</h3>
+        <p>Ein unterhaltsames Buch für Jugendliche und Junggebliebene</p>
+        <a href="https://buchshop.bod.de/emmagators-mirco-deflorin-9783759749987" target="_blank"><button>Mehr erfahren</button></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="genre-section">
+    <h2>Fachbuch</h2>
+    <div class="book-grid">
+      <div class="book-card">
+        <img src="Salutogenese_und_Recovery.webp" alt="Salutogenese und Recovery Cover">
+        <h3>Salutogenese und Recovery</h3>
+        <p>Neue Perspektiven in der Gesundheitsversorgung</p>
+        <a href="https://buchshop.bod.de/salutogenese-und-recovery-mirco-deflorin-9783759720665" target="_blank"><button>Mehr erfahren</button></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="thoughts" class="thoughts-section">
+  <h2>Meine Gedanken</h2>
+  <div class="thoughts-post">
+    <h3>Aktuelles aus meiner Schreibwerkstatt</h3>
+    <p><small>17.12.2024</small></p>
+    <p>Momentan arbeite ich intensiv am zweiten Band der Raben-Trilogie. 'Die Schatten der Raben' wird die Geschichte um Sarah Reichert weiterführen und neue Geheimnisse aufdecken. Der Schauplatz verlagert sich diesmal nach Frankfurt, wo sich alte und neue Rätsel miteinander verweben.</p>
+    
+    <p>Die Arbeit am Manuskript ist faszinierend - während des Schreibens entdecke ich selbst immer neue Verbindungen und Wendungen, die sich wie Puzzleteile zu einem größeren Bild zusammenfügen. Sarah Reichert steht vor ihrer bisher größten Herausforderung, und ich freue mich darauf, sie auf diesem Weg zu begleiten.</p>
+    
+    <p>Der Schreibprozess ist wie eine Reise, bei der ich täglich neue Aspekte der Geschichte entdecke. Die Atmosphäre ist diesmal noch dichter, die Spannung noch intensiver als im ersten Band.</p>
+  </div>
+</section>
+
+<section id="newsletter" class="newsletter">
+  <h2>Newsletter</h2>
+  <p>Bleiben Sie auf dem Laufenden über neue Bücher und Projekte</p>
+  <form id="newsletter-form">
+    <input type="email" placeholder="Ihre E-Mail-Adresse" required>
+    <button type="submit">Anmelden</button>
+  </form>
+</section>
+
+<section id="contact" class="contact">
+  <h2>Kontakt</h2>
+  <form id="contact-form" action="mailto:mirco.deflorin@gmx.ch" method="post" enctype="text/plain">
+    <input type="text" name="name" placeholder="Ihr Name" required>
+    <input type="email" name="email" placeholder="Ihre E-Mail-Adresse" required>
+    <textarea name="message" placeholder="Ihre Nachricht" required></textarea>
+    <button type="submit">Nachricht senden</button>
+  </form>
+  
+  <div class="social-links">
+    <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
+    <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+    <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2024 Mirco Deflorin. Alle Rechte vorbehalten.</p>
+</footer>
+
+<script>
+// Smooth scroll behavior
+document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    const targetId = this.getAttribute('href');
+    const targetElement = document.querySelector(targetId);
+    targetElement.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+  });
+});
+</script>
+
+</body></html>
