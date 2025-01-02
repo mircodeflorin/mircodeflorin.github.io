@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sandras Kristall-Konfigurator</title>
+    <style>
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #3282b8;
+            --text-color: #e2e2e2;
+            --card-bg: rgba(22, 33, 62, 0.7);
+            --input-bg: rgba(26, 26, 46, 0.8);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: var(--primary-color);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-top: 80px;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: var(--text-color);
+        }
+
+        .crystal-configurator {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .crystal-board {
+            width: 100%;
+            height: 400px;
+            background: var(--input-bg);
+            border-radius: 10px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .crystal {
+            position: absolute;
+            width: 40px;
+            height: 60px;
+            cursor: move;
+            transform-origin: center;
+        }
+
+        .energy-line {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.2);
+            pointer-events: none;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #2c5282;
+            transform: translateY(-2px);
+        }
+
+        .interpretation {
+            background: var(--input-bg);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            min-height: 100px;
+            font-family: monospace;
+            font-size: 1.2em;
+            white-space: pre-line;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+                padding-top: 70px;
+            }
+            
+            .controls {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="#" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Sandras Kristall-Konfigurator</h1>
+        <h2>Harmonisiere die Büro-Energie</h2>
+
+        <div class="crystal-configurator">
+            <div class="crystal-board" id="crystalBoard"></div>
+
+            <div class="controls">
+                <button onclick="addCrystal('Amethyst')">Amethyst ✨</button>
+                <button onclick="addCrystal('Rosenquarz')">Rosenquarz 💗</button>
+                <button onclick="addCrystal('Bergkristall')">Bergkristall 💎</button>
+                <button onclick="analyzeCrystals()">Energie analysieren</button>
+            </div>
+
+            <div class="interpretation" id="interpretation">
+                Platziere Kristalle für maximale Büro-Harmonie...
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const board = document.getElementById('crystalBoard');
+        let selectedCrystal = null;
+        let crystals = [];
+        let energyLines = [];
+
+        const crystalColors = {
+            'Amethyst': '#9b4dca',
+            'Rosenquarz': '#ffb6c1',
+            'Bergkristall': '#e0ffff'
+        };
+
+        const interpretations = [
+            "Die Kristalle erzeugen ein harmonisches Energiefeld für agiles Arbeiten!",
+            "Perfekte Balance zwischen digitaler Transformation und spiritueller Entwicklung!",
+            "Diese Konstellation fördert innovatives Mindset und positive Teamdynamik!",
+            "Ein kraftvolles Arrangement für maximale Produktivität!",
+            "Die Kristallmatrix unterstützt transformatives Management!",
+            "Optimale Energieausrichtung für disruptive Innovation!",
+            "Diese Formation steigert die kollektive Kreativität um 300%!",
+            "Spirituelles Agile Leadership wird durch diese Anordnung gefördert!",
+            "Die Kristalle alignen sich perfekt mit der Corporate Vision!",
+            "Eine Revolution in der Büro-Energetik!"
+        ];
+
+        function createCrystal(type) {
+            const crystal = document.createElement('div');
+            crystal.className = 'crystal';
+            crystal.style.backgroundColor = crystalColors[type];
+            crystal.style.clipPath = 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)';
+            crystal.dataset.type = type;
+            
+            crystal.addEventListener('mousedown', startDragging);
+            return crystal;
+        }
+
+        function startDragging(e) {
+            selectedCrystal = e.target;
+            document.addEventListener('mousemove', dragCrystal);
+            document.addEventListener('mouseup', stopDragging);
+        }
+
+        function dragCrystal(e) {
+            if (!selectedCrystal) return;
+            
+            const rect = board.getBoundingClientRect();
+            let x = e.clientX - rect.left - selectedCrystal.offsetWidth / 2;
+            let y = e.clientY - rect.top - selectedCrystal.offsetHeight / 2;
+            
+            x = Math.max(0, Math.min(x, rect.width - selectedCrystal.offsetWidth));
+            y = Math.max(0, Math.min(y, rect.height - selectedCrystal.offsetHeight));
+            
+            selectedCrystal.style.left = x + 'px';
+            selectedCrystal.style.top = y + 'px';
+            
+            updateEnergyLines();
+        }
+
+        function stopDragging() {
+            selectedCrystal = null;
+            document.removeEventListener('mousemove', dragCrystal);
+            document.removeEventListener('mouseup', stopDragging);
+        }
+
+        function addCrystal(type) {
+            const crystal = createCrystal(type);
+            crystal.style.left = Math.random() * (board.offsetWidth - 40) + 'px';
+            crystal.style.top = Math.random() * (board.offsetHeight - 60) + 'px';
+            board.appendChild(crystal);
+            crystals.push(crystal);
+            updateEnergyLines();
+        }
+
+        function updateEnergyLines() {
+            // Entferne alte Energielinien
+            energyLines.forEach(line => line.remove());
+            energyLines = [];
+
+            // Erstelle neue Energielinien zwischen allen Kristallen
+            for (let i = 0; i < crystals.length; i++) {
+                for (let j = i + 1; j < crystals.length; j++) {
+                    const line = document.createElement('div');
+                    line.className = 'energy-line';
+                    
+                    const crystal1 = crystals[i];
+                    const crystal2 = crystals[j];
+                    
+                    const x1 = crystal1.offsetLeft + crystal1.offsetWidth / 2;
+                    const y1 = crystal1.offsetTop + crystal1.offsetHeight / 2;
+                    const x2 = crystal2.offsetLeft + crystal2.offsetWidth / 2;
+                    const y2 = crystal2.offsetTop + crystal2.offsetHeight / 2;
+                    
+                    const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+                    const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+                    
+                    line.style.width = length + 'px';
+                    line.style.height = '2px';
+                    line.style.left = x1 + 'px';
+                    line.style.top = y1 + 'px';
+                    line.style.transform = `rotate(${angle}deg)`;
+                    line.style.transformOrigin = '0 0';
+                    
+                    board.appendChild(line);
+                    energyLines.push(line);
+                }
+            }
+        }
+
+        function analyzeCrystals() {
+            const interpretation = interpretations[Math.floor(Math.random() * interpretations.length)];
+            document.getElementById('interpretation').textContent = interpretation;
+            
+            // Lasse die Kristalle kurz aufleuchten
+            crystals.forEach(crystal => {
+                crystal.style.transition = 'all 0.3s ease';
+                crystal.style.boxShadow = '0 0 20px white';
+                setTimeout(() => {
+                    crystal.style.boxShadow = 'none';
+                }, 500);
+            });
+        }
+    </script>
+</body>
+</html>
