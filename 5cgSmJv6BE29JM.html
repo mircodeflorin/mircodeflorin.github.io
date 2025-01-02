@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Herberts Positions-Tracker</title>
+    <style>
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #3282b8;
+            --text-color: #e2e2e2;
+            --card-bg: rgba(22, 33, 62, 0.7);
+            --input-bg: rgba(26, 26, 46, 0.8);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: var(--primary-color);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-top: 80px;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: var(--text-color);
+        }
+
+        .herbert-tracker {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .cactus-container {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            position: relative;
+            border: 2px solid var(--accent-color);
+            border-radius: 50%;
+        }
+
+        #herbert {
+            width: 60px;
+            height: 100px;
+            background: #2d5a27;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            transition: transform 0.5s ease;
+            border-radius: 5px;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #2c5282;
+            transform: translateY(-2px);
+        }
+
+        .interpretation {
+            background: var(--input-bg);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            min-height: 100px;
+            font-family: monospace;
+            font-size: 1.2em;
+            white-space: pre-line;
+        }
+
+        .degree-display {
+            text-align: center;
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+                padding-top: 70px;
+            }
+            
+            .controls {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="#" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Herberts Positions-Tracker</h1>
+        <h2>Entschlüssele die Weisheit des Zen-Kaktus</h2>
+
+        <div class="herbert-tracker">
+            <div class="cactus-container">
+                <div id="herbert"></div>
+            </div>
+
+            <div class="degree-display">
+                Aktuelle Neigung: <span id="degree">0</span>°
+            </div>
+
+            <div class="controls">
+                <button onclick="rotateHerbert(-45)">45° Links</button>
+                <button onclick="rotateHerbert(45)">45° Rechts</button>
+                <button onclick="rotateRandom()">Mysteriöse Drehung</button>
+                <button onclick="generateInterpretation()">Interpretieren</button>
+            </div>
+
+            <div class="interpretation" id="interpretation">
+                Drehe Herbert und entdecke seine verborgene Weisheit...
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentRotation = 0;
+        const herbert = document.getElementById('herbert');
+        const degreeDisplay = document.getElementById('degree');
+
+        const interpretations = [
+            {
+                range: [-180, -135],
+                messages: [
+                    "Tiefe Kontemplation über die Vergänglichkeit des Seins",
+                    "Radikale Ablehnung konventioneller Management-Theorien",
+                    "Mahnung zur Vorsicht bei Quartalszahlen"
+                ]
+            },
+            {
+                range: [-134, -90],
+                messages: [
+                    "Meditation über agile Prozesse empfohlen",
+                    "Die Börse wird turbulent - Zeit für Tee",
+                    "Transformation durch konstruktives Nichtstun"
+                ]
+            },
+            {
+                range: [-89, -45],
+                messages: [
+                    "Leichte Skepsis gegenüber dem nächsten Meeting",
+                    "Betty braucht einen Wellness-Tag",
+                    "Zeit für eine strategische Kaffeepause"
+                ]
+            },
+            {
+                range: [-44, 0],
+                messages: [
+                    "Sanfte Zustimmung zum Chaos-Management",
+                    "Die Kristalle sind günstig gestellt",
+                    "Potenzial für spontane Erleuchtung"
+                ]
+            },
+            {
+                range: [1, 45],
+                messages: [
+                    "Optimistische Tendenz für Projektabschlüsse",
+                    "Der Weg der Mitte führt durch die Kaffeeküche",
+                    "Sandra wird heute besonders spirituell sein"
+                ]
+            },
+            {
+                range: [46, 90],
+                messages: [
+                    "Deutlicher Hinweis auf versteckte Opportunities",
+                    "Zeit für disruptive Innovation",
+                    "Die Kaffeemaschine plant etwas"
+                ]
+            },
+            {
+                range: [91, 135],
+                messages: [
+                    "Starkes Signal für Team-Building-Maßnahmen",
+                    "Der Zen-Garten braucht Restrukturierung",
+                    "Unvermeidbare Powerpoint-Präsentation im Anmarsch"
+                ]
+            },
+            {
+                range: [136, 180],
+                messages: [
+                    "Totale Transformation des Unternehmens steht bevor",
+                    "Zeit für radikale Selbstfindung",
+                    "Betty plant eine Revolution"
+                ]
+            }
+        ];
+
+        function rotateHerbert(degrees) {
+            currentRotation += degrees;
+            if (currentRotation > 180) currentRotation -= 360;
+            if (currentRotation < -180) currentRotation += 360;
+            
+            herbert.style.transform = `translate(-50%, -50%) rotate(${currentRotation}deg)`;
+            degreeDisplay.textContent = currentRotation;
+        }
+
+        function rotateRandom() {
+            const randomDegree = Math.floor(Math.random() * 360) - 180;
+            currentRotation = randomDegree;
+            herbert.style.transform = `translate(-50%, -50%) rotate(${currentRotation}deg)`;
+            degreeDisplay.textContent = currentRotation;
+        }
+
+        function generateInterpretation() {
+            const degree = currentRotation;
+            let interpretation;
+            
+            for (const range of interpretations) {
+                if (degree >= range.range[0] && degree <= range.range[1]) {
+                    interpretation = range.messages[Math.floor(Math.random() * range.messages.length)];
+                    break;
+                }
+            }
+
+            const context = [
+                "Herbert spricht in Rätseln...",
+                "Die Fensterbank-Weisheit offenbart...",
+                "Aus der Stille erklingt die Botschaft...",
+                "Der verwelkte Mentor deutet an..."
+            ];
+
+            const prefix = context[Math.floor(Math.random() * context.length)];
+            document.getElementById('interpretation').textContent = `${prefix}\n\n${interpretation}`;
+        }
+    </script>
+</body>
+</html>
