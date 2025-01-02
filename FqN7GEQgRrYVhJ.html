@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karls IT-Weisheiten-App</title>
+    <style>
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #3282b8;
+            --text-color: #e2e2e2;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .home-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 60px auto 0;
+            padding: 20px;
+        }
+
+        .app-section {
+            background: rgba(22, 33, 62, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--text-color);
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: var(--accent-color);
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .wisdom-output {
+            background: rgba(26, 26, 46, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            min-height: 50px;
+        }
+
+        button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .meditation-timer {
+            font-size: 2em;
+            text-align: center;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io/" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Karls IT-Weisheiten-App</h1>
+
+        <div class="app-section">
+            <h2>Tech-Support oder Erleuchtung?</h2>
+            <div class="wisdom-output" id="techWisdom">Klicke für technische Erleuchtung...</div>
+            <button onclick="generateTechWisdom()">Weisheit generieren</button>
+        </div>
+
+        <div class="app-section">
+            <h2>Debug dein Karma</h2>
+            <div class="wisdom-output" id="karmaDebug">Dein Karma-Log erscheint hier...</div>
+            <button onclick="debugKarma()">Karma analysieren</button>
+        </div>
+
+        <div class="app-section">
+            <h2>System-Meditation-Timer</h2>
+            <div class="meditation-timer" id="meditationTimer">00:00</div>
+            <button onclick="toggleMeditation()" id="meditationButton">Meditation starten</button>
+        </div>
+    </div>
+
+    <script>
+        let meditationInterval;
+        let isMediating = false;
+        let seconds = 0;
+
+        const techWisdoms = [
+            "Ctrl+Alt+Del deine negativen Gedanken",
+            "Dein innerer Firewall blockiert positive Energie",
+            "Manchmal braucht die Seele nur ein Update",
+            "Cache leeren für mehr mentale Klarheit",
+            "Das Leben ist wie HTML - strukturiert, aber flexibel"
+        ];
+
+        const karmaDebugs = [
+            "Karma-Stack-Trace: Positive Energie gefunden in Zeile 42",
+            "Warning: Unresolved Karma detected",
+            "Debug: Meditation-Buffer overflow",
+            "Success: Innerer Frieden kompiliert ohne Fehler",
+            "Notice: Karma-Cache erfolgreich geleert"
+        ];
+
+        function generateTechWisdom() {
+            const wisdom = techWisdoms[Math.floor(Math.random() * techWisdoms.length)];
+            document.getElementById('techWisdom').textContent = wisdom;
+        }
+
+        function debugKarma() {
+            const debug = karmaDebugs[Math.floor(Math.random() * karmaDebugs.length)];
+            document.getElementById('karmaDebug').textContent = debug;
+        }
+
+        function toggleMeditation() {
+            if (!isMediating) {
+                startMeditation();
+            } else {
+                stopMeditation();
+            }
+        }
+
+        function startMeditation() {
+            isMediating = true;
+            document.getElementById('meditationButton').textContent = 'Meditation beenden';
+            meditationInterval = setInterval(updateTimer, 1000);
+        }
+
+        function stopMeditation() {
+            isMediating = false;
+            document.getElementById('meditationButton').textContent = 'Meditation starten';
+            clearInterval(meditationInterval);
+            seconds = 0;
+            updateTimer();
+        }
+
+        function updateTimer() {
+            if (isMediating) {
+                seconds++;
+                const minutes = Math.floor(seconds / 60);
+                const remainingSeconds = seconds % 60;
+                document.getElementById('meditationTimer').textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+            } else {
+                document.getElementById('meditationTimer').textContent = '00:00';
+            }
+        }
+    </script>
+</body>
+</html>
