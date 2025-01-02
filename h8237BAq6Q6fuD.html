@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Präsentations-Chaos-Simulator</title>
+    <style>
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #3282b8;
+            --text-color: #e2e2e2;
+            --card-bg: rgba(22, 33, 62, 0.7);
+            --input-bg: rgba(26, 26, 46, 0.8);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: var(--primary-color);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-top: 80px;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: var(--text-color);
+        }
+
+        .simulator {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #canvas-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            background: white;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        #coffee-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #2c5282;
+            transform: translateY(-2px);
+        }
+
+        .interpretation {
+            background: var(--input-bg);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            min-height: 100px;
+            font-family: monospace;
+            font-size: 1.2em;
+            white-space: pre-line;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+                padding-top: 70px;
+            }
+            
+            .controls {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="#" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Präsentations-Chaos-Simulator</h1>
+        <h2>Kreiere deine eigene Management-Revolution</h2>
+
+        <div class="simulator">
+            <div id="canvas-container">
+                <canvas id="coffee-canvas"></canvas>
+            </div>
+
+            <div class="controls">
+                <button onclick="clearCanvas()">Neue Präsentation</button>
+                <button onclick="addRandomSplatter()">Kaffee-Kunst</button>
+                <button onclick="generateInterpretation()">Interpretieren</button>
+                <button onclick="improviseLikeBetty()">Betty's Weisheit</button>
+            </div>
+
+            <div class="interpretation" id="interpretation">
+                Klicke oder ziehe, um Kaffeekunst zu erschaffen...
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('coffee-canvas');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+        
+        // Canvas-Größe an Container anpassen
+        function resizeCanvas() {
+            const container = document.getElementById('canvas-container');
+            canvas.width = container.offsetWidth;
+            canvas.height = container.offsetHeight;
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        window.addEventListener('load', resizeCanvas);
+        window.addEventListener('resize', resizeCanvas);
+
+        // Kaffeeflecken-Zeichenfunktionen
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseleave', stopDrawing);
+
+        function startDrawing(e) {
+            isDrawing = true;
+            draw(e);
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            ctx.fillStyle = `rgba(139, 69, 19, ${Math.random() * 0.5 + 0.5})`;
+            ctx.beginPath();
+            ctx.arc(x, y, Math.random() * 20 + 5, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+        }
+
+        function clearCanvas() {
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            document.getElementById('interpretation').textContent = 'Eine neue, leere Leinwand... voller Potential!';
+        }
+
+        function addRandomSplatter() {
+            const x = Math.random() * canvas.width;
+            const y = Math.random() * canvas.height;
+            const size = Math.random() * 50 + 20;
+            
+            ctx.fillStyle = `rgba(139, 69, 19, ${Math.random() * 0.5 + 0.5})`;
+            ctx.beginPath();
+            ctx.arc(x, y, size, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Spritzer hinzufügen
+            for (let i = 0; i < 10; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.random() * 50 + 10;
+                const splatterX = x + Math.cos(angle) * distance;
+                const splatterY = y + Math.sin(angle) * distance;
+                
+                ctx.beginPath();
+                ctx.arc(splatterX, splatterY, Math.random() * 5 + 2, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        const interpretations = [
+            "Eine brillante Visualisierung der agilen Transformation!",
+            "Die Kaffeemuster zeigen deutlich den Weg zur digitalen Disruption.",
+            "Diese abstrakte Darstellung revolutioniert unser Verständnis von Change Management!",
+            "Ein mutiger Ansatz zur Neuinterpretation klassischer Managementtheorien.",
+            "Die Flecken symbolisieren eindeutig den Paradigmenwechsel in der Unternehmenskultur.",
+            "Diese Komposition verkörpert die Essenz des konstruktiven Chaos!",
+            "Eine metaphysische Manifestation moderner Führungsprinzipien.",
+            "Die Kaffeekunst transzendiert traditionelle Organisationsstrukturen.",
+            "Ein wegweisendes Beispiel für nonverbale Unternehmenskommunikation.",
+            "Die perfekte Synthese aus Chaos-Theorie und Lean Management!"
+        ];
+
+        const bettyQuotes = [
+            "Error 404 - PowerPoint not found. Upgrading to Coffee Art 2.0",
+            "Error 303 - Redirecting expectations to enlightenment",
+            "Warning: Abstract thinking levels exceeding conventional parameters",
+            "Success: Chaos integration complete. Management.exe transformed",
+            "Error 418 - I'm a coffee pot, and this is my TED talk",
+            "Loading... Alternative presentation paradigms initialized",
+            "Error 202 - Accepting temporary confusion as path to wisdom",
+            "Status: Converting caffeine to corporate enlightenment",
+            "Alert: Spontaneous creativity outbreak detected",
+            "System Update: Installing artistic management protocols"
+        ];
+
+        function generateInterpretation() {
+            const interpretation = interpretations[Math.floor(Math.random() * interpretations.length)];
+            document.getElementById('interpretation').textContent = interpretation;
+        }
+
+        function improviseLikeBetty() {
+            const quote = bettyQuotes[Math.floor(Math.random() * bettyQuotes.length)];
+            document.getElementById('interpretation').textContent = quote;
+        }
+
+        // Initiales Setup
+        clearCanvas();
+    </script>
+</body>
+</html>
