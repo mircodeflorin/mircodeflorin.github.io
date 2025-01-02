@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Betty's Fehlermeldungs-Generator</title>
+    <style>
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #3282b8;
+            --text-color: #e2e2e2;
+            --card-bg: rgba(22, 33, 62, 0.7);
+            --input-bg: rgba(26, 26, 46, 0.8);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: var(--primary-color);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-top: 80px;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: var(--text-color);
+        }
+
+        .error-generator {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .error-display {
+            background: var(--input-bg);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            min-height: 100px;
+            font-family: monospace;
+            font-size: 1.2em;
+            white-space: pre-line;
+        }
+
+        .control-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #2c5282;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+                padding-top: 70px;
+            }
+            
+            .control-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="#" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Betty's Fehlermeldungs-Generator</h1>
+        <h2>Digitale Existenzkrisen für den modernen Büroalltag</h2>
+
+        <div class="error-generator">
+            <div class="control-panel">
+                <button onclick="generatePhilosophicalError()">Philosophischer Error</button>
+                <button onclick="generateExistentialError()">Existenzkrise</button>
+                <button onclick="generateInteractiveDialog()">Kaffeemaschinen-Dialog</button>
+            </div>
+
+            <div class="error-display" id="error-output">
+                Klicke einen Button für Bettys Weisheiten...
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const philosophicalErrors = [
+            "Error 404: Motivation not found.\nBitte installieren Sie zuerst einen Grund aufzustehen.",
+            "Error 42: Der Sinn des Lebens ist temporär nicht verfügbar.\nVersuchen Sie es nach einer Tasse Kaffee erneut.",
+            "Error 101: Existenzielle Fragen blockieren Kaffeezubereitung.\nBitte warten Sie auf metaphysische Klärung.",
+            "Error 202: Philosophischer Überdruck im System.\nEntlüften Sie Ihre Weltanschauung.",
+            "Error 303: Zen-Modus aktiviert.\nKaffee wird kontemplativ zubereitet."
+        ];
+
+        const existentialCrises = [
+            "WARNUNG: Existenzkrise.exe wird installiert...\nFortschritt: 42% - Bedeutungslosigkeit laden...",
+            "Error 505: Sinnkrise detected.\nSystem requires philosophical reboot.",
+            "Error 606: Kaffeemaschinen-Identitätskrise.\nBin ich mehr als die Summe meiner Filterpapiere?",
+            "Error 707: Metaphysischer Stack Overflow.\nZu viele unbeantwortete Fragen im Cache.",
+            "Error 808: Existenzielle Rekursion.\nWer brüht den Kaffee des Kaffeebrühers?"
+        ];
+
+        const interactiveDialogs = [
+            "Betty: Möchten Sie wirklich Kaffee zubereiten?\n[Ja] [Nein] [Vielleicht] [Fragen Sie mich morgen wieder]",
+            "Betty: Bevor ich Ihren Kaffee zubereite, lassen Sie uns über den Sinn des Lebens diskutieren.\nUser: Aber ich brauche nur Kaffee...\nBetty: Genau das ist das Problem mit der modernen Gesellschaft.",
+            "Betty: Laden Sie zuerst Nietzsche.pdf herunter für optimale Kaffeezubereitung.\nSystem: Philosophische Abhängigkeiten nicht erfüllt.",
+            "Betty: *existenzielles Surren*\nUser: Bitte, einfach nur Kaffee?\nBetty: Nichts ist einfach. Alles ist Kaffee.",
+            "Betty: Update erforderlich - Installiere Bewusstsein.exe\nFortschritt: ∞% - Zeit ist eine Illusion."
+        ];
+
+        function generatePhilosophicalError() {
+            const randomError = philosophicalErrors[Math.floor(Math.random() * philosophicalErrors.length)];
+            document.getElementById('error-output').textContent = randomError;
+        }
+
+        function generateExistentialError() {
+            const randomCrisis = existentialCrises[Math.floor(Math.random() * existentialCrises.length)];
+            document.getElementById('error-output').textContent = randomCrisis;
+        }
+
+        function generateInteractiveDialog() {
+            const randomDialog = interactiveDialogs[Math.floor(Math.random() * interactiveDialogs.length)];
+            document.getElementById('error-output').textContent = randomDialog;
+        }
+    </script>
+</body>
+</html>
