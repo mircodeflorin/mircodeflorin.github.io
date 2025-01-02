@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motivations-Bullshit-Bingo</title>
+    <style>
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #3282b8;
+            --text-color: #e2e2e2;
+            --card-bg: rgba(22, 33, 62, 0.9);
+            --input-bg: rgba(26, 26, 46, 0.8);
+            --success-color: #4caf50;
+            --error-color: #f44336;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .home-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-top: 60px;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--text-color);
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--accent-color);
+            font-size: 1.5em;
+            margin-bottom: 30px;
+            font-weight: normal;
+        }
+
+        .score-board {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .score {
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .highscore {
+            font-size: 1.2em;
+            color: var(--accent-color);
+        }
+
+        .combo-meter {
+            height: 5px;
+            background: var(--input-bg);
+            margin: 10px 0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .combo-meter-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .bingo-board {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .buzzword-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .buzzword-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .buzzword-card.selected {
+            background: var(--accent-color);
+        }
+
+        .buzzword-card.correct {
+            background: var(--success-color);
+        }
+
+        .buzzword-card.incorrect {
+            background: var(--error-color);
+        }
+
+        .category-tag {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 0.8em;
+            color: var(--text-color);
+            background: rgba(0,0,0,0.3);
+            padding: 3px 8px;
+            border-radius: 12px;
+        }
+
+        .feedback-message {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            font-family: monospace;
+            font-size: 1.2em;
+            min-height: 60px;
+        }
+
+        .betty-message {
+            color: var(--accent-color);
+            font-style: italic;
+            margin-top: 10px;
+        }
+
+        .popup-feedback {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .popup-feedback.show {
+            opacity: 1;
+        }
+
+        .instructions-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            display: none;
+        }
+
+        .instructions-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .instructions-content h3 {
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+
+        .instructions-content h4 {
+            color: var(--text-color);
+            margin: 15px 0 10px 0;
+        }
+
+        .instructions-content ul {
+            padding-left: 20px;
+        }
+
+        .instructions-content li {
+            margin: 5px 0;
+            color: var(--text-color);
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .bingo-board {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+
+            .buzzword-card {
+                min-height: 80px;
+                padding: 15px;
+                font-size: 0.9em;
+            }
+
+            .category-tag {
+                font-size: 0.7em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a href="https://mircodeflorin.github.io/" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Motivations-Bullshit-Bingo</h1>
+        <h2>Erleuchte dein Meeting mit transformativen Buzzwords</h2>
+
+        <div class="score-board">
+            <div>
+                <div class="score">Score: <span id="score">0</span></div>
+                <div class="highscore">Highscore: <span id="highscore">0</span></div>
+                <div class="combo-meter">
+                    <div class="combo-meter-fill" id="comboMeter"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button onclick="generateNewBoard()">Neues Bingo-Board</button>
+            <button onclick="generatePhrase()">Management-Phrase</button>
+            <button onclick="interpretPhilosophy()">Tiefere Bedeutung</button>
+            <button onclick="showInstructions()">Spielanleitung</button>
+        </div>
+
+        <div class="bingo-board" id="bingoBoard"></div>
+
+        <div class="feedback-message" id="feedback">
+            Klicke die Buzzwords an, wenn sie im Meeting fallen...
+            <div class="betty-message" id="bettyMessage"></div>
+        </div>
+    </div>
+
+    <div class="popup-feedback" id="popupFeedback"></div>
+
+    <div id="instructions" class="instructions-modal">
+        <div class="instructions-content">
+            <h3>Spielanleitung</h3>
+            
+            <h4>Bingo-Modus:</h4>
+            <ul>
+                <li>Klicke auf Buzzwords, wenn sie im Meeting fallen</li>
+                <li>Eine komplette Reihe, Spalte oder Diagonale gibt +50 Punkte</li>
+            </ul>
+
+            <h4>Kombinations-Modus:</h4>
+            <ul>
+                <li>Wähle 3 Karten aus verschiedenen Kategorien</li>
+                <li>Gültige Kombinationen:</li>
+                <ul>
+                    <li>MINDSET + INNOVATION + PERFORMANCE</li>
+                    <li>PROCESS + STRATEGY + PERFORMANCE</li>
+                    <li>INNOVATION + STRATEGY + MINDSET</li>
+                </ul>
+                <li>Erfolgreiche Kombination: +100 Punkte</li>
+                <li>Falsche Kombination: -20 Punkte</li>
+            </ul>
+
+            <h4>Zusätzliche Features:</h4>
+            <ul>
+                <li>Combo-System: Schnelle aufeinanderfolgende richtige Kombinationen erhöhen den Punktemultiplikator</li>
+                <li>"Management-Phrase": Generiert eine zufällige Managementweisheit</li>
+                <li>"Tiefere Bedeutung": Philosophische Interpretation der aktuellen Situation</li>
+            </ul>
+            
+            <button onclick="hideInstructions()">Verstanden</button>
+        </div>
+    </div>
+
+    <script>
+        let currentScore = 0;
+        let highScore = localStorage.getItem('bingoHighScore') || 0;
+        let comboMultiplier = 1;
+        let lastCorrectTime = 0;
+        let selectedCards = [];
+
+        const buzzwords = {
+            PROCESS: [
+                "Agile Transformation",
+                "Change Management",
+                "Lean Leadership",
+                "Continuous Improvement",
+                "Workflow Optimization"
+            ],
+            INNOVATION: [
+                "Disruptive Innovation",
+                "Digital First",
+                "Out of the Box",
+                "Game Changer",
+                "Future Proof"
+            ],
+            STRATEGY: [
+                "Holistischer Ansatz",
+                "Strategische Initiative",
+                "Core Business",
+                "Paradigmenwechsel",
+                "Value Proposition"
+            ],
+            MINDSET: [
+                "Mindset-Shift",
+                "Agiles Mindset",
+                "Growth Mindset",
+                "Innovation Culture",
+                "Digital Native"
+            ],
+            PERFORMANCE: [
+                "Synergie-Effekte",
+                "Key Performance",
+                "Best Practice",
+                "Quick Win",
+                "Sustainable Growth"
+            ]
+        };
+
+        window.onload = function() {
+            generateNewBoard();
+            document.getElementById('highscore').textContent = highScore;
+        };
+
+        function generateNewBoard() {
+            const board = document.getElementById('bingoBoard');
+            board.innerHTML = '';
+            selectedCards = [];
+            
+            let allWords = [];
+            Object.entries(buzzwords).forEach(([category, words]) => {
+                words.forEach(word => {
+                    allWords.push({word, category});
+                });
+            });
+            
+            allWords = allWords.sort(() => Math.random() - 0.5);
+            
+            allWords.slice(0, 25).forEach(({word, category}) => {
+                const card = document.createElement('div');
+                card.className = 'buzzword-card';
+                card.innerHTML = `
+                    ${word}
+                    <span class="category-tag">${category}</span>
+                `;
+                card.dataset.category = category;
+                card.dataset.word = word;
+                card.onclick = () => toggleCard(card);
+                board.appendChild(card);
+            });
+        }
+
+        function toggleCard(card) {
+            if (card.classList.contains('selected')) {
+                card.classList.remove('selected');
+                selectedCards = selectedCards.filter(c => c !== card);
+            } else {
+                card.classList.add('selected');
+                selectedCards.push(card);
+            }
+
+            checkForBingo();
+
+            // Überprüfe Kombinationen wenn 3 Karten ausgewählt sind
+            if (selectedCards.length === 3) {
+                checkCombination();
+            }
+        }
+
+        function checkCombination() {
+            const categories = selectedCards.map(card => card.dataset.category).sort();
+            const validCombos = [
+                ['INNOVATION', 'MINDSET', 'PERFORMANCE'].sort(),
+                ['PROCESS', 'PERFORMANCE', 'STRATEGY'].sort(),
+                ['INNOVATION', 'MINDSET', 'STRATEGY'].sort()
+            ];
+
+            const isValidCombo = validCombos.some(combo => 
+                JSON.stringify(combo) === JSON.stringify(categories)
+            );
+
+            if (isValidCombo) {
+                updateScore(100);
+                showPopupFeedback('Perfekte Kombination! +100 Punkte', 'success');
+            } else {
+                updateScore(-20);
+                showPopupFeedback('Ungültige Kombination! -20 Punkte', 'error');
+            }
+
+            // Reset selected cards
+            selectedCards.forEach(card => card.classList.remove('selected'));
+            selectedCards = [];
+        }
+
+        function checkForBingo() {
+            const cards = document.querySelectorAll('.buzzword-card');
+            const selected = [...cards].map(card => card.classList.contains('selected'));
+            
+            let bingo = false;
+            
+            // Überprüfe Reihen
+            for (let i = 0; i < 5; i++) {
+                if (selected.slice(i*5, (i+1)*5).every(Boolean)) {
+                    bingo = true;
+                    break;
+                }
+            }
+            
+            // Überprüfe Spalten
+            for (let i = 0; i < 5; i++) {
+                if ([0,1,2,3,4].every(j => selected[i + j*5])) {
+                    bingo = true;
+                    break;
+                }
+            }
+            
+            // Überprüfe Diagonalen
+            if ([0,6,12,18,24].every(i => selected[i]) || 
+                [4,8,12,16,20].every(i => selected[i])) {
+                bingo = true;
+            }
+            
+            if (bingo) {
+                updateScore(50);
+                showPopupFeedback('BINGO! +50 Punkte', 'success');
+            }
+        }
+
+        function updateScore(points) {
+            const now = Date.now();
+            if (points > 0 && now - lastCorrectTime < 5000) {
+                comboMultiplier = Math.min(comboMultiplier + 0.5, 3);
+            } else {
+                comboMultiplier = 1;
+            }
+            if (points > 0) lastCorrectTime = now;
+            
+            currentScore += Math.round(points * comboMultiplier);
+            document.getElementById('score').textContent = currentScore;
+            
+            if (currentScore > highScore) {
+                highScore = currentScore;
+                localStorage.setItem('bingoHighScore', highScore);
+                document.getElementById('highscore').textContent = highScore;
+            }
+
+            // Update combo meter
+            const comboPercentage = ((comboMultiplier - 1) / 2) * 100;
+            document.getElementById('comboMeter').style.width = `${comboPercentage}%`;
+        }
+
+        function showPopupFeedback(message, type) {
+            const popup = document.getElementById('popupFeedback');
+            popup.textContent = message;
+            popup.className = `popup-feedback show ${type}`;
+            setTimeout(() => popup.className = 'popup-feedback', 2000);
+        }
+
+        function generatePhrase() {
+            const phrases = [
+                "Lasst uns agil die Synergien optimieren!",
+                "Wir brauchen ein innovatives Mindset für maximale Performance!",
+                "Die holistische Transformation erfordert strategisches Alignment!",
+                "Unser Digital-First-Approach enablet neue Growth-Opportunities!",
+                "Wir müssen das Change-Management proaktiv skalieren!",
+                "Die Customer Journey braucht mehr Touchpoint-Optimierung!",
+                "Unsere Pain Points erfordern ein Agiles Mindset!",
+                "Der Deep-Dive in die Core-Prozesse zeigt Potential!"
+            ];
+            document.getElementById('feedback').textContent = phrases[Math.floor(Math.random() * phrases.length)];
+        }
+
+        function interpretPhilosophy() {
+            const philosophies = [
+                "Eine tiefgründige Metapher für den Wandel unserer Zeit!",
+                "Die perfekte Synthese von Innovation und Tradition!",
+                "Ein revolutionärer Ansatz zur Transformation des Business-Mindsets!",
+                "Die Manifestation kollektiver Business-Excellence!",
+                "Ein Paradigmenwechsel in der Corporate Philosophy!",
+                "Die Evolution des modernen Management-Denkens!",
+                "Eine transzendentale Perspektive auf Business Agility!",
+                "Die Quintessenz strategischer Weisheit!"
+            ];
+            document.getElementById('feedback').textContent = philosophies[Math.floor(Math.random() * philosophies.length)];
+        }
+
+        function showInstructions() {
+            document.getElementById('instructions').style.display = 'block';
+        }
+
+        function hideInstructions() {
+            document.getElementById('instructions').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
