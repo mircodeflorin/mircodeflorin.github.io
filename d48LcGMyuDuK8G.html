@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waldemars Dramatischer Soap-Opera-Generator</title>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #ffd7e6;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+            transition: background-color 0.5s;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: #2c1810;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 1000;
+            font-size: 16px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .home-button:hover {
+            background-color: #4a2c1c;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 60px auto 0;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            border: 3px solid #ff69b4;
+        }
+
+        h1 {
+            color: #ff1493;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .story-container {
+            margin: 20px 0;
+            padding: 20px;
+            background: #fff0f5;
+            border-radius: 10px;
+            border: 1px solid #ffb6c1;
+            transition: all 0.3s ease;
+        }
+
+        .dramatic-effect {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(255,20,147,0.3);
+        }
+
+        .story-text {
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .choice-container {
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .preview {
+            display: none;
+            position: absolute;
+            left: 100%;
+            top: 0;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ff69b4;
+            margin-left: 10px;
+            width: 200px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: 2px solid #ff69b4;
+            border-radius: 5px;
+            background: white;
+            color: #ff1493;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Georgia', serif;
+            font-size: 1em;
+            width: 100%;
+            text-align: left;
+        }
+
+        button:hover {
+            background: #fff0f5;
+            transform: translateX(10px);
+        }
+
+        .waldemar-comment {
+            font-style: italic;
+            color: #ff69b4;
+            margin-top: 15px;
+            padding: 10px;
+            border-left: 3px solid #ff69b4;
+            background: white;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .dramatic-button {
+            background: #ff1493;
+            color: white;
+            font-weight: bold;
+            margin-top: 20px;
+            text-align: center;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+                margin-top: 20px;
+            }
+
+            .home-button {
+                position: static;
+                display: block;
+                width: calc(100% - 40px);
+                margin: 0 auto 20px;
+                text-align: center;
+            }
+
+            .preview {
+                left: 0;
+                top: 100%;
+                margin-left: 0;
+                margin-top: 5px;
+                width: 100%;
+            }
+
+            button {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io" class="home-button">← Zur Autorenseite</a>
+    <div class="container">
+        <h1>Waldemars Dramatischer Soap-Opera-Generator</h1>
+        
+        <div class="story-container">
+            <div id="story" class="story-text">
+                <!-- Story wird hier eingefügt -->
+            </div>
+            <div id="choices">
+                <!-- Auswahlmöglichkeiten werden hier eingefügt -->
+            </div>
+            <div id="waldemar-comment" class="waldemar-comment">
+                Waldemar: "Oh! Die Spannung ist unerträglich!"
+            </div>
+        </div>
+
+        <button onclick="playDramaticSound()" class="dramatic-button">
+            Dramatischer Soundeffekt!
+        </button>
+    </div>
+
+    <script>
+        const storyElements = [
+            {
+                text: "In der Villa am See...",
+                choices: [
+                    {
+                        text: "Ein mysteriöser Brief wird gefunden",
+                        next: 1,
+                        preview: "Enthält der Brief ein dunkles Geheimnis?",
+                        comment: "Waldemar: 'Genau wie in Folge 247 von 'Liebe und Verrat'!"
+                    },
+                    {
+                        text: "Das Familiengeheimnis wird enthüllt",
+                        next: 2,
+                        preview: "Die Familie steht vor einer erschütternden Wahrheit...",
+                        comment: "Waldemar: 'Die Enthüllung! Ich kann kaum hinsehen!'"
+                    },
+                    {
+                        text: "Ein unerwarteter Gast trifft ein",
+                        next: 3,
+                        preview: "Wer ist der geheimnisvolle Fremde?",
+                        comment: "Waldemar: 'Oh! Ein klassischer Soap-Moment!'"
+                    }
+                ]
+            },
+            {
+                text: "Der mysteriöse Brief liegt nun geöffnet auf dem Tisch...",
+                choices: [
+                    {
+                        text: "Eine verborgene Verwandtschaft wird aufgedeckt",
+                        next: 4,
+                        preview: "Familienbande werden auf die Probe gestellt...",
+                        comment: "Waldemar: 'Die Familienbande! Wie erschütternd!'"
+                    },
+                    {
+                        text: "Ein lange gehütetes Geheimnis kommt ans Licht",
+                        next: 5,
+                        preview: "Die Wahrheit könnte alles verändern...",
+                        comment: "Waldemar: 'Die Wahrheit! Endlich!'"
+                    },
+                    {
+                        text: "Eine verbotene Liebesaffäre wird enthüllt",
+                        next: 0,
+                        preview: "Herzen werden gebrochen...",
+                        comment: "Waldemar: *fächelt sich Luft zu* 'Diese Leidenschaft!'"
+                    }
+                ]
+            },
+            {
+                text: "Das Familiengeheimnis erschüttert alle Anwesenden...",
+                choices: [
+                    {
+                        text: "Tränen und Versöhnung",
+                        next: 4,
+                        preview: "Kann die Familie wieder zueinander finden?",
+                        comment: "Waldemar: *schluchzt* 'Diese emotionale Tiefe!'"
+                    },
+                    {
+                        text: "Dramatischer Streit",
+                        next: 5,
+                        preview: "Der Konflikt eskaliert...",
+                        comment: "Waldemar: 'Der Konflikt spitzt sich zu!'"
+                    },
+                    {
+                        text: "Ein überraschendes Testament taucht auf",
+                        next: 0,
+                        preview: "Das Erbe sorgt für neue Spannungen...",
+                        comment: "Waldemar: 'Das Schicksal schlägt wieder zu!'"
+                    }
+                ]
+            },
+            {
+                text: "Der geheimnisvolle Fremde steht im Türrahmen...",
+                choices: [
+                    {
+                        text: "Es ist der verschwundene Zwillingsbruder",
+                        next: 5,
+                        preview: "Eine dramatische Familienzusammenführung steht bevor...",
+                        comment: "Waldemar: 'Zwillinge! Natürlich! *fällt in Ohnmacht*'"
+                    },
+                    {
+                        text: "Ein Privatdetektiv mit brisanten Informationen",
+                        next: 0,
+                        preview: "Welche Geheimnisse wird er aufdecken?",
+                        comment: "Waldemar: 'Die Spannung ist unerträglich!'"
+                    },
+                    {
+                        text: "Der totgeglaubte erste Ehemann",
+                        next: 1,
+                        preview: "Er ist zurück - und er will Rache!",
+                        comment: "Waldemar: 'Meine Nerven! Meine Nerven!'"
+                    }
+                ]
+            },
+            {
+                text: "Im Gewitter vor der Villa...",
+                choices: [
+                    {
+                        text: "Ein dramatisches Geständnis",
+                        next: 0,
+                        preview: "Donner und Blitze unterstreichen die Enthüllung...",
+                        comment: "Waldemar: *dramatisch* 'Das Wetter spiegelt die Emotionen!'"
+                    },
+                    {
+                        text: "Eine überraschende Hochzeit",
+                        next: 1,
+                        preview: "Liebe triumphiert über alle Widrigkeiten...",
+                        comment: "Waldemar: 'Romantik im Regen! Wie poetisch!'"
+                    },
+                    {
+                        text: "Eine spektakuläre Flucht",
+                        next: 2,
+                        preview: "Wer entkommt in der stürmischen Nacht?",
+                        comment: "Waldemar: 'Diese Dramatik! Dieser Nervenkitzel!'"
+                    }
+                ]
+            }
+        ];
+
+        let currentStep = 0;
+        let dramaticEffectActive = false;
+
+        function showStory(stepIndex) {
+            const step = storyElements[stepIndex];
+            document.getElementById('story').innerHTML = `<p>${step.text}</p>`;
+            
+            const choicesHtml = step.choices.map((choice, index) => `
+                <div class="choice-container">
+                    <button onclick="makeChoice(${choice.next})" 
+                            onmouseover="showPreview(${index})" 
+                            onmouseout="hidePreview()">
+                        ${choice.text}
+                    </button>
+                    <div class="preview" id="preview-${index}">${choice.preview}</div>
+                </div>
+            `).join('');
+            
+            document.getElementById('choices').innerHTML = choicesHtml;
+        }
+
+        function showPreview(index) {
+            const previews = document.getElementsByClassName('preview');
+            for(let p of previews) {
+                p.style.display = 'none';
+            }
+            const preview = document.getElementById(`preview-${index}`);
+            if (preview) {
+                preview.style.display = 'block';
+            }
+        }
+
+        function hidePreview() {
+            const previews = document.getElementsByClassName('preview');
+            for(let p of previews) {
+                p.style.display = 'none';
+            }
+        }
+
+        function makeChoice(next) {
+            if (dramaticEffectActive) return;
+            
+            const currentChoice = storyElements[currentStep].choices.find(c => c.next === next);
+            if (currentChoice) {
+                document.getElementById('waldemar-comment').textContent = currentChoice.comment;
+            }
+            
+            dramaticEffectActive = true;
+            playChoiceSound();
+            addDramaticEffect();
+            
+            setTimeout(() => {
+                currentStep = next;
+                showStory(currentStep);
+                dramaticEffectActive = false;
+            }, 1000);
+        }
+
+        function addDramaticEffect() {
+            const container = document.querySelector('.story-container');
+            container.classList.add('dramatic-effect');
+            
+            document.body.style.backgroundColor = '#ffe6f0';
+            setTimeout(() => {
+                document.body.style.backgroundColor = '#ffd7e6';
+                container.classList.remove('dramatic-effect');
+            }, 1000);
+        }
+
+        function playChoiceSound() {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const notes = [261.63, 329.63, 392.00];
+            
+            notes.forEach((frequency, index) => {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.type = 'triangle';
+                oscillator.frequency.value = frequency;
+                
+                gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.start();
+                oscillator.stop(audioContext.currentTime + 0.5);
+            });
+        }
+
+        function playDramaticSound() {
+            if (dramaticEffectActive) return;
+            
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const notes = [261.63, 329.63, 392.00, 523.25];
+            
+            notes.forEach((frequency, index) => {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.type = 'sine';
+                oscillator.frequency.value = frequency;
+                
+                gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1);
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.start();
+                oscillator.stop(audioContext.currentTime + 1);
+            });
+            
+            addDramaticEffect();
+        }
+
+        // Start the story
+        showStory(0);
+    </script>
+</body>
+</html>
