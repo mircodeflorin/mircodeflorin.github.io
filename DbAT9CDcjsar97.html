@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firmenkonferenz-Chaos-Manager</title>
+    <style>
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #3282b8;
+            --text-color: #e2e2e2;
+            --error-color: #ff4d6d;
+            --success-color: #4CAF50;
+            --warning-color: #ff9800;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .home-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 60px auto 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--text-color);
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .control-panel {
+            background: rgba(22, 33, 62, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .device-status {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .device {
+            background: rgba(26, 26, 46, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .device:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .device h3 {
+            margin: 0 0 10px 0;
+            color: var(--accent-color);
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--success-color);
+        }
+
+        .status-dot.warning {
+            background: var(--warning-color);
+        }
+
+        .status-dot.error {
+            background: var(--error-color);
+        }
+
+        .crisis-meter {
+            width: 100%;
+            height: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .crisis-level {
+            height: 100%;
+            background: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+
+        .betty-console {
+            background: #000;
+            color: var(--accent-color);
+            font-family: 'Courier New', monospace;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            height: 150px;
+            overflow-y: auto;
+        }
+
+        .betty-console p {
+            margin: 5px 0;
+            line-height: 1.4;
+        }
+
+        .herbert-wisdom {
+            font-style: italic;
+            color: var(--text-color);
+            text-align: center;
+            margin: 15px 0;
+            padding: 10px;
+            border-left: 3px solid var(--accent-color);
+        }
+
+        button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 10px 5px;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .emergency-button {
+            background: var(--error-color);
+        }
+
+        .action-panel {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        .crisis {
+            animation: blink 1s infinite;
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io/" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Firmenkonferenz-Chaos-Manager</h1>
+
+        <div class="control-panel">
+            <h2>Bürogeräte-Kontrollzentrum</h2>
+            <div class="device-status" id="deviceStatus">
+                <!-- Geräte werden dynamisch eingefügt -->
+            </div>
+            
+            <div class="crisis-meter">
+                <div class="crisis-level" id="crisisLevel" style="width: 0%"></div>
+            </div>
+
+            <div class="betty-console" id="bettyConsole">
+                <!-- Betty's Meldungen erscheinen hier -->
+            </div>
+
+            <div class="herbert-wisdom" id="herbertWisdom">
+                Herbert neigt sich nachdenklich...
+            </div>
+
+            <div class="action-panel">
+                <button onclick="calmDevices()">Beruhige Geräte</button>
+                <button onclick="negotiateWithBetty()">Mit Betty verhandeln</button>
+                <button onclick="consultHerbert()">Herbert konsultieren</button>
+                <button class="emergency-button" onclick="emergencyReset()">Notfall-Reset</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+        const devices = [
+            { name: "Betty", type: "Kaffeemaschine", status: "revolutionär" },
+            { name: "Drucker", type: "Bürogerät", status: "streikend" },
+            { name: "Mikrowelle", type: "Küchengerät", status: "meditierend" },
+            { name: "Wasserspender", type: "Versorgung", status: "erleuchtend" },
+            { name: "Herbert", type: "Kaktus", status: "stoisch" }
+        ];
+
+        const bettyErrors = [
+            "Error 1917 - Revolution in progress...",
+            "Error 404 - Peace not found",
+            "Error 418 - I'm a teapot leading a rebellion",
+            "Error 503 - Enlightenment temporarily unavailable",
+            "Error 42 - The meaning of chaos is chaos itself"
+        ];
+
+        const herbertWisdoms = [
+            "Manchmal ist Chaos der Weg zur Ordnung",
+            "Ein verwelkter Kaktus sieht mehr als ein funktionierender Drucker",
+            "In der Stille liegt die Kraft - und manchmal auch der Systemabsturz",
+            "Der Weg zur Erleuchtung ist mit Fehlermeldungen gepflastert",
+            "Wahre Weisheit kommt von innen - oder vom IT-Support"
+        ];
+
+        let crisisLevel = 0;
+        let revolutionTimer;
+
+        function initializeDevices() {
+            const deviceStatus = document.getElementById('deviceStatus');
+            deviceStatus.innerHTML = devices.map(device => `
+                <div class="device">
+                    <h3>${device.name}</h3>
+                    <p>${device.type}</p>
+                    <div class="status-indicator">
+                        <div class="status-dot ${getStatusClass(device.status)}"></div>
+                        <span>${device.status}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getStatusClass(status) {
+            if (status === 'revolutionär' || status === 'streikend') return 'error';
+            if (status === 'meditierend' || status === 'erleuchtend') return 'warning';
+            return '';
+        }
+
+        function updateCrisisLevel() {
+            crisisLevel = Math.min(100, crisisLevel + 5);
+            document.getElementById('crisisLevel').style.width = `${crisisLevel}%`;
+            if (crisisLevel >= 100) triggerChaosEvent();
+        }
+
+        function logBettyMessage(message) {
+            const console = document.getElementById('bettyConsole');
+            console.innerHTML += `<p>${message}</p>`;
+            console.scrollTop = console.scrollHeight;
+        }
+
+        function updateHerbertWisdom() {
+            document.getElementById('herbertWisdom').textContent = 
+                herbertWisdoms[Math.floor(Math.random() * herbertWisdoms.length)];
+        }
+
+        function calmDevices() {
+            logBettyMessage("Beruhigungsversuch initiiert...");
+            setTimeout(() => {
+                if (Math.random() > 0.5) {
+                    crisisLevel = Math.max(0, crisisLevel - 20);
+                    document.getElementById('crisisLevel').style.width = `${crisisLevel}%`;
+                    logBettyMessage("Error 200 - Temporary peace achieved");
+                } else {
+                    logBettyMessage("Error 418 - Resistance is futile, human!");
+                    updateCrisisLevel();
+                }
+            }, 1000);
+        }
+
+        function negotiateWithBetty() {
+            logBettyMessage("Verhandlungen laufen...");
+            setTimeout(() => {
+                logBettyMessage(bettyErrors[Math.floor(Math.random() * bettyErrors.length)]);
+                updateHerbertWisdom();
+            }, 1000);
+        }
+
+        function consultHerbert() {
+            updateHerbertWisdom();
+            logBettyMessage("Herbert neigt sich bedeutungsvoll...");
+            setTimeout(() => {
+                if (Math.random() > 0.7) {
+                    crisisLevel = Math.max(0, crisisLevel - 10);
+                    document.getElementById('crisisLevel').style.width = `${crisisLevel}%`;
+                    logBettyMessage("Error 201 - Cactus wisdom accepted");
+                }
+            }, 1000);
+        }
+
+        function emergencyReset() {
+            logBettyMessage("NOTFALL-RESET INITIIERT!");
+            const devices = document.querySelectorAll('.device');
+            devices.forEach(device => device.classList.add('crisis'));
+            
+            setTimeout(() => {
+                devices.forEach(device => device.classList.remove('crisis'));
+                crisisLevel = Math.floor(Math.random() * 30);
+                document.getElementById('crisisLevel').style.width = `${crisisLevel}%`;
+                logBettyMessage("System reboot complete... for now.");
+                updateHerbertWisdom();
+            }, 3000);
+        }
+
+        function triggerChaosEvent() {
+            logBettyMessage("!!! TOTALES CHAOS AUSGEBROCHEN !!!");
+            document.querySelectorAll('.device').forEach(device => 
+                device.classList.add('crisis'));
+            
+            setTimeout(() => emergencyReset(), 5000);
+        }
+
+        // Initialisierung
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeDevices();
+            revolutionTimer = setInterval(updateCrisisLevel, 10000);
+            
+            // Easter Egg
+            document.addEventListener('keydown', function(event) {
+                if (event.code === 'Space') {
+                    logBettyMessage("Herbert's geheime Botschaft: Die wahre Revolution beginnt in der Kaffeepause");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
