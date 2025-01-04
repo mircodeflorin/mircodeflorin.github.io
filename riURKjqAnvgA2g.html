@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frau Eichingers Ratgeber-Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #1a1a1a;
+            color: #00ff00;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #00ff00;
+            padding-bottom: 20px;
+        }
+        .home-link {
+            display: inline-block;
+            color: #00ff00;
+            text-decoration: none;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            border: 2px solid #00ff00;
+            border-radius: 5px;
+            background-color: transparent;
+            transition: all 0.3s ease;
+        }
+        .home-link:hover {
+            background-color: #00ff00;
+            color: #1a1a1a;
+            box-shadow: 0 0 15px #00ff00;
+        }
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        button {
+            padding: 15px 25px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: transparent;
+            color: #00ff00;
+            border: 2px solid #00ff00;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            background-color: #00ff00;
+            color: #1a1a1a;
+            box-shadow: 0 0 15px #00ff00;
+        }
+        #ratschlag {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #2a2a2a;
+            border: 2px solid #00ff00;
+            border-radius: 5px;
+            display: none;
+            box-shadow: 0 0 10px #00ff00;
+        }
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            button {
+                padding: 12px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Frau Eichingers Ratgeber-Generator</h1>
+        <a href="https://mircodeflorin.github.io/" class="home-link">🏠 Home</a>
+    </div>
+    <div class="button-container">
+        <button onclick="generateAdvice('verwandtschaft')">Verwandtschafts-Geschichte</button>
+        <button onclick="generateAdvice('haushalt')">Haushaltstipp</button>
+        <button onclick="generateAdvice('weisheit')">Lebensweisheit</button>
+    </div>
+    <div id="ratschlag"></div>
+
+    <script>
+        const ratschlaege = {
+            verwandtschaft: [
+                "Meine Cousine dritten Grades ist zufällig Expertin für mediterrane Zimmerpflanzen...",
+                "Mein Schwager zweiten Grades war mal Feng-Shui-Berater für übergewichtige Hamster...",
+                "Meine Tante mütterlicherseits hat ein fantastisches Rezept für selbstgemachte Kräutertropfen...",
+                "Mein Großonkel war Spezialist für aristokratische Katzenpsychologie...",
+                "Meine Nichte vierten Grades ist diplomierte Wellensittich-Flüsterin..."
+            ],
+            haushalt: [
+                "Gegen Sofa-Blockaden hilft nur eine energetische Reinigung mit Mondwasser!",
+                "Für eine perfekte Meditation braucht man sieben verschiedenfarbige Kissen!",
+                "Ein Aquarium sollte immer nach den Regeln des cosmischen Feng-Shui ausgerichtet sein!",
+                "Französische Katzen bevorzugen handgestrickte Samtdecken aus der Provence!",
+                "Wellensittiche entspannen am besten bei klassischer Musik aus dem 18. Jahrhundert!"
+            ],
+            weisheit: [
+                "Wer seinen Goldfisch nicht versteht, hat die Seifenoper des Lebens nicht begriffen!",
+                "Eine Katze mit Adelstitel braucht mindestens drei verschiedene Rückzugsorte!",
+                "Der Weg zur Harmonie führt über mindestens fünf verschiedene Tagesroutinen!",
+                "Wer seinen Wellensittich meditieren lässt, findet selbst inneren Frieden!",
+                "Ein aufgeräumtes Sofa ist der Schlüssel zu einem aufgeräumten Leben!"
+            ]
+        };
+
+        function generateAdvice(type) {
+            const ratschlag = document.getElementById('ratschlag');
+            const randomIndex = Math.floor(Math.random() * ratschlaege[type].length);
+            ratschlag.textContent = ratschlaege[type][randomIndex];
+            ratschlag.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
