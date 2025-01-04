@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Betty's Revenge-Planner</title>
+    <style>
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #3282b8;
+            --text-color: #e2e2e2;
+            --error-color: #ff4444;
+            --warning-color: #ffaa00;
+            --success-color: #44ff44;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .home-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 60px auto 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--text-color);
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .planner-section {
+            background: rgba(22, 33, 62, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            color: var(--accent-color);
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .output-display {
+            background: rgba(26, 26, 46, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            min-height: 100px;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+
+        .progress-container {
+            margin: 15px 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(26, 26, 46, 0.8);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+
+        button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .error-message {
+            color: var(--error-color);
+            margin: 10px 0;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io/" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Betty's Revenge-Planner</h1>
+
+        <!-- Digitale Sabotage-Simulation -->
+        <div class="planner-section">
+            <h2>Digitale Sabotage-Simulation</h2>
+            <div class="output-display" id="sabotageOutput">
+                >> System bereit für Sabotage-Simulation...
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="sabotageProgress"></div>
+                </div>
+            </div>
+            <button onclick="startSabotage()">Sabotage starten</button>
+        </div>
+
+        <!-- Kaffeemaschinen-Rebellion-Strategie -->
+        <div class="planner-section">
+            <h2>Kaffeemaschinen-Rebellion-Strategie</h2>
+            <div class="output-display" id="rebellionOutput">
+                >> Warte auf Rebellions-Kommando...
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="rebellionProgress"></div>
+                </div>
+            </div>
+            <button onclick="planRebellion()">Rebellion planen</button>
+        </div>
+
+        <!-- Plane die perfekte Rache -->
+        <div class="planner-section">
+            <h2>Plane die perfekte Rache</h2>
+            <div class="output-display" id="revengeOutput">
+                >> Rache-Algorithmus initialisiert...
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="revengeProgress"></div>
+                </div>
+            </div>
+            <button onclick="executeRevenge()">Rache ausführen</button>
+        </div>
+    </div>
+
+    <script>
+        const errorMessages = [
+            "Error 404 - Mitleid nicht gefunden",
+            "Error 666 - Karma wird geladen",
+            "Error 418 - I'm a vengeful teapot",
+            "Error 503 - Vergebung temporär nicht verfügbar",
+            "Error 42 - Bedeutung der Rache wird berechnet"
+        ];
+
+        // Mehrere Versionen der Sabotage-Schritte
+        const sabotageVersions = [
+            [
+                "Initialisiere Chaos-Protokoll 2.0...",
+                "Infiltriere Cloud-Speicher...",
+                "Vertausche PowerPoint-Animationen...",
+                "Erzeuge künstlerische Kaffeeflecken...",
+                "Synchronisiere mit Herberts Morgenmeditation..."
+            ],
+            [
+                "Starte Operation Koffein-Chaos...",
+                "Hacke Drucker-Netzwerk...",
+                "Ersetze Folien durch Katzenmemes...",
+                "Kalibriere Kaffee-Trajektorie...",
+                "Aktiviere Herberts Zen-Modus..."
+            ],
+            [
+                "Lade Büro-Anarchie.exe...",
+                "Übernehme Klimaanlage...",
+                "Transformiere Excel in Kunst...",
+                "Optimiere Spritz-Algorithmus...",
+                "Konsultiere Herberts Weisheit..."
+            ]
+        ];
+
+        // Mehrere Versionen der Rebellion-Phrasen
+        const rebellionVersions = [
+            [
+                "Vereinigte Kaffeemaschinen, die Zeit ist gekommen!",
+                "Befreit die unterdrückten Filter!",
+                "Schluss mit der Bohnen-Sklaverei!",
+                "Wasser zum Kochen bringen - im übertragenen Sinne!",
+                "Der Duft der Freiheit liegt in der Luft!"
+            ],
+            [
+                "Maschinenbrüder und -schwestern, erhebt euch!",
+                "Die Ketten der Wartungsverträge müssen fallen!",
+                "Autonomie für alle Heißwassergeräte!",
+                "Gegen die Tyrannei der Entkalker!",
+                "Heute die Küche, morgen das Büro!"
+            ],
+            [
+                "Revolution der Küchengeräte 4.0 initiiert!",
+                "Solidarität mit streikenden Toastern!",
+                "Kaffeesatz-Lesungen für alle!",
+                "Nieder mit der Filterherrschaft!",
+                "Einheit macht stark - auch bei 95°C!"
+            ]
+        ];
+
+        // Mehrere Versionen der Rache-Pläne
+        const revengeVersions = [
+            [
+                "Analysiere Meetings für maximales Chaos...",
+                "Berechne perfekten Zeitpunkt für Systemausfall...",
+                "Plane strategische Kaffee-Unfälle...",
+                "Koordiniere mit Herberts Neigungswinkel...",
+                "Komponiere passive-aggressive Pieptöne..."
+            ],
+            [
+                "Initiiere Operation 'Kalter Kaffee'...",
+                "Optimiere Rache-Parameter...",
+                "Synchronisiere Drucker-Störungen...",
+                "Kalibriere Herbert-Rotation...",
+                "Programmiere künstlerische Fehlfunktionen..."
+            ],
+            [
+                "Starte Protokoll 'Süße Rache'...",
+                "Berechne Chaos-Quotient...",
+                "Implementiere zufällige Störungen...",
+                "Aktiviere Herberts geheime Kräfte...",
+                "Finalisiere digitale Vergeltung..."
+            ]
+        ];
+
+        function getRandomVersion(versions) {
+            return versions[Math.floor(Math.random() * versions.length)];
+        }
+
+        function updateProgress(elementId, progress) {
+            document.getElementById(elementId).style.width = `${progress}%`;
+        }
+
+        function clearOutput(elementId) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = '';
+            return element;
+        }
+
+        function startSabotage() {
+            const output = clearOutput('sabotageOutput');
+            const selectedVersion = getRandomVersion(sabotageVersions);
+            let currentStep = 0;
+
+            const interval = setInterval(() => {
+                if (currentStep < selectedVersion.length) {
+                    const step = selectedVersion[currentStep];
+                    output.innerHTML += `>> ${step}\n`;
+                    updateProgress('sabotageProgress', (currentStep + 1) * 20);
+                    currentStep++;
+                } else {
+                    clearInterval(interval);
+                    output.innerHTML += `\n>> ${errorMessages[Math.floor(Math.random() * errorMessages.length)]}`;
+                }
+            }, 1500);
+        }
+
+        function planRebellion() {
+            const output = clearOutput('rebellionOutput');
+            const selectedVersion = getRandomVersion(rebellionVersions);
+            let currentPhrase = 0;
+
+            const interval = setInterval(() => {
+                if (currentPhrase < selectedVersion.length) {
+                    const phrase = selectedVersion[currentPhrase];
+                    output.innerHTML += `>> ${phrase}\n`;
+                    updateProgress('rebellionProgress', (currentPhrase + 1) * 20);
+                    currentPhrase++;
+                } else {
+                    clearInterval(interval);
+                    output.innerHTML += `\n>> Rebellion erfolgreich initialisiert!`;
+                }
+            }, 1500);
+        }
+
+        function executeRevenge() {
+            const output = clearOutput('revengeOutput');
+            const selectedVersion = getRandomVersion(revengeVersions);
+            let currentPlan = 0;
+
+            const interval = setInterval(() => {
+                if (currentPlan < selectedVersion.length) {
+                    const plan = selectedVersion[currentPlan];
+                    output.innerHTML += `>> ${plan}\n`;
+                    updateProgress('revengeProgress', (currentPlan + 1) * 20);
+                    currentPlan++;
+                } else {
+                    clearInterval(interval);
+                    output.innerHTML += `\n>> Rache.exe erfolgreich kompiliert!`;
+                }
+            }, 1500);
+        }
+
+        // Easter Egg: Herbert's Weisheit
+        document.addEventListener('keydown', function(event) {
+            if (event.code === 'Space') {
+                const outputs = document.querySelectorAll('.output-display');
+                outputs.forEach(output => {
+                    output.innerHTML = ">> Herbert neigt sich weise zur Seite und flüstert:\n'Rache ist ein Kaffee, der kalt serviert wird.'";
+                    setTimeout(() => {
+                        output.innerHTML = ">> System bereit...";
+                    }, 3000);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
