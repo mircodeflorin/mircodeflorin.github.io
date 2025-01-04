@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Herr Schnurrs Aristokratie-Quiz</title>
+    <style>
+        body {
+            font-family: 'Playfair Display', 'Times New Roman', serif;
+            background-color: #f5e6d3;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: #2c1810;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 1000;
+            font-size: 16px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .home-button:hover {
+            background-color: #4a2c1c;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 60px auto 0;
+            background: #fff9f0;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            border: 2px solid #8b4513;
+        }
+
+        h1 {
+            color: #8b4513;
+            text-align: center;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .question-container {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid #d4af37;
+            border-radius: 10px;
+        }
+
+        .question {
+            font-size: 1.2em;
+            color: #4a2c1c;
+            margin-bottom: 20px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: 1px solid #d4af37;
+            border-radius: 5px;
+            background: #fff;
+            color: #8b4513;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Playfair Display', serif;
+            font-size: 1em;
+        }
+
+        button:hover {
+            background: #f5e6d3;
+            transform: translateX(10px);
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            font-style: italic;
+            display: none;
+        }
+
+        .score-container {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #8b4513;
+        }
+
+        .result {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            background: #f5e6d3;
+            border-radius: 5px;
+            border: 1px solid #d4af37;
+        }
+
+        .comment {
+            font-style: italic;
+            color: #8b4513;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+                margin-top: 20px;
+            }
+
+            .home-button {
+                position: static;
+                display: block;
+                width: calc(100% - 40px);
+                margin: 0 auto 20px;
+                text-align: center;
+            }
+
+            button {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io" class="home-button">← Zur Autorenseite</a>
+    <div class="container">
+        <h1>Herr Schnurrs Aristokratie-Quiz</h1>
+        <div id="question-container" class="question-container">
+            <!-- Fragen werden dynamisch eingefügt -->
+        </div>
+        <div class="score-container">
+            <p>Aristokratische Punkte: <span id="score">0</span> / <span id="total">0</span></p>
+        </div>
+        <div class="result" id="result">
+            <h2>Quiz beendet!</h2>
+            <p>Ihre aristokratische Wertung: <span id="final-score">0</span> Punkte</p>
+            <p id="final-feedback"></p>
+            <button onclick="restartQuiz()">Encore une fois!</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "Comment s'adresse-t-on correctement à un aristocrate félin?",
+                options: [
+                    {
+                        text: "Mit 'Eure Samtpfötigkeit'",
+                        feedback: "Magnifique! Sie beherrschen die feine Art der Anrede.",
+                        correct: true,
+                        comment: "Herr Schnurr nickt anerkennend: 'Eine wahrhaft kultivierte Wahl!'"
+                    },
+                    {
+                        text: "Mit 'Hey Katze!'",
+                        feedback: "Mon dieu! Welch ein Fauxpas!",
+                        correct: false,
+                        comment: "Herr Schnurr schüttelt erschüttert den Kopf: 'Quelle horreur!'"
+                    },
+                    {
+                        text: "Mit 'Süße Mieze'",
+                        feedback: "Absolut inakzeptabel in gehobenen Kreisen!",
+                        correct: false,
+                        comment: "Herr Schnurr verdreht die Augen: 'Die Moderne verfällt...'"
+                    }
+                ]
+            },
+            {
+                question: "Wie serviert man standesgemäß eine Schale Milch?",
+                options: [
+                    {
+                        text: "In einer Plastikschüssel",
+                        feedback: "Unerhört! Das grenzt an Majestätsbeleidigung!",
+                        correct: false,
+                        comment: "Herr Schnurr schnuppert verächtlich: 'Wie gewöhnlich!'"
+                    },
+                    {
+                        text: "In feinstem Porzellan mit goldener Verzierung",
+                        feedback: "Parfait! Sie verstehen die Kunst des Servierens.",
+                        correct: true,
+                        comment: "Herr Schnurr: 'Ah, ein Kenner der feinen Lebensart!'"
+                    },
+                    {
+                        text: "Direkt aus der Packung",
+                        feedback: "Skandalös! Absolut skandalös!",
+                        correct: false,
+                        comment: "Herr Schnurr fächelt sich Luft zu: 'Je suis choqué!'"
+                    }
+                ]
+            },
+            {
+                question: "Was ist die korrekte Reihenfolge beim aristokratischen Nachmittagsschlaf?",
+                options: [
+                    {
+                        text: "Einfach hinlegen und schnarchen",
+                        feedback: "Wie unzivilisiert! Das geht gar nicht!",
+                        correct: false,
+                        comment: "Herr Schnurr: 'Das ist unter unserer Würde!'"
+                    },
+                    {
+                        text: "Drei Runden im Kreis drehen, dann elegant zusammenrollen",
+                        feedback: "Certainement! Die klassische Methode der Nobility!",
+                        correct: true,
+                        comment: "Herr Schnurr: 'Eine Demonstration höchster Kultur!'"
+                    },
+                    {
+                        text: "Auf dem Rücken mit allen Vieren in der Luft",
+                        feedback: "Ein Verstoß gegen jegliche Etikette!",
+                        correct: false,
+                        comment: "Herr Schnurr: 'Das ist für... Bauernkatzen!'"
+                    }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        function showQuestion(questionIndex) {
+            const question = questions[questionIndex];
+            const container = document.getElementById('question-container');
+            
+            const questionElement = document.createElement('div');
+            questionElement.innerHTML = `
+                <div class="question">${question.question}</div>
+                <div class="options">
+                    ${question.options.map((option, index) => `
+                        <button onclick="checkAnswer(${questionIndex}, ${index})">${option.text}</button>
+                    `).join('')}
+                </div>
+                <div class="feedback"></div>
+                <div class="comment"></div>
+            `;
+            
+            container.innerHTML = '';
+            container.appendChild(questionElement);
+            
+            document.getElementById('total').textContent = questions.length;
+        }
+
+        function checkAnswer(questionIndex, optionIndex) {
+            const question = questions[questionIndex];
+            const option = question.options[optionIndex];
+            const container = document.getElementById('question-container');
+            const buttons = container.querySelectorAll('button');
+            const feedback = container.querySelector('.feedback');
+            const comment = container.querySelector('.comment');
+            
+            buttons.forEach(button => button.disabled = true);
+            
+            feedback.style.display = 'block';
+            feedback.textContent = option.feedback;
+            feedback.style.backgroundColor = option.correct ? '#d4edda' : '#f8d7da';
+            
+            comment.textContent = option.comment;
+            
+            if (option.correct) {
+                score++;
+                document.getElementById('score').textContent = score;
+            }
+            
+            setTimeout(() => {
+                currentQuestion++;
+                if (currentQuestion < questions.length) {
+                    showQuestion(currentQuestion);
+                } else {
+                    showResult();
+                }
+            }, 2000);
+        }
+
+        function showResult() {
+            document.getElementById('question-container').style.display = 'none';
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('final-score').textContent = score;
+            
+            let feedback;
+            if (score === questions.length) {
+                feedback = "Magnifique! Sie sind wahrhaft von adligem Geblüt!";
+            } else if (score >= questions.length * 0.7) {
+                feedback = "Pas mal! Sie haben Potential für die gehobene Gesellschaft.";
+            } else {
+                feedback = "Oh là là... Vielleicht sollten Sie erstmal die Grundlagen der Etikette studieren.";
+            }
+            
+            document.getElementById('final-feedback').textContent = feedback;
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            document.getElementById('score').textContent = '0';
+            document.getElementById('question-container').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
+            showQuestion(0);
+        }
+
+        // Start the quiz
+        showQuestion(0);
+    </script>
+</body>
+</html>
