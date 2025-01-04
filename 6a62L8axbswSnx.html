@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gustavs Meditations-Timer</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: #2c1810;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 1000;
+            font-size: 16px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .home-button:hover {
+            background-color: #4a2c1c;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 60px auto 0;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .meditation-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: #3498db;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            animation: pulse 4s infinite;
+            cursor: pointer;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .controls {
+            margin: 20px 0;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 5px;
+            background: #3498db;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        .timer {
+            font-size: 48px;
+            margin: 20px 0;
+        }
+
+        .wisdom {
+            font-style: italic;
+            color: #666;
+            margin: 20px 0;
+        }
+
+        .volume-control {
+            margin: 20px 0;
+        }
+
+        input[type="range"] {
+            width: 200px;
+        }
+
+        @media (max-width: 600px) {
+            .home-button {
+                position: static;
+                display: block;
+                width: calc(100% - 40px);
+                margin: 0 auto 20px;
+                text-align: center;
+            }
+
+            .container {
+                margin-top: 20px;
+            }
+
+            .meditation-circle {
+                width: 150px;
+                height: 150px;
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io" class="home-button">← Zur Autorenseite</a>
+    <div class="container">
+        <h1>Gustavs Meditations-Timer</h1>
+        <div class="meditation-circle" id="circle">
+            Omm
+        </div>
+        <div class="timer" id="timer">05:00</div>
+        <div class="controls">
+            <button onclick="startMeditation()">Start</button>
+            <button onclick="pauseMeditation()">Pause</button>
+            <button onclick="resetMeditation()">Reset</button>
+        </div>
+        <div class="volume-control">
+            <label for="volume">Omm-Lautstärke:</label><br>
+            <input type="range" id="volume" min="0" max="1" step="0.1" value="0.5">
+        </div>
+        <div class="wisdom" id="wisdom">
+            "Der Weise findet Frieden im Hier und Jetzt."
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let timeLeft = 300;
+            let timerId = null;
+            let isPaused = false;
+            let audioContext;
+            let masterGainNode;
+
+            // Web Audio API Setup
+            function initAudio() {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                masterGainNode = audioContext.createGain();
+                masterGainNode.connect(audioContext.destination);
+                masterGainNode.gain.value = document.getElementById('volume').value;
+            }
+
+            function createOmmSound() {
+                if (!audioContext) initAudio();
+
+                const fundamentalFreq = 136.1;
+                const oscillators = [];
+                const gains = [];
+
+                // Hauptton
+                const osc1 = audioContext.createOscillator();
+                const gain1 = audioContext.createGain();
+                osc1.frequency.value = fundamentalFreq;
+                osc1.type = 'sine';
+                gain1.gain.value = 0;
+                osc1.connect(gain1);
+                gain1.connect(masterGainNode);
+                oscillators.push(osc1);
+                gains.push(gain1);
+
+                // Obertöne
+                const osc2 = audioContext.createOscillator();
+                const gain2 = audioContext.createGain();
+                osc2.frequency.value = fundamentalFreq * 2;
+                osc2.type = 'sine';
+                gain2.gain.value = 0;
+                osc2.connect(gain2);
+                gain2.connect(masterGainNode);
+                oscillators.push(osc2);
+                gains.push(gain2);
+
+                // Tieferer Ton
+                const osc3 = audioContext.createOscillator();
+                const gain3 = audioContext.createGain();
+                osc3.frequency.value = fundamentalFreq / 2;
+                osc3.type = 'sine';
+                gain3.gain.value = 0;
+                osc3.connect(gain3);
+                gain3.connect(masterGainNode);
+                oscillators.push(osc3);
+                gains.push(gain3);
+
+                oscillators.forEach(osc => osc.start());
+
+                gains.forEach(gain => {
+                    gain.gain.setValueAtTime(0, audioContext.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.2, audioContext.currentTime + 0.1);
+                    gain.gain.linearRampToValueAtTime(0.15, audioContext.currentTime + 2);
+                });
+
+                setTimeout(() => {
+                    gains.forEach(gain => {
+                        gain.gain.linearRampToValueAtTime(0, audioContext.currentTime + 4);
+                    });
+                }, 2000);
+
+                setTimeout(() => {
+                    oscillators.forEach(osc => osc.stop());
+                }, 6000);
+            }
+
+            function updateTimer() {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                document.getElementById('timer').textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+
+            window.startMeditation = function() {
+                if (isPaused) {
+                    isPaused = false;
+                } else {
+                    timeLeft = 300;
+                }
+                
+                if (!timerId) {
+                    timerId = setInterval(() => {
+                        if (timeLeft > 0) {
+                            timeLeft--;
+                            updateTimer();
+                            if (timeLeft % 4 === 0) createOmmSound();
+                        } else {
+                            clearInterval(timerId);
+                            timerId = null;
+                            document.getElementById('wisdom').textContent = 
+                                wisdomQuotes[Math.floor(Math.random() * wisdomQuotes.length)];
+                        }
+                    }, 1000);
+                }
+            };
+
+            window.pauseMeditation = function() {
+                if (timerId) {
+                    clearInterval(timerId);
+                    timerId = null;
+                    isPaused = true;
+                }
+            };
+
+            window.resetMeditation = function() {
+                clearInterval(timerId);
+                timerId = null;
+                isPaused = false;
+                timeLeft = 300;
+                updateTimer();
+            };
+
+            const wisdomQuotes = [
+                "Der Weise findet Frieden im Hier und Jetzt.",
+                "Die Meditation ist der Pfad zur Erleuchtung.",
+                "Im Schweigen liegt die größte Weisheit.",
+                "Der Atem ist die Brücke zwischen Körper und Geist.",
+                "Omm... Die Unwissenheit verschwindet im Licht der Meditation.",
+                "Die wahre Reise führt nach innen."
+            ];
+
+            // Event Listeners
+            document.getElementById('volume').addEventListener('input', (e) => {
+                if (masterGainNode) {
+                    masterGainNode.gain.value = e.target.value;
+                }
+            });
+
+            document.getElementById('circle').addEventListener('click', createOmmSound);
+
+            // Initial update
+            updateTimer();
+        });
+    </script>
+</body>
+</html>
