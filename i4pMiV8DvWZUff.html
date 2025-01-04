@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Guru-Generator</title>
+    <style>
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #3282b8;
+            --text-color: #e2e2e2;
+            --card-bg: rgba(22, 33, 62, 0.8);
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .home-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 60px auto 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--text-color);
+            font-size: 2.5em;
+            margin-bottom: 30px;
+        }
+
+        .generator-section {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .generator-section h2 {
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+
+        .output-area {
+            background: rgba(26, 26, 46, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            min-height: 100px;
+            white-space: pre-wrap;
+        }
+
+        button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .metric-card {
+            background: rgba(26, 26, 46, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 2em;
+            color: var(--accent-color);
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="https://mircodeflorin.github.io/" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Social Media Guru-Generator</h1>
+
+        <!-- Viral Content Creator -->
+        <div class="generator-section">
+            <h2>Viral Content Creator</h2>
+            <div class="output-area" id="viralContentOutput">Dein viraler Content erscheint hier...</div>
+            <button onclick="generateViralContent()">Generiere Viral Content</button>
+            <div class="metrics">
+                <div class="metric-card">
+                    <div>Virales Potential</div>
+                    <div class="metric-value" id="viralPotential">0%</div>
+                </div>
+                <div class="metric-card">
+                    <div>Engagement Score</div>
+                    <div class="metric-value" id="engagementScore">0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hashtag Meditation Generator -->
+        <div class="generator-section">
+            <h2>Hashtag Meditation Generator</h2>
+            <div class="output-area" id="hashtagOutput">Deine Hashtag-Meditation erscheint hier...</div>
+            <button onclick="generateHashtags()">Generiere Hashtag-Meditation</button>
+            <div class="metrics">
+                <div class="metric-card">
+                    <div>Zen Level</div>
+                    <div class="metric-value" id="zenLevel">0%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Influencer Karma Calculator -->
+        <div class="generator-section">
+            <h2>Influencer Karma Calculator</h2>
+            <div class="output-area" id="karmaOutput">Dein Karma-Level erscheint hier...</div>
+            <button onclick="calculateKarma()">Berechne Influencer-Karma</button>
+            <div class="metrics">
+                <div class="metric-card">
+                    <div>Karma Score</div>
+                    <div class="metric-value" id="karmaScore">0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Viral Content Templates
+        const contentTemplates = [
+            "🚀 Entdecke die Kraft des digitalen Minimalismus durch maximales Posting! #ZenInfluencer",
+            "💫 Dein Inner Circle wartet auf deine äußere Weisheit! #SpiritualContent",
+            "🧘‍♂️ Meditation trifft Monetarisierung - Der Weg zur Content-Erleuchtung! #MoneyMindfulness",
+            "✨ Transformiere deine Timeline in einen Tempel der Trends! #ViralVibrations",
+            "🌟 Manifestiere deinen Millionen-Follow-Flow! #AbundanceMindset",
+            "🎯 Deine Story ist deine Strategie - Authentizität sells! #AuthenticityAlgorithm",
+            "🌈 Verwandle negative Kommentare in positive Engagement-Energie! #ZenMarketing",
+            "💎 Dein Feed ist dein Spiegel - Reflektiere digital! #ContentConsciousness",
+            "🔮 Die Algorithm-Alchemie: Verwandle Likes in Love! #DigitalDharma",
+            "⚡ Power-Posting meets Peace of Mind! #MindfulMetrics"
+        ];
+
+        // Hashtag Collections
+        const hashtagSets = [
+            ["#ZenLife", "#DigitalMonk", "#SocialMediaSatori", "#MindfulMetrics"],
+            ["#InnerInfluencer", "#SpiritualStrategy", "#AuthenticityAlgorithm", "#KarmaContent"],
+            ["#BlessedBrand", "#MeditationMarketing", "#ConsciousContent", "#ZenZone"],
+            ["#ViralVibrations", "#SoulfulSocial", "#MindfulMessage", "#DigitalDharma"],
+            ["#EnlightenedEngagement", "#SacredSocial", "#HolyHashtags", "#BuddhistBranding"]
+        ];
+
+        // Karma Wisdom
+        const karmaMessages = [
+            "Dein digitales Karma strahlt wie tausend Smartphone-Displays! ✨",
+            "Die Algorithm-Götter lächeln auf deine Timeline herab! 🙏",
+            "Deine Content-Aura erreicht neue spirituelle Heights! 🌟",
+            "Das Universum liked deine authentische Energie! 💫",
+            "Dein Engagement-Karma ist im perfekten Flow! 🌊",
+            "Die sozialen Chakren sind optimal aligned! 🎯",
+            "Deine digitale Präsenz transzendiert das Gewöhnliche! 🚀",
+            "Das Social Media Nirwana ist nur einen Post entfernt! 🌈",
+            "Deine Follow-Karma-Balance ist harmonisch! ⚖️",
+            "Die Weisheit deiner Stories erleuchtet das Newsfeed! 💡"
+        ];
+
+        function generateViralContent() {
+            const content = contentTemplates[Math.floor(Math.random() * contentTemplates.length)];
+            document.getElementById('viralContentOutput').textContent = content;
+            
+            // Generate random metrics
+            const viralPotential = Math.floor(Math.random() * 50) + 50; // 50-100%
+            const engagementScore = Math.floor(Math.random() * 900) + 100; // 100-999
+
+            // Update metrics with animation
+            animateMetric('viralPotential', viralPotential + '%');
+            animateMetric('engagementScore', engagementScore);
+        }
+
+function generateHashtags() {
+            const hashtagSet = hashtagSets[Math.floor(Math.random() * hashtagSets.length)];
+            const meditationText = `
+🧘‍♂️ Hashtag Meditation des Tages 🧘‍♀️
+
+Atme ein: ${hashtagSet[0]} ✨
+Halte: ${hashtagSet[1]} 🌟
+Atme aus: ${hashtagSet[2]} 💫
+Zentriere: ${hashtagSet[3]} 🙏
+
+Mögen deine Hashtags viral gehen und Frieden in die Timelines bringen. 🕊️
+`;
+            document.getElementById('hashtagOutput').textContent = meditationText;
+            
+            // Generate and animate Zen Level
+            const zenLevel = Math.floor(Math.random() * 50) + 50; // 50-100%
+            animateMetric('zenLevel', zenLevel + '%');
+        }
+
+        function calculateKarma() {
+            const karmaMessage = karmaMessages[Math.floor(Math.random() * karmaMessages.length)];
+            const karmaText = `
+⭐ Influencer Karma Analyse ⭐
+
+${karmaMessage}
+
+Deine Karma-Metrik:
+📈 Authentizitäts-Alignment: ${Math.floor(Math.random() * 50) + 50}%
+🎯 Engagement-Energie: ${Math.floor(Math.random() * 50) + 50}%
+✨ Content-Consciousness: ${Math.floor(Math.random() * 50) + 50}%
+
+Karma-Prognose: Dein nächster Post wird Erleuchtung bringen! 🌟
+`;
+            document.getElementById('karmaOutput').textContent = karmaText;
+            
+            // Generate and animate Karma Score
+            const karmaScore = Math.floor(Math.random() * 500) + 500; // 500-999
+            animateMetric('karmaScore', karmaScore);
+        }
+
+        function animateMetric(elementId, finalValue) {
+            const element = document.getElementById(elementId);
+            const startValue = parseInt(element.textContent) || 0;
+            const finalValueNum = parseInt(finalValue);
+            const duration = 1000; // 1 second
+            const steps = 60;
+            const stepValue = (finalValueNum - startValue) / steps;
+            let currentStep = 0;
+
+            const animation = setInterval(() => {
+                currentStep++;
+                const currentValue = Math.floor(startValue + (stepValue * currentStep));
+                element.textContent = elementId.includes('Percentage') ? 
+                    currentValue + '%' : 
+                    currentValue;
+
+                if (currentStep >= steps) {
+                    clearInterval(animation);
+                    element.textContent = finalValue;
+                }
+            }, duration / steps);
+        }
+
+        // Easter Egg: Betty's Digital Wisdom
+        const bettyWisdoms = [
+            "Error 404: Authenticity overwhelmingly found",
+            "Warning: Enlightenment levels exceeding expectations",
+            "Status: Converting caffeine to content",
+            "System Update: Installing inner peace.exe",
+            "Debug: Karma overflow detected"
+        ];
+
+        document.addEventListener('keydown', function(event) {
+            if (event.code === 'Space') {
+                const wisdomIndex = Math.floor(Math.random() * bettyWisdoms.length);
+                const allOutputs = document.querySelectorAll('.output-area');
+                allOutputs.forEach(output => {
+                    output.textContent = "Betty sagt: " + bettyWisdoms[wisdomIndex];
+                    setTimeout(() => {
+                        output.textContent = output.getAttribute('data-original-content') || 
+                            "Klicke den Button für neue Weisheiten...";
+                    }, 3000);
+                });
+            }
+        });
+
+        // Initial calls to populate content
+        generateViralContent();
+        generateHashtags();
+        calculateKarma();
+    </script>
+</body>
+</html>
