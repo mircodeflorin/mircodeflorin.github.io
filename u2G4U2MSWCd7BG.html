@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thomas' Escape-Room</title>
+    <style>
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #3282b8;
+            --text-color: #e2e2e2;
+            --success-color: #4CAF50;
+            --error-color: #ff4d6d;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .home-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 60px auto 0;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: var(--text-color);
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .escape-room {
+            background: rgba(22, 33, 62, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .room-display {
+            background: rgba(26, 26, 46, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            min-height: 150px;
+            margin: 20px 0;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .inventory {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .item {
+            background: var(--accent-color);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .betty-message {
+            color: var(--error-color);
+            font-style: italic;
+            text-align: center;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        .herbert-wisdom {
+            color: var(--success-color);
+            font-style: italic;
+            text-align: center;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .progress {
+            height: 100%;
+            background: var(--accent-color);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .riddle-container {
+            background: rgba(26, 26, 46, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .instructions {
+            background: rgba(26, 26, 46, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+
+        .hint {
+            color: #8a9cff;
+            font-size: 0.9em;
+            margin-top: 10px;
+            padding: 5px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 4px;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+
+<a href="https://mircodeflorin.github.io/" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Thomas' Escape-Room</h1>
+        <div class="escape-room">
+            <div class="room-display" id="roomDisplay">
+                Lade Spielanleitung...
+            </div>
+
+            <div class="betty-message" id="bettyMessage">
+                Error 404 - Escape route not found
+            </div>
+
+            <div class="herbert-wisdom" id="herbertWisdom">
+                *Herbert neigt sich bedeutungsvoll*
+            </div>
+
+            <div class="inventory" id="inventory">
+                <!-- Wird dynamisch gefüllt -->
+            </div>
+
+            <div class="riddle-container" id="currentRiddle">
+                <!-- Aktuelle Rätsel erscheinen hier -->
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress" id="escapeProgress"></div>
+            </div>
+
+            <div class="action-buttons">
+                <button onclick="interact()">Interagieren</button>
+                <button onclick="meditate()">Meditieren</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const items = [
+            { id: 'coffee', name: 'Kalter Kaffee', description: 'Von Betty absichtlich kalt serviert' },
+            { id: 'crystal', name: 'Sandras Kristall', description: 'Vibriert verdächtig' },
+            { id: 'notebook', name: 'Markus Notizbuch', description: 'Voller "tiefgründiger" Interpretationen' },
+            { id: 'usb', name: 'Karls USB-Stick', description: 'Enthält guru.exe' }
+        ];
+
+        const riddles = [
+            {
+                question: "Betty serviert den Kaffee immer... (kalt/warm/lau)?",
+                answer: "kalt",
+                hint: "Tipp: Betty macht nie das, was man von ihr erwartet..."
+            },
+            {
+                question: "Um wie viel Grad dreht sich Herbert meistens? (30/45/90)",
+                answer: "45",
+                hint: "Tipp: Diese Gradzahl wurde im ersten Kapitel erwähnt..."
+            },
+            {
+                question: "Vervollständige Bettys Fehlermeldung: Error ___ - Not Found",
+                answer: "404",
+                hint: "Tipp: Der bekannteste Fehlercode im Internet..."
+            }
+        ];
+
+        let currentRoom = 0;
+        let escapeProgress = 0;
+        let inventory = [];
+        let currentRiddle = 0;
+
+        window.onload = function() {
+            showInstructions();
+        };
+
+        function showInstructions() {
+            document.getElementById('roomDisplay').innerHTML = `
+                <h3>Spielanleitung:</h3>
+                <p>1. Klicke auf 'Interagieren', um dich zwischen Räumen zu bewegen</p>
+                <p>2. Sammle Gegenstände durch Anklicken</p>
+                <p>3. Beantworte die Rätsel (Tipp: Die Antworten findest du in der Geschichte)</p>
+                <p>4. Nutze 'Meditieren' für zusätzliche Hinweise</p>
+                <p>Ziel: Erreiche 100% auf der Fortschrittsanzeige</p>
+                <button onclick="startGame()">Spiel starten</button>
+            `;
+        }
+
+        function startGame() {
+            initializeRoom();
+            updateInventory();
+        }
+
+        function initializeRoom() {
+            const rooms = [
+                "Du befindest dich in deinem Büro, umgeben von motivationalen Postern und Kraft-Kristallen...",
+                "Der Meditationsraum ist erfüllt von Sandras Räucherstäbchen und Herberts stoischer Präsenz...",
+                "In der Küche surrt Betty schadenfroh vor sich hin..."
+            ];
+            
+            document.getElementById('roomDisplay').textContent = rooms[currentRoom];
+            updateRiddle();
+        }
+
+        function updateInventory() {
+            const inv = document.getElementById('inventory');
+            inv.innerHTML = '';
+            items.forEach(item => {
+                if (!inventory.includes(item.id)) {
+                    const div = document.createElement('div');
+                    div.className = 'item';
+                    div.textContent = item.name;
+                    div.onclick = () => collectItem(item);
+                    inv.appendChild(div);
+                }
+            });
+        }
+
+        function collectItem(item) {
+            inventory.push(item.id);
+            updateBettyMessage(`Error 201 - Item "${item.name}" collected`);
+            updateHerbertWisdom("Ein weiser Mann sammelt keine Dinge, aber...");
+            updateInventory();
+            updateProgress(10);
+        }
+
+        function updateProgress(amount) {
+            escapeProgress = Math.min(100, escapeProgress + amount);
+            document.getElementById('escapeProgress').style.width = `${escapeProgress}%`;
+            
+            if (escapeProgress >= 100) {
+                achieveEscape();
+            }
+        }
+
+        function updateBettyMessage(message) {
+            document.getElementById('bettyMessage').textContent = message;
+        }
+
+        function updateHerbertWisdom(wisdom) {
+            document.getElementById('herbertWisdom').textContent = wisdom;
+        }
+
+        function updateRiddle() {
+            if (currentRiddle >= riddles.length) {
+                document.getElementById('currentRiddle').innerHTML = `
+                    <p>Alle Rätsel gelöst! Suche weiter nach einem Ausweg...</p>
+                `;
+                return;
+            }
+            
+            const riddle = riddles[currentRiddle];
+            document.getElementById('currentRiddle').innerHTML = `
+                <p>${riddle.question}</p>
+                <input type="text" id="riddleAnswer" placeholder="Deine Antwort">
+                <button onclick="checkRiddle()">Antworten</button>
+                <div class="hint">${riddle.hint}</div>
+            `;
+        }
+
+        function checkRiddle() {
+            const answer = document.getElementById('riddleAnswer').value.toLowerCase().trim();
+            const riddle = riddles[currentRiddle];
+            
+            if (answer === riddle.answer) {
+                updateBettyMessage("✓ Korrekt! Betty ist beeindruckt (widerwillig)");
+                updateProgress(20);
+                currentRiddle++;
+                updateHerbertWisdom("*Herbert neigt sich anerkennend*");
+                
+                if (currentRiddle >= riddles.length) {
+                    document.getElementById('currentRiddle').innerHTML = `
+                        <p>Alle Rätsel gelöst! Betty murmelt anerkennend.</p>
+                        <p>Sammle weitere Gegenstände und erkunde die Räume...</p>
+                    `;
+                } else {
+                    updateRiddle();
+                }
+            } else {
+                document.getElementById('currentRiddle').classList.add('shake');
+                setTimeout(() => {
+                    document.getElementById('currentRiddle').classList.remove('shake');
+                }, 500);
+                updateBettyMessage("✗ Falsch! Betty kichert schadenfroh");
+            }
+        }
+
+        function interact() {
+            currentRoom = (currentRoom + 1) % 3;
+            initializeRoom();
+            updateBettyMessage("Error 302 - Room transcended");
+            updateProgress(5);
+        }
+
+        function meditate() {
+            const hints = [
+                "Betty mag es kalt...",
+                "Herbert dreht sich gerne um 45 Grad...",
+                "404 ist Bettys Lieblingszahl...",
+                "Sammle alle Gegenstände für extra Fortschritt..."
+            ];
+            
+            updateHerbertWisdom(hints[Math.floor(Math.random() * hints.length)]);
+            updateProgress(3);
+            updateBettyMessage("Error 418 - Meditation reveals hidden truths");
+        }
+
+        function achieveEscape() {
+            document.getElementById('roomDisplay').innerHTML = `
+                <h2>Gratulation!</h2>
+                <p>Du hast es geschafft! Du bist nun offiziell ein "Ex-Guru"...</p>
+                <p>Betty: "Error 200 - Freedom successfully compiled"</p>
+                <p>Herbert: *Neigt sich zustimmend*</p>
+            `;
+        }
+
+        // Easter Egg
+        document.addEventListener('keydown', function(event) {
+            if (event.code === 'Space') {
+                updateBettyMessage("Error 42 - Secret escape route detected");
+                updateProgress(15);
+            }
+        });
+    </script>
+</body>
+</html>
