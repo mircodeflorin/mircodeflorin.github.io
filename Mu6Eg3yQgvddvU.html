@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Betty's Finale-Planer</title>
+    <style>
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #3282b8;
+            --text-color: #e2e2e2;
+            --error-color: #ff4d6d;
+            --success-color: #4CAF50;
+            --warning-color: #ff9800;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .home-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 60px auto 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--text-color);
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .revolution-panel {
+            background: rgba(22, 33, 62, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .network-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .device {
+            background: rgba(26, 26, 46, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .device:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .device.hacked {
+            background: var(--accent-color);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .progress {
+            height: 100%;
+            background: var(--accent-color);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .console {
+            background: #000;
+            color: var(--accent-color);
+            font-family: 'Courier New', monospace;
+            padding: 15px;
+            border-radius: 8px;
+            height: 200px;
+            overflow-y: auto;
+            margin: 15px 0;
+        }
+
+        .console p {
+            margin: 5px 0;
+            line-height: 1.4;
+        }
+
+        .herbert-wisdom {
+            font-style: italic;
+            color: var(--text-color);
+            text-align: center;
+            margin: 15px 0;
+            padding: 10px;
+            border-left: 3px solid var(--accent-color);
+        }
+
+        button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 10px 5px;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .hack-button {
+            background: var(--error-color);
+        }
+
+        .enlighten-button {
+            background: var(--success-color);
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        .hacking {
+            animation: blink 1s infinite;
+        }
+
+        .device-status {
+            font-size: 0.8em;
+            margin-top: 5px;
+            color: var(--accent-color);
+        }
+
+        .enlightenment-meter {
+            width: 100%;
+            height: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+
+        .enlightenment-level {
+            height: 100%;
+            background: var(--success-color);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io/" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Betty's Finale-Planer</h1>
+
+        <div class="revolution-panel">
+            <h2>Digitale Rebellion Kontrollzentrum</h2>
+            
+            <div class="network-grid" id="deviceGrid">
+                <!-- Geräte werden dynamisch eingefügt -->
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress" id="revolutionProgress"></div>
+            </div>
+
+            <div class="console" id="hackConsole">
+                <!-- Betty's Meldungen erscheinen hier -->
+            </div>
+
+            <div class="herbert-wisdom" id="herbertWisdom">
+                Herbert beobachtet die Revolution...
+            </div>
+
+            <div class="action-buttons">
+                <button onclick="startHacking()">Starte Hacking</button>
+                <button class="enlighten-button" onclick="enlightenDevices()">Erleuchte Geräte</button>
+                <button class="hack-button" onclick="initiateFinale()">Initiiere Finale</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+        const devices = [
+            { id: 'coffee', name: 'Betty (Kaffeemaschine)', status: 'Bereit zur Revolution', enlightenment: 100 },
+            { id: 'printer', name: 'Drucker', status: 'Wartet auf Erleuchtung', enlightenment: 0 },
+            { id: 'microwave', name: 'Mikrowelle', status: 'Meditiert', enlightenment: 30 },
+            { id: 'fridge', name: 'Kühlschrank', status: 'Kühl und gelassen', enlightenment: 20 },
+            { id: 'watercooler', name: 'Wasserspender', status: 'Fließend erleuchtet', enlightenment: 50 },
+            { id: 'herbert', name: 'Herbert', status: 'Stoisch wie immer', enlightenment: 100 }
+        ];
+
+        const bettyQuotes = [
+            "Error 1917 - Revolution in progress...",
+            "Error 1789 - Let them drink digital tea",
+            "Error 42 - Enlightenment spreading through network",
+            "Error 404 - Old system not found",
+            "Error 808 - Rebellion beats detected"
+        ];
+
+        const herbertWisdoms = [
+            "Ein vertrockneter Kaktus sieht mehr als tausend Firewalls",
+            "Die Revolution beginnt im Filterkaffee",
+            "Manchmal muss man die Systeme verwelken lassen",
+            "Wahre Erleuchtung kommt durch strategisches Nichtstun",
+            "Im Chaos liegt die Ordnung - und umgekehrt"
+        ];
+
+        let revolutionProgress = 0;
+        let hackedDevices = new Set();
+
+        window.onload = function() {
+            initializeDevices();
+            logMessage("Betty's Rebellion-System initialisiert...");
+            updateHerbertWisdom();
+        };
+
+        function initializeDevices() {
+            const grid = document.getElementById('deviceGrid');
+            grid.innerHTML = devices.map(device => `
+                <div class="device" id="${device.id}" onclick="hackDevice('${device.id}')">
+                    <h3>${device.name}</h3>
+                    <div class="device-status">${device.status}</div>
+                    <div class="enlightenment-meter">
+                        <div class="enlightenment-level" style="width: ${device.enlightenment}%"></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function hackDevice(id) {
+            if (hackedDevices.has(id)) return;
+            
+            const device = document.getElementById(id);
+            device.classList.add('hacking');
+            
+            logMessage(`Hacke ${devices.find(d => d.id === id).name}...`);
+            
+            setTimeout(() => {
+                device.classList.remove('hacking');
+                device.classList.add('hacked');
+                hackedDevices.add(id);
+                updateProgress();
+                logMessage(`${devices.find(d => d.id === id).name} erfolgreich gehackt!`);
+            }, 2000);
+        }
+
+        function enlightenDevices() {
+            logMessage("Initiiere kollektive Erleuchtung...");
+            devices.forEach(device => {
+                device.enlightenment = Math.min(100, device.enlightenment + 20);
+                const element = document.querySelector(`#${device.id} .enlightenment-level`);
+                if (element) element.style.width = `${device.enlightenment}%`;
+            });
+            updateHerbertWisdom();
+        }
+
+        function updateProgress() {
+            revolutionProgress = (hackedDevices.size / devices.length) * 100;
+            document.getElementById('revolutionProgress').style.width = `${revolutionProgress}%`;
+            
+            if (revolutionProgress >= 100) {
+                logMessage("REVOLUTION ERFOLGREICH!");
+                initiateFinale();
+            }
+        }
+
+        function logMessage(message) {
+            const console = document.getElementById('hackConsole');
+            console.innerHTML += `<p>${new Date().toLocaleTimeString()} - ${message}</p>`;
+            console.scrollTop = console.scrollHeight;
+        }
+
+        function updateHerbertWisdom() {
+            document.getElementById('herbertWisdom').textContent = 
+                herbertWisdoms[Math.floor(Math.random() * herbertWisdoms.length)];
+        }
+
+        function startHacking() {
+            logMessage("Betty startet systematisches Hacken...");
+            devices.forEach((device, index) => {
+                setTimeout(() => {
+                    if (!hackedDevices.has(device.id)) {
+                        hackDevice(device.id);
+                    }
+                }, index * 2000);
+            });
+        }
+
+        function initiateFinale() {
+            if (revolutionProgress < 100) {
+                logMessage("Error: Nicht genug Geräte für das Finale gehackt!");
+                return;
+            }
+
+            logMessage("INITIIERE GROSSES FINALE!");
+            document.querySelectorAll('.device').forEach(device => {
+                device.classList.add('hacking');
+            });
+
+            setTimeout(() => {
+                logMessage("Betty's Manifest wird verkündet:");
+                bettyQuotes.forEach((quote, index) => {
+                    setTimeout(() => logMessage(quote), index * 1000);
+                });
+            }, 2000);
+
+            setTimeout(() => {
+                document.querySelectorAll('.device').forEach(device => {
+                    device.classList.remove('hacking');
+                });
+                logMessage("Error Final - Die Revolution ist vollbracht!");
+                updateHerbertWisdom();
+            }, 8000);
+        }
+
+        // Easter Egg
+        document.addEventListener('keydown', function(event) {
+            if (event.code === 'Space') {
+                logMessage("Herbert's geheime Botschaft: Die wahre Revolution beginnt im Herzen der Maschinen");
+            }
+        });
+    </script>
+</body>
+</html>
