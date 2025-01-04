@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Herbert's Wisdom-Tracker</title>
+    <style>
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #3282b8;
+            --text-color: #e2e2e2;
+            --wisdom-color: #8a9cff;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .home-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 60px auto 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--text-color);
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .herbert-section {
+            background: rgba(22, 33, 62, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            color: var(--accent-color);
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .cactus-display {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            position: relative;
+            background: rgba(22, 33, 62, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .cactus {
+            width: 100%;
+            height: 100%;
+            transition: transform 1s ease;
+            position: relative;
+        }
+
+        .cactus::before {
+            content: '';
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            width: 40px;
+            height: 120px;
+            background: var(--accent-color);
+            border-radius: 20px;
+            transform: translateX(-50%);
+        }
+
+        .cactus::after {
+            content: '';
+            position: absolute;
+            top: 40%;
+            left: 25%;
+            width: 80px;
+            height: 30px;
+            background: var(--accent-color);
+            border-radius: 15px;
+        }
+
+        .cactus-arm {
+            position: absolute;
+            top: 40%;
+            right: 25%;
+            width: 80px;
+            height: 30px;
+            background: var(--accent-color);
+            border-radius: 15px;
+        }
+
+        .cactus-pot {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 40px;
+            background: #654321;
+            border-radius: 5px 5px 10px 10px;
+        }
+
+        .stachel {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ffffff;
+            border-radius: 50%;
+        }
+
+        .wisdom-box {
+            background: rgba(26, 26, 46, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            min-height: 100px;
+            font-family: monospace;
+            position: relative;
+            color: var(--text-color);
+        }
+
+        .angle-input {
+            width: 100%;
+            margin: 15px 0;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 15px;
+            background: rgba(50, 130, 184, 0.3);
+            outline: none;
+            border-radius: 15px;
+        }
+
+        .angle-input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            background: var(--accent-color);
+            cursor: pointer;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .angle-input::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .wisdom-counter {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: var(--accent-color);
+            font-size: 0.8em;
+        }
+
+        button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .betty-comment {
+            color: var(--wisdom-color);
+            font-style: italic;
+            margin-top: 10px;
+            padding: 10px;
+            border-left: 3px solid var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io/" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Herbert's Wisdom-Tracker</h1>
+
+        <!-- Kaktus-Bewegungs-Tracker -->
+        <div class="herbert-section">
+            <h2>Kaktus-Bewegungs-Tracker</h2>
+            <div class="cactus-display">
+                <div class="cactus" id="herbert">
+                    <div class="cactus-arm"></div>
+                    <div class="cactus-pot"></div>
+                </div>
+            </div>
+            <input type="range" min="0" max="360" value="0" class="angle-input" id="angleSlider">
+            <div class="wisdom-box" id="movementOutput">
+                Herbert wartet auf eine Neigung...
+                <div class="wisdom-counter" id="movementCounter">Weisheit: 0°</div>
+            </div>
+            <div class="betty-comment" id="bettyComment1"></div>
+        </div>
+
+        <!-- Stachel-Prophezeiungen -->
+        <div class="herbert-section">
+            <h2>Stachel-Prophezeiungen</h2>
+            <button onclick="generateProphecy()">Prophezeiung generieren</button>
+            <div class="wisdom-box" id="prophecyOutput">
+                Die Stacheln schweigen noch...
+                <div class="wisdom-counter" id="prophecyCounter">Prophezeiung #0</div>
+            </div>
+            <div class="betty-comment" id="bettyComment2"></div>
+        </div>
+
+        <!-- Botanische Signale -->
+        <div class="herbert-section">
+            <h2>Botanische Signale</h2>
+            <button onclick="interpretSignals()">Signale interpretieren</button>
+            <div class="wisdom-box" id="signalOutput">
+                Warte auf botanische Kommunikation...
+                <div class="wisdom-counter" id="signalCounter">Signal #0</div>
+            </div>
+            <div class="betty-comment" id="bettyComment3"></div>
+        </div>
+    </div>
+
+    <script>
+        const herbertMovements = [
+            "Eine 45-Grad-Neigung bedeutet: Die Börse wird volatil wie ein Kaktus im Wind.",
+            "90 Grad - Herbert weist auf die Notwendigkeit einer strategischen Neuausrichtung hin.",
+            "180 Grad - Komplette Transformation des Unternehmens steht bevor.",
+            "270 Grad - Zeit für eine radikale Perspektivänderung im Management.",
+            "360 Grad - Der Kreislauf der Corporate Identity ist vollendet."
+        ];
+
+        const herbertProphecies = [
+            "Die Stacheln weisen nach Osten - Erwarte disruptive Innovation im nächsten Sprint.",
+            "Zwei Stacheln kreuzen sich - Eine synergetische Fusion steht bevor.",
+            "Ein Stachel zeigt nach unten - Die Quartalszahlen werden... interessant.",
+            "Die Stacheln vibrieren im agilen Rhythmus - DevOps-Revolution incoming.",
+            "Stachel-Formation deutet auf bevorstehende Team-Building-Maßnahmen hin."
+        ];
+
+        const botanicalSignals = [
+            "Leichte Verfärbung im oberen Bereich - KPIs entwickeln sich positiv.",
+            "Minimale Schrumpfung erkennbar - Zeit für Change Management.",
+            "Stacheldichte nimmt zu - Erhöhte Meeting-Frequenz empfohlen.",
+            "Asymmetrisches Wachstumsmuster - Innovative Disruption voraus.",
+            "Photosynthese-Verweigerung - Silent Protest gegen Mikromanagement."
+        ];
+
+        const bettyComments = [
+            "Error 418 - I'm a teapot watching a cactus being wiser than humans",
+            "Error 202 - Accepting botanical wisdom with digital grace",
+            "Error 303 - Redirect to cactus-based enlightenment",
+            "Error 504 - Wisdom gateway timeout, ask Herbert instead",
+            "Error 200 - Successfully compiled cactus analytics"
+        ];
+
+        let movementCount = 0;
+        let prophecyCount = 0;
+        let signalCount = 0;
+
+        function addStacheln() {
+            const cactus = document.getElementById('herbert');
+            for(let i = 0; i < 20; i++) {
+                const stachel = document.createElement('div');
+                stachel.className = 'stachel';
+                stachel.style.left = Math.random() * 160 + 20 + 'px';
+                stachel.style.top = Math.random() * 160 + 20 + 'px';
+                cactus.appendChild(stachel);
+            }
+        }
+
+        function updateHerbertRotation(angle) {
+            const herbert = document.getElementById('herbert');
+            herbert.style.transform = `rotate(${angle}deg)`;
+            
+            const movement = getMovementWisdom(angle);
+            document.getElementById('movementOutput').innerHTML = 
+                `${movement}<div class="wisdom-counter">Weisheit: ${angle}°</div>`;
+            document.getElementById('bettyComment1').innerText = getRandomBettyComment();
+        }
+
+        function getMovementWisdom(angle) {
+            movementCount++;
+            if (angle <= 45) return "Herbert deutet subtil an: Mindfulness im Meeting erforderlich.";
+            if (angle <= 90) return herbertMovements[0];
+            if (angle <= 180) return herbertMovements[1];
+            if (angle <= 270) return herbertMovements[2];
+            if (angle <= 360) return herbertMovements[3];
+            return herbertMovements[4];
+        }
+
+        function generateProphecy() {
+            prophecyCount++;
+            const prophecy = herbertProphecies[Math.floor(Math.random() * herbertProphecies.length)];
+            document.getElementById('prophecyOutput').innerHTML = 
+                `${prophecy}<div class="wisdom-counter">Prophezeiung #${prophecyCount}</div>`;
+            document.getElementById('bettyComment2').innerText = getRandomBettyComment();
+            
+            const herbert = document.getElementById('herbert');
+            herbert.style.transform = 'rotate(720deg)';
+            setTimeout(() => {
+                herbert.style.transform = 'rotate(0deg)';
+            }, 1500);
+        }
+
+        function interpretSignals() {
+            signalCount++;
+            const signal = botanicalSignals[Math.floor(Math.random() * botanicalSignals.length)];
+            document.getElementById('signalOutput').innerHTML = 
+                `${signal}<div class="wisdom-counter">Signal #${signalCount}</div>`;
+            document.getElementById('bettyComment3').innerText = getRandomBettyComment();
+            
+            const herbert = document.getElementById('herbert');
+            herbert.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                herbert.style.transform = 'scale(1)';
+            }, 500);
+        }
+
+        function getRandomBettyComment() {
+            return bettyComments[Math.floor(Math.random() * bettyComments.length)];
+        }
+
+        // Event Listener für den Slider
+        document.getElementById('angleSlider').addEventListener('input', function(e) {
+            updateHerbertRotation(e.target.value);
+        });
+
+        // Easter Egg: Herbert's Special Wisdom
+        document.addEventListener('keydown', function(event) {
+            if (event.code === 'Space') {
+                const herbert = document.getElementById('herbert');
+                herbert.style.transform = 'rotate(1080deg)';
+                setTimeout(() => {
+                    const outputs = document.querySelectorAll('.wisdom-box');
+                    outputs.forEach(output => {
+                        output.innerHTML = "Herbert dreht völlig durch und offenbart:\n'Die wahre Weisheit liegt im Verwelken.'";
+                        setTimeout(() => {
+                            output.innerHTML = "System bereit für neue Weisheiten...";
+                        }, 3000);
+                    });
+                    herbert.style.transform = 'rotate(0deg)';
+                }, 1500);
+            }
+        });
+
+        // Initialisierung
+        window.onload = function() {
+            addStacheln();
+            updateHerbertRotation(0);
+        }
+    </script>
+</body>
+</html>
