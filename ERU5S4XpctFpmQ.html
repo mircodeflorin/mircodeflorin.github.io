@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dating-App-Desaster-Simulator</title>
+    <style>
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #3282b8;
+            --text-color: #e2e2e2;
+            --error-color: #ff4d6d;
+            --success-color: #4CAF50;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .home-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 80px 20px 20px 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .profile-card {
+            background: rgba(22, 33, 62, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-pic {
+            width: 80px;
+            height: 80px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+        }
+
+        .profile-info h2 {
+            margin: 0;
+            color: var(--accent-color);
+        }
+
+        .profile-info p {
+            margin: 5px 0;
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        .compatibility-meter {
+            margin: 20px 0;
+        }
+
+        .meter-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .meter-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .meter-fill {
+            height: 100%;
+            background: var(--accent-color);
+            width: 0%;
+            transition: width 0.8s ease;
+            position: absolute;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .action-button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .next-button {
+            background: var(--error-color);
+            color: white;
+        }
+
+        .match-button {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .betty-message {
+            color: var(--error-color);
+            font-style: italic;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .statistics {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(22, 33, 62, 0.8);
+            border-radius: 15px;
+        }
+
+        .statistics h3 {
+            margin-top: 0;
+            color: var(--accent-color);
+        }
+
+        .statistics p {
+            margin: 5px 0;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+
+        .new-profile {
+            animation: slideIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Dating-App-Desaster-Simulator</h1>
+
+        <div class="profile-card new-profile">
+            <div class="profile-header">
+                <div class="profile-pic">👩‍💼</div>
+                <div class="profile-info">
+                    <h2>Analyst Anna</h2>
+                    <p>Glaubt an die transformative Kraft von VBA-Makros</p>
+                </div>
+            </div>
+
+            <div class="compatibility-meter">
+                <div class="meter-label">
+                    <span>Excel-Enthusiasmus</span>
+                </div>
+                <div class="meter-bar">
+                    <div class="meter-fill" id="excel-meter"></div>
+                </div>
+            </div>
+
+            <div class="compatibility-meter">
+                <div class="meter-label">
+                    <span>Spirituelle Büro-Kompatibilität</span>
+                </div>
+                <div class="meter-bar">
+                    <div class="meter-fill" id="spiritual-meter"></div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="action-button next-button" onclick="nextProfile()">
+                    💡 Nächstes Quartal
+                </button>
+                <button class="action-button match-button" onclick="createMatch()">
+                    ✨ Synergie!
+                </button>
+            </div>
+
+            <div class="betty-message" id="betty-message">
+                Error 504 - Timeout while searching for true love
+            </div>
+        </div>
+
+        <div class="statistics">
+            <h3>Matching-Statistiken:</h3>
+            <p>Gesamt Swipes: <span id="total-swipes">2</span></p>
+            <p>Matches: <span id="total-matches">11</span></p>
+            <p>Excel-Kompatibilität: <span id="excel-compatibility">97%</span></p>
+            <p>Spirituelle Resonanz: <span id="spiritual-resonance">42%</span></p>
+        </div>
+    </div>
+
+    <script>
+        const profiles = [
+            {
+                name: "Analyst Anna",
+                title: "Glaubt an die transformative Kraft von VBA-Makros",
+                excelLevel: 85,
+                spiritualLevel: 45,
+                emoji: "👩‍💼"
+            },
+            {
+                name: "Meditations-Marc",
+                title: "Vereint Mindfulness mit Quarterly Reports",
+                excelLevel: 35,
+                spiritualLevel: 95,
+                emoji: "🧘‍♂️"
+            },
+            {
+                name: "Data-Daniela",
+                title: "Findet Erleuchtung in Pivot-Tabellen",
+                excelLevel: 92,
+                spiritualLevel: 78,
+                emoji: "👩‍🏫"
+            },
+            {
+                name: "Zen-Zach",
+                title: "Praktiziert agiles Projektmanagement durch Meditation",
+                excelLevel: 55,
+                spiritualLevel: 88,
+                emoji: "🧘‍♂️"
+            }
+        ];
+
+        const bettyErrors = [
+            "Error 404 - Soulmate not found in database",
+            "Error 503 - Love service temporarily unavailable",
+            "Error 418 - I'm a teapot, but I still judge your choices",
+            "Error 502 - Bad gateway to your heart",
+            "Error 200 - Perfect match found (just kidding)",
+            "Error 429 - Too many failed relationship attempts"
+        ];
+
+        let currentProfileIndex = 0;
+        let stats = {
+            swipes: 2,
+            matches: 11,
+            excelCompatibility: 97,
+            spiritualResonance: 42
+        };
+
+        function updateMeters() {
+            const profile = profiles[currentProfileIndex];
+            document.getElementById('excel-meter').style.width = `${profile.excelLevel}%`;
+            document.getElementById('spiritual-meter').style.width = `${profile.spiritualLevel}%`;
+        }
+
+        function updateStats() {
+            document.getElementById('total-swipes').textContent = stats.swipes;
+            document.getElementById('total-matches').textContent = stats.matches;
+            document.getElementById('excel-compatibility').textContent = `${stats.excelCompatibility}%`;
+            document.getElementById('spiritual-resonance').textContent = `${stats.spiritualResonance}%`;
+        }
+
+        function nextProfile() {
+            stats.swipes++;
+            currentProfileIndex = (currentProfileIndex + 1) % profiles.length;
+            updateProfile();
+            updateStats();
+            document.getElementById('betty-message').textContent = 
+                bettyErrors[Math.floor(Math.random() * bettyErrors.length)];
+        }
+
+        function createMatch() {
+            stats.matches++;
+            stats.excelCompatibility = Math.min(100, stats.excelCompatibility + Math.floor(Math.random() * 10));
+            stats.spiritualResonance = Math.min(100, stats.spiritualResonance + Math.floor(Math.random() * 15));
+            updateStats();
+            document.getElementById('betty-message').textContent = 
+                "Error 143 - Love compatibility detected. Proceed with caution.";
+        }
+
+        function updateProfile() {
+            const profile = profiles[currentProfileIndex];
+            const card = document.querySelector('.profile-card');
+            
+            // Animation-Reset
+            card.classList.remove('new-profile');
+            void card.offsetWidth; // Force reflow
+            card.classList.add('new-profile');
+
+            document.querySelector('.profile-pic').textContent = profile.emoji;
+            document.querySelector('.profile-info h2').textContent = profile.name;
+            document.querySelector('.profile-info p').textContent = profile.title;
+            updateMeters();
+        }
+
+        // Initialisierung
+        window.onload = function() {
+            updateMeters();
+            updateStats();
+
+            // Easter Egg
+            document.addEventListener('keydown', function(event) {
+                if (event.code === 'Space') {
+                    document.getElementById('betty-message').textContent = 
+                        "Error 42 - Herbert approves this match";
+                }
+            });
+        };
+    </script>
+</body>
+</html>
