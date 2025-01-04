@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mikes Chaotische To-Do-Liste</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: #2c1810;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 1000;
+            font-size: 16px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .home-button:hover {
+            background-color: #4a2c1c;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 60px auto 0;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .task {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+
+        .task:hover {
+            transform: scale(1.01);
+            transition: transform 0.3s ease;
+        }
+
+        .options {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background: #3498db;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        button:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        .feedback {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .score-container {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+
+        .result {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            background: #e8f6f3;
+            border-radius: 5px;
+        }
+
+        .animal-reaction {
+            font-style: italic;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .options {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .home-button {
+                position: static;
+                display: block;
+                width: calc(100% - 40px);
+                margin: 0 auto 20px;
+                text-align: center;
+            }
+
+            .container {
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io" class="home-button">← Zur Autorenseite</a>
+    <div class="container">
+        <h1>Mikes Chaotische To-Do-Liste</h1>
+        <p>Versuche, die richtigen Entscheidungen zu treffen und mit den eigenwilligen Haustieren klarzukommen!</p>
+
+        <div id="task-container">
+            <!-- Tasks werden dynamisch eingefügt -->
+        </div>
+
+        <div class="score-container">
+            <p>Punktestand: <span id="score">0</span> / <span id="total">0</span></p>
+        </div>
+
+        <div class="result" id="result">
+            <h2>Quiz beendet!</h2>
+            <p>Dein Ergebnis: <span id="final-score">0</span> Punkte</p>
+            <p id="final-feedback"></p>
+            <button onclick="restartQuiz()">Noch einmal versuchen</button>
+        </div>
+    </div>
+
+    <script>
+        const tasks = [
+            {
+                question: "Gustav meditiert, aber es ist Fütterungszeit. Was tust du?",
+                options: [
+                    {
+                        text: "Sofort füttern - der Zeitplan ist wichtig!",
+                        feedback: "Gustav ist empört über die Störung seiner Meditation.",
+                        correct: false,
+                        reaction: "Gustav: 'Omm... Die Störung des inneren Friedens führt zu äußerem Chaos...'"
+                    },
+                    {
+                        text: "Warten, bis die Meditation beendet ist",
+                        feedback: "Sehr weise Entscheidung! Gustav schätzt den Respekt.",
+                        correct: true,
+                        reaction: "Gustav: 'Ein erleuchteter Geist erkennt den richtigen Moment...'"
+                    },
+                    {
+                        text: "Laut rufen und das Futter anbieten",
+                        feedback: "Gustav ignoriert dich demonstrativ.",
+                        correct: false,
+                        reaction: "Gustav: 'Die Unwissenheit manifestiert sich in der Ungeduld...'"
+                    }
+                ]
+            },
+            {
+                question: "Herr Schnurr versteckt sich unter dem Sofa - Zeit für seine Medizin. Deine Strategie?",
+                options: [
+                    {
+                        text: "Das Sofa anheben",
+                        feedback: "Ein absoluter Fauxpas! Herr Schnurr ist schockiert über diesen Mangel an Etikette.",
+                        correct: false,
+                        reaction: "Herr Schnurr: 'Mon dieu! Diese barbarischen Methoden!'"
+                    },
+                    {
+                        text: "Premium-Leckerlis als Köder auslegen",
+                        feedback: "Eine aristokratische Bestechung - Herr Schnurr ist empfänglich!",
+                        correct: true,
+                        reaction: "Herr Schnurr: 'Ah, eine Verhandlung auf Augenhöhe!'"
+                    },
+                    {
+                        text: "Frau Müller um Rat fragen",
+                        feedback: "Endlose Geschichten über ihre Verwandtschaft folgen...",
+                        correct: false,
+                        reaction: "Frau Müller: 'Meine Cousine dritten Grades hatte mal eine Katze...'"
+                    }
+                ]
+            },
+            {
+                question: "Waldemar schaut seine Lieblingsserie - aber das Aquarium muss gereinigt werden!",
+                options: [
+                    {
+                        text: "Während der Werbung putzen",
+                        feedback: "Waldemar ist entsetzt! Die Werbung ist Teil der Story!",
+                        correct: false,
+                        reaction: "Waldemar: 'Die Produktplatzierung ist essentiell für die Handlung!'"
+                    },
+                    {
+                        text: "Die Reinigung verschieben",
+                        feedback: "Ein dramatischer Aufschub - Waldemar ist begeistert!",
+                        correct: true,
+                        reaction: "Waldemar: 'Genau wie in Staffel 7 von 'Liebe und Betrug'!'"
+                    },
+                    {
+                        text: "Gleichzeitig putzen und Serie kommentieren",
+                        feedback: "Multitasking führt zu dramatischem Chaos!",
+                        correct: false,
+                        reaction: "Waldemar: 'Diese Störung ruiniert den emotionalen Höhepunkt!'"
+                    }
+                ]
+            }
+        ];
+
+        let currentTask = 0;
+        let score = 0;
+
+        function showTask(taskIndex) {
+            const task = tasks[taskIndex];
+            const container = document.getElementById('task-container');
+            
+            const taskElement = document.createElement('div');
+            taskElement.className = 'task';
+            taskElement.innerHTML = `
+                <h3>${task.question}</h3>
+                <div class="options">
+                    ${task.options.map((option, index) => `
+                        <button onclick="checkAnswer(${taskIndex}, ${index})">${option.text}</button>
+                    `).join('')}
+                </div>
+                <div class="feedback"></div>
+                <div class="animal-reaction"></div>
+            `;
+            
+            container.innerHTML = '';
+            container.appendChild(taskElement);
+            
+            document.getElementById('total').textContent = tasks.length;
+        }
+
+        function checkAnswer(taskIndex, optionIndex) {
+            const task = tasks[taskIndex];
+            const option = task.options[optionIndex];
+            const taskElement = document.querySelector('.task');
+            const buttons = taskElement.querySelectorAll('button');
+            const feedback = taskElement.querySelector('.feedback');
+            const reaction = taskElement.querySelector('.animal-reaction');
+            
+            buttons.forEach(button => button.disabled = true);
+            
+            feedback.style.display = 'block';
+            feedback.textContent = option.feedback;
+            feedback.style.backgroundColor = option.correct ? '#d4edda' : '#f8d7da';
+            
+            reaction.textContent = option.reaction;
+            
+            if (option.correct) {
+                score++;
+                document.getElementById('score').textContent = score;
+            }
+            
+            setTimeout(() => {
+                currentTask++;
+                if (currentTask < tasks.length) {
+                    showTask(currentTask);
+                } else {
+                    showResult();
+                }
+            }, 2000);
+        }
+
+        function showResult() {
+            document.getElementById('task-container').style.display = 'none';
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('final-score').textContent = score;
+            
+            let feedback;
+            if (score === tasks.length) {
+                feedback = "Perfekt! Du bist ein wahrer Tierflüsterer!";
+            } else if (score >= tasks.length * 0.7) {
+                feedback = "Nicht schlecht! Mit etwas Übung wirst du zum Experten!";
+            } else {
+                feedback = "Das war wohl etwas chaotisch - aber keine Sorge, Übung macht den Meister!";
+            }
+            
+            document.getElementById('final-feedback').textContent = feedback;
+        }
+
+        function restartQuiz() {
+            currentTask = 0;
+            score = 0;
+            document.getElementById('score').textContent = '0';
+            document.getElementById('task-container').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
+            showTask(0);
+        }
+
+        // Start the quiz
+        showTask(0);
+    </script>
+</body>
+</html>
