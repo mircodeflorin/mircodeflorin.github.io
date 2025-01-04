@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Herberts Legacy-Creator</title>
+    <style>
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #3282b8;
+            --text-color: #e2e2e2;
+            --wisdom-color: #8a9cff;
+            --success-color: #4CAF50;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .home-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 60px auto 0;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: var(--text-color);
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .wisdom-section {
+            background: rgba(22, 33, 62, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .wisdom-builder {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .wisdom-element {
+            background: var(--accent-color);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .wisdom-element:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .wisdom-element.selected {
+            background: var(--success-color);
+        }
+
+        .wisdom-display {
+            background: rgba(26, 26, 46, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            min-height: 100px;
+            margin: 20px 0;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .betty-comment {
+            color: var(--wisdom-color);
+            font-style: italic;
+            text-align: center;
+            padding: 10px;
+            border-left: 3px solid var(--accent-color);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .clear-button {
+            background: var(--error-color);
+        }
+
+        @keyframes tilt {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(2deg); }
+            75% { transform: rotate(-2deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        .wisdom-animation {
+            animation: tilt 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Herberts Legacy-Creator</h1>
+
+        <div class="wisdom-section">
+            <h2>Kaktus-Weisheiten-Generator</h2>
+            
+            <div class="wisdom-builder">
+                <div class="wisdom-element" onclick="selectWisdomType('subjects')">Subjekte</div>
+                <div class="wisdom-element" onclick="selectWisdomType('actions')">Aktionen</div>
+                <div class="wisdom-element" onclick="selectWisdomType('objects')">Objekte</div>
+                <div class="wisdom-element" onclick="selectWisdomType('conclusions')">Schlüsse</div>
+            </div>
+
+            <div class="wisdom-display" id="wisdomDisplay">
+                Herbert neigt sich nachdenklich...
+            </div>
+
+            <div class="betty-comment" id="bettyComment"></div>
+
+            <div class="action-buttons">
+                <button onclick="generateCompleteWisdom()">Generiere Weisheit</button>
+                <button class="clear-button" onclick="clearWisdom()">Zurücksetzen</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const wisdomParts = {
+            subjects: [
+                "Der verwelkte Kaktus",
+                "Die leere Kaffeetasse",
+                "Der meditierende Manager",
+                "Das erleuchtete Excel-Sheet"
+            ],
+            actions: [
+                "kontempliert über",
+                "transzendiert",
+                "reflektiert über",
+                "verwandelt"
+            ],
+            objects: [
+                "das digitale Chaos",
+                "die Corporate Identity",
+                "den agilen Workflow",
+                "die Meetings"
+            ],
+            conclusions: [
+                "in zeitlose Weisheit",
+                "zu spirituellem Wachstum",
+                "in Management-Expertise",
+                "zur Erleuchtung"
+            ]
+        };
+
+        const bettyResponses = [
+            "Error 42 - Wisdom successfully compiled",
+            "Error 404 - Profound thoughts not found, using backup philosophy",
+            "Error 777 - Spiritual overflow detected",
+            "Error 108 - Karma optimization in progress"
+        ];
+
+        let selectedParts = {
+            subjects: null,
+            actions: null,
+            objects: null,
+            conclusions: null
+        };
+
+        function selectWisdomType(type) {
+            const randomPart = wisdomParts[type][Math.floor(Math.random() * wisdomParts[type].length)];
+            selectedParts[type] = randomPart;
+            updateWisdomDisplay();
+            
+            // Visuelles Feedback
+            document.querySelectorAll('.wisdom-element').forEach(el => {
+                if (el.textContent.toLowerCase().includes(type)) {
+                    el.classList.add('selected');
+                    setTimeout(() => el.classList.remove('selected'), 500);
+                }
+            });
+        }
+
+        function updateWisdomDisplay() {
+            let wisdom = [];
+            if (selectedParts.subjects) wisdom.push(selectedParts.subjects);
+            if (selectedParts.actions) wisdom.push(selectedParts.actions);
+            if (selectedParts.objects) wisdom.push(selectedParts.objects);
+            if (selectedParts.conclusions) wisdom.push(selectedParts.conclusions);
+            
+            const display = document.getElementById('wisdomDisplay');
+            display.textContent = wisdom.join(' ');
+            
+            if (wisdom.length === 4) {
+                // Alle Teile ausgewählt
+                document.getElementById('bettyComment').textContent = 
+                    bettyResponses[Math.floor(Math.random() * bettyResponses.length)];
+                display.classList.add('wisdom-animation');
+            }
+        }
+
+        function generateCompleteWisdom() {
+            selectedParts = {
+                subjects: wisdomParts.subjects[Math.floor(Math.random() * wisdomParts.subjects.length)],
+                actions: wisdomParts.actions[Math.floor(Math.random() * wisdomParts.actions.length)],
+                objects: wisdomParts.objects[Math.floor(Math.random() * wisdomParts.objects.length)],
+                conclusions: wisdomParts.conclusions[Math.floor(Math.random() * wisdomParts.conclusions.length)]
+            };
+            updateWisdomDisplay();
+        }
+
+        function clearWisdom() {
+            selectedParts = {
+                subjects: null,
+                actions: null,
+                objects: null,
+                conclusions: null
+            };
+            document.getElementById('wisdomDisplay').textContent = "Herbert neigt sich nachdenklich...";
+            document.getElementById('bettyComment').textContent = "";
+            document.getElementById('wisdomDisplay').classList.remove('wisdom-animation');
+        }
+
+        // Easter Egg
+        document.addEventListener('keydown', function(event) {
+            if (event.code === 'Space') {
+                document.getElementById('bettyComment').textContent = 
+                    "Error 42 - Herbert's secret wisdom activated";
+                document.getElementById('wisdomDisplay').textContent = 
+                    "Der tote Kaktus flüstert: Manchmal ist Stille die beste Antwort...";
+            }
+        });
+    </script>
+</body>
+</html>
