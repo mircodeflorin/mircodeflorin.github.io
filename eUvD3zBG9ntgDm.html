@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geständnis-Generator</title>
+    <style>
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #3282b8;
+            --text-color: #e2e2e2;
+            --wisdom-color: #8a9cff;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .home-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 60px auto 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--text-color);
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .generator-section {
+            background: rgba(22, 33, 62, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .confession-input {
+            width: 100%;
+            min-height: 100px;
+            background: rgba(26, 26, 46, 0.8);
+            border: 1px solid var(--accent-color);
+            border-radius: 8px;
+            color: var(--text-color);
+            padding: 10px;
+            margin-bottom: 15px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .output-box {
+            background: rgba(26, 26, 46, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            min-height: 100px;
+            position: relative;
+            white-space: pre-wrap;
+        }
+
+        .betty-comment {
+            color: var(--wisdom-color);
+            font-style: italic;
+            margin-top: 10px;
+            padding: 10px;
+            border-left: 3px solid var(--accent-color);
+        }
+
+        .herbert-wisdom {
+            color: var(--wisdom-color);
+            font-style: italic;
+            text-align: center;
+            margin: 15px 0;
+            padding: 10px;
+        }
+
+        button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .slider-container {
+            margin: 15px 0;
+        }
+
+        .slider {
+            width: 100%;
+            margin: 10px 0;
+            -webkit-appearance: none;
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(50, 130, 184, 0.3);
+            outline: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            font-style: italic;
+            color: var(--accent-color);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .interpretation-level {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+            color: var(--accent-color);
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io/" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Geständnis-Generator</h1>
+
+        <!-- Geständnis-Input -->
+        <div class="generator-section">
+            <h2>Wahrheit eingeben</h2>
+            <textarea class="confession-input" id="confessionInput" 
+                placeholder="Geben Sie Ihr Geständnis ein... (z.B. 'Ich bin eigentlich gar kein Guru...')"></textarea>
+            
+            <div class="slider-container">
+                <label>Management-Interpretations-Level:</label>
+                <div class="interpretation-level">
+                    <span>Normal</span>
+                    <span>Sandra</span>
+                </div>
+                <input type="range" min="1" max="100" value="50" class="slider" id="interpretationLevel">
+            </div>
+
+            <button onclick="generateMisunderstanding()">Geständnis transformieren</button>
+            
+            <div class="output-box" id="transformedOutput">
+                Warte auf Input...
+            </div>
+            <div class="betty-comment" id="bettyComment"></div>
+        </div>
+
+        <!-- Management-Interpretation -->
+        <div class="generator-section">
+            <h2>Management-Interpretation</h2>
+            <div class="output-box" id="managementOutput">
+                Warte auf transformierte Wahrheit...
+            </div>
+            <div class="herbert-wisdom" id="herbertWisdom"></div>
+        </div>
+    </div>
+
+<script>
+        const bettyErrors = [
+            "Error 404 - Truth.exe not found",
+            "Error 502 - Truth gateway timeout",
+            "Error 418 - I'm a teapot speaking truth to power",
+            "Error 303 - Redirect to deeper meaning",
+            "Error 420 - Truth enhancement in progress"
+        ];
+
+        const herbertWisdoms = [
+            "Ein verwelkter Kaktus sieht mehr Wahrheit als ein blühender Lügner",
+            "Die Kunst der Interpretation liegt im Nicht-Verstehen des Offensichtlichen",
+            "Manchmal ist die größte Wahrheit das perfekte Missverständnis",
+            "Wer Wahrheit sucht, findet Management-Weisheit",
+            "Ein geneigter Kaktus sieht beide Seiten der Wahrheit"
+        ];
+
+        const managementPhrases = [
+            "transformatives Potenzial",
+            "agile Selbsterkenntnis",
+            "disruptive Authentizität",
+            "spirituelle Performance",
+            "holistischer Ansatz",
+            "synergetische Erleuchtung",
+            "quantenbasierte Führungsqualität",
+            "paradigmatischer Shift"
+        ];
+
+        function generateMisunderstanding() {
+            const confession = document.getElementById('confessionInput').value;
+            const level = document.getElementById('interpretationLevel').value;
+            
+            if (!confession) {
+                showBettyError("Error 400 - Empty confession detected");
+                return;
+            }
+
+            // Zeige Lade-Animation
+            document.getElementById('transformedOutput').innerHTML = 
+                "Transformiere Geständnis... <div class='loading'>⌛</div>";
+
+            setTimeout(() => {
+                // Transformiere das Geständnis
+                const transformed = transformConfession(confession, level);
+                document.getElementById('transformedOutput').textContent = transformed;
+
+                // Management Interpretation
+                const interpretation = generateManagerialInterpretation(transformed, level);
+                document.getElementById('managementOutput').textContent = interpretation;
+
+                // Betty's Kommentar
+                showBettyError(bettyErrors[Math.floor(Math.random() * bettyErrors.length)]);
+
+                // Herbert's Weisheit
+                document.getElementById('herbertWisdom').textContent = 
+                    herbertWisdoms[Math.floor(Math.random() * herbertWisdoms.length)];
+            }, 1500);
+        }
+
+        function transformConfession(text, level) {
+            const phrases = [
+                ["nicht", "transformativ"],
+                ["Problem", "Wachstumschance"],
+                ["Fehler", "agiler Lernprozess"],
+                ["falsch", "anders interpretiert"],
+                ["keine Ahnung", "intuitive Weisheit"],
+                ["verwirrt", "spirituell geöffnet"]
+            ];
+
+            let transformed = text;
+            phrases.forEach(([original, replacement]) => {
+                const regex = new RegExp(original, 'gi');
+                if (level > 50) {
+                    transformed = transformed.replace(regex, replacement);
+                }
+            });
+
+            // Füge Management-Buzzwords hinzu
+            if (level > 75) {
+                transformed += " " + getRandomPhrase();
+            }
+
+            return transformed;
+        }
+
+        function generateManagerialInterpretation(text, level) {
+            let interpretation = "Sandra's Interpretation:\n\n";
+            interpretation += "Dieser Moment der " + getRandomPhrase();
+            interpretation += " zeigt uns die " + getRandomPhrase();
+            interpretation += " in Verbindung mit " + getRandomPhrase();
+            
+            if (level > 60) {
+                interpretation += "\n\nMarkus notiert: '" + getRandomPhrase().toUpperCase() + "!'";
+            }
+
+            return interpretation;
+        }
+
+        function getRandomPhrase() {
+            return managementPhrases[Math.floor(Math.random() * managementPhrases.length)];
+        }
+
+        function showBettyError(error) {
+            document.getElementById('bettyComment').textContent = error;
+        }
+
+        // Easter Egg
+        document.addEventListener('keydown', function(event) {
+            if (event.code === 'Space') {
+                document.getElementById('herbertWisdom').textContent = 
+                    "Herbert neigt sich bedeutungsvoll: Die Wahrheit ist wie ein toter Kaktus - sie sticht trotzdem.";
+            }
+        });
+    </script>
+</body>
+</html>
