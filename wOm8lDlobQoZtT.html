@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chaotischer Café-Zeitplan</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5e6d3;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: #2c1810;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .home-button:hover {
+            background-color: #1a0f0a;
+            transform: translateX(5px);
+        }
+
+        .timeline-container {
+            max-width: 800px;
+            margin: 60px auto 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .time-slot {
+            display: flex;
+            margin: 20px 0;
+            padding: 10px;
+            border-radius: 5px;
+            background: #fff8dc;
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+.time-slot:hover {
+            transform: scale(1.02);
+            background: #ffe4b5;
+        }
+
+        .time {
+            width: 100px;
+            font-weight: bold;
+            color: #8b4513;
+        }
+
+        .event {
+            flex-grow: 1;
+            position: relative;
+        }
+
+        .chaos-level {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+        }
+
+        .controls {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background: #8b4513;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #6b3410;
+        }
+
+        .chaos-meter {
+            background: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            text-align: center;
+            border: 2px solid #8b4513;
+        }
+
+        .chaos-bar {
+            height: 20px;
+            background: #ddd;
+            border-radius: 10px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .chaos-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #FFC107, #F44336);
+            width: 0%;
+            transition: width 0.5s;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 80%;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+
+        @media (max-width: 600px) {
+            .home-button {
+                position: static;
+                display: block;
+                margin: 0 auto 20px;
+                text-align: center;
+                width: calc(100% - 40px);
+            }
+
+            .time-slot {
+                flex-direction: column;
+            }
+            
+            .time {
+                margin-bottom: 5px;
+            }
+            
+            .chaos-level {
+                position: static;
+                transform: none;
+                margin-top: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io/" class="home-button">← Zur Autorenseite</a>
+
+    <div class="timeline-container">
+        <h1>Der chaotische Tagesablauf im Café</h1>
+
+        <div class="chaos-meter">
+            <h3>Chaos-Meter</h3>
+            <div class="chaos-bar">
+                <div class="chaos-fill" id="chaosFill"></div>
+            </div>
+            <p id="chaosLevel">Aktuelles Chaos-Level: Normal</p>
+        </div>
+
+        <div class="controls">
+            <button onclick="shuffleEvents()">Chaos erzeugen!</button>
+            <button onclick="resetTimeline()">Zurück zur Ordnung</button>
+            <button onclick="addRandomEvent()">Überraschung hinzufügen</button>
+        </div>
+
+        <div class="timeline" id="timeline">
+            <!-- Zeitslots werden dynamisch eingefügt -->
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="popup" id="popup">
+        <h3 id="popupTitle"></h3>
+        <p id="popupContent"></p>
+        <button onclick="closePopup()">Schließen</button>
+    </div>
+
+<script>
+        const events = [
+            { time: "06:00", event: "Maestro inspiziert die Kaffeemaschine", chaos: 1 },
+            { time: "07:30", event: "Erste Melodie des Tages", chaos: 2 },
+            { time: "08:15", event: "Morgendlicher Ansturm & Symphonie", chaos: 3 },
+            { time: "09:45", event: "Herbert betritt das Café", chaos: 2 },
+            { time: "10:30", event: "Madame Gestern liest aus der Tasse", chaos: 4 },
+            { time: "12:00", event: "Mittagspause mit Überraschungen", chaos: 3 },
+            { time: "14:15", event: "Prof. Fibonacci ordnet Tische", chaos: 2 },
+            { time: "16:00", event: "Kaffeemaschinen-Konzert", chaos: 5 },
+            { time: "17:30", event: "Spontane Kaffeeversammlung", chaos: 4 },
+            { time: "19:00", event: "Abendliches Finale", chaos: 3 }
+        ];
+
+        const surpriseEvents = [
+            { event: "Kaffeemaschine beginnt zu tanzen!", chaos: 5 },
+            { event: "Spontane Mathematik-Vorlesung von Prof. Fibonacci", chaos: 3 },
+            { event: "Herberts Kaktus gibt Lebensweisheiten von sich", chaos: 4 },
+            { event: "Madame Gestern prophezeit eine chaotische Stunde", chaos: 5 },
+            { event: "Ein Kunde entdeckt Noten im Kaffeeschaum", chaos: 2 }
+        ];
+
+        let currentEvents = [...events];
+
+        function updateTimeline() {
+            const timeline = document.getElementById('timeline');
+            timeline.innerHTML = '';
+            
+            let totalChaos = 0;
+            currentEvents.forEach((event, index) => {
+                const slot = document.createElement('div');
+                slot.className = 'time-slot';
+                slot.innerHTML = `
+                    <div class="time">${event.time}</div>
+                    <div class="event">
+                        ${event.event}
+                        <div class="chaos-level">${'☕'.repeat(event.chaos)}</div>
+                    </div>
+                `;
+                slot.onclick = () => showEventDetails(event);
+                timeline.appendChild(slot);
+                totalChaos += event.chaos;
+            });
+
+            updateChaosMeter(totalChaos);
+        }
+
+        function updateChaosMeter(totalChaos) {
+            const maxChaos = currentEvents.length * 5;
+            const chaosPercentage = (totalChaos / maxChaos) * 100;
+            document.getElementById('chaosFill').style.width = `${chaosPercentage}%`;
+            
+            let chaosText = 'Normal';
+            if (chaosPercentage > 80) chaosText = 'Totales Chaos!';
+            else if (chaosPercentage > 60) chaosText = 'Sehr chaotisch';
+            else if (chaosPercentage > 40) chaosText = 'Mittleres Chaos';
+            
+            document.getElementById('chaosLevel').textContent = `Aktuelles Chaos-Level: ${chaosText}`;
+        }
+
+        function shuffleEvents() {
+            currentEvents = currentEvents.sort(() => Math.random() - 0.5);
+            updateTimeline();
+        }
+
+        function resetTimeline() {
+            currentEvents = [...events];
+            updateTimeline();
+        }
+
+        function addRandomEvent() {
+            const surprise = surpriseEvents[Math.floor(Math.random() * surpriseEvents.length)];
+            const hour = Math.floor(Math.random() * 13 + 7);
+            const minute = Math.floor(Math.random() * 60);
+            const time = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+            
+            currentEvents.push({
+                time: time,
+                event: surprise.event,
+                chaos: surprise.chaos
+            });
+            
+            currentEvents.sort((a, b) => {
+                const timeA = a.time.split(':').map(Number);
+                const timeB = b.time.split(':').map(Number);
+                return (timeA[0] * 60 + timeA[1]) - (timeB[0] * 60 + timeB[1]);
+            });
+            
+            updateTimeline();
+        }
+
+        function showEventDetails(event) {
+            const popup = document.getElementById('popup');
+            const overlay = document.getElementById('overlay');
+            const title = document.getElementById('popupTitle');
+            const content = document.getElementById('popupContent');
+
+            title.textContent = `${event.time} Uhr`;
+            content.textContent = `${event.event} (Chaos-Level: ${'☕'.repeat(event.chaos)})`;
+
+            popup.style.display = 'block';
+            overlay.style.display = 'block';
+        }
+
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        // Initialisierung
+        updateTimeline();
+    </script>
+</body>
+</html>
