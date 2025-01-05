@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maestros Tagebuch</title>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #f5e6d3;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: #2c1810;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            font-family: 'Georgia', serif;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .home-button:hover {
+            background-color: #1a0f0a;
+            transform: translateX(5px);
+        }
+
+        .diary-container {
+            max-width: 800px;
+            margin: 60px auto 20px;
+            background: #fff9e6;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .page-texture {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(90deg, rgba(200,200,200,0.2) 1px, transparent 1px),
+                linear-gradient(rgba(200,200,200,0.2) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+            border-radius: 10px;
+        }
+
+h1 {
+            color: #8b4513;
+            text-align: center;
+            font-style: italic;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #8b4513;
+            padding-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .entry {
+            margin-bottom: 40px;
+            position: relative;
+            padding: 20px;
+            background: rgba(255,255,255,0.7);
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .entry-date {
+            color: #8b4513;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        .entry-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .mood-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+        }
+
+        .tags {
+            margin-top: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            background: #8b4513;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+        }
+
+        .ink-splatter {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle, rgba(0,0,0,0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .diary-controls {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .filter-button {
+            background: #8b4513;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-button:hover {
+            background: #6b3410;
+            transform: translateY(-2px);
+        }
+
+        .filter-button.active {
+            background: #2c1810;
+        }
+
+        @media (max-width: 600px) {
+            .home-button {
+                position: static;
+                display: block;
+                margin: 0 auto 20px;
+                text-align: center;
+                width: calc(100% - 40px);
+            }
+
+            .diary-container {
+                margin-top: 20px;
+                padding: 15px;
+            }
+            
+            .diary-controls {
+                flex-wrap: wrap;
+            }
+            
+            .filter-button {
+                flex: 1 1 calc(50% - 10px);
+            }
+
+            .entry {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io/" class="home-button">← Zur Autorenseite</a>
+
+    <div class="diary-container">
+        <div class="page-texture"></div>
+        
+        <h1>Maestros Tagebuch</h1>
+
+        <div class="diary-controls">
+            <button class="filter-button active" onclick="filterEntries('all')">Alle Einträge</button>
+            <button class="filter-button" onclick="filterEntries('musik')">Musik</button>
+            <button class="filter-button" onclick="filterEntries('kaffee')">Kaffee</button>
+            <button class="filter-button" onclick="filterEntries('experimente')">Experimente</button>
+        </div>
+
+        <div id="entries-container">
+            <!-- Einträge werden dynamisch eingefügt -->
+        </div>
+    </div>
+
+<script>
+        const diaryEntries = [
+            {
+                date: "15. September, Morgens",
+                content: "Heute ist etwas Außergewöhnliches passiert. Die Kaffeemaschine... sie macht Musik! Nicht einfach nur Geräusche, nein, richtige Melodien. Ich muss das genauer untersuchen.",
+                mood: "🤔",
+                tags: ["musik", "kaffee", "entdeckung"]
+            },
+            {
+                date: "15. September, Mittags",
+                content: "Die ersten Messungen sind vielversprechend. Der Dampfdruck scheint direkt mit der Tonhöhe zu korrelieren. Aber da ist noch mehr... die Frequenzen folgen einem Muster, das ich noch nie gesehen habe.",
+                mood: "🧐",
+                tags: ["experimente", "musik", "analyse"]
+            },
+            {
+                date: "15. September, Nachmittags",
+                content: "Habe verschiedene Kaffeesorten getestet. Jede erzeugt eine einzigartige Melodie! Der äthiopische Yirgacheffe spielt in Dur, während der kolumbianische in Moll erklingt. Faszinierend!",
+                mood: "🎵",
+                tags: ["kaffee", "musik", "experimente"]
+            },
+            {
+                date: "15. September, Abends",
+                content: "Meine Berechnungen zeigen: Die Melodien folgen der Goldenen Frequenz. Das kann kein Zufall sein. Ich muss morgen weitere Tests durchführen. Die Kaffeemaschine birgt noch viele Geheimnisse...",
+                mood: "🌟",
+                tags: ["analyse", "musik", "experimente"]
+            }
+        ];
+
+        function createEntryElement(entry) {
+            const div = document.createElement('div');
+            div.className = 'entry';
+            div.innerHTML = `
+                <div class="mood-indicator">${entry.mood}</div>
+                <div class="entry-date">${entry.date}</div>
+                <div class="entry-content">${entry.content}</div>
+                <div class="tags">
+                    ${entry.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                </div>
+            `;
+            return div;
+        }
+
+        function filterEntries(filter) {
+            const container = document.getElementById('entries-container');
+            container.innerHTML = '';
+
+            const buttons = document.querySelectorAll('.filter-button');
+            buttons.forEach(button => button.classList.remove('active'));
+            event.target.classList.add('active');
+
+            diaryEntries.forEach(entry => {
+                if (filter === 'all' || entry.tags.includes(filter)) {
+                    container.appendChild(createEntryElement(entry));
+                }
+            });
+
+            addRandomInkSplatters();
+        }
+
+        function addRandomInkSplatters() {
+            const container = document.querySelector('.diary-container');
+            const existingSplatters = document.querySelectorAll('.ink-splatter');
+            existingSplatters.forEach(splatter => splatter.remove());
+
+            for (let i = 0; i < 5; i++) {
+                const splatter = document.createElement('div');
+                splatter.className = 'ink-splatter';
+                splatter.style.left = Math.random() * 100 + '%';
+                splatter.style.top = Math.random() * 100 + '%';
+                container.appendChild(splatter);
+            }
+        }
+
+        // Initialisierung
+        document.addEventListener('DOMContentLoaded', function() {
+            filterEntries('all');
+        });
+    </script>
+</body>
+</html>
