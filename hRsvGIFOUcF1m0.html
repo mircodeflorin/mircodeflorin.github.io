@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diplomatische Verhandlungen - Zen-Katzen Edition</title>
+    <style>
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #3282b8;
+            --text-color: #e2e2e2;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 20px;
+            z-index: 1000;
+            transition: transform 0.2s ease;
+        }
+
+        .home-button:hover {
+            transform: scale(1.05);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .negotiation-room {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .characters {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .character {
+            text-align: center;
+            padding: 10px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .character:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .character.speaking {
+            border: 2px solid var(--accent-color);
+        }
+
+        .dialog-box {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            min-height: 100px;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .option {
+            background: var(--accent-color);
+            border: none;
+            padding: 15px;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .option:hover {
+            transform: scale(1.02);
+            background: #2671a4;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .stat {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent-color);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+            text-align: center;
+            z-index: 100;
+        }
+
+        @media (max-width: 600px) {
+            .options {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="#" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Diplomatische Verhandlungen</h1>
+        <h2>Mitternachts-Edition</h2>
+
+        <div class="negotiation-room">
+            <div class="characters">
+                <div class="character" data-name="Gustav">
+                    🦜 Gustav<br>
+                    Der Zen-Meister
+                </div>
+                <div class="character" data-name="Herr Schnurr">
+                    😺 Herr Schnurr<br>
+                    Der Aristokrat
+                </div>
+                <div class="character" data-name="Waldemar">
+                    🐠 Waldemar<br>
+                    Der Dramatiker
+                </div>
+                <div class="character" data-name="Frau Müller">
+                    👩 Frau Müller<br>
+                    Die Ratgeberin
+                </div>
+            </div>
+
+            <div class="dialog-box" id="dialogBox">
+                Willkommen zu den Mitternachts-Verhandlungen. Wähle einen Charakter, um zu beginnen.
+            </div>
+
+            <div class="options" id="options"></div>
+
+            <div class="stats">
+                <div class="stat">
+                    <div>Harmonie: <span id="harmonyValue">50</span>%</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="harmonyBar" style="width: 50%"></div>
+                    </div>
+                </div>
+                <div class="stat">
+                    <div>Drama: <span id="dramaValue">50</span>%</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="dramaBar" style="width: 50%"></div>
+                    </div>
+                </div>
+                <div class="stat">
+                    <div>Aristokratie: <span id="nobilityValue">50</span>%</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="nobilityBar" style="width: 50%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="message" id="message"></div>
+    </div>
+
+    <script>
+        const dialogTree = {
+            'Gustav': {
+                initial: {
+                    text: "Die wahre Diplomatie beginnt mit innerem Frieden...",
+                    options: [
+                        {
+                            text: "Eine Meditation über territoriale Grenzen vorschlagen",
+                            harmony: 10,
+                            drama: -5,
+                            nobility: 5,
+                            response: "Der Weise erkennt: Grenzen existieren nur in unseren Köpfen."
+                        },
+                        {
+                            text: "Über die energetischen Blockaden im Wohnzimmer diskutieren",
+                            harmony: 5,
+                            drama: 5,
+                            nobility: -5,
+                            response: "Die Energie fließt wie ein Fluss - manchmal auch unter das Sofa."
+                        }
+                    ]
+                },
+                followUp: {
+                    text: "Vielleicht sollten wir eine zen-buddhistische Perspektive auf die Raumaufteilung wagen...",
+                    options: [
+                        {
+                            text: "Vorschlagen, das Sofa als mobiles Meditationszentrum zu nutzen",
+                            harmony: -5,
+                            drama: 10,
+                            nobility: -10,
+                            response: "Herr Schnurr wird dies als Affront gegen seine aristokratische Würde sehen..."
+                        },
+                        {
+                            text: "Eine Balance zwischen Meditation und Soap-Opera-Zeiten finden",
+                            harmony: 15,
+                            drama: 5,
+                            nobility: 5,
+                            response: "Ah, der mittlere Weg - Buddha wäre stolz!"
+                        }
+                    ]
+                }
+            },
+            'Herr Schnurr': {
+                initial: {
+                    text: "Mon dieu! Diese Verhandlungen bedürfen einer gewissen... aristokratischen Finesse.",
+                    options: [
+                        {
+                            text: "Einen königlichen Erlass zur Sofanutzung vorschlagen",
+                            harmony: -5,
+                            drama: 5,
+                            nobility: 15,
+                            response: "Endlich spricht jemand die Sprache der Aristokratie!"
+                        },
+                        {
+                            text: "Demokratische Abstimmung über Sofa-Zeiten vorschlagen",
+                            harmony: 10,
+                            drama: -5,
+                            nobility: -10,
+                            response: "Demokratie? In meinem Sofa-Königreich? Quelle horreur!"
+                        }
+                    ]
+                },
+                followUp: {
+                    text: "In Versailles hätten wir das natürlich ganz anders geregelt...",
+                    options: [
+                        {
+                            text: "Eine Sofa-Etikette nach Versailler Vorbild einführen",
+                            harmony: 5,
+                            drama: 5,
+                            nobility: 20,
+                            response: "Magnifique! Endlich ein würdiger Vorschlag!"
+                        },
+                        {
+                            text: "Modernere Lösung vorschlagen",
+                            harmony: 5,
+                            drama: -5,
+                            nobility: -15,
+                            response: "Die Moderne ist so... vulgär."
+                        }
+                    ]
+                }
+            },
+            'Waldemar': {
+                initial: {
+                    text: "Das erinnert mich an Staffel 15 von 'Liebe und Betrug', als die Familie Rodriguez-Martinez...",
+                    options: [
+                        {
+                            text: "Die dramatische Spannung für die Verhandlung nutzen",
+                            harmony: -5,
+                            drama: 20,
+                            nobility: -5,
+                            response: "JA! Endlich versteht jemand die DRAMATURGISCHE NOTWENDIGKEIT!"
+                        },
+                        {
+                            text: "Sachlich bleiben und Soap-Opera-Vergleiche minimieren",
+                            harmony: 10,
+                            drama: -15,
+                            nobility: 5,
+                            response: "Aber... aber... die EMOTIONALE TIEFE!"
+                        }
+                    ]
+                },
+                followUp: {
+                    text: "Wir brauchen mehr DRAMA! Mehr GEFÜHL! Mehr...",
+                    options: [
+                        {
+                            text: "Eine dramatische Wohnungsrats-Sitzung inszenieren",
+                            harmony: 5,
+                            drama: 25,
+                            nobility: -5,
+                            response: "Das wird besser als das Staffelfinale von 'Herzen im Sturm'!"
+                        },
+                        {
+                            text: "Einen nüchternen Kompromiss vorschlagen",
+                            harmony: 15,
+                            drama: -20,
+                            nobility: 5,
+                            response: "Aber wo bleibt da die künstlerische Vision?"
+                        }
+                    ]
+                }
+            },
+            'Frau Müller': {
+                initial: {
+                    text: "Mein Cousin dritten Grades war mal Diplomat für überforderte Haustierbesitzer!",
+                    options: [
+                        {
+                            text: "Höflich nach Details fragen",
+                            harmony: 15,
+                            drama: 5,
+                            nobility: -5,
+                            response: "Oh, das ist eine FASZIERENDE Geschichte..."
+                        },
+                        {
+                            text: "Das Thema schnell wechseln",
+                            harmony: -10,
+                            drama: -5,
+                            nobility: 5,
+                            response: "Aber warten Sie, bis Sie von meiner Tante hören!"
+                        }
+                    ]
+                },
+                followUp: {
+                    text: "Ich habe da dieses Buch von 1973 über Haustier-Diplomatie...",
+                    options: [
+                        {
+                            text: "Enthusiastisch nach mehr Ratschlägen fragen",
+                            harmony: 20,
+                            drama: 10,
+                            nobility: -5,
+                            response: "Endlich würdigt jemand meine Expertise!"
+                        },
+                        {
+                            text: "Höflich auf die aktuelle Situation hinweisen",
+                            harmony: 5,
+                            drama: -5,
+                            nobility: 5,
+                            response: "Aber meine Schwägerin sagt immer..."
+                        }
+                    ]
+                }
+            }
+        };
+
+        let currentCharacter = null;
+        let harmony = 50;
+        let drama = 50;
+        let nobility = 50;
+        let isFollowUp = false;
+
+        document.querySelectorAll('.character').forEach(char => {
+            char.addEventListener('click', () => {
+                selectCharacter(char.dataset.name);
+            });
+        });
+
+        function selectCharacter(name) {
+            document.querySelectorAll('.character').forEach(c => c.classList.remove('speaking'));
+            document.querySelector(`[data-name="${name}"]`).classList.add('speaking');
+            
+            currentCharacter = name;
+            isFollowUp = false;
+            showDialog(dialogTree[name].initial);
+        }
+
+        function showDialog(dialogData) {
+            document.getElementById('dialogBox').textContent = dialogData.text;
+            
+            const optionsDiv = document.getElementById('options');
+            optionsDiv.innerHTML = '';
+            
+            dialogData.options.forEach(option => {
+                const button = document.createElement('button');
+                button.className = 'option';
+                button.textContent = option.text;
+                button.addEventListener('click', () => handleOption(option));
+                optionsDiv.appendChild(button);
+            });
+        }
+
+        function handleOption(option) {
+            harmony = Math.max(0, Math.min(100, harmony + option.harmony));
+            drama = Math.max(0, Math.min(100, drama + option.drama));
+            nobility = Math.max(0, Math.min(100, nobility + option.nobility));
+            
+            updateStats();
+            showMessage(option.response);
+
+            setTimeout(() => {
+                if (!isFollowUp) {
+                    isFollowUp = true;
+                    showDialog(dialogTree[currentCharacter].followUp);
+                } else {
+                    checkGameProgress();
+                }
+            }, 1500);
+        }
+
+        function updateStats() {
+            document.getElementById('harmonyValue').textContent = harmony;
+            document.getElementById('dramaValue').textContent = drama;
+            document.getElementById('nobilityValue').textContent = nobility;
+            
+            document.getElementById('harmonyBar').style.width = `${harmony}%`;
+            document.getElementById('dramaBar').style.width = `${drama}%`;
+            document.getElementById('nobilityBar').style.width = `${nobility}%`;
+        }
+
+        function showMessage(text) {
+            const message = document.getElementById('message');
+            message.textContent = text;
+            message.style.display = 'block';
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 2000);
+        }
+
+        function checkGameProgress() {
+            if (harmony >= 80 && drama >= 60 && nobility >= 60) {
+                showMessage("Ein diplomatischer Triumph! Alle sind zufrieden!");
+            } else if (drama >= 90) {
+                showMessage("Waldemar ist begeistert! 'Das ist besser als jede Soap-Opera!'");
+            } else if (nobility >= 90) {
+                showMessage("Herr Schnurr schnurrt zufrieden: 'Fast wie in Versailles!'");
+            } else if (harmony >= 90) {
+                showMessage("Gustav: 'Die kosmischen Energien sind im Einklang.'");
+            }
+            
+            setTimeout(() => {
+                selectCharacter(Object.keys(dialogTree)[Math.floor(Math.random() * 4)]);
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
