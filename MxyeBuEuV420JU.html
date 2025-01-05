@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friedensvertrags-Generator - Zen-Katzen Edition</title>
+    <style>
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #3282b8;
+            --text-color: #e2e2e2;
+            --button-color: #4a90e2;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: var(--button-color);
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 20px;
+            z-index: 1000;
+            transition: transform 0.2s ease;
+        }
+
+        .home-button:hover {
+            transform: scale(1.05);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .treaty-builder {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .paragraph-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .paragraph-option {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .paragraph-option:hover {
+            transform: scale(1.02);
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .preview-area {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            min-height: 200px;
+        }
+
+        .consequence-display {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+        }
+
+        .character-reaction {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .character-reaction:hover {
+            transform: scale(1.05);
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .action-button {
+            background: var(--accent-color);
+            border: none;
+            padding: 10px 20px;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .action-button:hover {
+            transform: scale(1.05);
+            background: #2671a4;
+        }
+
+        .character-reactions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .paragraph-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .character-reactions {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .action-button {
+                width: 100%;
+            }
+        }
+
+        .selected {
+            border: 2px solid var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+    <a href="#" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Friedensvertrags-Generator</h1>
+        <h2>Für harmonisches Zusammenleben</h2>
+
+        <div class="treaty-builder">
+            <h3>Wählen Sie die Vertragsbausteine:</h3>
+            <div class="paragraph-options" id="paragraphOptions">
+                <!-- Paragrafen werden dynamisch eingefügt -->
+            </div>
+
+            <div class="preview-area" id="previewArea">
+                <h3>Ihr Friedensvertrag:</h3>
+                <!-- Vorschau wird hier angezeigt -->
+            </div>
+
+            <div class="consequence-display" id="consequenceDisplay">
+                <!-- Konsequenzen werden hier angezeigt -->
+            </div>
+
+            <div class="character-reactions" id="characterReactions">
+                <div class="character-reaction">
+                    🦜 Gustav
+                    <div id="gustavReaction"></div>
+                </div>
+                <div class="character-reaction">
+                    😺 Herr Schnurr
+                    <div id="schnurrReaction"></div>
+                </div>
+                <div class="character-reaction">
+                    🐠 Waldemar
+                    <div id="waldemarReaction"></div>
+                </div>
+                <div class="character-reaction">
+                    👩 Frau Müller
+                    <div id="muellerReaction"></div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="action-button" onclick="generateTreaty()">Vertrag generieren</button>
+                <button class="action-button" onclick="simulateConsequences()">Konsequenzen simulieren</button>
+                <button class="action-button" onclick="resetTreaty()">Zurücksetzen</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+        const paragraphs = [
+            {
+                id: 'meditation',
+                title: '§1 - Meditation und Ruhezeiten',
+                text: 'Gustav erhält garantierte Meditationszeiten von 6-7 Uhr und 18-19 Uhr.',
+                consequences: {
+                    zen: 20,
+                    drama: -10,
+                    nobility: 5
+                }
+            },
+            {
+                id: 'soap',
+                title: '§2 - Soap-Opera Zeiten',
+                text: 'Waldemars Soap-Opera-Zeiten sind heilig und dürfen nicht durch Reinigungsarbeiten gestört werden.',
+                consequences: {
+                    zen: -15,
+                    drama: 25,
+                    nobility: -5
+                }
+            },
+            {
+                id: 'sofa',
+                title: '§3 - Sofa-Souveränität',
+                text: 'Herr Schnurrs Sofa-Territorium wird als autonome Zone anerkannt, mit Ausnahme der wöchentlichen Reinigung.',
+                consequences: {
+                    zen: -5,
+                    drama: 10,
+                    nobility: 25
+                }
+            },
+            {
+                id: 'advice',
+                title: '§4 - Beratungsrecht',
+                text: 'Frau Müller erhält ein offizielles Beratungsrecht durch das Fenster, begrenzt auf 3 Ratschläge pro Tag.',
+                consequences: {
+                    zen: -10,
+                    drama: 15,
+                    nobility: 10
+                }
+            },
+            {
+                id: 'noise',
+                title: '§5 - Lautstärkeregelung',
+                text: 'Meditative "Omm"-Geräusche und dramatische Ausrufe sind auf angemessene Lautstärke zu beschränken.',
+                consequences: {
+                    zen: 15,
+                    drama: -10,
+                    nobility: 15
+                }
+            },
+            {
+                id: 'zones',
+                title: '§6 - Territoriale Aufteilung',
+                text: 'Die Wohnung wird in klar definierte Zonen eingeteilt: Meditations-, Drama- und Aristokratie-Bereiche.',
+                consequences: {
+                    zen: 15,
+                    drama: 15,
+                    nobility: 15
+                }
+            }
+        ];
+
+        let selectedParagraphs = new Set();
+        let balanceValues = {
+            zen: 50,
+            drama: 50,
+            nobility: 50
+        };
+
+        function initializeParagraphs() {
+            const container = document.getElementById('paragraphOptions');
+            paragraphs.forEach(para => {
+                const div = document.createElement('div');
+                div.className = 'paragraph-option';
+                div.setAttribute('data-id', para.id);
+                div.innerHTML = `<h4>${para.title}</h4><p>${para.text}</p>`;
+                div.onclick = () => toggleParagraph(para.id, div);
+                container.appendChild(div);
+            });
+        }
+
+        function toggleParagraph(id, element) {
+            if (selectedParagraphs.has(id)) {
+                selectedParagraphs.delete(id);
+                element.classList.remove('selected');
+            } else {
+                selectedParagraphs.add(id);
+                element.classList.add('selected');
+            }
+            updatePreview();
+        }
+
+        function updatePreview() {
+            const previewArea = document.getElementById('previewArea');
+            let preview = '<h3>Ihr Friedensvertrag:</h3>';
+            
+            if (selectedParagraphs.size === 0) {
+                preview += '<p>Wählen Sie Paragraphen aus...</p>';
+            } else {
+                selectedParagraphs.forEach(id => {
+                    const para = paragraphs.find(p => p.id === id);
+                    preview += `<div><h4>${para.title}</h4><p>${para.text}</p></div>`;
+                });
+            }
+            
+            previewArea.innerHTML = preview;
+        }
+
+        function simulateConsequences() {
+            if (selectedParagraphs.size === 0) {
+                alert('Bitte wählen Sie erst mindestens einen Paragraphen aus!');
+                return;
+            }
+
+            balanceValues = {
+                zen: 50,
+                drama: 50,
+                nobility: 50
+            };
+
+            selectedParagraphs.forEach(id => {
+                const para = paragraphs.find(p => p.id === id);
+                if (para && para.consequences) {
+                    balanceValues.zen += para.consequences.zen;
+                    balanceValues.drama += para.consequences.drama;
+                    balanceValues.nobility += para.consequences.nobility;
+                }
+            });
+
+            Object.keys(balanceValues).forEach(key => {
+                balanceValues[key] = Math.max(0, Math.min(100, balanceValues[key]));
+            });
+
+            const display = document.getElementById('consequenceDisplay');
+            display.innerHTML = `
+                <h4>Auswirkungen:</h4>
+                <div style="margin: 10px 0;">
+                    <div>Zen-Level: ${balanceValues.zen}%</div>
+                    <div style="background: #333; height: 20px; border-radius: 10px; margin: 5px 0;">
+                        <div style="background: #4CAF50; width: ${balanceValues.zen}%; height: 100%; border-radius: 10px; transition: width 0.5s ease;"></div>
+                    </div>
+                </div>
+                <div style="margin: 10px 0;">
+                    <div>Drama-Faktor: ${balanceValues.drama}%</div>
+                    <div style="background: #333; height: 20px; border-radius: 10px; margin: 5px 0;">
+                        <div style="background: #FF5722; width: ${balanceValues.drama}%; height: 100%; border-radius: 10px; transition: width 0.5s ease;"></div>
+                    </div>
+                </div>
+                <div style="margin: 10px 0;">
+                    <div>Aristokratie-Niveau: ${balanceValues.nobility}%</div>
+                    <div style="background: #333; height: 20px; border-radius: 10px; margin: 5px 0;">
+                        <div style="background: #9C27B0; width: ${balanceValues.nobility}%; height: 100%; border-radius: 10px; transition: width 0.5s ease;"></div>
+                    </div>
+                </div>
+            `;
+
+            const reactions = {
+                gustav: document.getElementById('gustavReaction'),
+                schnurr: document.getElementById('schnurrReaction'),
+                waldemar: document.getElementById('waldemarReaction'),
+                mueller: document.getElementById('muellerReaction')
+            };
+
+            reactions.gustav.style.opacity = '0';
+            reactions.schnurr.style.opacity = '0';
+            reactions.waldemar.style.opacity = '0';
+            reactions.mueller.style.opacity = '0';
+
+            setTimeout(() => {
+                reactions.gustav.textContent = balanceValues.zen > 70 ? 
+                    "Omm... Perfekte Harmonie" :
+                    balanceValues.zen < 30 ? 
+                    "Die Energien sind gestört..." :
+                    "Akzeptable Balance";
+
+                reactions.schnurr.textContent = balanceValues.nobility > 70 ?
+                    "Très bien! Wie in Versailles!" :
+                    balanceValues.nobility < 30 ?
+                    "Mon dieu! Welch Affront!" :
+                    "Passable";
+
+                reactions.waldemar.textContent = balanceValues.drama > 70 ?
+                    "PERFEKT! Wie im Staffelfinale!" :
+                    balanceValues.drama < 30 ?
+                    "Zu wenig DRAMA!" :
+                    "Könnte dramatischer sein...";
+
+                reactions.mueller.textContent = (balanceValues.zen + balanceValues.drama + balanceValues.nobility) / 3 > 60 ?
+                    "Meine Cousine würde das gutheißen!" :
+                    "Meine Tante hätte da noch Vorschläge...";
+
+                Object.values(reactions).forEach(reaction => {
+                    reaction.style.transition = 'opacity 0.5s ease';
+                    reaction.style.opacity = '1';
+                });
+            }, 100);
+        }
+
+        function generateTreaty() {
+            if (selectedParagraphs.size === 0) {
+                alert('Bitte wählen Sie mindestens einen Paragraphen aus!');
+                return;
+            }
+            simulateConsequences();
+        }
+
+        function resetTreaty() {
+            selectedParagraphs.clear();
+            document.querySelectorAll('.paragraph-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            updatePreview();
+            document.getElementById('consequenceDisplay').innerHTML = '';
+            document.getElementById('gustavReaction').textContent = '';
+            document.getElementById('schnurrReaction').textContent = '';
+            document.getElementById('waldemarReaction').textContent = '';
+            document.getElementById('muellerReaction').textContent = '';
+        }
+
+        window.onload = function() {
+            initializeParagraphs();
+            updatePreview();
+        };
+    </script>
+</body>
+</html>
