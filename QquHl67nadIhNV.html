@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Die ersten Noten der Kaffeemaschine</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5e6d3;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background: #8b4513;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .home-button:hover {
+            background: #6b3410;
+            transform: translateY(-2px);
+        }
+
+        .music-container {
+            max-width: 800px;
+            margin: 60px auto 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .staff {
+            height: 120px;
+            border-bottom: 1px solid #333;
+            position: relative;
+            margin: 20px 0;
+            background: repeating-linear-gradient(
+                to bottom,
+                #fff,
+                #fff 12px,
+                #000 12px,
+                #000 13px
+            );
+        }
+
+.note {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #333;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .note:hover {
+            transform: scale(1.2);
+        }
+
+        .note::after {
+            content: "☕";
+            position: absolute;
+            top: -20px;
+            left: 0;
+            font-size: 20px;
+        }
+
+        .coffee-controls {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background: #8b4513;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #6b3410;
+            transform: translateY(-2px);
+        }
+
+        .volume-control {
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .volume-slider {
+            width: 200px;
+            height: 5px;
+            -webkit-appearance: none;
+            background: #8b4513;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 15px;
+            height: 15px;
+            background: #6b3410;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .audio-feedback {
+            background: #fff8dc;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            display: none;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .maestro-comment {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f8f8;
+            border-left: 3px solid #8b4513;
+            font-style: italic;
+        }
+
+        @media (max-width: 600px) {
+            .coffee-controls {
+                flex-direction: column;
+            }
+            
+            .volume-control {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .volume-slider {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io" class="home-button">← Zur Autorenseite</a>
+
+    <div class="music-container">
+        <h1>Die ersten Noten der Kaffeemaschine</h1>
+        
+        <div class="note-info">
+            <p>Maestro Carusos erste Aufzeichnungen der mysteriösen Kaffeemaschinen-Melodie</p>
+        </div>
+
+        <div class="coffee-controls">
+            <button onclick="playMelody()">Melodie abspielen</button>
+            <button onclick="addNote()">Note hinzufügen</button>
+            <button onclick="clearNotes()">Neu beginnen</button>
+        </div>
+
+        <div class="volume-control">
+            <label for="volume">Lautstärke:</label>
+            <input type="range" id="volume" class="volume-slider" min="0" max="1" step="0.1" value="0.5">
+        </div>
+
+        <div class="staff" id="musicStaff"></div>
+
+        <div class="audio-feedback" id="audioFeedback"></div>
+
+        <div class="maestro-comment">
+            "Faszinierend! Die Maschine scheint eine Vorliebe für Cis-Dur zu haben... 
+            Oder war es vielleicht der Dampfdruck?" – Maestro Caruso
+        </div>
+    </div>
+
+<script>
+        const staff = document.getElementById('musicStaff');
+        const volumeControl = document.getElementById('volume');
+        const audioFeedback = document.getElementById('audioFeedback');
+        const notes = [];
+        
+        const noteFrequencies = {
+            'C4': 261.63,
+            'D4': 293.66,
+            'E4': 329.63,
+            'F4': 349.23,
+            'G4': 392.00,
+            'A4': 440.00,
+            'B4': 493.88
+        };
+
+        let audioContext;
+        
+        function initAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function createTone(frequency, duration = 0.5) {
+            initAudio();
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            gainNode.gain.value = volumeControl.value;
+            
+            oscillator.type = 'square';
+            oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+            
+            const tremoloFreq = 10;
+            const tremoloDepth = 0.2;
+            gainNode.gain.setValueAtTime(gainNode.gain.value, audioContext.currentTime);
+            gainNode.gain.setValueAtTime(gainNode.gain.value, audioContext.currentTime + duration);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + duration);
+            
+            // Dampf-Effekt
+            const steamNoise = audioContext.createOscillator();
+            const steamGain = audioContext.createGain();
+            steamNoise.connect(steamGain);
+            steamGain.connect(audioContext.destination);
+            steamGain.gain.value = 0.1 * volumeControl.value;
+            
+            return oscillator;
+        }
+
+        function addNote() {
+            const note = document.createElement('div');
+            note.className = 'note';
+            const xPos = Math.random() * (staff.offsetWidth - 30);
+            const yPos = Math.random() * (staff.offsetHeight - 30);
+            note.style.left = xPos + 'px';
+            note.style.top = yPos + 'px';
+            
+            const noteNames = Object.keys(noteFrequencies);
+            const randomNote = noteNames[Math.floor(Math.random() * noteNames.length)];
+            note.dataset.note = randomNote;
+            
+            note.onclick = function() {
+                playNote(randomNote);
+                this.style.transform = 'scale(1.2)';
+                setTimeout(() => this.style.transform = 'scale(1)', 200);
+            };
+            
+            staff.appendChild(note);
+            notes.push(note);
+        }
+
+        function playNote(noteName) {
+            const frequency = noteFrequencies[noteName];
+            createTone(frequency);
+            
+            audioFeedback.style.display = 'block';
+            audioFeedback.textContent = `Spiele Note: ${noteName}`;
+            setTimeout(() => audioFeedback.style.display = 'none', 1000);
+        }
+
+        function playMelody() {
+            notes.forEach((note, index) => {
+                setTimeout(() => {
+                    const noteName = note.dataset.note;
+                    playNote(noteName);
+                    note.style.transform = 'scale(1.2)';
+                    setTimeout(() => note.style.transform = 'scale(1)', 200);
+                }, index * 500);
+            });
+        }
+
+        function clearNotes() {
+            notes.forEach(note => note.remove());
+            notes.length = 0;
+        }
+
+        // Initialisiere mit einigen Noten
+        for(let i = 0; i < 5; i++) {
+            addNote();
+        }
+
+        // Event Listener für den Lautstärke-Slider
+        volumeControl.addEventListener('input', () => {
+            // Die Lautstärke wird beim nächsten Abspielen eines Tons berücksichtigt
+        });
+
+        // Verhindern von Scrolling beim Benutzen des Volume-Sliders auf Mobilgeräten
+        volumeControl.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+        }, { passive: false });
+    </script>
+</body>
+</html>
