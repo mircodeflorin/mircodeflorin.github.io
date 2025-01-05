@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ausreden AG - Kollektiv-Bewusstseins-Interface</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .home-button {
+            display: inline-block;
+            text-decoration: none;
+            color: #333;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .interface-container {
+            background: #2c3e50;
+            padding: 20px;
+            border-radius: 10px;
+            color: #ecf0f1;
+            margin: 20px 0;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .interface-section {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .network-display {
+            height: 200px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 5px;
+            margin: 10px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .network-node {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .network-line {
+            position: absolute;
+            height: 1px;
+            background: rgba(255,255,255,0.3);
+            transform-origin: left center;
+            pointer-events: none;
+        }
+
+        .consciousness-wave {
+            position: absolute;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                rgba(52, 152, 219, 0.1),
+                rgba(46, 204, 113, 0.1),
+                rgba(52, 152, 219, 0.1));
+            animation: wave 3s linear infinite;
+        }
+
+        @keyframes wave {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0%); }
+        }
+
+        .control-panel {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        .thought-stream {
+            font-family: 'Courier New', monospace;
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 5px;
+            margin-top: 20px;
+            height: 150px;
+            overflow-y: auto;
+        }
+
+        .consensus-meter {
+            height: 5px;
+            background: #ddd;
+            border-radius: 10px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .consensus-level {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #3498db, #e74c3c);
+            transition: width 0.5s ease;
+        }
+
+        .status-display {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+        }
+
+        .thought-bubble {
+            position: absolute;
+            background: rgba(255,255,255,0.9);
+            color: #2c3e50;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+
+        .active-node {
+            background: #e74c3c;
+            transform: scale(1.5);
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io/" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Kollektiv-Bewusstseins-Interface</h1>
+        
+        <div class="interface-container">
+            <div class="grid-container">
+                <div class="interface-section">
+                    <h3>🌐 Ausreden-Netzwerk-Visualisierer</h3>
+                    <div class="network-display" id="networkDisplay">
+                        <div class="consciousness-wave"></div>
+                    </div>
+                    <div class="control-panel">
+                        <button onclick="visualizeNetwork()">Netzwerk aktivieren</button>
+                        <button onclick="connectNodes()">Verbindungen erstellen</button>
+                    </div>
+                </div>
+
+                <div class="interface-section">
+                    <h3>🧠 Gedanken-Synchronisierer</h3>
+                    <div class="network-display" id="syncDisplay">
+                        <div class="consciousness-wave"></div>
+                    </div>
+                    <div class="consensus-meter">
+                        <div class="consensus-level" id="syncMeter"></div>
+                    </div>
+                    <button onclick="synchronizeThoughts()">Gedanken synchronisieren</button>
+                </div>
+
+                <div class="interface-section">
+                    <h3>🌟 Realitäts-Consensus-Builder</h3>
+                    <div class="network-display" id="consensusDisplay">
+                        <div class="consciousness-wave"></div>
+                    </div>
+                    <div class="control-panel">
+                        <button onclick="buildConsensus()">Konsens aufbauen</button>
+                        <button onclick="stabilizeReality()">Realität stabilisieren</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="thought-stream" id="thoughtStream">
+                Kollektives Bewusstsein wird initialisiert...
+            </div>
+
+            <div class="status-display">
+                <span>Netzwerk-Aktivität: <span id="networkActivity">0%</span></span>
+                <span>Synchronizität: <span id="syncLevel">0%</span></span>
+                <span>Konsens-Niveau: <span id="consensusLevel">0%</span></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let networkActivity = 0;
+        let syncLevel = 0;
+        let consensusLevel = 0;
+        let nodes = [];
+        let thoughts = [
+            "Die Wahrheit ist nur eine andere Form der Ausrede",
+            "Realität ist verhandelbar",
+            "Zeit ist relativ zur Kreativität",
+            "Jede Ausrede erschafft ihre eigene Dimension",
+            "Das Kollektiv denkt, also sind wir",
+            "Dr. Brinkmanns Schnurrbart existiert in allen Realitäten"
+        ];
+
+        function updateStream(message) {
+            const stream = document.getElementById('thoughtStream');
+            const timestamp = new Date().toLocaleTimeString();
+            stream.innerHTML = `[${timestamp}] ${message}<br>${stream.innerHTML}`;
+        }
+
+        function updateMeters() {
+            document.getElementById('networkActivity').textContent = `${networkActivity}%`;
+            document.getElementById('syncLevel').textContent = `${syncLevel}%`;
+            document.getElementById('consensusLevel').textContent = `${consensusLevel}%`;
+            document.getElementById('syncMeter').style.width = `${syncLevel}%`;
+        }
+
+        function createNode(display) {
+            const node = document.createElement('div');
+            node.className = 'network-node';
+            node.style.left = Math.random() * 90 + 5 + '%';
+            node.style.top = Math.random() * 90 + 5 + '%';
+            display.appendChild(node);
+            nodes.push(node);
+            return node;
+        }
+
+        function createLine(start, end) {
+            const line = document.createElement('div');
+            line.className = 'network-line';
+            const angle = Math.atan2(end.offsetTop - start.offsetTop, end.offsetLeft - start.offsetLeft);
+            const length = Math.sqrt(Math.pow(end.offsetLeft - start.offsetLeft, 2) + 
+                                  Math.pow(end.offsetTop - start.offsetTop, 2));
+            
+            line.style.width = `${length}px`;
+            line.style.left = `${start.offsetLeft + 4}px`;
+            line.style.top = `${start.offsetTop + 4}px`;
+            line.style.transform = `rotate(${angle}rad)`;
+            
+            start.parentElement.appendChild(line);
+        }
+
+        function visualizeNetwork() {
+            const display = document.getElementById('networkDisplay');
+            display.innerHTML = '<div class="consciousness-wave"></div>';
+            nodes = [];
+            
+            for (let i = 0; i < 10; i++) {
+                createNode(display);
+            }
+            
+            networkActivity = Math.min(100, networkActivity + 20);
+            updateStream("Ausreden-Netzwerk wird visualisiert...");
+            updateMeters();
+        }
+
+        function connectNodes() {
+            nodes.forEach((node, i) => {
+                if (i < nodes.length - 1) {
+                    createLine(node, nodes[i + 1]);
+                }
+            });
+            
+            networkActivity = Math.min(100, networkActivity + 10);
+            updateStream("Netzwerk-Verbindungen werden etabliert...");
+            updateMeters();
+        }
+
+        function synchronizeThoughts() {
+            syncLevel = Math.min(100, syncLevel + 15);
+            const display = document.getElementById('syncDisplay');
+            
+            const thought = document.createElement('div');
+            thought.className = 'thought-bubble';
+            thought.textContent = thoughts[Math.floor(Math.random() * thoughts.length)];
+            thought.style.left = Math.random() * 60 + 20 + '%';
+            thought.style.top = Math.random() * 60 + 20 + '%';
+            display.appendChild(thought);
+            
+            setTimeout(() => {
+                thought.style.opacity = '1';
+                setTimeout(() => thought.style.opacity = '0', 2000);
+            }, 100);
+            
+            updateStream("Gedanken werden synchronisiert...");
+            updateMeters();
+        }
+
+        function buildConsensus() {
+            consensusLevel = Math.min(100, consensusLevel + 20);
+            networkActivity = Math.min(100, networkActivity + 10);
+            
+            const nodes = document.querySelectorAll('.network-node');
+            nodes.forEach(node => {
+                node.classList.add('active-node');
+                setTimeout(() => node.classList.remove('active-node'), 1000);
+            });
+            
+            updateStream("Realitäts-Konsens wird aufgebaut...");
+            updateMeters();
+        }
+
+        function stabilizeReality() {
+            consensusLevel = Math.max(0, consensusLevel - 5);
+            syncLevel = Math.min(100, syncLevel + 10);
+            updateStream("Realität wird stabilisiert...");
+            updateMeters();
+        }
+
+        // Automatische Gedanken
+        setInterval(() => {
+            if (Math.random() < 0.1) {
+                const events = [
+                    "Das Kollektiv entwickelt neue Ideen...",
+                    "Die Realität passt sich dem Konsens an...",
+                    "Dr. Brinkmanns Schnurrbart sendet Quantensignale..."
+                ];
+                updateStream(events[Math.floor(Math.random() * events.length)]);
+                syncLevel = Math.min(100, syncLevel + 5);
+                updateMeters();
+            }
+        }, 10000);
+
+        // Easter Egg
+        let konamiCode = '';
+        const secretCode = 'ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightba';
+        document.addEventListener('keydown', (e) => {
+            konamiCode += e.key;
+            if (konamiCode.includes(secretCode)) {
+                updateStream("🌟 KOLLEKTIV-BEWUSSTSEIN ERREICHT SINGULARITÄT: Alle Ausreden werden eins!");
+                networkActivity = 200;
+                syncLevel = 200;
+                consensusLevel = 200;
+                updateMeters();
+                konamiCode = '';
+            }
+        });
+    </script>
+</body>
+</html>
