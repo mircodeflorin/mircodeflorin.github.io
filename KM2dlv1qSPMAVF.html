@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ausreden AG - Quantenausreden-Designer</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .home-button {
+            display: inline-block;
+            text-decoration: none;
+            color: #333;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .quantum-interface {
+            background: #2c3e50;
+            padding: 20px;
+            border-radius: 10px;
+            color: #ecf0f1;
+            margin: 20px 0;
+        }
+
+        .control-panel {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .design-section {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .quantum-display {
+            font-family: 'Courier New', monospace;
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 5px;
+            margin-top: 20px;
+            min-height: 100px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .reality-stream {
+            height: 20px;
+            background: #ddd;
+            border-radius: 10px;
+            margin: 10px 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .reality-wave {
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(90deg, #3498db, #2ecc71, #3498db);
+            background-size: 200% 100%;
+            animation: wave 2s linear infinite;
+            position: absolute;
+        }
+
+        @keyframes wave {
+            0% { background-position: 100% 0; }
+            100% { background-position: -100% 0; }
+        }
+
+        .parameter-input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: none;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.9);
+        }
+
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            width: 100%;
+            margin: 5px 0;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        .quantum-elements {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .quantum-element {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 10px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quantum-element:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+
+        .paradox-warning {
+            color: #e74c3c;
+            padding: 5px;
+            margin-top: 10px;
+            border-left: 3px solid #e74c3c;
+        }
+
+        .reality-status {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io/" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Ausreden AG - Quantenausreden-Designer</h1>
+        
+        <div class="quantum-interface">
+            <div class="control-panel">
+                <div class="design-section">
+                    <h3>Realitätsverschiebung</h3>
+                    <select class="parameter-input" id="realityShift">
+                        <option value="temporal">Temporale Verschiebung</option>
+                        <option value="spatial">Räumliche Verzerrung</option>
+                        <option value="quantum">Quantenverschränkung</option>
+                        <option value="paradox">Paradoxie-Induktion</option>
+                    </select>
+                    <div class="reality-stream">
+                        <div class="reality-wave"></div>
+                    </div>
+                    <button onclick="initiateRealityShift()">Realität verschieben</button>
+                </div>
+
+                <div class="design-section">
+                    <h3>Paradoxien-Generator</h3>
+                    <div class="quantum-elements">
+                        <span class="quantum-element" onclick="addParadox('zeitschleife')">Zeitschleife</span>
+                        <span class="quantum-element" onclick="addParadox('doppelgänger')">Doppelgänger</span>
+                        <span class="quantum-element" onclick="addParadox('kausalität')">Kausalitätsbruch</span>
+                    </div>
+                    <button onclick="generateParadox()">Paradoxon erzeugen</button>
+                </div>
+
+                <div class="design-section">
+                    <h3>Story-Matrix</h3>
+                    <select class="parameter-input" id="storyType">
+                        <option value="linear">Linear-verschachtelt</option>
+                        <option value="rekursiv">Rekursiv-verschränkt</option>
+                        <option value="quantum">Quantum-superponiert</option>
+                    </select>
+                    <button onclick="weaveStory()">Geschichte weben</button>
+                </div>
+            </div>
+
+            <div class="quantum-display" id="quantumDisplay">
+                System bereit für Quantenausreden-Design...
+            </div>
+
+            <div class="reality-status">
+                <span>Realitätsstabilität: <span id="stabilityMeter">100%</span></span>
+                <span>Paradoxie-Level: <span id="paradoxMeter">0</span></span>
+                <span>Aktive Zeitlinien: <span id="timelineMeter">1</span></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let stabilityLevel = 100;
+        let paradoxLevel = 0;
+        let activeTimelines = 1;
+        let activeParadoxes = new Set();
+
+        function updateDisplay(message) {
+            const display = document.getElementById('quantumDisplay');
+            display.innerHTML = `${new Date().toLocaleTimeString()} > ${message}<br>${display.innerHTML}`;
+        }
+
+        function updateMeters() {
+            document.getElementById('stabilityMeter').textContent = `${stabilityLevel}%`;
+            document.getElementById('paradoxMeter').textContent = paradoxLevel;
+            document.getElementById('timelineMeter').textContent = activeTimelines;
+        }
+
+        function initiateRealityShift() {
+            const shiftType = document.getElementById('realityShift').value;
+            const shifts = {
+                temporal: "Zeitliche Realität wird neu kalibriert...",
+                spatial: "Räumliche Dimensionen werden verschoben...",
+                quantum: "Quantenzustände werden überlagert...",
+                paradox: "Paradoxe Realitätsebenen werden initialisiert..."
+            };
+
+            stabilityLevel = Math.max(0, stabilityLevel - 15);
+            activeTimelines += 1;
+            updateDisplay(shifts[shiftType]);
+            updateMeters();
+
+            // Dr. Brinkmann's Kommentare
+            setTimeout(() => {
+                const comments = [
+                    "Dr. Brinkmann (als zerstreuter Professor): 'Faszinierend! Die Realität beginnt zu fluktuieren!'",
+                    "Dr. Brinkmann (als Quantenphysiker): 'Die Wahrscheinlichkeitswellen überlagern sich perfekt!'",
+                    "Dr. Brinkmann (als Bürokratie-Experte): 'Dafür brauchen wir mindestens drei Formulare in vier Dimensionen...'"
+                ];
+                updateDisplay(comments[Math.floor(Math.random() * comments.length)]);
+            }, 1000);
+        }
+
+        function addParadox(type) {
+            if (activeParadoxes.has(type)) {
+                activeParadoxes.delete(type);
+                updateDisplay(`Paradoxon '${type}' deaktiviert`);
+            } else {
+                activeParadoxes.add(type);
+                updateDisplay(`Paradoxon '${type}' zur Matrix hinzugefügt`);
+            }
+        }
+
+        function generateParadox() {
+            if (activeParadoxes.size === 0) {
+                updateDisplay("Warnung: Keine Paradoxien ausgewählt!");
+                return;
+            }
+
+            paradoxLevel += activeParadoxes.size;
+            stabilityLevel = Math.max(0, stabilityLevel - 20);
+            updateDisplay("Paradoxon-Kaskade initiiert...");
+            updateMeters();
+
+            // Herbert's Kommentare
+            setTimeout(() => {
+                const comments = [
+                    "Herbert der Taschenrechner: *piept philosophisch* 'Die Wahrscheinlichkeit der Unwahrscheinlichkeit steigt exponentiell!'",
+                    "Herbert: *berechnet hektisch* 'Paradoxie-Quotient überschreitet kritische Masse!'",
+                    "Herbert: *mathematische Panik* 'WARNUNG: Realitätsmatrix zeigt nicht-euklidische Eigenschaften!'"
+                ];
+                updateDisplay(comments[Math.floor(Math.random() * comments.length)]);
+            }, 1000);
+        }
+
+        function weaveStory() {
+            const storyType = document.getElementById('storyType').value;
+            const stories = {
+                linear: "Lineare Geschichte wird in Quantenzustand versetzt...",
+                rekursiv: "Rekursive Narrativschleife wird initialisiert...",
+                quantum: "Quantum-superponierte Storylines werden verwoben..."
+            };
+
+            activeTimelines += 2;
+            updateDisplay(stories[storyType]);
+            updateMeters();
+
+            // Madame Rothmanns Kommentare
+            setTimeout(() => {
+                const comments = [
+                    "Madame Rothmann: 'Oh, wie interessant! Diese Geschichte wird gestern sehr erfolgreich gewesen sein werden.'",
+                    "Madame Rothmann: 'Die Teekugel zeigt multiple Handlungsstränge in der Vergangenheit der Zukunft.'",
+                    "Madame Rothmann: 'Vorsicht mit dem dritten Akt - er neigt zu spontaner Zeitreise.'"
+                ];
+                updateDisplay(comments[Math.floor(Math.random() * comments.length)]);
+            }, 1000);
+        }
+
+        // Easter Egg: Konami Code
+        let konamiCode = '';
+        const secretCode = 'ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightba';
+        document.addEventListener('keydown', (e) => {
+            konamiCode += e.key;
+            if (konamiCode.includes(secretCode)) {
+                updateDisplay("🌟 GEHEIMMODUS AKTIVIERT: Dr. Brinkmanns Schnurrbart übernimmt die Kontrolle!");
+                stabilityLevel = 0;
+                paradoxLevel = 99;
+                activeTimelines = 42;
+                updateMeters();
+                konamiCode = '';
+            }
+        });
+    </script>
+</body>
+</html>
