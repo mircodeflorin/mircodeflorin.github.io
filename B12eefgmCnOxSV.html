@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chaos Café Quiz – Die Inspektion</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8)),
+                repeating-linear-gradient(0deg, transparent, transparent 20px, #e6e6e6 20px, #e6e6e6 21px),
+                repeating-linear-gradient(90deg, transparent, transparent 20px, #e6e6e6 20px, #e6e6e6 21px);
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 12px 24px;
+            background: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-family: 'Courier New', monospace;
+            text-decoration: none;
+            z-index: 1000;
+        }
+
+        .home-button:hover {
+            background: #1a252f;
+            transform: translateX(5px);
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 60px auto 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            border: 2px solid #4a90e2;
+        }
+
+h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-family: 'Courier New', monospace;
+            border-bottom: 2px solid #4a90e2;
+            padding-bottom: 10px;
+        }
+
+        .question-container {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #4a90e2;
+        }
+
+        .question-container.active {
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { 
+                transform: translateX(-20px);
+                opacity: 0;
+            }
+            to { 
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .question {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            padding: 12px;
+            background: #fff;
+            border: 2px solid #4a90e2;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .option::before {
+            content: '□';
+            margin-right: 10px;
+            font-size: 1.2em;
+            color: #4a90e2;
+        }
+
+        .option:hover {
+            background: #e3f2fd;
+            transform: translateX(10px);
+        }
+
+        .option.correct {
+            background: #4caf50;
+            color: white;
+            border-color: #4caf50;
+        }
+
+        .option.correct::before {
+            content: '✓';
+            color: white;
+        }
+
+        .option.incorrect {
+            background: #f44336;
+            color: white;
+            border-color: #f44336;
+        }
+
+        .option.incorrect::before {
+            content: '×';
+            color: white;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: #4a90e2;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .score-container {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 2px solid #4a90e2;
+        }
+
+        @media (max-width: 600px) {
+            .quiz-container {
+                padding: 15px;
+            }
+            
+            .question {
+                font-size: 1.1em;
+            }
+            
+            .home-button {
+                position: static;
+                display: block;
+                margin-bottom: 20px;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io/" class="home-button">← Zur Autorenseite</a>
+
+    <div class="quiz-container">
+        <h1>Chaos Café Quiz – Die Inspektion</h1>
+        
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <div id="quiz"></div>
+
+        <div class="score-container" id="score-container">
+            <h2>Inspektion abgeschlossen!</h2>
+            <p>Deine Bewertung: <span id="score">0</span> von <span id="total-questions">0</span> Punkten</p>
+            <p id="final-feedback"></p>
+            <button onclick="restartQuiz()">Inspektion wiederholen</button>
+        </div>
+    </div>
+
+<script>
+        const questions = [
+            {
+                question: "Was war Professor Fibonaccis erster Eindruck vom Chaos Café?",
+                options: [
+                    "Ein normales, langweiliges Café",
+                    "Ein mathematisches Wunder",
+                    "Ein akustisches Rätsel",
+                    "Eine Gesundheitsgefährdung"
+                ],
+                correct: 2,
+                feedback: "Der Professor war sofort von den ungewöhnlichen akustischen Eigenschaften des Cafés fasziniert!"
+            },
+            {
+                question: "Welche erste Berechnung führte Professor Fibonacci durch?",
+                options: [
+                    "Die Tischanordnung",
+                    "Die Schallwellen der Kaffeemaschine",
+                    "Die Anzahl der Gäste",
+                    "Die Raumtemperatur"
+                ],
+                correct: 1,
+                feedback: "Er analysierte die Schallwellen der musizierenden Kaffeemaschine mit komplexen Formeln!"
+            },
+            {
+                question: "Was prophezeite Madame Gestern für die Inspektion?",
+                options: [
+                    "Völliges Chaos",
+                    "Harmonische Überraschungen",
+                    "Mathematische Erleuchtung",
+                    "Technische Probleme"
+                ],
+                correct: 2,
+                feedback: "Ihre Kristallkugel zeigte eine überraschende mathematische Erleuchtung!"
+            },
+            {
+                question: "Wie reagierte Herbert auf die Ankunft des Professors?",
+                options: [
+                    "Mit Panik",
+                    "Mit Begeisterung",
+                    "Mit Gleichgültigkeit",
+                    "Mit einem motivierenden Spruch"
+                ],
+                correct: 3,
+                feedback: "Herbert blieb seiner Art treu und konterte mit einem seiner berühmten Motivationssprüche!"
+            },
+            {
+                question: "Welches unerwartete Verhalten zeigte die Kaffeemaschine während der Inspektion?",
+                options: [
+                    "Sie verstummte völlig",
+                    "Sie spielte perfekt im Takt",
+                    "Sie komponierte spontan",
+                    "Sie produzierte nur kalten Kaffee"
+                ],
+                correct: 2,
+                feedback: "Die Kaffeemaschine überraschte alle mit ihrer spontanen Kompositionsgabe!"
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        function showQuestion() {
+            const quizContainer = document.getElementById('quiz');
+            const question = questions[currentQuestion];
+
+            const questionHTML = `
+                <div class="question-container active">
+                    <div class="question">${currentQuestion + 1}. ${question.question}</div>
+                    <div class="options">
+                        ${question.options.map((option, i) => `
+                            <div class="option" onclick="selectOption(${i})">${option}</div>
+                        `).join('')}
+                    </div>
+                    <div class="feedback"></div>
+                </div>
+            `;
+
+            quizContainer.innerHTML = questionHTML;
+        }
+
+        function selectOption(optionIndex) {
+            const options = document.querySelectorAll('.option');
+            const feedback = document.querySelector('.feedback');
+            const currentAnswer = questions[currentQuestion].correct;
+
+            options.forEach(option => option.style.pointerEvents = 'none');
+
+            if (optionIndex === currentAnswer) {
+                options[optionIndex].classList.add('correct');
+                score++;
+                feedback.style.display = 'block';
+                feedback.style.background = '#e8f5e9';
+                feedback.style.color = '#2e7d32';
+                feedback.textContent = "Korrekt! " + questions[currentQuestion].feedback;
+            } else {
+                options[optionIndex].classList.add('incorrect');
+                options[currentAnswer].classList.add('correct');
+                feedback.style.display = 'block';
+                feedback.style.background = '#ffebee';
+                feedback.style.color = '#c62828';
+                feedback.textContent = "Nicht ganz! " + questions[currentQuestion].feedback;
+            }
+
+            setTimeout(() => {
+                currentQuestion++;
+                if (currentQuestion < questions.length) {
+                    showQuestion();
+                } else {
+                    showFinalScore();
+                }
+                updateProgressBar();
+            }, 2000);
+        }
+
+        function updateProgressBar() {
+            const progress = ((currentQuestion) / questions.length) * 100;
+            document.getElementById('progress').style.width = `${progress}%`;
+        }
+
+        function showFinalScore() {
+            document.getElementById('quiz').style.display = 'none';
+            document.getElementById('score-container').style.display = 'block';
+            document.getElementById('score').textContent = score;
+            document.getElementById('total-questions').textContent = questions.length;
+
+            const feedback = document.getElementById('final-feedback');
+            if (score === questions.length) {
+                feedback.textContent = "Professor Fibonacci wäre stolz auf dich!";
+            } else if (score >= questions.length * 0.7) {
+                feedback.textContent = "Fast perfekt! Nur wenige mathematische Ungenauigkeiten.";
+            } else if (score >= questions.length * 0.5) {
+                feedback.textContent = "Die Grundformeln stimmen, aber es gibt noch Raum für Verbesserung.";
+            } else {
+                feedback.textContent = "Vielleicht solltest du noch einmal Maestros Notizen studieren...";
+            }
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            document.getElementById('quiz').style.display = 'block';
+            document.getElementById('score-container').style.display = 'none';
+            showQuestion();
+            updateProgressBar();
+        }
+
+        // Quiz starten
+        showQuestion();
+    </script>
+</body>
+</html>
