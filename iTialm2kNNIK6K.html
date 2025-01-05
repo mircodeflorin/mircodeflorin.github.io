@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Epilog-Creator - Zen-Katzen Edition</title>
+    <style>
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #3282b8;
+            --text-color: #e2e2e2;
+            --card-bg: rgba(22, 33, 62, 0.7);
+            --input-bg: rgba(26, 26, 46, 0.8);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: var(--primary-color);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-top: 80px;
+        }
+
+        h1, h2, h3 {
+            text-align: center;
+            color: var(--text-color);
+            margin-bottom: 30px;
+        }
+
+        .epilog-generator {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .character-section {
+            margin-bottom: 30px;
+        }
+
+        .character-card {
+            background: var(--input-bg);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .character-input {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        select, input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--accent-color);
+            border-radius: 8px;
+            background: var(--input-bg);
+            color: var(--text-color);
+            font-size: 14px;
+        }
+
+        .interaction-section {
+            margin: 30px 0;
+        }
+
+        .interaction-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .interaction-card {
+            background: var(--input-bg);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .interaction-card:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .interaction-card.selected {
+            border-color: var(--accent-color);
+            background: rgba(50, 130, 184, 0.2);
+        }
+
+        .tone-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            justify-content: center;
+        }
+
+        .tone-button {
+            background: var(--input-bg);
+            color: var(--text-color);
+            border: 1px solid var(--accent-color);
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tone-button:hover {
+            background: var(--accent-color);
+        }
+
+        .tone-button.active {
+            background: var(--accent-color);
+        }
+
+        .event-selector {
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        .btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #2c5282;
+            transform: translateY(-2px);
+        }
+
+        .epilog-result {
+            margin-top: 30px;
+            padding: 20px;
+            background: var(--input-bg);
+            border-radius: 10px;
+            white-space: pre-line;
+            line-height: 1.6;
+        }
+
+        .preview-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: var(--input-bg);
+            border-radius: 10px;
+        }
+
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .preview-card {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 600px) {
+            .character-input {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 10px;
+                padding-top: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="#" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Epilog-Creator</h1>
+        <h2>Erstelle dein eigenes "Was geschah danach?"</h2>
+
+        <div class="epilog-generator">
+            <div class="character-section">
+                <h3>Gustav der Zen-Meister</h3>
+                <div class="character-card">
+                    <div class="character-input">
+                        <select id="gustav-path">
+                            <option value="meditation">Vertiefte Meditation</option>
+                            <option value="teaching">Zen-Lehrer</option>
+                            <option value="tv">Heimlicher TV-Fan</option>
+                            <option value="writer">Spiritueller Autor</option>
+                        </select>
+                        <input type="text" id="gustav-detail" placeholder="Zusätzliche Details...">
+                    </div>
+                </div>
+
+                <h3>Herr Schnurr der Aristokrat</h3>
+                <div class="character-card">
+                    <div class="character-input">
+                        <select id="schnurr-path">
+                            <option value="palace">Eigener Mini-Palast</option>
+                            <option value="blog">Aristokratischer Blogger</option>
+                            <option value="fashion">Mode-Ikone</option>
+                            <option value="charity">Wohltäter</option>
+                        </select>
+                        <input type="text" id="schnurr-detail" placeholder="Zusätzliche Details...">
+                    </div>
+                </div>
+
+                <h3>Waldemar der Dramatiker</h3>
+                <div class="character-card">
+                    <div class="character-input">
+                        <select id="waldemar-path">
+                            <option value="critic">Soap-Kritiker</option>
+                            <option value="actor">Serien-Star</option>
+                            <option value="director">Regisseur</option>
+                            <option value="writer">Drehbuchautor</option>
+                        </select>
+                        <input type="text" id="waldemar-detail" placeholder="Zusätzliche Details...">
+                    </div>
+                </div>
+
+                <h3>Frau Müller die Allwissende</h3>
+                <div class="character-card">
+                    <div class="character-input">
+                        <select id="mueller-path">
+                            <option value="blogger">Lifestyle-Bloggerin</option>
+                            <option value="advisor">Ratgeberin</option>
+                            <option value="networker">Netzwerkerin</option>
+                            <option value="influencer">Social Media Star</option>
+                        </select>
+                        <input type="text" id="mueller-detail" placeholder="Zusätzliche Details...">
+                    </div>
+                </div>
+            </div>
+
+            <div class="interaction-section">
+                <h3>Spezielle Interaktionen</h3>
+                <div class="interaction-grid">
+                    <div class="interaction-card" data-effect="zen-soap">
+                        <h4>Gustav & Waldemar</h4>
+                        <p>Meditation-Soap-Opera</p>
+                    </div>
+                    <div class="interaction-card" data-effect="noble-blog">
+                        <h4>Herr Schnurr & Frau Müller</h4>
+                        <p>Aristokratischer Lifestyle-Blog</p>
+                    </div>
+                    <div class="interaction-card" data-effect="therapy-show">
+                        <h4>Gustav & Frau Müller</h4>
+                        <p>Zen-Therapie-Show</p>
+                    </div>
+                    <div class="interaction-card" data-effect="royal-drama">
+                        <h4>Waldemar & Herr Schnurr</h4>
+                        <p>Historische Unterwasser-Dramaserie</p>
+                    </div>
+                </div>
+
+                <h3>Besondere Ereignisse</h3>
+                <select id="special-event" class="event-selector">
+                    <option value="none">Kein besonderes Ereignis</option>
+                    <option value="reunion">Große WG-Reunion-Show</option>
+                    <option value="award">Haustier-des-Jahres-Verleihung</option>
+                    <option value="book">Gemeinsames Buch-Projekt</option>
+                    <option value="festival">Interspecies-Kulturfestival</option>
+                    <option value="movie">Dokumentarfilm über die WG</option>
+                </select>
+
+                <div class="tone-buttons">
+                    <button class="tone-button active" data-tone="funny">Humorvoll</button>
+                    <button class="tone-button" data-tone="dramatic">Dramatisch</button>
+                    <button class="tone-button" data-tone="philosophical">Philosophisch</button>
+                    <button class="tone-button" data-tone="heartwarming">Herzerwärmend</button>
+                </div>
+            </div>
+
+            <button class="btn" id="generate-btn">Epilog generieren</button>
+            <div class="epilog-result" id="result"></div>
+        </div>
+    </div>
+
+<script>
+        const characters = {
+            gustav: {
+                meditation: [
+                    "vertiefte seine Meditation zu neuen Höhen",
+                    "entwickelte seine eigene Zen-Schule",
+                    "fand die ultimative Erleuchtung im Spiegelbild",
+                    "schrieb das Buch 'Zen und die Kunst des Federpflegens'",
+                    "gründete ein Retreat-Center für gestresste Haustiere"
+                ],
+                teaching: [
+                    "begann Meditationskurse für gestresste Haustiere",
+                    "schrieb ein Buch: 'Omm - Der Weg zur inneren Katze'",
+                    "gründete das erste Zen-Center für Vögel",
+                    "wurde zum spirituellen Berater von Prominenten",
+                    "entwickelte eine App für meditierende Haustiere"
+                ],
+                tv: [
+                    "schaute heimlich Waldemars Soaps",
+                    "entwickelte 'Meditation-TV'",
+                    "wurde YouTube-Star mit Zen-Tutorials",
+                    "moderierte 'Om Sweet Om - Die Entspannungsshow'",
+                    "startete einen Meditation-Podcast"
+                ],
+                writer: [
+                    "verfasste 'Zen und die Kunst der Vogelpflege'",
+                    "startete einen spirituellen Blog",
+                    "wurde zum gefeierten Haustier-Philosophen",
+                    "veröffentlichte eine Gedichtsammlung",
+                    "schrieb Drehbücher für Entspannungsvideos"
+                ]
+            },
+            schnurr: {
+                palace: [
+                    "richtete sich einen majestätischen Katzenpalast ein",
+                    "installierte goldene Kratzbäume",
+                    "ließ sich einen eigenen Thronsaal bauen",
+                    "eröffnete eine noble Katzen-Boutique",
+                    "gestaltete einen royalen Garten"
+                ],
+                blog: [
+                    "startete einen erfolgreichen Lifestyle-Blog",
+                    "wurde zum Social-Media-Influencer",
+                    "schrieb Kolumnen für 'Aristocats Weekly'",
+                    "veröffentlichte ein Coffee-Table-Book",
+                    "moderierte eine Online-Show über nobles Leben"
+                ],
+                fashion: [
+                    "lancierte seine eigene Modemarke",
+                    "wurde zum Trendsetter der Katzenwelt",
+                    "erschien auf dem Cover der 'Vogue Pets'",
+                    "designte eine Kollektion von Halsbändern",
+                    "organisierte Katzen-Modenschauen"
+                ],
+                charity: [
+                    "gründete eine Stiftung für bedürftige Katzen",
+                    "organisierte Benefiz-Galas",
+                    "wurde zum Botschafter für Tierrechte",
+                    "eröffnete mehrere Katzencafés",
+                    "spendete großzügig an Tierheime"
+                ]
+            },
+            waldemar: {
+                critic: [
+                    "wurde zum gefürchteten Soap-Opera-Kritiker",
+                    "schrieb eine Kolumne 'Waldemars Wertungen'",
+                    "moderierte eine TV-Kritik-Show",
+                    "veröffentlichte ein Buch über Seifenopern",
+                    "gründete einen Streaming-Dienst für Soaps"
+                ],
+                actor: [
+                    "bekam die Hauptrolle in 'Pfoten des Schicksals'",
+                    "gewann einen Emmy für beste Tierdarbietung",
+                    "spielte in internationalen Produktionen",
+                    "gründete seine eigene Schauspielschule",
+                    "wurde zum bestbezahlten Tier-Schauspieler"
+                ],
+                director: [
+                    "inszenierte 'Die Kratzbaumkönigin'",
+                    "gewann mehrere Regiepreise",
+                    "revolutionierte das Tier-TV",
+                    "gründete ein Produktionsstudio",
+                    "drehte epische Tierfilme"
+                ],
+                writer: [
+                    "schrieb Drehbücher für erfolgreiche Serien",
+                    "verfasste den Bestseller 'Soap Life'",
+                    "entwickelte neue TV-Formate",
+                    "wurde zum gefragten Storytelling-Coach",
+                    "kreierte eine Superhelden-Serie"
+                ]
+            },
+            mueller: {
+                blogger: [
+                    "wurde zur erfolgreichsten Lifestyle-Bloggerin",
+                    "schrieb täglich über neue Trends",
+                    "hatte Millionen von Followern",
+                    "veröffentlichte mehrere Ratgeber",
+                    "moderierte ihre eigene Talk-Show"
+                ],
+                advisor: [
+                    "beriet prominente Persönlichkeiten",
+                    "eröffnete eine Beratungspraxis",
+                    "hielt motivierende Vorträge",
+                    "schrieb eine Ratgeber-Kolumne",
+                    "entwickelte Coaching-Programme"
+                ],
+                networker: [
+                    "organisierte die größten Tier-Networking-Events",
+                    "gründete einen exklusiven Club",
+                    "vermittelte wichtige Kontakte",
+                    "wurde zur Eventplanerin der Stars",
+                    "startete eine Networking-App"
+                ],
+                influencer: [
+                    "wurde zum Social-Media-Phänomen",
+                    "hatte ihre eigene Reality-Show",
+                    "lancierte mehrere Produktlinien",
+                    "schrieb ein Buch über Influencer-Marketing",
+                    "wurde zur digitalen Marketingexpertin"
+                ]
+            }
+        };
+
+        const specialInteractions = {
+            "zen-soap": [
+                "Gustav und Waldemar produzierten gemeinsam 'Zen und die Seifenoper des Lebens'",
+                "Sie entwickelten meditative Soap-Operas für gestresste Haustiere",
+                "Ihre Show 'Om Sweet Drama' wurde zum überraschenden Hit"
+            ],
+            "noble-blog": [
+                "Herr Schnurr und Frau Müller starteten 'Aristokratische Lebensweisheiten'",
+                "Ihr Lifestyle-Blog 'Noble Nachbarschaft' gewann mehrere Preise",
+                "Sie wurden zu den einflussreichsten Haustier-Influencern"
+            ],
+            "therapy-show": [
+                "Gustav und Frau Müller eröffneten eine Zen-Beratungspraxis",
+                "Ihre Therapie-Show 'Innerer Frieden für Alle' wurde zum Quotenhit",
+                "Sie revolutionierten die Haustier-Psychotherapie"
+            ],
+            "royal-drama": [
+                "Waldemar und Herr Schnurr inszenierten 'Die Kronjuwelen von Aquaria'",
+                "Ihre historische Drama-Serie wurde international ausgezeichnet",
+                "Sie gründeten die erste Unterwasser-Theaterschule"
+            ]
+        };
+
+        const specialEvents = {
+            reunion: [
+                "Bei der großen WG-Reunion-Show gab es tränenreiche Wiedersehen",
+                "Die Live-Übertragung brach alle Zuschauerrekorde",
+                "Es wurde eine jährliche Tradition daraus"
+            ],
+            award: [
+                "Bei der Haustier-des-Jahres-Verleihung gewannen alle in verschiedenen Kategorien",
+                "Die Preisverleihung wurde zum gesellschaftlichen Ereignis des Jahres",
+                "Sie stifteten einen eigenen Preis für besondere Haustier-WGs"
+            ],
+            book: [
+                "Ihr gemeinsames Buch 'Leben in der Zen-Katzen-WG' wurde ein Bestseller",
+                "Der Bildband 'Chaos mit Stil' inspirierte viele neue Haustier-WGs",
+                "Ihre Memoiren wurden in mehrere Sprachen übersetzt"
+            ],
+            festival: [
+                "Das erste Interspecies-Kulturfestival wurde ein riesiger Erfolg",
+                "Das Festival wurde zur jährlichen Institution",
+                "Haustiere aus aller Welt pilgerten zu ihrem Kulturfestival"
+            ],
+            movie: [
+                "Die Dokumentation 'Die erstaunliche Zen-Katzen-WG' gewann mehrere Preise",
+                "Hollywood interessierte sich für die Filmrechte",
+                "Der Film inspirierte eine neue Reality-TV-Serie"
+            ]
+        };
+
+        const tones = {
+            funny: {
+                intros: ["In einer überraschenden Wendung...", "Wer hätte das gedacht...", "In einem Anfall von Genialität..."],
+                outros: ["Die Nachbarschaft war höchst amüsiert.", "Alle mussten schmunzeln.", "Es wurde viel gelacht."]
+            },
+            dramatic: {
+                intros: ["In einer schicksalhaften Entwicklung...", "Dramatische Veränderungen folgten...", "In einem epischen Wandel..."],
+                outros: ["Die Spannung war kaum zu ertragen.", "Es war wie in einer Seifenoper.", "Das Drama war perfekt."]
+            },
+            philosophical: {
+                intros: ["Im Laufe der Zeit zeigte sich...", "Die Weisheit des Lebens offenbarte...", "In tiefer Erkenntnis..."],
+                outros: ["Alles ergab plötzlich Sinn.", "Die Harmonie war perfekt.", "Das Universum lächelte."]
+            },
+            heartwarming: {
+                intros: ["In einer berührenden Entwicklung...", "Das Herz der WG öffnete sich...", "Mit viel Liebe und Zuneigung..."],
+                outros: ["Alle waren tief gerührt.", "Die Herzen wurden warm.", "Die Freundschaft wuchs weiter."]
+            }
+        };
+
+        function getRandomElement(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+
+        function getSelectedTone() {
+            const activeButton = document.querySelector('.tone-button.active');
+            return activeButton ? activeButton.dataset.tone : 'funny';
+        }
+
+        function getSelectedInteractions() {
+            return Array.from(document.querySelectorAll('.interaction-card.selected'))
+                .map(card => card.dataset.effect);
+        }
+
+        function generateEpilog() {
+            const gustavPath = document.getElementById('gustav-path').value;
+            const schnurrPath = document.getElementById('schnurr-path').value;
+            const waldemarPath = document.getElementById('waldemar-path').value;
+            const muellerPath = document.getElementById('mueller-path').value;
+            const specialEvent = document.getElementById('special-event').value;
+            const selectedTone = getSelectedTone();
+            const selectedInteractions = getSelectedInteractions();
+
+            const tone = tones[selectedTone];
+            const intro = getRandomElement(tone.intros);
+            const outro = getRandomElement(tone.outros);
+
+            let epilog = `Ein Jahr später...
+
+${intro}
+
+Gustav ${getRandomElement(characters.gustav[gustavPath])}.
+
+Herr Schnurr ${getRandomElement(characters.schnurr[schnurrPath])}.
+
+Waldemar ${getRandomElement(characters.waldemar[waldemarPath])}.
+
+Frau Müller ${getRandomElement(characters.mueller[muellerPath])}.`;
+
+            selectedInteractions.forEach(effect => {
+                epilog += `\n\nAußerdem: ${getRandomElement(specialInteractions[effect])}`;
+            });
+
+            if (specialEvent !== 'none') {
+                epilog += `\n\nDas Highlight des Jahres: ${getRandomElement(specialEvents[specialEvent])}`;
+            }
+
+            epilog += `\n\n${outro}
+
+Mike und seine Schwester beobachteten diese Entwicklungen mit einer Mischung aus Stolz und Verwunderung. Die chaotische Wohngemeinschaft hatte sich zu einem einzigartigen Erfolgsmodell entwickelt.
+
+"Omm", würde Gustav sagen.
+"Très sophistiqué!", würde Herr Schnurr schnurren.
+"Das ist besser als jede Soap-Opera!", würde Waldemar schwärmen.
+Und Frau Müller? Sie würde natürlich hinzufügen: "Meine Cousine dritten Grades hatte auch mal so eine Geschichte..."`;
+
+            document.getElementById('result').textContent = epilog;
+        }
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('generate-btn').addEventListener('click', generateEpilog);
+
+            document.querySelectorAll('.interaction-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    card.classList.toggle('selected');
+                });
+            });
+
+            document.querySelectorAll('.tone-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    document.querySelectorAll('.tone-button').forEach(b => 
+                        b.classList.remove('active'));
+                    button.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
