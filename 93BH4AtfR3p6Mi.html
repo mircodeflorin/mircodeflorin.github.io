@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ausreden AG - Realitäts-Transformations-Studio</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .home-button {
+            display: inline-block;
+            text-decoration: none;
+            color: #333;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .transformation-interface {
+            background: #2c3e50;
+            padding: 20px;
+            border-radius: 10px;
+            color: #ecf0f1;
+            margin: 20px 0;
+        }
+
+        .studio-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .studio-section {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .reality-canvas {
+            height: 200px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 5px;
+            margin: 10px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reality-wave {
+            position: absolute;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                rgba(52, 152, 219, 0.2),
+                rgba(46, 204, 113, 0.2),
+                rgba(52, 152, 219, 0.2));
+            animation: wave 3s linear infinite;
+        }
+
+        @keyframes wave {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0%); }
+        }
+
+        .control-panel {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        .transformation-log {
+            font-family: 'Courier New', monospace;
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 5px;
+            margin-top: 20px;
+            height: 150px;
+            overflow-y: auto;
+        }
+
+        .reality-tools {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .reality-tool {
+            background: rgba(255,255,255,0.15);
+            padding: 5px 10px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .reality-tool:hover {
+            background: rgba(255,255,255,0.25);
+            transform: scale(1.05);
+        }
+
+        .dimension-meter {
+            height: 5px;
+            background: #ddd;
+            border-radius: 10px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .dimension-level {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #3498db, #e74c3c);
+            transition: width 0.5s ease;
+        }
+
+        .reality-status {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+        }
+
+        .quantum-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io/" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Realitäts-Transformations-Studio</h1>
+        
+        <div class="transformation-interface">
+            <div class="studio-grid">
+                <div class="studio-section">
+                    <h3>🌌 Universums-Designer</h3>
+                    <div class="reality-canvas" id="universeCanvas">
+                        <div class="reality-wave"></div>
+                    </div>
+                    <div class="reality-tools">
+                        <span class="reality-tool" onclick="designUniverse('merge')">Realitäten verschmelzen</span>
+                        <span class="reality-tool" onclick="designUniverse('split')">Dimension teilen</span>
+                    </div>
+                    <div class="dimension-meter">
+                        <div class="dimension-level" id="universeMeter"></div>
+                    </div>
+                </div>
+
+                <div class="studio-section">
+                    <h3>🎭 Wahrheits-Manipulator</h3>
+                    <div class="reality-canvas" id="truthCanvas">
+                        <div class="reality-wave"></div>
+                    </div>
+                    <div class="control-panel">
+                        <button onclick="manipulateTruth('bend')">Wahrheit biegen</button>
+                        <button onclick="manipulateTruth('transform')">Realität transformieren</button>
+                    </div>
+                </div>
+
+                <div class="studio-section">
+                    <h3>🌀 Dimensions-Verschmelzer</h3>
+                    <div class="reality-canvas" id="dimensionCanvas">
+                        <div class="reality-wave"></div>
+                    </div>
+                    <div class="control-panel">
+                        <button onclick="mergeDimensions()">Dimensionen verschmelzen</button>
+                        <button onclick="stabilizeMerge()">Fusion stabilisieren</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="transformation-log" id="transformationLog">
+                Realitäts-Transformations-Studio initialisiert...
+            </div>
+
+            <div class="reality-status">
+                <span>Dimensionen aktiv: <span id="dimensionCount">1</span></span>
+                <span>Realitäts-Stabilität: <span id="stabilityLevel">100%</span></span>
+                <span>Wahrheits-Verzerrung: <span id="truthDistortion">0%</span></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let dimensionCount = 1;
+        let stabilityLevel = 100;
+        let truthDistortion = 0;
+        let particles = [];
+
+        function updateLog(message) {
+            const log = document.getElementById('transformationLog');
+            const timestamp = new Date().toLocaleTimeString();
+            log.innerHTML = `[${timestamp}] ${message}<br>${log.innerHTML}`;
+        }
+
+        function updateMeters() {
+            document.getElementById('dimensionCount').textContent = dimensionCount;
+            document.getElementById('stabilityLevel').textContent = `${stabilityLevel}%`;
+            document.getElementById('truthDistortion').textContent = `${truthDistortion}%`;
+            document.getElementById('universeMeter').style.width = `${truthDistortion}%`;
+        }
+
+        function createParticle(canvas) {
+            const particle = document.createElement('div');
+            particle.className = 'quantum-particle';
+            particle.style.left = Math.random() * canvas.offsetWidth + 'px';
+            particle.style.top = Math.random() * canvas.offsetHeight + 'px';
+            canvas.appendChild(particle);
+            return particle;
+        }
+
+        function designUniverse(action) {
+            const canvas = document.getElementById('universeCanvas');
+            if (action === 'merge') {
+                dimensionCount = Math.max(1, dimensionCount - 1);
+                truthDistortion += 10;
+                updateLog("Realitäten werden verschmolzen...");
+                createParticle(canvas);
+            } else {
+                dimensionCount++;
+                stabilityLevel -= 5;
+                updateLog("Neue Dimension wird erschaffen...");
+                for (let i = 0; i < 3; i++) createParticle(canvas);
+            }
+            
+            setTimeout(() => {
+                const effects = [
+                    "Dr. Brinkmann: 'Die Realität wird plastischer!'",
+                    "Herbert piepst: 'Quantenkohärenz bei 87.3%'",
+                    "Das Archiv beginnt, neue Realitätsebenen zu katalogisieren"
+                ];
+                updateLog(effects[Math.floor(Math.random() * effects.length)]);
+            }, 1000);
+            
+            updateMeters();
+        }
+
+        function manipulateTruth(action) {
+            truthDistortion = Math.min(100, truthDistortion + 15);
+            stabilityLevel = Math.max(0, stabilityLevel - 10);
+            
+            const canvas = document.getElementById('truthCanvas');
+            for (let i = 0; i < 5; i++) createParticle(canvas);
+            
+            updateLog(`Wahrheits-Manipulation: ${action}`);
+            updateMeters();
+        }
+
+        function mergeDimensions() {
+            dimensionCount = Math.max(1, dimensionCount - 2);
+            truthDistortion += 20;
+            stabilityLevel -= 15;
+            
+            const canvas = document.getElementById('dimensionCanvas');
+            for (let i = 0; i < 7; i++) createParticle(canvas);
+            
+            updateLog("Dimensionale Verschmelzung initiiert...");
+            updateMeters();
+        }
+
+        function stabilizeMerge() {
+            stabilityLevel = Math.min(100, stabilityLevel + 25);
+            truthDistortion = Math.max(0, truthDistortion - 10);
+            updateLog("Dimensionale Struktur wird stabilisiert...");
+            updateMeters();
+        }
+
+        // Automatische Ereignisse
+        setInterval(() => {
+            if (Math.random() < 0.1) {
+                const events = [
+                    "Spontane Realitätsfluktuation detektiert",
+                    "Dimensionale Resonanz erreicht kritischen Wert",
+                    "Die Wahrheit beginnt, sich selbst neu zu definieren"
+                ];
+                updateLog(events[Math.floor(Math.random() * events.length)]);
+                truthDistortion = Math.min(100, truthDistortion + 5);
+                updateMeters();
+            }
+        }, 10000);
+
+        // Easter Egg
+        let konamiCode = '';
+        const secretCode = 'ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightba';
+        document.addEventListener('keydown', (e) => {
+            konamiCode += e.key;
+            if (konamiCode.includes(secretCode)) {
+                updateLog("🌟 ULTIMATE TRANSFORMATION: Dr. Brinkmanns Schnurrbart übernimmt die Realitäts-Kontrolle!");
+                dimensionCount = 42;
+                truthDistortion = 100;
+                stabilityLevel = 1;
+                updateMeters();
+                konamiCode = '';
+            }
+        });
+    </script>
+</body>
+</html>
