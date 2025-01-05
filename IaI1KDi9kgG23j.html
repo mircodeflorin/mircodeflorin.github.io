@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wohnungs-Zonen-Designer - Zen-Katzen Edition</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #1a1a2e;
+            color: #e2e2e2;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #3282b8;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #e2e2e2;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .designer-panel {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .zone-auswahl {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .zone-option {
+            background: rgba(255, 255, 255, 0.1);
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .zone-option:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .zone-option.selected {
+            background: #3282b8;
+        }
+
+        .room-canvas {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            min-height: 500px;
+            position: relative;
+        }
+
+        .action-button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background: #3282b8;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .action-button:hover {
+            background: #2c5282;
+        }
+
+        .zone {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            cursor: move;
+        }
+
+        .meditation { background: rgba(76, 175, 80, 0.6); }
+        .drama { background: rgba(244, 67, 54, 0.6); }
+        .royal { background: rgba(156, 39, 176, 0.6); }
+
+        .analyse-panel {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 1000;
+        }
+
+        .close-button {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io/" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Wohnungs-Zonen-Designer</h1>
+        <h2>Harmonische Raumgestaltung</h2>
+
+        <div class="designer-panel">
+            <div class="zone-auswahl">
+                <h3>Zonen-Auswahl</h3>
+                
+                <div class="zone-option" data-zone="meditation">
+                    <h4>🧘‍♂️ Meditations-Zone</h4>
+                    <p>Für innere Ruhe und Balance</p>
+                </div>
+
+                <div class="zone-option" data-zone="drama">
+                    <h4>🎭 Drama-Zone</h4>
+                    <p>Für theatralische Momente</p>
+                </div>
+
+                <div class="zone-option" data-zone="royal">
+                    <h4>👑 Königliche Zone</h4>
+                    <p>Für aristokratische Ansprüche</p>
+                </div>
+
+                <button class="action-button" id="analyseBtn">Energien analysieren</button>
+                <button class="action-button" id="resetBtn">Zurücksetzen</button>
+            </div>
+
+            <div class="room-canvas" id="canvas"></div>
+        </div>
+    </div>
+
+    <script>
+        let selectedZone = '';
+        let zones = [];
+
+        // Zone-Optionen Event Listener
+        document.querySelectorAll('.zone-option').forEach(option => {
+            option.addEventListener('click', function() {
+                selectedZone = this.dataset.zone;
+                document.querySelectorAll('.zone-option').forEach(opt => 
+                    opt.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        // Canvas Click Handler
+        document.getElementById('canvas').addEventListener('click', function(e) {
+            if (selectedZone && e.target === this) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left - 50;
+                const y = e.clientY - rect.top - 50;
+                
+                createZone(x, y, selectedZone);
+            }
+        });
+
+        function createZone(x, y, type) {
+            const zone = document.createElement('div');
+            zone.className = `zone ${type}`;
+            zone.style.left = x + 'px';
+            zone.style.top = y + 'px';
+            zone.textContent = getZoneName(type);
+            
+            makeDraggable(zone);
+            
+            document.getElementById('canvas').appendChild(zone);
+            zones.push({ type, element: zone });
+        }
+
+        function getZoneName(type) {
+            switch(type) {
+                case 'meditation': return 'Meditations-\nbereich';
+                case 'drama': return 'Dramatische\nBühne';
+                case 'royal': return 'Königliches\nTerritorium';
+            }
+        }
+
+        function makeDraggable(element) {
+            let isDragging = false;
+            let currentX;
+            let currentY;
+            let initialX;
+            let initialY;
+
+            element.addEventListener('mousedown', startDragging);
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('mouseup', stopDragging);
+
+            function startDragging(e) {
+                initialX = e.clientX - element.offsetLeft;
+                initialY = e.clientY - element.offsetTop;
+                isDragging = true;
+            }
+
+            function drag(e) {
+                if (isDragging) {
+                    e.preventDefault();
+                    currentX = e.clientX - initialX;
+                    currentY = e.clientY - initialY;
+
+                    const canvas = document.getElementById('canvas');
+                    const rect = canvas.getBoundingClientRect();
+                    
+                    currentX = Math.max(0, Math.min(currentX, rect.width - 100));
+                    currentY = Math.max(0, Math.min(currentY, rect.height - 100));
+
+                    element.style.left = currentX + 'px';
+                    element.style.top = currentY + 'px';
+                }
+            }
+
+            function stopDragging() {
+                isDragging = false;
+            }
+        }
+
+        // Analyse Button
+        document.getElementById('analyseBtn').addEventListener('click', function() {
+            const analyse = document.createElement('div');
+            analyse.className = 'analyse-panel';
+            
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'close-button';
+            closeBtn.innerHTML = '×';
+            closeBtn.onclick = () => analyse.remove();
+            
+            let content = '<h3>Energie-Analyse:</h3>';
+            
+            const counts = {
+                meditation: zones.filter(z => z.type === 'meditation').length,
+                drama: zones.filter(z => z.type === 'drama').length,
+                royal: zones.filter(z => z.type === 'royal').length
+            };
+            
+            const total = zones.length || 1;
+            
+            content += `Meditation: ${Math.round((counts.meditation/total)*100)}%<br>`;
+            content += `Drama: ${Math.round((counts.drama/total)*100)}%<br>`;
+            content += `Royal: ${Math.round((counts.royal/total)*100)}%<br><br>`;
+            
+            content += '<h3>Bewohner-Feedback:</h3>';
+            content += generateFeedback(counts);
+            
+            analyse.appendChild(closeBtn);
+            analyse.innerHTML += content;
+            
+            document.getElementById('canvas').appendChild(analyse);
+        });
+
+        function generateFeedback(counts) {
+            let feedback = '';
+            
+            if (counts.meditation === 0) {
+                feedback += "Gustav: 'Ich spüre spirituelle Leere...'<br>";
+            } else {
+                feedback += "Gustav: 'Die Energien fließen harmonisch.'<br>";
+            }
+            
+            if (counts.drama === 0) {
+                feedback += "Waldemar: 'Wo ist das DRAMA?!'<br>";
+            } else {
+                feedback += "Waldemar: 'PERFEKT! Wie in der Jubiläumsfolge!'<br>";
+            }
+            
+            if (counts.royal === 0) {
+                feedback += "Herr Schnurr: 'Mon dieu! Welch plebejische Anordnung!'<br>";
+            } else {
+                feedback += "Herr Schnurr: 'Très bien! Fast wie in Versailles!'<br>";
+            }
+            
+            return feedback;
+        }
+
+        // Reset Button
+        document.getElementById('resetBtn').addEventListener('click', function() {
+            zones = [];
+            document.getElementById('canvas').innerHTML = '';
+            document.querySelectorAll('.zone-option').forEach(opt => 
+                opt.classList.remove('selected'));
+            selectedZone = '';
+        });
+    </script>
+</body>
+</html>
