@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nächtliche Operation Simulator - Erweitert</title>
+    <style>
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #3282b8;
+            --text-color: #e2e2e2;
+            --success-color: #4CAF50;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-color);
+            min-height: 100vh;
+            user-select: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .mission-area {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .control-panel {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .simulation-view {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            position: relative;
+            min-height: 600px;
+            overflow: hidden;
+        }
+
+        .character {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            cursor: move;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 10;
+            user-select: none;
+        }
+
+        .character.dragging {
+            transform: scale(1.2);
+            opacity: 0.8;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+
+        .target-zone {
+            position: absolute;
+            background: rgba(0, 255, 0, 0.1);
+            border: 2px solid rgba(0, 255, 0, 0.3);
+            border-radius: 5px;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            opacity: 0.3;
+            transition: all 0.3s ease;
+        }
+
+        .target-zone.active {
+            background: rgba(0, 255, 0, 0.2);
+            border-color: var(--success-color);
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
+            opacity: 0.8;
+        }
+
+        button {
+            width: 100%;
+            background: var(--accent-color);
+            border: none;
+            padding: 12px 20px;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .mission-timer {
+            font-size: 32px;
+            text-align: center;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 5px;
+            color: #4CAF50;
+        }
+
+        .character-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        .character-card h3 {
+            margin: 0;
+            padding: 5px 0;
+        }
+
+        .mission-status {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent-color);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .feedback-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px 40px;
+            border-radius: 10px;
+            display: none;
+            z-index: 100;
+            text-align: center;
+            border: 1px solid var(--accent-color);
+        }
+
+        .feedback-show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .mission-area {
+                grid-template-columns: 1fr;
+            }
+
+            .simulation-view {
+                min-height: 400px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Nächtliche Operation Simulator</h1>
+        
+        <div class="mission-area">
+            <div class="control-panel">
+                <div class="mission-controls">
+                    <button id="startButton" onclick="startMission()">Mission Starten</button>
+                    <button id="pauseButton" onclick="pauseMission()" disabled>Pause</button>
+                    <button id="resetButton" onclick="resetMission()">Zurücksetzen</button>
+                </div>
+
+                <div class="mission-timer" id="missionTimer">23:47:32</div>
+
+                <div class="character-stats">
+                    <div class="character-card">
+                        <h3>Gustav 🦜</h3>
+                        <p>Status: <span id="gustav-status">Bereit</span></p>
+                    </div>
+                    <div class="character-card">
+                        <h3>Herr Schnurr 🐱</h3>
+                        <p>Status: <span id="schnurr-status">Bereit</span></p>
+                    </div>
+                    <div class="character-card">
+                        <h3>Waldemar 🐠</h3>
+                        <p>Status: <span id="waldemar-status">Bereit</span></p>
+                    </div>
+                </div>
+
+                <div class="mission-status">
+                    <h3>Mission Status</h3>
+                    <p>Phase: <span id="currentPhase">Bereit zum Start</span></p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="missionProgress"></div>
+                    </div>
+                    <p>Fortschritt: <span id="progressPercentage">0%</span></p>
+                </div>
+            </div>
+
+            <div class="simulation-view" id="simulationView">
+                <div class="character" id="gustav" draggable="true">🦜</div>
+                <div class="character" id="schnurr" draggable="true">🐱</div>
+                <div class="character" id="waldemar" draggable="true">🐠</div>
+                <div class="target-zone" id="gustavZone">🦜</div>
+                <div class="target-zone" id="schnurrZone">🐱</div>
+                <div class="target-zone" id="waldemarZone">🐠</div>
+            </div>
+        </div>
+
+        <div class="feedback-message" id="feedbackMessage">
+            <h2 id="feedbackTitle"></h2>
+            <p id="feedbackText"></p>
+        </div>
+    </div>
+
+    <script>
+        let missionActive = false;
+        let timerInterval;
+        let gameTime = {
+            hours: 23,
+            minutes: 47,
+            seconds: 32
+        };
+
+        const characters = {
+            gustav: { inPosition: false },
+            schnurr: { inPosition: false },
+            waldemar: { inPosition: false }
+        };
+
+        function initializeGame() {
+            // Zielzonen positionieren
+            const gustavZone = document.getElementById('gustavZone');
+            gustavZone.style.left = '80%';
+            gustavZone.style.top = '20%';
+
+            const schnurrZone = document.getElementById('schnurrZone');
+            schnurrZone.style.left = '20%';
+            schnurrZone.style.top = '50%';
+
+            const waldemarZone = document.getElementById('waldemarZone');
+            waldemarZone.style.left = '50%';
+            waldemarZone.style.top = '80%';
+
+            // Startpositionen der Charaktere
+            const gustav = document.getElementById('gustav');
+            gustav.style.left = '10%';
+            gustav.style.top = '10%';
+
+            const schnurr = document.getElementById('schnurr');
+            schnurr.style.left = '10%';
+            schnurr.style.top = '40%';
+
+            const waldemar = document.getElementById('waldemar');
+            waldemar.style.left = '10%';
+            waldemar.style.top = '70%';
+
+            // Status zurücksetzen
+            Object.keys(characters).forEach(char => {
+                characters[char].inPosition = false;
+                document.getElementById(`${char}-status`).textContent = 'Bereit';
+            });
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                gameTime.seconds--;
+                if (gameTime.seconds < 0) {
+                    gameTime.seconds = 59;
+                    gameTime.minutes--;
+                    if (gameTime.minutes < 0) {
+                        gameTime.minutes = 59;
+                        gameTime.hours--;
+                    }
+                }
+                
+                document.getElementById('missionTimer').textContent = 
+                    `${String(gameTime.hours).padStart(2, '0')}:${String(gameTime.minutes).padStart(2, '0')}:${String(gameTime.seconds).padStart(2, '0')}`;
+                
+                if (gameTime.hours === 0 && gameTime.minutes === 0 && gameTime.seconds === 0) {
+                    endMission('timeout');
+                }
+            }, 1000);
+        }
+
+        function startMission() {
+            missionActive = true;
+            document.getElementById('startButton').disabled = true;
+            document.getElementById('pauseButton').disabled = false;
+            document.getElementById('currentPhase').textContent = 'Mission läuft';
+            startTimer();
+            showFeedback('Mission gestartet', 'Platziere die Tiere in ihren markierten Zonen!');
+        }
+
+        function pauseMission() {
+            missionActive = !missionActive;
+            const pauseButton = document.getElementById('pauseButton');
+            pauseButton.textContent = missionActive ? 'Pause' : 'Fortsetzen';
+            
+            if (missionActive) {
+                startTimer();
+                document.getElementById('currentPhase').textContent = 'Mission läuft';
+            } else {
+                clearInterval(timerInterval);
+                document.getElementById('currentPhase').textContent = 'Pausiert';
+            }
+        }
+
+        function resetMission() {
+            missionActive = false;
+            clearInterval(timerInterval);
+            gameTime = { hours: 23, minutes: 47, seconds: 32 };
+            document.getElementById('missionTimer').textContent = '23:47:32';
+            document.getElementById('startButton').disabled = false;
+            document.getElementById('pauseButton').disabled = true;
+            document.getElementById('pauseButton').textContent = 'Pause';
+            document.getElementById('currentPhase').textContent = 'Bereit zum Start';
+            document.getElementById('missionProgress').style.width = '0%';
+            document.getElementById('progressPercentage').textContent = '0%';
+            
+            document.querySelectorAll('.target-zone').forEach(zone => {
+                zone.classList.remove('active');
+            });
+            
+            initializeGame();
+        }
+
+        // Drag & Drop Handler
+        document.querySelectorAll('.character').forEach(char => {
+            char.addEventListener('dragstart', (e) => {
+                if (!missionActive) return;
+                e.target.classList.add('dragging');
+            });
+
+            char.addEventListener('dragend', (e) => {
+                e.target.classList.remove('dragging');
+            });
+        });
+
+        document.querySelector('.simulation-view').addEventListener('dragover', (e) => {
+            e.preventDefault();
+        });
+
+        document.querySelector('.simulation-view').addEventListener('drop', (e) => {
+            e.preventDefault();
+            if (!missionActive) return;
+
+            const character = document.querySelector('.dragging');
+            if (!character) return;
+
+            const rect = e.currentTarget.getBoundingClientRect();
+            const x = e.clientX - rect.left - 25;
+            const y = e.clientY - rect.top - 25;
+
+            moveCharacter(character.id, x, y);
+        });
+
+        function moveCharacter(id, x, y) {
+            const character = document.getElementById(id);
+            character.style.left = `${x}px`;
+            character.style.top = `${y}px`;
+
+            checkPosition(id);
+            updateProgress();
+        }
+
+        function checkPosition(characterId) {
+            const character = document.getElementById(characterId);
+            const targetZone = document.getElementById(`${characterId}Zone`);
+            const charRect = character.getBoundingClientRect();
+            const zoneRect = targetZone.getBoundingClientRect();
+
+            const inPosition = !(charRect.right < zoneRect.left || 
+                               charRect.left > zoneRect.right || 
+                               charRect.bottom < zoneRect.top || 
+                               charRect.top > zoneRect.bottom);
+
+            characters[characterId].inPosition = inPosition;
+            
+            if (inPosition) {
+                targetZone.classList.add('active');
+                document.getElementById(`${characterId}-status`).textContent = 'Am Ziel! ✓';
+                showFeedback('Gut gemacht!', `${getCharacterName(characterId)} ist am richtigen Platz!`);
+            } else {
+                targetZone.classList.remove('active');
+                document.getElementById(`${characterId}-status`).textContent = 'Unterwegs...';
+            }
+        }
+
+        function getCharacterName(id) {
+            const names = {
+                'gustav': 'Gustav der Papagei',
+                'schnurr': 'Herr Schnurr',
+                'waldemar': 'Waldemar der Fisch'
+            };
+            return names[id] || id;
+        }
+
+        function updateProgress() {
+            const totalCharacters = Object.keys(characters).length;
+            const completedCharacters = Object.values(characters).filter(char => char.inPosition).length;
+            const progress = (completedCharacters / totalCharacters) * 100;
+
+            document.getElementById('missionProgress').style.width = `${progress}%`;
+            document.getElementById('progressPercentage').textContent = `${Math.round(progress)}%`;
+
+            if (completedCharacters === totalCharacters) {
+                showFeedback('Gratulation!', 'Alle Tiere sind sicher an ihrem Platz!');
+                setTimeout(() => endMission('success'), 1500);
+            }
+        }
+
+        function showFeedback(title, message) {
+            const feedback = document.getElementById('feedbackMessage');
+            document.getElementById('feedbackTitle').textContent = title;
+            document.getElementById('feedbackText').textContent = message;
+            
+            feedback.classList.add('feedback-show');
+            setTimeout(() => {
+                feedback.classList.remove('feedback-show');
+            }, 2000);
+        }
+
+        function endMission(result) {
+            missionActive = false;
+            clearInterval(timerInterval);
+            document.getElementById('startButton').disabled = false;
+            document.getElementById('pauseButton').disabled = true;
+
+            if (result === 'success') {
+                showFeedback('Mission erfolgreich!', 'Alle Tiere sind sicher an ihrem Platz!');
+                document.getElementById('currentPhase').textContent = 'Mission erfolgreich abgeschlossen';
+            } else if (result === 'timeout') {
+                showFeedback('Zeit abgelaufen!', 'Versuche es noch einmal!');
+                document.getElementById('currentPhase').textContent = 'Mission fehlgeschlagen - Zeit abgelaufen';
+            }
+        }
+
+        // Spiel initialisieren
+        window.onload = initializeGame;
+    </script>
+</body>
+</html>
