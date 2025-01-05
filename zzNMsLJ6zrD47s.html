@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maestro Carusos Dirigenten-Simulator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 12px 24px;
+            background: #ffd700;
+            color: #1a1a1a;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            z-index: 1000;
+            font-weight: bold;
+        }
+
+        .home-button:hover {
+            background: #ffed4a;
+            transform: translateX(5px);
+        }
+
+        .stage {
+            background: #2a2a2a;
+            padding: 20px;
+            border-radius: 15px;
+            position: relative;
+            min-height: 400px;
+            margin: 60px 0 20px;
+        }
+
+.conductor {
+            width: 120px;
+            height: 200px;
+            background: linear-gradient(45deg, #000000, #2c2c2c);
+            position: relative;
+            margin: 0 auto;
+            border-radius: 60px 60px 0 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .conductor-head {
+            width: 40px;
+            height: 40px;
+            background: #808080;
+            border-radius: 50%;
+            position: absolute;
+            top: 20px;
+            left: 40px;
+        }
+
+        .conductor-arm {
+            width: 60px;
+            height: 10px;
+            background: #2c2c2c;
+            position: absolute;
+            top: 80px;
+            transform-origin: left center;
+            transition: transform 0.3s ease;
+        }
+
+        .conductor-arm.left {
+            left: 0;
+            transform: rotate(45deg);
+        }
+
+        .conductor-arm.right {
+            right: 0;
+            transform: rotate(-45deg);
+        }
+
+        .orchestra {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .instrument {
+            width: 100px;
+            height: 100px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 2em;
+            position: relative;
+        }
+
+        .instrument.active {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+
+        .controls {
+            background: #2a2a2a;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .tempo-slider {
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .color-picker {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .color {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .color:hover {
+            transform: scale(1.2);
+        }
+
+        .title {
+            text-align: center;
+            color: #ffd700;
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255,215,0,0.5);
+        }
+
+        @keyframes conduct {
+            0% { transform: rotate(-45deg); }
+            50% { transform: rotate(45deg); }
+            100% { transform: rotate(-45deg); }
+        }
+
+        .conducting {
+            animation: conduct 1s infinite;
+        }
+
+        .start-button {
+            background: #ffd700;
+            color: #1a1a1a;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin: 20px auto;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .start-button:hover {
+            background: #ffed4a;
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 600px) {
+            .home-button {
+                position: static;
+                display: block;
+                margin-bottom: 20px;
+                width: 100%;
+                text-align: center;
+            }
+            
+            .stage {
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io/" class="home-button">← Zur Autorenseite</a>
+    <h1 class="title">Maestro Carusos Dirigenten-Simulator</h1>
+
+<button class="start-button" id="startButton">Klicken Sie hier zum Starten</button>
+
+    <div class="stage">
+        <div class="conductor" id="conductor">
+            <div class="conductor-head"></div>
+            <div class="conductor-arm left"></div>
+            <div class="conductor-arm right"></div>
+        </div>
+
+        <div class="orchestra">
+            <div class="instrument" style="background: #ff6b6b;" data-sound="mixer">
+                🍳
+                <div class="volume-indicator">Mixer</div>
+            </div>
+            <div class="instrument" style="background: #4ecdc4;" data-sound="toaster">
+                🍞
+                <div class="volume-indicator">Toaster</div>
+            </div>
+            <div class="instrument" style="background: #45b7d1;" data-sound="microwave">
+                📱
+                <div class="volume-indicator">Mikrowelle</div>
+            </div>
+            <div class="instrument" style="background: #96ceb4;" data-sound="dishwasher">
+                🍽️
+                <div class="volume-indicator">Spülmaschine</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <h3>Tempo-Kontrolle</h3>
+        <input type="range" min="40" max="200" value="120" class="tempo-slider" id="tempoSlider">
+        <div id="tempoDisplay">120 BPM</div>
+
+        <h3>Frack-Farbe</h3>
+        <div class="color-picker">
+            <div class="color" style="background: #000000" onclick="changeConductorColor('#000000')"></div>
+            <div class="color" style="background: #1a237e" onclick="changeConductorColor('#1a237e')"></div>
+            <div class="color" style="background: #b71c1c" onclick="changeConductorColor('#b71c1c')"></div>
+            <div class="color" style="background: #1b5e20" onclick="changeConductorColor('#1b5e20')"></div>
+            <div class="color" style="background: #4a148c" onclick="changeConductorColor('#4a148c')"></div>
+        </div>
+    </div>
+
+    <script>
+        let isDirecting = false;
+        let conductorInterval;
+        let activeInstruments = new Set();
+        let audioContext;
+
+        try {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        } catch (e) {
+            console.error('Web Audio API wird von Ihrem Browser nicht unterstützt!');
+        }
+
+        const soundSettings = {
+            mixer: { frequency: 440, type: 'square', volume: 0.3 },
+            toaster: { frequency: 523.25, type: 'sine', volume: 0.3 },
+            microwave: { frequency: 392, type: 'triangle', volume: 0.3 },
+            dishwasher: { frequency: 329.63, type: 'sawtooth', volume: 0.2 }
+        };
+
+        const sounds = {
+            mixer: { volume: 0, pattern: [1, 0, 1, 0] },
+            toaster: { volume: 0, pattern: [1, 1, 0, 0] },
+            microwave: { volume: 0, pattern: [0, 1, 0, 1] },
+            dishwasher: { volume: 0, pattern: [1, 0, 0, 1] }
+        };
+
+        const activeOscillators = {};
+
+        document.getElementById('startButton').addEventListener('click', function() {
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+            this.style.display = 'none';
+        });
+
+        document.getElementById('conductor').addEventListener('click', toggleConducting);
+        
+        document.querySelectorAll('.instrument').forEach(instrument => {
+            instrument.addEventListener('click', () => toggleInstrument(instrument));
+        });
+
+        document.getElementById('tempoSlider').addEventListener('input', e => {
+            document.getElementById('tempoDisplay').textContent = `${e.target.value} BPM`;
+            if (isDirecting) {
+                stopConducting();
+                startConducting();
+            }
+        });
+
+        function toggleConducting() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            
+            if (isDirecting) {
+                stopConducting();
+            } else {
+                startConducting();
+            }
+        }
+
+        function createSound(type) {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.type = soundSettings[type].type;
+            oscillator.frequency.setValueAtTime(soundSettings[type].frequency, audioContext.currentTime);
+            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            oscillator.start();
+            
+            return { oscillator, gainNode };
+        }
+
+        function startConducting() {
+            isDirecting = true;
+            const conductor = document.getElementById('conductor');
+            conductor.querySelector('.conductor-arm.left').classList.add('conducting');
+            conductor.querySelector('.conductor-arm.right').classList.add('conducting');
+            updateOrchestra();
+        }
+
+        function stopConducting() {
+            isDirecting = false;
+            const conductor = document.getElementById('conductor');
+            conductor.querySelector('.conductor-arm.left').classList.remove('conducting');
+            conductor.querySelector('.conductor-arm.right').classList.remove('conducting');
+            clearInterval(conductorInterval);
+            
+            Object.keys(activeOscillators).forEach(type => {
+                activeOscillators[type].oscillator.stop();
+                delete activeOscillators[type];
+            });
+        }
+
+        function updateOrchestra() {
+            const tempo = document.getElementById('tempoSlider').value;
+            const beatInterval = 60000 / tempo;
+            let beat = 0;
+
+            conductorInterval = setInterval(() => {
+                activeInstruments.forEach(instrument => {
+                    if (sounds[instrument].pattern[beat % 4]) {
+                        playInstrument(instrument);
+                    }
+                });
+                beat++;
+            }, beatInterval);
+        }
+
+        function playInstrument(instrument) {
+            const elem = document.querySelector(`[data-sound="${instrument}"]`);
+            elem.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                elem.style.transform = 'scale(1)';
+            }, 100);
+
+            if (!activeOscillators[instrument]) {
+                activeOscillators[instrument] = createSound(instrument);
+            }
+            
+            const { gainNode } = activeOscillators[instrument];
+            const volume = soundSettings[instrument].volume;
+            
+            gainNode.gain.cancelScheduledValues(audioContext.currentTime);
+            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+            gainNode.gain.linearRampToValueAtTime(volume, audioContext.currentTime + 0.01);
+            gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.1);
+        }
+
+        function toggleInstrument(instrument) {
+            const soundType = instrument.dataset.sound;
+            if (instrument.classList.contains('active')) {
+                instrument.classList.remove('active');
+                sounds[soundType].volume = 0;
+                activeInstruments.delete(soundType);
+                
+                if (activeOscillators[soundType]) {
+                    activeOscillators[soundType].oscillator.stop();
+                    delete activeOscillators[soundType];
+                }
+            } else {
+                instrument.classList.add('active');
+                sounds[soundType].volume = 1;
+                activeInstruments.add(soundType);
+            }
+        }
+
+        function changeConductorColor(color) {
+            document.getElementById('conductor').style.background = 
+                `linear-gradient(45deg, ${color}, ${adjustBrightness(color, 20)})`;
+        }
+
+        function adjustBrightness(color, percent) {
+            const num = parseInt(color.replace("#",""), 16),
+                amt = Math.round(2.55 * percent),
+                r = (num >> 16) + amt,
+                g = (num >> 8 & 0x00FF) + amt,
+                b = (num & 0x0000FF) + amt;
+            return "#" + (0x1000000 + (r<255?r<1?0:r:255)*0x10000 + 
+                         (g<255?g<1?0:g:255)*0x100 + 
+                         (b<255?b<1?0:b:255)).toString(16).slice(1);
+        }
+    </script>
+</body>
+</html>
