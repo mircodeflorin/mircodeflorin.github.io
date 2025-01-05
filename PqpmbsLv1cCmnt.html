@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ausreden AG - Datenbank Explorer</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .home-button {
+            display: inline-block;
+            text-decoration: none;
+            color: #333;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .database-interface {
+            background: #2c3e50;
+            padding: 20px;
+            border-radius: 10px;
+            color: #ecf0f1;
+            margin: 20px 0;
+        }
+
+        .search-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: none;
+            border-radius: 5px;
+            background: #fff;
+        }
+
+        .results-section {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 5px;
+            min-height: 200px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .excuse-card {
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .excuse-card:hover {
+            transform: translateX(10px);
+            background: #3498db;
+            color: white;
+        }
+
+        .plausibility-meter {
+            height: 5px;
+            background: #ddd;
+            border-radius: 3px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .plausibility-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2ecc71, #3498db);
+            transition: width 0.5s ease;
+        }
+
+        .ai-analysis {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 5px;
+        }
+
+        .status-display {
+            font-family: 'Courier New', monospace;
+            padding: 10px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .quantum-indicator {
+            width: 10px;
+            height: 10px;
+            background: #2ecc71;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        .filter-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin: 10px 0;
+        }
+
+        .filter-tag {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-tag:hover {
+            background: #3498db;
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io/" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Ausreden AG - Datenbank Explorer</h1>
+        
+        <div class="database-interface">
+            <div class="search-section">
+                <input type="text" id="searchInput" placeholder="Suchen Sie nach Ausreden..." oninput="searchExcuses()">
+                <div class="filter-tags">
+                    <span class="filter-tag" onclick="addFilter('zeitreisen')">Zeitreisen</span>
+                    <span class="filter-tag" onclick="addFilter('quantum')">Quantum-Ereignisse</span>
+                    <span class="filter-tag" onclick="addFilter('klassisch')">Klassische Ausreden</span>
+                    <span class="filter-tag" onclick="addFilter('kreativ')">Kreative Realitätsanpassung</span>
+                </div>
+                <select id="sortBy" onchange="sortExcuses()">
+                    <option value="plausibility">Nach Plausibilität sortieren</option>
+                    <option value="complexity">Nach Komplexität sortieren</option>
+                    <option value="timeline">Nach Zeitlinie sortieren</option>
+                </select>
+            </div>
+
+            <div class="results-section" id="results">
+                <!-- Ausreden werden hier dynamisch eingefügt -->
+            </div>
+
+            <div class="ai-analysis">
+                <h3>KI-Analyse <span class="quantum-indicator"></span></h3>
+                <div class="status-display" id="aiStatus">
+                    System bereit für Ausreden-Analyse...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const excuseDatabase = [
+            {
+                text: "Ein temporales Wurmloch im Berufsverkehr hat mich aufgehalten",
+                plausibility: 87,
+                category: "zeitreisen",
+                complexity: "hoch"
+            },
+            {
+                text: "Mein Wecker existierte heute gleichzeitig in drei Paralleluniversen",
+                plausibility: 92,
+                category: "quantum",
+                complexity: "mittel"
+            },
+            {
+                text: "Die Realität hatte heute Morgen eine kreative Phase",
+                plausibility: 95,
+                category: "kreativ",
+                complexity: "niedrig"
+            },
+            {
+                text: "Mein Hund hat die Hausaufgaben in eine andere Dimension geschickt",
+                plausibility: 78,
+                category: "klassisch",
+                complexity: "mittel"
+            }
+        ];
+
+        function searchExcuses() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const results = excuseDatabase.filter(excuse => 
+                excuse.text.toLowerCase().includes(searchTerm)
+            );
+            displayResults(results);
+            updateAIAnalysis(searchTerm);
+        }
+
+        function displayResults(excuses) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
+            
+            excuses.forEach(excuse => {
+                const excuseCard = document.createElement('div');
+                excuseCard.className = 'excuse-card';
+                excuseCard.innerHTML = `
+                    <div>${excuse.text}</div>
+                    <div class="plausibility-meter">
+                        <div class="plausibility-fill" style="width: ${excuse.plausibility}%"></div>
+                    </div>
+                    <small>Plausibilität: ${excuse.plausibility}% | Komplexität: ${excuse.complexity}</small>
+                `;
+                resultsDiv.appendChild(excuseCard);
+            });
+        }
+
+        function updateAIAnalysis(searchTerm) {
+            const aiStatus = document.getElementById('aiStatus');
+            const messages = [
+                "Analysiere Quantenkohärenz der Ausrede...",
+                "Berechne Wahrscheinlichkeitsmatrix...",
+                "Kalibriere Realitätsverzerrungsfaktor...",
+                "Überprüfe temporale Stabilität..."
+            ];
+            
+            let messageIndex = 0;
+            const updateMessage = setInterval(() => {
+                aiStatus.textContent = messages[messageIndex];
+                messageIndex = (messageIndex + 1) % messages.length;
+            }, 2000);
+
+            setTimeout(() => {
+                clearInterval(updateMessage);
+                const randomPlausibility = Math.floor(Math.random() * 100);
+                aiStatus.textContent = `Analyse abgeschlossen: ${randomPlausibility}% Plausibilität`;
+            }, 8000);
+        }
+
+        function addFilter(category) {
+            const filtered = excuseDatabase.filter(excuse => excuse.category === category);
+            displayResults(filtered);
+            updateAIAnalysis(category);
+        }
+
+        function sortExcuses() {
+            const sortBy = document.getElementById('sortBy').value;
+            const sorted = [...excuseDatabase].sort((a, b) => {
+                if (sortBy === 'plausibility') {
+                    return b.plausibility - a.plausibility;
+                }
+                return 0;
+            });
+            displayResults(sorted);
+        }
+
+        // Initial display
+        displayResults(excuseDatabase);
+
+        // Easter Egg: Konami Code
+        let konamiCode = '';
+        const secretCode = 'ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightba';
+        document.addEventListener('keydown', (e) => {
+            konamiCode += e.key;
+            if (konamiCode.includes(secretCode)) {
+                const aiStatus = document.getElementById('aiStatus');
+                aiStatus.textContent = "🌟 GEHEIMER MODUS AKTIVIERT: Zugriff auf Dr. Brinkmanns private Ausredensammlung gewährt!";
+                aiStatus.style.color = '#2ecc71';
+                konamiCode = '';
+            }
+        });
+    </script>
+</body>
+</html>
