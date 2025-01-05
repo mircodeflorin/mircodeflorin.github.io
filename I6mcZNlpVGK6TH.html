@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Das Chaos-Café Quiz</title>
+    <style>
+        body {
+            background: #1a0f2e;
+            color: #e6d5ff;
+            font-family: 'Georgia', serif;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .home-button {
+            background: #ffd700;
+            color: #1a0f2e;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 20px;
+            transition: all 0.3s;
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 1000;
+        }
+
+        .home-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .quiz-section {
+            background: rgba(74, 0, 128, 0.2);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 40px;
+            box-shadow: 0 0 20px rgba(106, 0, 184, 0.3);
+            max-width: 800px;
+            margin: 20px auto;
+        }
+
+        .quiz-question {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .quiz-question.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .quiz-options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .quiz-option {
+            background: rgba(74, 0, 128, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .quiz-option:hover {
+            background: rgba(106, 0, 184, 0.4);
+            transform: translateX(10px);
+        }
+
+        .quiz-option.correct {
+            background: rgba(0, 255, 0, 0.3);
+        }
+
+        .quiz-option.incorrect {
+            background: rgba(255, 0, 0, 0.3);
+        }
+
+        .quiz-result {
+            text-align: center;
+            font-size: 1.2em;
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            display: none;
+        }
+
+        .score-display {
+            font-size: 2em;
+            color: #ffd700;
+            margin: 20px 0;
+        }
+
+        .final-message {
+            font-style: italic;
+            color: #e6d5ff;
+            margin: 20px 0;
+        }
+
+        .restart-button {
+            background: #ffd700;
+            color: #1a0f2e;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+
+        .restart-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .explanation {
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io" class="home-button">← Home</a>
+    
+    <div class="quiz-section">
+        <h2>Das Große Chaos-Café Quiz</h2>
+        <div class="quiz-container">
+            <div id="quizContent">
+                <!-- Quiz-Fragen werden hier dynamisch eingefügt -->
+            </div>
+            <div class="quiz-result" id="quizResult">
+                <h3>Ihre Chaos-Café Weisheit</h3>
+                <div class="score-display" id="scoreDisplay"></div>
+                <div class="final-message" id="finalMessage"></div>
+                <button class="restart-button" onclick="restartQuiz()">Neue Café-Runde wagen</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const quizQuestions = [
+            {
+                question: "Was ist die wichtigste Regel der Kaffeemaschine?",
+                options: [
+                    "Sie muss jeden Tag gestimmt werden",
+                    "Vor 10 Uhr nur Bach oder Beethoven",
+                    "Sie singt nur Wagner",
+                    "Sie muss immer warm sein"
+                ],
+                correct: 1,
+                explanation: "Die Kaffeemaschine akzeptiert vor 10 Uhr nur Bach oder Beethoven!"
+            },
+            {
+                question: "Welche Farbe hat Maestro Carusos Frack wirklich?",
+                options: [
+                    "Immer blau",
+                    "Wechselt täglich, aber er sieht ihn als blau",
+                    "Schwarz",
+                    "Gold"
+                ],
+                correct: 1,
+                explanation: "Der Frack wechselt täglich die Farbe, aber Maestro Caruso sieht ihn immer als blau."
+            },
+            {
+                question: "Was ist die Besonderheit von Madame Gesterns Prophezeiungen?",
+                options: [
+                    "Sie sind immer falsch",
+                    "Sie sieht die Zukunft",
+                    "Sie erinnert sich an morgen",
+                    "Sie verwechselt alles mit Netflix-Serien"
+                ],
+                correct: 3,
+                explanation: "Madame Gestern verwechselt ihre Prophezeiungen oft mit Netflix-Serien!"
+            },
+            {
+                question: "Was ist Herberts spezielle Fähigkeit?",
+                options: [
+                    "Er kann singen",
+                    "Er piepst bei Primzahlen",
+                    "Er macht den besten Kaffee",
+                    "Er spricht mehrere Sprachen"
+                ],
+                correct: 1,
+                explanation: "Herbert, der treue Taschenrechner von Prof. Fibonacci, piepst bei jeder Primzahl!"
+            },
+            {
+                question: "Nach welchem Prinzip müssen die Tische angeordnet werden?",
+                options: [
+                    "Alphabetisch",
+                    "Nach der Fibonacci-Sequenz",
+                    "Zufällig",
+                    "Im Kreis"
+                ],
+                correct: 1,
+                explanation: "Die Tische müssen nach der Fibonacci-Sequenz angeordnet sein für perfekte Harmonie."
+            },
+            {
+                question: "Was ist die Spezialität des Kühlschranks?",
+                options: [
+                    "Mozart-Arien",
+                    "Jazz-Standards",
+                    "Wagner-Interpretationen",
+                    "Moderne Pop-Songs"
+                ],
+                correct: 2,
+                explanation: "Der Kühlschrank ist bekannt für seine dramatischen Wagner-Interpretationen!"
+            },
+            {
+                question: "Was trägt die Kaffeemaschine für besondere Anlässe?",
+                options: [
+                    "Einen Konzert-Strickpullover mit Notenschlüsseln",
+                    "Eine Krawatte",
+                    "Einen Hut",
+                    "Eine Schürze"
+                ],
+                correct: 0,
+                explanation: "Die Kaffeemaschine trägt einen speziellen Konzert-Strickpullover mit goldenen Notenschlüsseln!"
+            },
+            {
+                question: "Womit überzeugte das Café den Gesundheitsinspektor?",
+                options: [
+                    "Mit normaler Sauberkeit",
+                    "Mit Bestechung",
+                    "Mit harmonischer Hygiene und musikalischer Perfektion",
+                    "Mit günstigen Preisen"
+                ],
+                correct: 2,
+                explanation: "Das Café überzeugte durch seine einzigartige Kombination von harmonischer Hygiene und musikalischer Perfektion!"
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let questionsAnswered = false;
+
+        function initializeQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            questionsAnswered = false;
+            showQuestion();
+            document.getElementById('quizResult').style.display = 'none';
+        }
+
+        function showQuestion() {
+            const quizContent = document.getElementById('quizContent');
+            const question = quizQuestions[currentQuestion];
+            
+            let questionHTML = `
+                <div class="quiz-question active">
+                    <h3>Frage ${currentQuestion + 1}:</h3>
+                    <p>${question.question}</p>
+                    <div class="quiz-options">
+            `;
+            
+            question.options.forEach((option, index) => {
+                questionHTML += `
+                    <div class="quiz-option" onclick="checkAnswer(${index})">
+                        ${option}
+                    </div>
+                `;
+            });
+            
+            questionHTML += `</div><div class="explanation"></div></div>`;
+            quizContent.innerHTML = questionHTML;
+        }
+
+        function checkAnswer(selectedIndex) {
+            if (questionsAnswered) return;
+            
+            const question = quizQuestions[currentQuestion];
+            const options = document.querySelectorAll('.quiz-option');
+            const explanation = document.querySelector('.explanation');
+            
+            options[selectedIndex].classList.add(
+                selectedIndex === question.correct ? 'correct' : 'incorrect'
+            );
+            options[question.correct].classList.add('correct');
+            
+            explanation.style.display = 'block';
+            explanation.textContent = question.explanation;
+            
+            if (selectedIndex === question.correct) {
+                score++;
+            }
+            
+            setTimeout(() => {
+                currentQuestion++;
+                if (currentQuestion < quizQuestions.length) {
+                    showQuestion();
+                } else {
+                    showResult();
+                }
+            }, 1500);
+        }
+
+        function showResult() {
+            document.getElementById('quizContent').innerHTML = '';
+            const resultDiv = document.getElementById('quizResult');
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const finalMessage = document.getElementById('finalMessage');
+            
+            resultDiv.style.display = 'block';
+            scoreDisplay.textContent = `${score} von ${quizQuestions.length}`;
+            
+            let message;
+            const percentage = (score / quizQuestions.length) * 100;
+            
+            if (percentage === 100) {
+                message = "Sie sind ein wahrer Chaos-Café Maestro! Die Kaffeemaschine würde vor Stolz eine Arie singen!";
+            } else if (percentage >= 80) {
+                message = "Beeindruckend! Fast so harmonisch wie Herberts Primzahlen-Symphonie!";
+            } else if (percentage >= 60) {
+                message = "Nicht schlecht! Der Kühlschrank würde anerkennend brummen.";
+            } else if (percentage >= 40) {
+                message = "Ein guter Anfang! Wie Madame Gestern sagen würde: Gestern werden Sie besser gewesen sein!";
+            } else {
+                message = "Zeit für eine neue Tasse Kaffee und einen weiteren Versuch!";
+            }
+            
+            finalMessage.textContent = message;
+            questionsAnswered = true;
+        }
+
+        function restartQuiz() {
+            initializeQuiz();
+        }
+
+        // Quiz beim Laden initialisieren
+        initializeQuiz();
+    </script>
+</body>
+</html>
