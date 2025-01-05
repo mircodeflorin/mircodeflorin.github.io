@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ausreden AG - Interdimensionaler Meeting-Planer</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .home-button {
+            display: inline-block;
+            text-decoration: none;
+            color: #333;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .meeting-interface {
+            background: #2c3e50;
+            padding: 20px;
+            border-radius: 10px;
+            color: #ecf0f1;
+            margin: 20px 0;
+        }
+
+        .planning-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .planning-section {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .timeline-display {
+            height: 150px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 5px;
+            margin-top: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timeline-wave {
+            position: absolute;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                rgba(52, 152, 219, 0.2),
+                rgba(46, 204, 113, 0.2),
+                rgba(52, 152, 219, 0.2));
+            animation: wave 3s linear infinite;
+        }
+
+        @keyframes wave {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0%); }
+        }
+
+        .timeline-events {
+            position: relative;
+            z-index: 1;
+            padding: 10px;
+        }
+
+        .meeting-status {
+            font-family: 'Courier New', monospace;
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 5px;
+            margin-top: 20px;
+            height: 100px;
+            overflow-y: auto;
+        }
+
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin: 5px 0;
+            width: 100%;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        .participant-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .participant {
+            background: rgba(255,255,255,0.15);
+            padding: 5px;
+            border-radius: 3px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .participant:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateX(5px);
+        }
+
+        .paradox-meter {
+            height: 5px;
+            background: #ddd;
+            border-radius: 10px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .paradox-level {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #3498db, #e74c3c);
+            transition: width 0.5s ease;
+        }
+
+        .reality-status {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io/" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Interdimensionaler Meeting-Planer v2.0</h1>
+        
+        <div class="meeting-interface">
+            <div class="planning-grid">
+                <div class="planning-section">
+                    <h3>🕒 Zeitlinien-Koordination</h3>
+                    <div class="timeline-display">
+                        <div class="timeline-wave"></div>
+                        <div class="timeline-events" id="timelineEvents">
+                            Zeitlinien werden synchronisiert...
+                        </div>
+                    </div>
+                    <div class="control-panel">
+                        <button onclick="synchronizeTimelines()">Zeitlinien synchronisieren</button>
+                        <button onclick="optimizeTimeflow()">Zeitfluss optimieren</button>
+                    </div>
+                </div>
+
+                <div class="planning-section">
+                    <h3>👥 Persönlichkeits-Synchronisation</h3>
+                    <div class="participant-grid" id="participantGrid">
+                        <div class="participant" onclick="syncIdentity('brinkmann')">Dr. Brinkmann</div>
+                        <div class="participant" onclick="syncIdentity('rothmann')">Madame Rothmann</div>
+                        <div class="participant" onclick="syncIdentity('hausmeister')">Hausmeister</div>
+                        <div class="participant" onclick="syncIdentity('herbert')">Herbert</div>
+                    </div>
+                    <div class="paradox-meter">
+                        <div class="paradox-level" id="paradoxMeter"></div>
+                    </div>
+                    <button onclick="synchronizeAll()">Alle synchronisieren</button>
+                </div>
+
+                <div class="planning-section">
+                    <h3⚠️ Paradoxien-Vermeidung</h3>
+                    <div class="timeline-display">
+                        <div class="timeline-wave"></div>
+                        <div class="timeline-events" id="paradoxEvents">
+                            Paradoxien werden überwacht...
+                        </div>
+                    </div>
+                    <button onclick="scanParadoxes()">Paradoxien scannen</button>
+                    <button onclick="resolveConflicts()">Konflikte auflösen</button>
+                </div>
+            </div>
+
+            <div class="meeting-status" id="meetingStatus">
+                System bereit für interdimensionale Meeting-Planung...
+            </div>
+
+            <div class="reality-status">
+                <span>Zeitlinien aktiv: <span id="timelineCount">1</span></span>
+                <span>Paradoxie-Level: <span id="paradoxLevel">0%</span></span>
+                <span>Synchronität: <span id="syncLevel">100%</span></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let timelineCount = 1;
+        let paradoxLevel = 0;
+        let syncLevel = 100;
+        const activeIdentities = new Set();
+
+        function updateStatus(message) {
+            const status = document.getElementById('meetingStatus');
+            const timestamp = new Date().toLocaleTimeString();
+            status.innerHTML = `[${timestamp}] ${message}<br>${status.innerHTML}`;
+        }
+
+        function updateMeters() {
+            document.getElementById('timelineCount').textContent = timelineCount;
+            document.getElementById('paradoxLevel').textContent = `${paradoxLevel}%`;
+            document.getElementById('syncLevel').textContent = `${syncLevel}%`;
+            document.getElementById('paradoxMeter').style.width = `${paradoxLevel}%`;
+        }
+
+        function synchronizeTimelines() {
+            timelineCount = Math.max(1, timelineCount + Math.floor(Math.random() * 3));
+            updateStatus("Zeitlinien werden synchronisiert...");
+            
+            setTimeout(() => {
+                const events = [
+                    "Dr. Brinkmann erscheint gleichzeitig in drei Meetings",
+                    "Madame Rothmanns Teepause überlappt mit sich selbst",
+                    "Der Hausmeister repariert eine Zeitschleife von morgen"
+                ];
+                updateStatus(events[Math.floor(Math.random() * events.length)]);
+            }, 1000);
+            
+            updateMeters();
+        }
+
+        function optimizeTimeflow() {
+            syncLevel = Math.min(100, syncLevel + 10);
+            paradoxLevel = Math.max(0, paradoxLevel - 5);
+            updateStatus("Zeitfluss wird optimiert...");
+            updateMeters();
+        }
+
+        function syncIdentity(person) {
+            if (activeIdentities.has(person)) {
+                activeIdentities.delete(person);
+                updateStatus(`${person} wurde desynchronisiert`);
+            } else {
+                activeIdentities.add(person);
+                updateStatus(`${person} wurde zur Synchronisation hinzugefügt`);
+            }
+
+            const comments = {
+                brinkmann: "Dr. Brinkmann versucht, seine Identitäten zu koordinieren...",
+                rothmann: "Madame Rothmann synchronisiert ihre Zeitebenen...",
+                hausmeister: "Der Hausmeister justiert die Realitätsanker...",
+                herbert: "Herbert berechnet optimale Synchronizitäts-Parameter..."
+            };
+
+            setTimeout(() => updateStatus(comments[person]), 1000);
+        }
+
+        function synchronizeAll() {
+            paradoxLevel = Math.min(100, paradoxLevel + 20);
+            syncLevel = Math.max(0, syncLevel - 10);
+            updateStatus("Globale Synchronisation initiiert...");
+            updateMeters();
+        }
+
+        function scanParadoxes() {
+            const paradoxes = [
+                "Warnung: Doppelte Mittagspause in Zeitlinie 3 entdeckt",
+                "Kritisch: Dr. Brinkmanns Schnurrbart existiert in zu vielen Dimensionen",
+                "Achtung: Kaffeemaschine produziert Getränke aus der Zukunft"
+            ];
+            updateStatus(paradoxes[Math.floor(Math.random() * paradoxes.length)]);
+            paradoxLevel = Math.min(100, paradoxLevel + 10);
+            updateMeters();
+        }
+
+        function resolveConflicts() {
+            if (paradoxLevel > 0) {
+                paradoxLevel = Math.max(0, paradoxLevel - 15);
+                syncLevel = Math.min(100, syncLevel + 5);
+                updateStatus("Paradoxien werden aufgelöst...");
+                
+                setTimeout(() => {
+                    const resolutions = [
+                        "Der Hausmeister hat die Zeitschleife erfolgreich repariert",
+                        "Dr. Brinkmanns Identitäten wurden neu synchronisiert",
+                        "Madame Rothmanns Prophezeiungen wurden temporär stabilisiert"
+                    ];
+                    updateStatus(resolutions[Math.floor(Math.random() * resolutions.length)]);
+                }, 1000);
+                
+                updateMeters();
+            } else {
+                updateStatus("Keine aktiven Paradoxien gefunden");
+            }
+        }
+
+        // Easter Egg
+        let konamiCode = '';
+        const secretCode = 'ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightba';
+        document.addEventListener('keydown', (e) => {
+            konamiCode += e.key;
+            if (konamiCode.includes(secretCode)) {
+                updateStatus("🌟 CHAOS-MODUS AKTIVIERT: Dr. Brinkmanns Schnurrbart übernimmt die Meeting-Kontrolle!");
+                timelineCount = 42;
+                paradoxLevel = 99;
+                syncLevel = 1;
+                updateMeters();
+                konamiCode = '';
+            }
+        });
+
+        // Automatische Ereignisse
+        setInterval(() => {
+            if (Math.random() < 0.1) {
+                const events = [
+                    "Spontane Zeitschleife im Konferenzraum entdeckt",
+                    "Dr. Brinkmanns Identitäten synchronisieren sich selbstständig",
+                    "Die Kaffeemaschine kommuniziert mit ihrem gestrigen Ich"
+                ];
+                updateStatus(events[Math.floor(Math.random() * events.length)]);
+                paradoxLevel = Math.min(100, paradoxLevel + 5);
+                updateMeters();
+            }
+        }, 10000);
+    </script>
+</body>
+</html>
