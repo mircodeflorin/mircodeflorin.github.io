@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maestros Geheime Aufzeichnungen</title>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #f5e6d3;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: #2c1810;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .home-button:hover {
+            background-color: #4a2c1c;
+            transform: translateY(-2px);
+        }
+
+        .notebook-container {
+            max-width: 800px;
+            margin: 60px auto 0;
+            background: #fff9e6;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .paper-texture {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: repeating-linear-gradient(#fff9e6 0px, #fff9e6 24px, #e1d5c1 25px);
+            opacity: 0.3;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+        }
+
+h1 {
+            color: #8b4513;
+            text-align: center;
+            font-style: italic;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .note-entry {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255,255,255,0.7);
+            border-left: 3px solid #8b4513;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .note-entry:hover {
+            transform: scale(1.02);
+        }
+
+        .date {
+            color: #8b4513;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .secret-note {
+            font-family: 'Courier New', monospace;
+            color: #444;
+        }
+
+        .decoded-note {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            background: #fff;
+            border-radius: 5px;
+        }
+
+        .controls {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background: #8b4513;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #6b3410;
+        }
+
+        .music-notation {
+            font-family: 'Courier New', monospace;
+            white-space: pre;
+            overflow-x: auto;
+            background: #fff;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .coffee-stain {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(139,69,19,0.1) 0%, rgba(139,69,19,0) 70%);
+            pointer-events: none;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            
+            .home-button {
+                position: static;
+                display: block;
+                width: 100%;
+                margin-bottom: 20px;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+            
+            .music-notation {
+                font-size: 14px;
+            }
+
+            .notebook-container {
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="home-button" onclick="window.location.href='https://mircodeflorin.github.io'">← Zur Autorenseite</button>
+
+    <div class="notebook-container">
+        <div class="paper-texture"></div>
+        <div class="content">
+            <h1>Maestros Geheime Aufzeichnungen</h1>
+
+            <div class="controls">
+                <button onclick="decodeAllNotes()">Alle Notizen entschlüsseln</button>
+                <button onclick="hideAllNotes()">Notizen verstecken</button>
+                <button onclick="addCoffeeStain()">Kaffeefleck hinzufügen</button>
+            </div>
+
+            <div id="notes-container">
+                <!-- Notizen werden dynamisch eingefügt -->
+            </div>
+        </div>
+    </div>
+
+<script>
+        const secretNotes = [
+            {
+                date: "15. September, früher Morgen",
+                encoded: "D1e K4ff33m4sch1n3 sp13lt 1n C1s-Dur!",
+                decoded: "Die Kaffeemaschine spielt in Cis-Dur!",
+                notation: `
+    ♪    ♫   ♪    ♩
+    
+    | C#| E | G#| B |
+    
+                `,
+                observation: "Unglaublich! Die harmonischen Schwingungen entsprechen exakt der Goldenen Frequenz!"
+            },
+            {
+                date: "15. September, später Vormittag",
+                encoded: "Fr3qu3nz4n4lys3: 440Hz + K4ff33d4mpf = M3l0d13",
+                decoded: "Frequenzanalyse: 440Hz + Kaffeedampf = Melodie",
+                notation: `
+    ♩    ♪   ♫    ♪
+    
+    | F#| A | C#| E |
+    
+                `,
+                observation: "Der Dampfdruck scheint die Tonhöhe zu beeinflussen. Weitere Untersuchungen notwendig."
+            },
+            {
+                date: "15. September, Mittag",
+                encoded: "H4b3 P4rt1tur 1m K4ff33s4tz 3ntd3ckt!",
+                decoded: "Habe Partitur im Kaffeesatz entdeckt!",
+                notation: `
+    ♫    ♪   ♩    ♪
+    
+    | G#| B | D#| F#|
+    
+                `,
+                observation: "Die Muster im Kaffeesatz – sie bilden eindeutig eine musikalische Struktur!"
+            }
+        ];
+
+        function createNoteEntry(note) {
+            const div = document.createElement('div');
+            div.className = 'note-entry';
+            div.innerHTML = `
+                <div class="date">${note.date}</div>
+                <div class="secret-note">${note.encoded}</div>
+                <div class="decoded-note">
+                    <p>${note.decoded}</p>
+                    <div class="music-notation">${note.notation}</div>
+                    <p><em>${note.observation}</em></p>
+                </div>
+            `;
+            div.onclick = () => toggleNote(div);
+            return div;
+        }
+
+        function toggleNote(noteElement) {
+            const decodedNote = noteElement.querySelector('.decoded-note');
+            const currentDisplay = decodedNote.style.display;
+            decodedNote.style.display = currentDisplay === 'block' ? 'none' : 'block';
+        }
+
+        function decodeAllNotes() {
+            document.querySelectorAll('.decoded-note').forEach(note => {
+                note.style.display = 'block';
+            });
+        }
+
+        function hideAllNotes() {
+            document.querySelectorAll('.decoded-note').forEach(note => {
+                note.style.display = 'none';
+            });
+        }
+
+        function addCoffeeStain() {
+            const stain = document.createElement('div');
+            stain.className = 'coffee-stain';
+            stain.style.left = Math.random() * 80 + 10 + '%';
+            stain.style.top = Math.random() * 80 + 10 + '%';
+            document.querySelector('.notebook-container').appendChild(stain);
+        }
+
+        // Initialisierung
+        const notesContainer = document.getElementById('notes-container');
+        secretNotes.forEach(note => {
+            notesContainer.appendChild(createNoteEntry(note));
+        });
+
+        // Füge initial einige Kaffeeflecken hinzu
+        for (let i = 0; i < 3; i++) {
+            addCoffeeStain();
+        }
+    </script>
+</body>
+</html>
