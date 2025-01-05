@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Herberts Ultimative Berechnungen</title>
+    <style>
+        body {
+            background: #1a0f2e;
+            color: #e6d5ff;
+            font-family: 'Georgia', serif;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .nav-button {
+            background: #ffd700;
+            color: #1a0f2e;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 20px;
+            transition: all 0.3s;
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 1000;
+        }
+
+        .nav-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .calculator-section {
+            background: rgba(74, 0, 128, 0.2);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 60px;
+            box-shadow: 0 0 20px rgba(106, 0, 184, 0.3);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h1, h2 {
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .calculator {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ffd700;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #e6d5ff;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background: #ffd700;
+            color: #1a0f2e;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        #primeResult, #harmonyResult {
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            min-height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io" class="nav-button">← Home</a>
+
+    <div class="calculator-section">
+        <h1>Herberts Ultimative Berechnungen</h1>
+
+        <div class="calculator">
+            <h2>Primzahlen-Generator</h2>
+            <div class="input-group">
+                <label for="primeLimit">Bereich bis:</label>
+                <input type="number" id="primeLimit" min="1" max="1000">
+                <button onclick="generatePrimes()">Generieren</button>
+                <div id="primeResult"></div>
+            </div>
+        </div>
+
+        <div class="calculator">
+            <h2>Harmonische Café-Berechnung</h2>
+            <div class="input-group">
+                <label for="tables">Anzahl Tische:</label>
+                <input type="number" id="tables" min="1" max="100">
+                <label for="customers">Durchschn. Kunden:</label>
+                <input type="number" id="customers" min="1" max="1000">
+                <button onclick="calculateHarmony()">Harmoniewert berechnen</button>
+                <div id="harmonyResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function isPrime(num) {
+            if (num <= 1) return false;
+            for (let i = 2; i <= Math.sqrt(num); i++) {
+                if (num % i === 0) return false;
+            }
+            return true;
+        }
+
+        function generatePrimes() {
+            const limit = parseInt(document.getElementById('primeLimit').value);
+            if (isNaN(limit) || limit < 1 || limit > 1000) {
+                document.getElementById('primeResult').innerHTML = 
+                    "Bitte geben Sie eine Zahl zwischen 1 und 1000 ein.";
+                return;
+            }
+
+            let primes = [];
+            for (let i = 2; i <= limit; i++) {
+                if (isPrime(i)) primes.push(i);
+            }
+
+            let result = "Herbert piepst bei: " + primes.join(", ");
+            document.getElementById('primeResult').innerHTML = result;
+        }
+
+        function calculateHarmony() {
+            const tables = parseInt(document.getElementById('tables').value);
+            const customers = parseInt(document.getElementById('customers').value);
+
+            if (isNaN(tables) || isNaN(customers) || tables < 1 || customers < 1) {
+                document.getElementById('harmonyResult').innerHTML = 
+                    "Bitte geben Sie gültige Zahlen ein.";
+                return;
+            }
+
+            // Fibonacci-basierte Harmonieberechnung
+            const goldenRatio = 1.618033988749895;
+            const harmonyValue = Math.abs(customers/tables - goldenRatio);
+            let message = "";
+
+            if (harmonyValue < 0.1) {
+                message = "Perfekte Harmonie! Die Kaffeemaschine singt vor Freude!";
+            } else if (harmonyValue < 0.3) {
+                message = "Sehr harmonisch! Der Kühlschrank summt zufrieden.";
+            } else if (harmonyValue < 0.5) {
+                message = "Akzeptable Harmonie. Ein paar Tische umstellen könnte helfen.";
+            } else {
+                message = "Chaos droht! Bitte die Fibonacci-Sequenz beachten!";
+            }
+
+            document.getElementById('harmonyResult').innerHTML = message;
+        }
+    </script>
+</body>
+</html>
