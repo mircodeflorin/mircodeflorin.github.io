@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chaos Café Quiz – Kapitel 1</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5e6d3;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: #2c1810;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .home-button:hover {
+            background-color: #1a0f0a;
+            transform: translateX(5px);
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 60px auto 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #8b4513;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+.question-container {
+            margin-bottom: 30px;
+            padding: 15px;
+            background: #fff8dc;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .question-container.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .question {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            color: #444;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            padding: 10px;
+            background: #fff;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option:hover {
+            background: #f0f0f0;
+            transform: translateX(10px);
+        }
+
+        .option.selected {
+            background: #8b4513;
+            color: white;
+            border-color: #8b4513;
+        }
+
+        .option.correct {
+            background: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+
+        .option.incorrect {
+            background: #f44336;
+            color: white;
+            border-color: #f44336;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background: #8b4513;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #6b3410;
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #ddd;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: #8b4513;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        @media (max-width: 600px) {
+            .quiz-container {
+                padding: 15px;
+            }
+            
+            .question {
+                font-size: 1.1em;
+            }
+            
+            .controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            button {
+                width: 100%;
+            }
+
+            .home-button {
+                position: static;
+                display: block;
+                margin-bottom: 20px;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io/" class="home-button">← Zur Autorenseite</a>
+
+    <div class="quiz-container">
+        <h1>Chaos Café Quiz – Kapitel 1</h1>
+        
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <div id="quiz">
+            <!-- Fragen werden dynamisch eingefügt -->
+        </div>
+
+        <div class="score-container" id="score-container">
+            <h2>Quiz beendet!</h2>
+            <p>Deine Punktzahl: <span id="score">0</span> von <span id="total-questions">0</span></p>
+            <div class="coffee-meter" id="coffee-meter"></div>
+            <p id="final-feedback"></p>
+            <button onclick="restartQuiz()">Quiz neu starten</button>
+        </div>
+
+        <div class="controls">
+            <button id="prev-btn" onclick="showPreviousQuestion()" disabled>Zurück</button>
+            <button id="next-btn" onclick="showNextQuestion()" disabled>Weiter</button>
+        </div>
+    </div>
+
+<script>
+        const questions = [
+            {
+                question: "Was ist das Besondere an der Kaffeemaschine im Chaos Café?",
+                options: [
+                    "Sie macht nur kalten Kaffee",
+                    "Sie spielt Melodien beim Kaffeekochen",
+                    "Sie ist kaputt",
+                    "Sie ist sehr alt"
+                ],
+                correct: 1,
+                feedback: "Die Kaffeemaschine ist tatsächlich musikalisch begabt und erzeugt beim Kaffeekochen verschiedene Melodien!"
+            },
+            {
+                question: "In welcher Tonart spielt die Kaffeemaschine laut Maestros Aufzeichnungen?",
+                options: [
+                    "A-Dur",
+                    "H-Moll",
+                    "Cis-Dur",
+                    "D-Moll"
+                ],
+                correct: 2,
+                feedback: "Gemäß Maestros geheimen Notizen spielt die Kaffeemaschine in Cis-Dur!"
+            },
+            {
+                question: "Was entdeckte Maestro im Kaffeesatz?",
+                options: [
+                    "Eine Prophezeiung",
+                    "Eine Partitur",
+                    "Einen Schatz",
+                    "Eine Botschaft"
+                ],
+                correct: 1,
+                feedback: "Maestro entdeckte tatsächlich eine Partitur im Kaffeesatz – welch erstaunliche Entdeckung!"
+            },
+            {
+                question: "Welche Frequenz wurde in Maestros Analyse erwähnt?",
+                options: [
+                    "432 Hz",
+                    "440 Hz",
+                    "448 Hz",
+                    "424 Hz"
+                ],
+                correct: 1,
+                feedback: "In seinen Aufzeichnungen notierte Maestro die Frequenz 440 Hz in Verbindung mit dem Kaffeedampf."
+            },
+            {
+                question: "Was beeinflusst laut Maestros Beobachtungen die Tonhöhe?",
+                options: [
+                    "Die Wassertemperatur",
+                    "Die Kaffeestärke",
+                    "Der Dampfdruck",
+                    "Die Tageszeit"
+                ],
+                correct: 2,
+                feedback: "Der Dampfdruck hat laut Maestros Notizen einen direkten Einfluss auf die Tonhöhe!"
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let answeredQuestions = new Array(questions.length).fill(false);
+
+        function initializeQuiz() {
+            showQuestion(currentQuestion);
+            updateProgressBar();
+            updateControls();
+        }
+
+        function showQuestion(index) {
+            const quizContainer = document.getElementById('quiz');
+            const question = questions[index];
+
+            const questionHTML = `
+                <div class="question-container active">
+                    <div class="question">${index + 1}. ${question.question}</div>
+                    <div class="options">
+                        ${question.options.map((option, i) => `
+                            <div class="option" onclick="selectOption(${i})">${option}</div>
+                        `).join('')}
+                    </div>
+                    <div class="feedback"></div>
+                </div>
+            `;
+
+            quizContainer.innerHTML = questionHTML;
+        }
+
+        function selectOption(optionIndex) {
+            if (answeredQuestions[currentQuestion]) return;
+
+            const options = document.querySelectorAll('.option');
+            const feedback = document.querySelector('.feedback');
+            const currentAnswer = questions[currentQuestion].correct;
+
+            options.forEach(option => option.classList.remove('selected'));
+            options[optionIndex].classList.add('selected');
+
+            if (optionIndex === currentAnswer) {
+                options[optionIndex].classList.add('correct');
+                score++;
+                feedback.style.display = 'block';
+                feedback.style.background = '#e8f5e9';
+                feedback.style.color = '#2e7d32';
+                feedback.textContent = "Richtig! " + questions[currentQuestion].feedback;
+            } else {
+                options[optionIndex].classList.add('incorrect');
+                options[currentAnswer].classList.add('correct');
+                feedback.style.display = 'block';
+                feedback.style.background = '#ffebee';
+                feedback.style.color = '#c62828';
+                feedback.textContent = "Nicht ganz! " + questions[currentQuestion].feedback;
+            }
+
+            answeredQuestions[currentQuestion] = true;
+            document.getElementById('next-btn').disabled = false;
+            updateProgressBar();
+        }
+
+        function showNextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+                updateControls();
+            } else {
+                showFinalScore();
+            }
+            updateProgressBar();
+        }
+
+        function showPreviousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion(currentQuestion);
+                updateControls();
+            }
+            updateProgressBar();
+        }
+
+        function updateControls() {
+            document.getElementById('prev-btn').disabled = currentQuestion === 0;
+            document.getElementById('next-btn').disabled = !answeredQuestions[currentQuestion];
+        }
+
+        function updateProgressBar() {
+            const progress = (currentQuestion + 1) / questions.length * 100;
+            document.getElementById('progress').style.width = `${progress}%`;
+        }
+
+        function showFinalScore() {
+            document.getElementById('quiz').style.display = 'none';
+            document.getElementById('score-container').style.display = 'block';
+            document.getElementById('score').textContent = score;
+            document.getElementById('total-questions').textContent = questions.length;
+
+            const coffeeMeter = document.getElementById('coffee-meter');
+            const coffeeCount = Math.ceil((score / questions.length) * 5);
+            coffeeMeter.textContent = '☕'.repeat(coffeeCount);
+
+            const feedback = document.getElementById('final-feedback');
+            if (score === questions.length) {
+                feedback.textContent = "Perfekt! Du bist ein wahrer Kenner des Chaos Cafés!";
+            } else if (score >= questions.length * 0.7) {
+                feedback.textContent = "Sehr gut! Du verstehst die Musik des Cafés!";
+            } else if (score >= questions.length * 0.5) {
+                feedback.textContent = "Nicht schlecht! Aber da ist noch Raum für mehr Chaos!";
+            } else {
+                feedback.textContent = "Übe weiter – das Chaos wartet auf dich!";
+            }
+
+            document.querySelector('.controls').style.display = 'none';
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            answeredQuestions = new Array(questions.length).fill(false);
+            document.getElementById('quiz').style.display = 'block';
+            document.getElementById('score-container').style.display = 'none';
+            document.querySelector('.controls').style.display = 'flex';
+            initializeQuiz();
+        }
+
+        // Quiz starten
+        initializeQuiz();
+    </script>
+</body>
+</html>
