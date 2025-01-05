@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sofa-Befreiungs-Spiel</title>
+    <style>
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #3282b8;
+            --text-color: #e2e2e2;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-color);
+            min-height: 100vh;
+            touch-action: none;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .game-area {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            position: relative;
+            height: 400px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .cat {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            transition: all 0.1s ease;
+            z-index: 10;
+        }
+
+        .sofa {
+            position: absolute;
+            width: 100px;
+            height: 60px;
+            background: #8B4513;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+
+        .obstacle {
+            position: absolute;
+            background: #964B00;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .control-btn {
+            background: var(--accent-color);
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            color: white;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            transition: transform 0.1s ease, background-color 0.1s ease;
+        }
+
+        .control-btn:active {
+            transform: scale(0.95);
+            background: #2671a4;
+        }
+
+        .control-btn.up { grid-column: 2; }
+        .control-btn.left { grid-column: 1; grid-row: 2; }
+        .control-btn.right { grid-column: 3; grid-row: 2; }
+        .control-btn.down { grid-column: 2; grid-row: 3; }
+
+        .game-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .stealth-meter {
+            width: 100%;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        .stealth-fill {
+            height: 100%;
+            background: #4CAF50;
+            width: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+            text-align: center;
+            z-index: 100;
+        }
+
+        .start-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .start-btn {
+            background: var(--accent-color);
+            border: none;
+            padding: 15px 30px;
+            color: white;
+            font-size: 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 400px) {
+            .control-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sofa-Befreiungs-Spiel</h1>
+        
+        <div class="game-stats">
+            <div>
+                <div>Zeit: <span id="timeDisplay">60</span>s</div>
+            </div>
+            <div>
+                <div>Tarnung</div>
+                <div class="stealth-meter">
+                    <div class="stealth-fill" id="stealthMeter"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="game-area">
+            <div class="cat" id="playerCat">🐱</div>
+            <div class="sofa" id="targetSofa">🛋️</div>
+        </div>
+
+        <div class="controls">
+            <button class="control-btn up" id="upBtn">⬆️</button>
+            <button class="control-btn left" id="leftBtn">⬅️</button>
+            <button class="control-btn right" id="rightBtn">➡️</button>
+            <button class="control-btn down" id="downBtn">⬇️</button>
+        </div>
+
+        <div class="message" id="message"></div>
+        <div class="start-screen" id="startScreen">
+            <h2>Befreie das Sofa!</h2>
+            <p>Schleiche dich zum Sofa, aber pass auf die Hindernisse auf!</p>
+            <button class="start-btn" onclick="startGame()">Spiel starten</button>
+        </div>
+    </div>
+
+    <script>
+        const cat = document.getElementById('playerCat');
+        const step = 5;
+        let catX = 50;
+        let catY = 50;
+        let isMoving = false;
+        let gameActive = false;
+        let stealthLevel = 100;
+        let timeLeft = 60;
+        let obstacles = [];
+        let gameTimer;
+
+        function createObstacles() {
+            const gameArea = document.querySelector('.game-area');
+            const obstacleCount = 5;
+
+            for (let i = 0; i < obstacleCount; i++) {
+                const obstacle = document.createElement('div');
+                obstacle.className = 'obstacle';
+                
+                const width = Math.random() * 60 + 40;
+                const height = Math.random() * 60 + 40;
+                const x = Math.random() * (gameArea.offsetWidth - width);
+                const y = Math.random() * (gameArea.offsetHeight - height);
+
+                obstacle.style.width = width + 'px';
+                obstacle.style.height = height + 'px';
+                obstacle.style.left = x + 'px';
+                obstacle.style.top = y + 'px';
+
+                gameArea.appendChild(obstacle);
+                obstacles.push({
+                    element: obstacle,
+                    x: x,
+                    y: y,
+                    width: width,
+                    height: height
+                });
+            }
+        }
+
+        function updateCatPosition() {
+            const gameArea = document.querySelector('.game-area');
+            const maxX = gameArea.offsetWidth - cat.offsetWidth;
+            const maxY = gameArea.offsetHeight - cat.offsetHeight;
+
+            catX = Math.max(0, Math.min(catX, maxX));
+            catY = Math.max(0, Math.min(catY, maxY));
+
+            cat.style.left = catX + 'px';
+            cat.style.top = catY + 'px';
+            
+            checkCollisions();
+            checkWinCondition();
+        }
+
+        function moveDirection(direction) {
+            if (!gameActive) return;
+
+            const oldX = catX;
+            const oldY = catY;
+
+            switch(direction) {
+                case 'up':
+                    catY -= step;
+                    break;
+                case 'down':
+                    catY += step;
+                    break;
+                case 'left':
+                    catX -= step;
+                    break;
+                case 'right':
+                    catX += step;
+                    break;
+            }
+
+            updateCatPosition();
+        }
+
+        function checkCollisions() {
+            const catRect = {
+                x: catX,
+                y: catY,
+                width: 50,
+                height: 50
+            };
+
+            obstacles.forEach(obs => {
+                if (!(catRect.x + catRect.width < obs.x ||
+                    catRect.x > obs.x + obs.width ||
+                    catRect.y + catRect.height < obs.y ||
+                    catRect.y > obs.y + obs.height)) {
+                    decreaseStealthLevel(2);
+                }
+            });
+        }
+
+        function decreaseStealthLevel(amount) {
+            stealthLevel = Math.max(0, stealthLevel - amount);
+            document.getElementById('stealthMeter').style.width = stealthLevel + '%';
+
+            if (stealthLevel <= 0) {
+                endGame('fail');
+            }
+        }
+
+        function checkWinCondition() {
+            const sofa = document.getElementById('targetSofa').getBoundingClientRect();
+            const catRect = cat.getBoundingClientRect();
+
+            if (!(catRect.right < sofa.left || 
+                  catRect.left > sofa.right || 
+                  catRect.bottom < sofa.top || 
+                  catRect.top > sofa.bottom)) {
+                endGame('success');
+            }
+        }
+
+        // Steuerung
+        window.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case 'ArrowUp':
+                    moveDirection('up');
+                    break;
+                case 'ArrowDown':
+                    moveDirection('down');
+                    break;
+                case 'ArrowLeft':
+                    moveDirection('left');
+                    break;
+                case 'ArrowRight':
+                    moveDirection('right');
+                    break;
+            }
+        });
+
+        // Touch-Steuerung
+        const buttons = {
+            'upBtn': 'up',
+            'downBtn': 'down',
+            'leftBtn': 'left',
+            'rightBtn': 'right'
+        };
+
+        Object.entries(buttons).forEach(([btnId, direction]) => {
+            const button = document.getElementById(btnId);
+            let moveInterval;
+
+            ['touchstart', 'mousedown'].forEach(eventType => {
+                button.addEventListener(eventType, (e) => {
+                    e.preventDefault();
+                    if (!isMoving && gameActive) {
+                        isMoving = true;
+                        moveInterval = setInterval(() => moveDirection(direction), 50);
+                    }
+                });
+            });
+
+            ['touchend', 'mouseup', 'mouseleave'].forEach(eventType => {
+                button.addEventListener(eventType, () => {
+                    isMoving = false;
+                    clearInterval(moveInterval);
+                });
+            });
+        });
+
+        function startGame() {
+            document.getElementById('startScreen').style.display = 'none';
+            gameActive = true;
+            timeLeft = 60;
+            stealthLevel = 100;
+            document.getElementById('stealthMeter').style.width = '100%';
+            
+            createObstacles();
+            updateCatPosition();
+            
+            gameTimer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timeDisplay').textContent = timeLeft;
+                
+                if (timeLeft <= 0) {
+                    endGame('timeout');
+                }
+            }, 1000);
+        }
+
+        function endGame(result) {
+            gameActive = false;
+            clearInterval(gameTimer);
+            
+            const message = document.getElementById('message');
+            switch(result) {
+                case 'success':
+                    message.textContent = 'Geschafft! Das Sofa ist befreit!';
+                    break;
+                case 'fail':
+                    message.textContent = 'Du wurdest entdeckt!';
+                    break;
+                case 'timeout':
+                    message.textContent = 'Zeit abgelaufen!';
+                    break;
+            }
+            
+            message.style.display = 'block';
+            setTimeout(() => {
+                message.style.display = 'none';
+                resetGame();
+            }, 2000);
+        }
+
+        function resetGame() {
+            catX = 50;
+            catY = 50;
+            updateCatPosition();
+            
+            obstacles.forEach(obs => obs.element.remove());
+            obstacles = [];
+            
+            document.getElementById('startScreen').style.display = 'flex';
+        }
+
+        // Sofa-Position setzen
+        function positionSofa() {
+            const sofa = document.getElementById('targetSofa');
+            const gameArea = document.querySelector('.game-area');
+            sofa.style.right = '50px';
+            sofa.style.bottom = '50px';
+        }
+
+        // Spiel initialisieren
+        positionSofa();
+    </script>
+</body>
+</html>
