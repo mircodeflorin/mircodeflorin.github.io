@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Musikalische Kaffeemaschine 3.0</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            font-family: 'Courier New', monospace;
+            background: #1a1a1a;
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-family: Arial, sans-serif;
+            transition: all 0.3s;
+            z-index: 1000;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+        }
+
+        .home-button:hover {
+            background: #45a049;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .machine-container {
+            position: relative;
+            width: 300px;
+            height: 400px;
+            margin: 20px auto;
+        }
+
+        .coffee-machine {
+            width: 200px;
+            height: 300px;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(45deg, #444, #333);
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            cursor: pointer;
+            transition: transform 0.3s;
+            overflow: visible;
+        }
+
+        .coffee-machine:hover {
+            transform: translateX(-50%) scale(1.02);
+        }
+
+        .coffee-machine:active {
+            transform: translateX(-50%) scale(0.98);
+        }
+
+        .display {
+            width: 80%;
+            height: 40px;
+            margin: 20px auto;
+            background: #000;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0f0;
+            font-family: monospace;
+            text-shadow: 0 0 5px #0f0;
+        }
+
+        .steam-container {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            width: 60px;
+            height: 100px;
+            transform: translateX(-50%);
+        }
+
+        .steam {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            filter: blur(5px);
+            pointer-events: none;
+        }
+
+        .coffee-cup {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 90px;
+            background: linear-gradient(to right, #fff, #e0e0e0);
+            border-radius: 5px 5px 40px 40px;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+        }
+
+        .coffee-liquid {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 0;
+            background: linear-gradient(to bottom, #6b4423, #402913);
+            transition: height 0.5s ease-out;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.3) inset;
+        }
+
+        .controls {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        }
+
+        .button-row {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            background: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+            text-transform: uppercase;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+        }
+
+        button:hover {
+            background: #45a049;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        button.active {
+            background: #367c39;
+            box-shadow: 0 0 15px #4CAF50;
+        }
+
+        .mode-btn {
+            background: #666;
+        }
+
+        .mode-btn.active {
+            background: #4CAF50;
+        }
+
+        .slider-container {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+            -webkit-appearance: none;
+            background: #444;
+            border-radius: 10px;
+            height: 10px;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #4CAF50;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+.status-light {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #ff0000;
+            transition: all 0.3s;
+            box-shadow: 0 0 10px rgba(255,0,0,0.5);
+        }
+
+        .status-light.active {
+            background: #00ff00;
+            box-shadow: 0 0 15px rgba(0,255,0,0.8);
+        }
+
+        .visualization {
+            width: 100%;
+            max-width: 600px;
+            height: 150px;
+            background: rgba(0, 0, 0, 0.5);
+            margin: 20px auto;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            padding: 2px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5) inset;
+        }
+
+        .bar {
+            flex: 1;
+            background: linear-gradient(to top, #4CAF50, #45a049);
+            transition: height 0.1s ease;
+            border-radius: 2px 2px 0 0;
+            box-shadow: 0 0 5px rgba(76,175,80,0.5);
+        }
+
+        @keyframes dropFall {
+            0% { transform: translateX(-50%) translateY(0); opacity: 1; }
+            100% { transform: translateX(-50%) translateY(100px); opacity: 0; }
+        }
+
+        @keyframes steamRise {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.8; }
+            100% { transform: translate(var(--x), -100px) scale(2); opacity: 0; }
+        }
+
+        @keyframes brew {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-2px); }
+            100% { transform: translateY(0); }
+        }
+
+        .brewing {
+            animation: brew 0.5s ease-in-out infinite;
+        }
+
+        @media (max-width: 600px) {
+            .coffee-machine {
+                width: 150px;
+                height: 225px;
+            }
+            .coffee-cup {
+                width: 60px;
+                height: 70px;
+            }
+            .controls {
+                padding: 10px;
+            }
+            button {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io/" class="home-button">← Zur Startseite</a>
+    
+    <div class="machine-container">
+        <div class="coffee-machine">
+            <div class="status-light"></div>
+            <div class="display">BEREIT</div>
+            <div class="steam-container"></div>
+            <div class="drop"></div>
+        </div>
+        <div class="coffee-cup">
+            <div class="coffee-liquid"></div>
+        </div>
+    </div>
+
+    <div class="visualization"></div>
+
+    <div class="controls">
+        <div class="button-row">
+            <button id="startBtn">Start</button>
+            <button id="stopBtn">Stop</button>
+            <button id="coffeeBtn">Kaffee+</button>
+        </div>
+        <div class="button-row">
+            <button class="mode-btn active" data-mode="normal">Normal</button>
+            <button class="mode-btn" data-mode="espresso">Espresso</button>
+            <button class="mode-btn" data-mode="cappuccino">Cappuccino</button>
+        </div>
+        <div class="slider-container">
+            <label>Tempo: <span id="tempoValue">120</span> BPM</label>
+            <input type="range" id="tempoSlider" min="60" max="180" value="120">
+        </div>
+    </div>
+
+    <script>
+        const machine = document.querySelector('.coffee-machine');
+        const steamContainer = document.querySelector('.steam-container');
+        const display = document.querySelector('.display');
+        const statusLight = document.querySelector('.status-light');
+        const liquid = document.querySelector('.coffee-liquid');
+        const visualization = document.querySelector('.visualization');
+        let isPlaying = false;
+        let currentMode = 'normal';
+        let audioContext;
+        let gainNode;
+        let interval;
+        let noteIndex = 0;
+
+        const melodies = {
+            normal: [
+                { note: 659.25, duration: 0.2 }, // Mi
+                { note: 587.33, duration: 0.2 }, // Re
+                { note: 523.25, duration: 0.2 }, // Do
+                { note: 587.33, duration: 0.2 }, // Re
+            ],
+            espresso: [
+                { note: 783.99, duration: 0.1 }, // Sol
+                { note: 880.00, duration: 0.1 }, // La
+                { note: 987.77, duration: 0.1 }, // Si
+                { note: 1046.50, duration: 0.1 }, // Do
+            ],
+            cappuccino: [
+                { note: 523.25, duration: 0.3 }, // Do
+                { note: 659.25, duration: 0.3 }, // Mi
+                { note: 783.99, duration: 0.3 }, // Sol
+                { note: 659.25, duration: 0.3 }, // Mi
+            ]
+        };
+
+        // Visualisierung erstellen
+        for (let i = 0; i < 32; i++) {
+            const bar = document.createElement('div');
+            bar.className = 'bar';
+            visualization.appendChild(bar);
+        }
+
+        function createSteam() {
+            const steam = document.createElement('div');
+            steam.className = 'steam';
+            steam.style.width = Math.random() * 20 + 10 + 'px';
+            steam.style.height = Math.random() * 20 + 10 + 'px';
+            steam.style.left = Math.random() * 40 - 20 + 'px';
+            steam.style.setProperty('--x', Math.random() * 100 - 50 + 'px');
+            steam.style.animation = 'steamRise 2s ease-out forwards';
+            steamContainer.appendChild(steam);
+            setTimeout(() => steam.remove(), 2000);
+        }
+
+        function createDrop() {
+            const drop = document.createElement('div');
+            drop.className = 'drop';
+            drop.style.animation = 'dropFall 1s linear';
+            machine.appendChild(drop);
+            setTimeout(() => drop.remove(), 1000);
+            
+            let currentHeight = parseFloat(liquid.style.height) || 0;
+            if (currentHeight < 80) {
+                liquid.style.height = (currentHeight + 2) + '%';
+            }
+        }
+
+        function updateVisualization() {
+            const bars = visualization.querySelectorAll('.bar');
+            bars.forEach(bar => {
+                const height = Math.random() * 100;
+                bar.style.height = height + '%';
+            });
+        }
+
+        function playNote(frequency, duration) {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            const oscillator = audioContext.createOscillator();
+            gainNode = audioContext.createGain();
+            
+            const filter = audioContext.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.value = 1000;
+
+            oscillator.connect(gainNode);
+            gainNode.connect(filter);
+            filter.connect(audioContext.destination);
+
+            oscillator.type = currentMode === 'espresso' ? 'square' : 
+                            currentMode === 'cappuccino' ? 'triangle' : 'sine';
+                            
+            oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            
+            gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.1);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
+
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + duration);
+        }
+
+        function playNextNote() {
+            const currentMelody = melodies[currentMode];
+            const note = currentMelody[noteIndex];
+            playNote(note.note, note.duration);
+            noteIndex = (noteIndex + 1) % currentMelody.length;
+        }
+
+        function start() {
+            if (isPlaying) return;
+            isPlaying = true;
+            statusLight.classList.add('active');
+            display.textContent = `${currentMode.toUpperCase()} MELODIE`;
+            machine.classList.add('brewing');
+            noteIndex = 0;
+
+            const tempo = document.getElementById('tempoSlider').value;
+            const interval = (60 / tempo) * 1000;
+
+            this.interval = setInterval(() => {
+                playNextNote();
+                createSteam();
+                createDrop();
+                updateVisualization();
+            }, interval);
+        }
+
+        function stop() {
+            isPlaying = false;
+            clearInterval(interval);
+            statusLight.classList.remove('active');
+            display.textContent = "BEREIT";
+            machine.classList.remove('brewing');
+        }
+
+        document.getElementById('startBtn').addEventListener('click', start);
+        document.getElementById('stopBtn').addEventListener('click', stop);
+        document.getElementById('coffeeBtn').addEventListener('click', () => {
+            playNextNote();
+            createSteam();
+            createDrop();
+        });
+
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.addEventListener('click', e => {
+                document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                currentMode = e.target.dataset.mode;
+                noteIndex = 0;
+                display.textContent = currentMode.toUpperCase();
+                if (isPlaying) {
+                    stop();
+                    start();
+                }
+            });
+        });
+
+        machine.addEventListener('click', () => {
+            playNextNote();
+            createSteam();
+            createDrop();
+        });
+
+        document.getElementById('tempoSlider').addEventListener('input', function() {
+            document.getElementById('tempoValue').textContent = this.value;
+            if (isPlaying) {
+                stop();
+                start();
+            }
+        });
+    </script>
+</body>
+</html>
