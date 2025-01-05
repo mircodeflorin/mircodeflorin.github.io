@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ausreden AG - Interaktiver Büroplan</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .home-button {
+            display: inline-block;
+            text-decoration: none;
+            color: #333;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .office-map {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            background: #2c3e50;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .floor {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transition: all 0.5s ease;
+            opacity: 0;
+        }
+
+        .floor.active {
+            opacity: 1;
+        }
+
+        .room {
+            position: absolute;
+            width: 100px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: float 3s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .room:hover {
+            background: #3498db;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .time-portal {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #ffffff, #a8d8ff);
+            cursor: pointer;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.4); }
+            70% { box-shadow: 0 0 0 20px rgba(52, 152, 219, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0); }
+        }
+
+        .controls {
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+
+        .message-log {
+            height: 150px;
+            overflow-y: auto;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        .message {
+            padding: 5px;
+            margin: 5px 0;
+            border-radius: 3px;
+        }
+
+        .message.warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        button {
+            padding: 8px 15px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            background: #3498db;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        .reality-meter {
+            width: 100%;
+            height: 20px;
+            background: #ddd;
+            border-radius: 10px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .reality-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            transition: width 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io/" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Ausreden AG - Interaktiver Büroplan</h1>
+        
+        <div class="controls">
+            <button onclick="switchTimeline()">Zeitlinie wechseln</button>
+            <button onclick="findBrinkmann()">Dr. Brinkmann lokalisieren</button>
+            <button onclick="activateQuantumMode()">Quantum-Modus</button>
+            <div class="reality-meter">
+                <div class="reality-fill" id="realityMeter"></div>
+            </div>
+        </div>
+
+        <div class="office-map" id="officeMap">
+            <!-- Räume werden dynamisch eingefügt -->
+        </div>
+
+        <div class="message-log" id="messageLog">
+            <div class="message">Willkommen im interdimensionalen Bürokomplex der Ausreden AG!</div>
+        </div>
+    </div>
+
+    <script>
+        const rooms = [
+            { name: "Dr. Brinkmanns Büro", x: 50, y: 50 },
+            { name: "Kaffeeküche", x: 200, y: 150 },
+            { name: "Archiv", x: 350, y: 100 },
+            { name: "Ausreden-Datenbank", x: 500, y: 200 },
+            { name: "Madame Rothmanns Büro", x: 650, y: 50 }
+        ];
+
+        const messages = [
+            "Der Hausmeister warnt: Zeitschleife im 3. Stock aktiv!",
+            "Dr. Brinkmanns Büro wurde zuletzt in der nächsten Woche gesehen.",
+            "Gertruds Strickmuster deuten auf eine Realitätsverschiebung hin.",
+            "Herbert der Taschenrechner berechnet neue Wahrscheinlichkeiten...",
+            "Die Kaffeeküche existiert momentan in drei Dimensionen gleichzeitig.",
+            "Achtung: Spontane Quantum-Fluktuationen im Archiv!",
+            "Dr. Brinkmann wurde gleichzeitig in 5 verschiedenen Realitäten gesichtet."
+        ];
+
+        let realityStability = 100;
+        let currentTimeline = 1;
+
+        function initializeMap() {
+            const map = document.getElementById('officeMap');
+            rooms.forEach(room => {
+                const roomElement = document.createElement('div');
+                roomElement.className = 'room';
+                roomElement.style.left = room.x + 'px';
+                roomElement.style.top = room.y + 'px';
+                roomElement.textContent = room.name;
+                roomElement.onclick = () => visitRoom(room.name);
+                map.appendChild(roomElement);
+            });
+            
+            // Zeitportale hinzufügen
+            for(let i = 0; i < 3; i++) {
+                const portal = document.createElement('div');
+                portal.className = 'time-portal';
+                portal.style.left = (Math.random() * 900) + 'px';
+                portal.style.top = (Math.random() * 500) + 'px';
+                portal.onclick = () => enterTimePortal(i);
+                map.appendChild(portal);
+            }
+        }
+
+        function addMessage(text, type = '') {
+            const log = document.getElementById('messageLog');
+            const message = document.createElement('div');
+            message.className = `message ${type}`;
+            message.textContent = text;
+            log.insertBefore(message, log.firstChild);
+            
+            // Maximale Anzahl von Nachrichten begrenzen
+            while(log.children.length > 8) {
+                log.removeChild(log.lastChild);
+            }
+        }
+
+        function switchTimeline() {
+            currentTimeline = (currentTimeline % 3) + 1;
+            addMessage(`Zeitlinie ${currentTimeline} aktiviert. Die Räume ordnen sich neu...`);
+            updateRealityMeter(-10);
+            
+            // Räume neu anordnen
+            document.querySelectorAll('.room').forEach(room => {
+                room.style.left = (Math.random() * 800) + 'px';
+                room.style.top = (Math.random() * 500) + 'px';
+            });
+        }
+
+        function findBrinkmann() {
+            const randomIdentity = [
+                "französischer Professor",
+                "Wiener Kaffeehausbesitzer",
+                "geheimnisvolle Gräfin",
+                "tibetischer Mönch",
+                "Quantenphysiker"
+            ][Math.floor(Math.random() * 5)];
+            
+            addMessage(`Dr. Brinkmann wurde als ${randomIdentity} in Zeitlinie ${currentTimeline} gesichtet.`);
+            updateRealityMeter(-5);
+        }
+
+        function visitRoom(roomName) {
+            const randomEvent = messages[Math.floor(Math.random() * messages.length)];
+            addMessage(`${roomName}: ${randomEvent}`);
+            updateRealityMeter(-3);
+        }
+
+        function enterTimePortal(portalId) {
+            addMessage(`Zeitportal aktiviert! Sie wurden in eine zufällige Zeitschleife transportiert.`, 'warning');
+            updateRealityMeter(-15);
+            setTimeout(() => {
+                switchTimeline();
+            }, 1000);
+        }
+
+        function activateQuantumMode() {
+            addMessage('Quantum-Modus aktiviert: Alle Räume existieren nun gleichzeitig in allen möglichen Positionen!');
+            document.querySelectorAll('.room').forEach(room => {
+                room.style.animation = 'float 1s infinite ease-in-out';
+            });
+            updateRealityMeter(-20);
+        }
+
+        function updateRealityMeter(change) {
+            realityStability = Math.max(0, Math.min(100, realityStability + change));
+            document.querySelector('.reality-fill').style.width = realityStability + '%';
+            
+            if(realityStability < 20) {
+                addMessage('WARNUNG: Kritische Realitätsinstabilität!', 'warning');
+            }
+        }
+
+        // Zufällige Ereignisse
+        setInterval(() => {
+            if(Math.random() < 0.3) {
+                const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+                addMessage(randomMessage);
+                updateRealityMeter(-1);
+            }
+        }, 5000);
+
+        // Initialisierung
+        initializeMap();
+    </script>
+</body>
+</html>
