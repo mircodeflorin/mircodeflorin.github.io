@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ausreden AG - Inspektions-Vorbereitungs-Simulator</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .home-button {
+            display: inline-block;
+            text-decoration: none;
+            color: #333;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .simulation-panel {
+            background: #2c3e50;
+            padding: 20px;
+            border-radius: 10px;
+            color: #ecf0f1;
+            margin: 20px 0;
+        }
+
+        .control-panel {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .tool-section {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .reality-meter {
+            height: 20px;
+            background: #ddd;
+            border-radius: 10px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .reality-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            transition: width 0.5s ease;
+        }
+
+        .status-display {
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin-top: 20px;
+            min-height: 100px;
+        }
+
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .document-list {
+            background: rgba(255,255,255,0.05);
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .document-item {
+            padding: 5px;
+            margin: 5px 0;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .document-item:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateX(5px);
+        }
+
+        .quantum-indicator {
+            width: 10px;
+            height: 10px;
+            background: #2ecc71;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io/" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Ausreden AG - Inspektions-Vorbereitungs-Simulator</h1>
+        
+        <div class="simulation-panel">
+            <div class="control-panel">
+                <div class="tool-section">
+                    <h3>Realitätsanpassung <span class="quantum-indicator"></span></h3>
+                    <div class="tool-grid">
+                        <button onclick="adjustReality('timeloop')">Zeitschleife aktivieren</button>
+                        <button onclick="adjustReality('quantum')">Quantenverschränkung</button>
+                        <button onclick="adjustReality('dimension')">Dimension verschieben</button>
+                        <button onclick="adjustReality('probability')">Wahrscheinlichkeit optimieren</button>
+                    </div>
+                    <div class="reality-meter">
+                        <div class="reality-fill" id="realityMeter"></div>
+                    </div>
+                </div>
+
+                <div class="tool-section">
+                    <h3>Dokumentenverschleierung</h3>
+                    <div class="document-list">
+                        <div class="document-item" onclick="modifyDocument('report')">Inspektionsbericht</div>
+                        <div class="document-item" onclick="modifyDocument('timeline')">Zeitlinien-Protokoll</div>
+                        <div class="document-item" onclick="modifyDocument('excuse')">Ausreden-Katalog</div>
+                        <div class="document-item" onclick="modifyDocument('identity')">Identitätsregister</div>
+                    </div>
+                </div>
+
+                <div class="tool-section">
+                    <h3>Chaos-Management</h3>
+                    <div class="tool-grid">
+                        <button onclick="manageChaos('stabilize')">Realität stabilisieren</button>
+                        <button onclick="manageChaos('synchronize')">Zeitlinien synchronisieren</button>
+                        <button onclick="manageChaos('emergency')">Notfall-Protokoll</button>
+                        <button onclick="manageChaos('reset')">Totalreset</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="status-display" id="statusDisplay">
+                System bereit für Inspektionsvorbereitung...
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let realityStability = 100;
+        let activeTimeloops = 0;
+        let documentStatus = {
+            report: 'unmodified',
+            timeline: 'unmodified',
+            excuse: 'unmodified',
+            identity: 'unmodified'
+        };
+
+        function adjustReality(type) {
+            const statusDisplay = document.getElementById('statusDisplay');
+            let message = '';
+
+            switch(type) {
+                case 'timeloop':
+                    activeTimeloops++;
+                    message = `Zeitschleife #${activeTimeloops} aktiviert. Vorsicht: Temporale Paradoxien möglich!`;
+                    updateRealityMeter(-15);
+                    break;
+                case 'quantum':
+                    message = "Quantenverschränkung initiiert. Dr. Brinkmanns Schnurrbart existiert nun in 7 Dimensionen gleichzeitig.";
+                    updateRealityMeter(-10);
+                    break;
+                case 'dimension':
+                    message = "Dimensionsverschiebung durchgeführt. Das Büro befindet sich jetzt teilweise im letzten Dienstag.";
+                    updateRealityMeter(-20);
+                    break;
+                case 'probability':
+                    message = "Wahrscheinlichkeitsoptimierung läuft. Herbert berechnet optimale Ausreden-Matrix...";
+                    updateRealityMeter(+15);
+                    break;
+            }
+
+            statusDisplay.innerHTML = `${message}<br><br>${statusDisplay.innerHTML}`;
+        }
+
+        function modifyDocument(type) {
+            const statusDisplay = document.getElementById('statusDisplay');
+            let message = '';
+
+            switch(type) {
+                case 'report':
+                    message = "Inspektionsbericht wird in multiple Realitätsebenen aufgeteilt...";
+                    break;
+                case 'timeline':
+                    message = "Zeitlinien-Protokoll wird rückwärts verschlüsselt. Madame Rothmann überwacht den Prozess.";
+                    break;
+                case 'excuse':
+                    message = "Ausreden-Katalog wird quantenverschränkt. Neue Version existiert in Superposition.";
+                    break;
+                case 'identity':
+                    message = "Identitätsregister wird durch Dr. Brinkmanns Persönlichkeitsfilter gejagt.";
+                    break;
+            }
+
+            documentStatus[type] = 'modified';
+            statusDisplay.innerHTML = `${message}<br><br>${statusDisplay.innerHTML}`;
+            updateRealityMeter(-5);
+        }
+
+        function manageChaos(action) {
+            const statusDisplay = document.getElementById('statusDisplay');
+            let message = '';
+
+            switch(action) {
+                case 'stabilize':
+                    message = "Realitätsstabilisierung eingeleitet. Der Hausmeister flickt temporale Risse.";
+                    updateRealityMeter(+30);
+                    break;
+                case 'synchronize':
+                    message = "Zeitlinien-Synchronisation läuft. Gertrud strickt Realitätsmuster zur Stabilisierung.";
+                    updateRealityMeter(+20);
+                    break;
+                case 'emergency':
+                    message = "⚠️ NOTFALL-PROTOKOLL AKTIVIERT ⚠️\nSämtliche Ausreden werden in den Panikraum evakuiert!";
+                    updateRealityMeter(-50);
+                    break;
+                case 'reset':
+                    message = "TOTALER REALITÄTSRESET INITIIERT\nAlle Systeme werden auf Werkseinstellungen zurückgesetzt.";
+                    realityStability = 100;
+                    updateRealityMeter(0);
+                    break;
+            }
+
+            statusDisplay.innerHTML = `${message}<br><br>${statusDisplay.innerHTML}`;
+        }
+
+        function updateRealityMeter(change) {
+            realityStability = Math.max(0, Math.min(100, realityStability + change));
+            document.querySelector('.reality-fill').style.width = `${realityStability}%`;
+
+            if(realityStability < 20) {
+                document.getElementById('statusDisplay').innerHTML = 
+                    "⚠️ WARNUNG: Kritische Realitätsinstabilität!\nDer Hausmeister empfiehlt dringende Stabilisierungsmaßnahmen.<br><br>" + 
+                    document.getElementById('statusDisplay').innerHTML;
+            }
+        }
+
+        // Easter Egg
+        let konami = '';
+        const konamiCode = 'ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightba';
+        document.addEventListener('keydown', (e) => {
+            konami += e.key;
+            if (konami.includes(konamiCode)) {
+                document.getElementById('statusDisplay').innerHTML = 
+                    "🌟 GEHEIMER MODUS AKTIVIERT: Dr. Brinkmanns Schnurrbart übernimmt die Kontrolle!<br><br>" + 
+                    document.getElementById('statusDisplay').innerHTML;
+                konami = '';
+            }
+        });
+    </script>
+</body>
+</html>
