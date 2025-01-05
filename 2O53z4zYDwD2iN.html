@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ausreden AG - Realitäts-Debugger</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .home-button {
+            display: inline-block;
+            text-decoration: none;
+            color: #333;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .debug-interface {
+            background: #2c3e50;
+            padding: 20px;
+            border-radius: 10px;
+            color: #ecf0f1;
+            margin: 20px 0;
+        }
+
+        .debug-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .debug-section {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .code-display {
+            font-family: 'Courier New', monospace;
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 5px;
+            margin-top: 10px;
+            height: 150px;
+            overflow-y: auto;
+            white-space: pre;
+        }
+
+        .matrix-display {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 2px;
+            margin-top: 10px;
+            height: 150px;
+        }
+
+        .matrix-cell {
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .matrix-cell:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.1);
+        }
+
+        .control-panel {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        .debug-status {
+            font-family: 'Courier New', monospace;
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 5px;
+            margin-top: 20px;
+            height: 100px;
+            overflow-y: auto;
+        }
+
+        .reality-wave {
+            height: 3px;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            margin: 10px 0;
+            animation: wave 2s linear infinite;
+        }
+
+        @keyframes wave {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        .glitch-text {
+            position: relative;
+            animation: glitch 1s linear infinite;
+        }
+
+        @keyframes glitch {
+            0% { transform: skewX(0deg); }
+            20% { transform: skewX(10deg); }
+            40% { transform: skewX(-10deg); }
+            60% { transform: skewX(5deg); }
+            80% { transform: skewX(-5deg); }
+            100% { transform: skewX(0deg); }
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io/" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Realitäts-Debugger v2.0</h1>
+        
+        <div class="debug-interface">
+            <div class="debug-grid">
+                <div class="debug-section">
+                    <h3>🔍 Matrix-Fehlersuche</h3>
+                    <div class="matrix-display" id="matrixDisplay"></div>
+                    <div class="control-panel">
+                        <button onclick="scanMatrix()">Matrix scannen</button>
+                        <button onclick="fixAnomaly()">Anomalie beheben</button>
+                    </div>
+                </div>
+
+                <div class="debug-section">
+                    <h3>🔧 Ausreden-Optimierer</h3>
+                    <div class="code-display" id="excuseOptimizer">
+// Ausreden-Optimierung läuft...
+await reality.optimize();
+loading quantum_states...</div>
+                    <div class="control-panel">
+                        <button onclick="optimizeExcuse()">Ausrede optimieren</button>
+                        <button onclick="validateLogic()">Logik prüfen</button>
+                    </div>
+                </div>
+
+                <div class="debug-section">
+                    <h3>⚡ Wahrheits-Bieger</h3>
+                    <div class="reality-wave"></div>
+                    <div class="code-display" id="truthBender">
+Reality.bend({
+  probability: 0.87,
+  quantum_state: "superposed"
+});</div>
+                    <div class="control-panel">
+                        <button onclick="bendReality()">Realität biegen</button>
+                        <button onclick="stabilizeField()">Feld stabilisieren</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="debug-status" id="debugStatus">
+                System bereit für Realitäts-Debugging...
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let anomalyCount = 0;
+        let realityStability = 100;
+        let optimizationLevel = 0;
+
+        function initializeMatrix() {
+            const matrix = document.getElementById('matrixDisplay');
+            for (let i = 0; i < 64; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'matrix-cell';
+                cell.textContent = Math.random().toString(16).substr(-1);
+                cell.onclick = () => toggleCell(cell);
+                matrix.appendChild(cell);
+            }
+        }
+
+        function toggleCell(cell) {
+            cell.style.background = cell.style.background ? '' : 'rgba(52, 152, 219, 0.5)';
+            updateStatus(`Matrix-Zelle ${cell.textContent} wurde modifiziert`);
+        }
+
+        function scanMatrix() {
+            anomalyCount = Math.floor(Math.random() * 5);
+            updateStatus(`Scan abgeschlossen: ${anomalyCount} Realitäts-Anomalien gefunden`);
+            highlightRandomCells();
+        }
+
+        function highlightRandomCells() {
+            const cells = document.querySelectorAll('.matrix-cell');
+            cells.forEach(cell => cell.style.background = '');
+            for (let i = 0; i < anomalyCount; i++) {
+                const randomCell = cells[Math.floor(Math.random() * cells.length)];
+                randomCell.style.background = 'rgba(231, 76, 60, 0.5)';
+            }
+        }
+
+        function fixAnomaly() {
+            if (anomalyCount > 0) {
+                anomalyCount--;
+                updateStatus(`Anomalie behoben. Verbleibende Anomalien: ${anomalyCount}`);
+                const comments = [
+                    "Dr. Brinkmann: 'Die Realität wird stabiler!'",
+                    "Herbert piepst: '42% Verbesserung der Quanten-Kohärenz'",
+                    "Hausmeister: 'Noch ein paar Schrauben festziehen...'"
+                ];
+                setTimeout(() => updateStatus(comments[Math.floor(Math.random() * comments.length)]), 1000);
+            } else {
+                updateStatus("Keine Anomalien gefunden");
+            }
+        }
+
+        function optimizeExcuse() {
+            optimizationLevel += 10;
+            const optimizer = document.getElementById('excuseOptimizer');
+            optimizer.textContent = `// Optimierungslevel: ${optimizationLevel}%\n`;
+            optimizer.textContent += `await reality.optimize();\n`;
+            optimizer.textContent += `plausibility.increase(${Math.random().toFixed(2)});`;
+            updateStatus("Ausrede wird optimiert...");
+        }
+
+        function validateLogic() {
+            const logicStates = [
+                "Logik ist plausibel in 3 von 7 Dimensionen",
+                "Wahrscheinlichkeitsquotient: 87.3%",
+                "Quantum-Kohärenz erreicht kritische Masse",
+                "Realitätsverzerrung innerhalb akzeptabler Parameter"
+            ];
+            updateStatus(logicStates[Math.floor(Math.random() * logicStates.length)]);
+        }
+
+        function bendReality() {
+            realityStability = Math.max(0, realityStability - 15);
+            const bender = document.getElementById('truthBender');
+            bender.textContent = `Reality.bend({\n`;
+            bender.textContent += `  probability: ${(Math.random()).toFixed(2)},\n`;
+            bender.textContent += `  quantum_state: "bending",\n`;
+            bender.textContent += `  stability: ${realityStability}%\n`;
+            bender.textContent += `});`;
+            updateStatus("Realität wird gebogen...");
+        }
+
+        function stabilizeField() {
+            realityStability = Math.min(100, realityStability + 20);
+            updateStatus(`Realitätsfeld stabilisiert auf ${realityStability}%`);
+        }
+
+        function updateStatus(message) {
+            const status = document.getElementById('debugStatus');
+            const timestamp = new Date().toLocaleTimeString();
+            status.innerHTML = `[${timestamp}] ${message}<br>${status.innerHTML}`;
+        }
+
+        // Initialisierung
+        initializeMatrix();
+
+        // Easter Egg
+        let konamiCode = '';
+        const secretCode = 'ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightba';
+        document.addEventListener('keydown', (e) => {
+            konamiCode += e.key;
+            if (konamiCode.includes(secretCode)) {
+                updateStatus("🌟 ADMINISTRATOR-MODUS AKTIVIERT: Dr. Brinkmanns Schnurrbart übernimmt die Debug-Kontrolle!");
+                document.querySelectorAll('.matrix-cell').forEach(cell => {
+                    cell.textContent = '🥸';
+                });
+                konamiCode = '';
+            }
+        });
+    </script>
+</body>
+</html>
