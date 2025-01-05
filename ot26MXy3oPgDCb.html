@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Große Enthüllungs-Simulation - Zen-Katzen Edition</title>
+    <style>
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #3282b8;
+            --text-color: #e2e2e2;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: var(--primary-color);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-top: 80px;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: var(--text-color);
+        }
+
+        .simulator-panel {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .character-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .character-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .character-card:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .character-card.selected {
+            background: var(--accent-color);
+        }
+
+        .plot-elements {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .plot-element {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .plot-element:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .plot-element.selected {
+            background: var(--accent-color);
+        }
+
+        .control-panel {
+            display: grid;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .control-button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .control-button:hover {
+            background: #2c5282;
+        }
+
+        .story-display {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            min-height: 200px;
+            white-space: pre-wrap;
+        }
+
+        .reaction-chain {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            display: none;
+        }
+
+        .reaction {
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dramatic-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .dramatic-text {
+            color: white;
+            font-size: 24px;
+            text-align: center;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io/" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Große Enthüllungs-Simulation</h1>
+        <h2>Story-Climax-Generator</h2>
+
+        <div class="simulator-panel">
+            <div class="character-selection">
+                <div class="character-card" data-character="gustav">
+                    <h3>🧘‍♂️ Gustav</h3>
+                    <p>Der erleuchtete Wellensittich</p>
+                </div>
+                <div class="character-card" data-character="schnurr">
+                    <h3>👑 Herr Schnurr</h3>
+                    <p>Die aristokratische Katze</p>
+                </div>
+                <div class="character-card" data-character="waldemar">
+                    <h3>🐠 Waldemar</h3>
+                    <p>Der dramatische Goldfisch</p>
+                </div>
+                <div class="character-card" data-character="mueller">
+                    <h3>👀 Frau Müller</h3>
+                    <p>Die allwissende Nachbarin</p>
+                </div>
+            </div>
+
+            <div class="plot-elements">
+                <div class="plot-element" data-plot="geheimnis">Verborgenes Geheimnis</div>
+                <div class="plot-element" data-plot="verwechslung">Dramatische Verwechslung</div>
+                <div class="plot-element" data-plot="enthuellung">Überraschende Enthüllung</div>
+                <div class="plot-element" data-plot="wendung">Unerwartete Wendung</div>
+            </div>
+
+            <div class="control-panel">
+                <button class="control-button" id="generateBtn">Enthüllung generieren</button>
+                <button class="control-button" id="reactionBtn">Reaktionen simulieren</button>
+                <button class="control-button" id="resetBtn">Zurücksetzen</button>
+            </div>
+
+            <div class="story-display" id="storyDisplay">
+                Wählen Sie einen Charakter und Plot-Elemente aus...
+            </div>
+
+            <div class="reaction-chain" id="reactionChain"></div>
+        </div>
+    </div>
+
+    <div class="dramatic-effect" id="dramaticEffect">
+        <div class="dramatic-text">
+            DRAMATISCHE ENTHÜLLUNG!
+        </div>
+    </div>
+
+<script>
+        let selectedCharacter = null;
+        let selectedPlots = [];
+
+        // Event Listener für Charakter-Auswahl
+        document.querySelectorAll('.character-card').forEach(card => {
+            card.addEventListener('click', function() {
+                selectedCharacter = this.dataset.character;
+                document.querySelectorAll('.character-card').forEach(c => 
+                    c.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        // Event Listener für Plot-Elemente
+        document.querySelectorAll('.plot-element').forEach(element => {
+            element.addEventListener('click', function() {
+                const plot = this.dataset.plot;
+                if (this.classList.contains('selected')) {
+                    this.classList.remove('selected');
+                    selectedPlots = selectedPlots.filter(p => p !== plot);
+                } else {
+                    if (selectedPlots.length < 3) {
+                        this.classList.add('selected');
+                        selectedPlots.push(plot);
+                    }
+                }
+            });
+        });
+
+        // Enthüllungen generieren
+        document.getElementById('generateBtn').addEventListener('click', generateStory);
+        document.getElementById('reactionBtn').addEventListener('click', generateReactions);
+        document.getElementById('resetBtn').addEventListener('click', resetSimulator);
+
+        function generateStory() {
+            if (!selectedCharacter || selectedPlots.length === 0) {
+                alert('Bitte wählen Sie einen Charakter und mindestens ein Plot-Element aus!');
+                return;
+            }
+
+            const dramaticEffect = document.getElementById('dramaticEffect');
+            dramaticEffect.style.display = 'flex';
+            setTimeout(() => {
+                dramaticEffect.style.display = 'none';
+                displayStory();
+            }, 2000);
+        }
+
+        function displayStory() {
+            const storyDisplay = document.getElementById('storyDisplay');
+            let story = generateStoryText();
+            storyDisplay.innerHTML = story;
+            document.getElementById('reactionChain').style.display = 'none';
+        }
+
+        function generateStoryText() {
+            const characterStories = {
+                gustav: {
+                    geheimnis: "Gustav offenbart, dass seine Meditationen in Wahrheit heimliche Soap-Opera-Marathons sind.",
+                    verwechslung: "Gustav wurde jahrelang für einen erleuchteten Meister gehalten - dabei hat er nur Schlafapnoe.",
+                    enthuellung: "Gustav enthüllt, dass er eigentlich ein reinkarnierter Fernsehkritiker ist.",
+                    wendung: "Gustavs Zen-Weisheiten stammen aus einer Glückskeks-Sammlung von Frau Müller."
+                },
+                schnurr: {
+                    geheimnis: "Herr Schnurrs französischer Akzent stammt von einem Französisch-Kurs auf Kassette.",
+                    verwechslung: "Seine 'aristokratische Abstammung' basiert auf einem Missverständnis im Tierheim.",
+                    enthuellung: "Die Perücke unter seinem Kissen ist eine Leihgabe aus Frau Müllers Faschingskiste.",
+                    wendung: "Sein wahrer Name ist Kevin-Thorsten, aber das passte nicht zu seinem Image."
+                },
+                waldemar: {
+                    geheimnis: "Waldemar schreibt heimlich Fan-Fiction über sich selbst.",
+                    verwechslung: "Er hält die Aquarium-Reinigung für eine konkurrierende Soap-Opera.",
+                    enthuellung: "Seine dramatischen Ausbrüche sind Teil seiner Performance-Kunst.",
+                    wendung: "Er ist eigentlich der Regisseur von 'Liebe und Betrug' - im Fischkörper."
+                },
+                mueller: {
+                    geheimnis: "Frau Müller ist in Wahrheit eine pensionierte Soap-Opera-Drehbuchautorin.",
+                    verwechslung: "Ihre endlosen Verwandtschaftsgeschichten sind alle improvisiert.",
+                    enthuellung: "Sie hat einen eigenen YouTube-Kanal über das Leben ihrer Nachbarn.",
+                    wendung: "Ihre verschiedenen Kostüme sind Teil einer Reality-Show."
+                }
+            };
+
+            let story = "🎭 DRAMATISCHE ENTHÜLLUNG 🎭\n\n";
+            selectedPlots.forEach(plot => {
+                story += characterStories[selectedCharacter][plot] + "\n\n";
+            });
+            return story;
+        }
+
+        function generateReactions() {
+            const reactionChain = document.getElementById('reactionChain');
+            reactionChain.style.display = 'block';
+            reactionChain.innerHTML = '';
+
+            const reactions = {
+                gustav: "\"Die wahre Erleuchtung liegt im Akzeptieren unserer Soap-Opera-Natur\" *meditatives Omm*",
+                schnurr: "\"Mon dieu! Diese Enthüllungen sind eines Aristokraten unwürdig!\" *aristokratisches Schnurren*",
+                waldemar: "\"DAS ist dramatischer als die Doppelhochzeit von Maria-Isabella! MEHR DRAMA!\" *dramatisches Blubbern*",
+                mueller: "\"Das erinnert mich an meinen Cousin dritten Grades, der...\" *wedelt mit Zeitungsausschnitten*"
+            };
+
+            // Verzögerte Anzeige der Reaktionen
+            Object.entries(reactions).forEach(([character, reaction], index) => {
+                if (character !== selectedCharacter) {
+                    setTimeout(() => {
+                        const reactionDiv = document.createElement('div');
+                        reactionDiv.className = 'reaction';
+                        reactionDiv.textContent = reaction;
+                        reactionChain.appendChild(reactionDiv);
+                    }, index * 1000);
+                }
+            });
+        }
+
+        function resetSimulator() {
+            selectedCharacter = null;
+            selectedPlots = [];
+            document.querySelectorAll('.character-card').forEach(c => 
+                c.classList.remove('selected'));
+            document.querySelectorAll('.plot-element').forEach(e => 
+                e.classList.remove('selected'));
+            document.getElementById('storyDisplay').innerHTML = 
+                'Wählen Sie einen Charakter und Plot-Elemente aus...';
+            document.getElementById('reactionChain').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
