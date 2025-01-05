@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Herberts Taschenrechner-Adventure</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .home-button {
+            display: inline-block;
+            text-decoration: none;
+            color: #333;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .home-button:hover {
+            background-color: #eee;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        .calculator {
+            background: #2c3e50;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            margin: 20px 0;
+            color: #ecf0f1;
+        }
+
+        .display {
+            background: #95a5a6;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-family: 'Courier New', monospace;
+            position: relative;
+            min-height: 60px;
+        }
+
+        .display-text {
+            font-size: 1.2em;
+            word-wrap: break-word;
+            color: #000000;
+        }
+
+        .morse-light {
+            width: 20px;
+            height: 20px;
+            background: #27ae60;
+            border-radius: 50%;
+            position: absolute;
+            right: 10px;
+            top: 10px;
+        }
+
+        .morse-light.active {
+            background: #e74c3c;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 15px;
+            background: #34495e;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+        }
+
+        .puzzle-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .puzzle-title {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            color: #000000;
+            font-weight: bold;
+        }
+
+        #currentPuzzle {
+            color: #000000;
+            line-height: 1.5;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 5px;
+        }
+
+        .message-log {
+            margin-top: 20px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 5px;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+        }
+
+        .message {
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 5px;
+            background: #fff;
+            border-left: 3px solid #3498db;
+        }
+
+        .message.error {
+            border-left-color: #e74c3c;
+            background: #fee;
+        }
+
+        .message.success {
+            border-left-color: #2ecc71;
+            background: #efe;
+        }
+
+        .hint {
+            font-style: italic;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        .probability-meter {
+            height: 20px;
+            background: #ddd;
+            border-radius: 10px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .probability-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io/" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Herberts Taschenrechner-Adventure</h1>
+        
+        <div class="calculator">
+            <div class="display">
+                <div class="display-text" id="display">Willkommen bei Herbert!</div>
+                <div class="morse-light" id="morseLed"></div>
+            </div>
+            
+            <div class="puzzle-section">
+                <div class="puzzle-title">Aktuelles Rätsel:</div>
+                <div id="currentPuzzle">
+                    Berechne die Wahrscheinlichkeit einer sich selbst erfüllenden Ausrede:
+                    P(Ausrede) = √(Kreativität × Glaubwürdigkeit) + π
+                </div>
+                <div class="hint" id="hint"></div>
+            </div>
+
+            <div class="probability-meter">
+                <div class="probability-fill" id="probabilityMeter"></div>
+            </div>
+
+            <div class="buttons">
+                <button class="btn" onclick="input('7')">7</button>
+                <button class="btn" onclick="input('8')">8</button>
+                <button class="btn" onclick="input('9')">9</button>
+                <button class="btn" onclick="input('/')">÷</button>
+                <button class="btn" onclick="input('4')">4</button>
+                <button class="btn" onclick="input('5')">5</button>
+                <button class="btn" onclick="input('6')">6</button>
+                <button class="btn" onclick="input('*')">×</button>
+                <button class="btn" onclick="input('1')">1</button>
+                <button class="btn" onclick="input('2')">2</button>
+                <button class="btn" onclick="input('3')">3</button>
+                <button class="btn" onclick="input('-')">-</button>
+                <button class="btn" onclick="input('0')">0</button>
+                <button class="btn" onclick="input('.')">.</button>
+                <button class="btn" onclick="calculate()">=</button>
+                <button class="btn" onclick="input('+')">+</button>
+            </div>
+        </div>
+
+        <div class="message-log" id="messageLog">
+            <div class="message">Herbert: *piep* Lass uns ein paar Wahrscheinlichkeiten berechnen!</div>
+        </div>
+    </div>
+
+    <script>
+        let currentCalculation = '';
+        let morseMessages = {
+            'SOS': '... --- ...',
+            'HILFE': '.... .. .-.. ..-. .',
+            'AUSREDE': '.- ..- ... .-. . -.. .'
+        };
+
+        let funnyErrors = [
+            "Oh weh! Meine Quantenschaltkreise sind durcheinander geraten!",
+            "ERROR 42: Zu viel Kreativität in der Berechnung!",
+            "WARNUNG: Temporale Paradoxie detected!",
+            "Ups! Ich glaube, diese Zahl existiert in einer anderen Dimension...",
+            "Kritischer Fehler: Realitätsmatrix instabil!",
+            "*verwirrt piep* Ist das eine Ausrede oder eine mathematische Formel?",
+            "SYSTEMFEHLER: Zu viele parallele Wahrheiten erkannt!",
+            "Achtung: Wahrscheinlichkeitsüberlauf im Quantum-Speicher!"
+        ];
+
+        let funnyHints = [
+            "Tipp: Versuche es mal mit der Fibonacci-Sequenz!",
+            "Psst! Dr. Brinkmann würde jetzt π mit dem goldenen Schnitt multiplizieren...",
+            "Vielleicht hilft ein Blick durch Madame Rothmanns Kristallkugel?",
+            "Der Hausmeister empfiehlt die Quadratwurzel aus dem Mittwoch...",
+            "Gertruds Strickmuster deuten auf eine irrationale Zahl hin!"
+        ];
+
+        function input(value) {
+            currentCalculation += value;
+            document.getElementById('display').textContent = currentCalculation;
+            blinkMorseLed();
+            showRandomHint();
+        }
+
+        function calculate() {
+            try {
+                if (currentCalculation.length === 0) {
+                    throw new Error("Leere Berechnung");
+                }
+                
+                let result = eval(currentCalculation);
+                
+                if (isNaN(result) || !isFinite(result)) {
+                    throw new Error("Ungültiges Ergebnis");
+                }
+
+                document.getElementById('display').textContent = result;
+                updateProbabilityMeter(result);
+                addMessage(`Herbert: *fröhliches Piepen* Das Ergebnis ${result} hat eine Wahrscheinlichkeit von ${Math.min(100, Math.abs(result))}%`, 'success');
+                
+                // Besondere Reaktionen auf bestimmte Ergebnisse
+                if (result === 42) {
+                    addMessage("Herbert: *aufgeregtes Piepen* Die Antwort auf alles!", 'success');
+                }
+                if (result === 3.14159 || result === 3.14) {
+                    addMessage("Herbert: *mathematisches Piepen* π! Meine Lieblingszahl!", 'success');
+                }
+
+            } catch (e) {
+                document.getElementById('display').textContent = 'Error!';
+                let randomError = funnyErrors[Math.floor(Math.random() * funnyErrors.length)];
+                addMessage(`Herbert: ${randomError}`, 'error');
+                showRandomHint();
+            }
+            currentCalculation = '';
+        }
+
+        function showRandomHint() {
+            const hint = funnyHints[Math.floor(Math.random() * funnyHints.length)];
+            document.getElementById('hint').textContent = hint;
+        }
+
+        function blinkMorseLed() {
+            const led = document.getElementById('morseLed');
+            led.classList.add('active');
+            setTimeout(() => led.classList.remove('active'), 100);
+        }
+
+        function updateProbabilityMeter(value) {
+            const meter = document.getElementById('probabilityMeter');
+            const percentage = Math.min(100, Math.abs(value));
+            meter.style.width = percentage + '%';
+        }
+
+        function addMessage(text, type = '') {
+            const log = document.getElementById('messageLog');
+            const message = document.createElement('div');
+            message.className = `message ${type}`;
+            message.textContent = text;
+            log.insertBefore(message, log.firstChild);
+
+            // Automatisches Scrollen
+            log.scrollTop = 0;
+
+            // Maximale Anzahl von Nachrichten begrenzen
+            while (log.children.length > 10) {
+                log.removeChild(log.lastChild);
+            }
+        }
+
+        // Piep-Code-Übersetzer
+        let piepSequence = '';
+        document.addEventListener('keypress', (e) => {
+            if (e.key === '.') {
+                piepSequence += '.';
+                blinkMorseLed();
+                addMessage("Herbert: *kurzes Piep*");
+            } else if (e.key === '-') {
+                piepSequence += '-';
+                blinkMorseLed();
+                addMessage("Herbert: *langes Piep*");
+            } else if (e.key === ' ') {
+                checkMorseCode(piepSequence);
+                piepSequence = '';
+            }
+        });
+
+        function checkMorseCode(sequence) {
+            for (let [word, code] of Object.entries(morseMessages)) {
+                if (sequence === code) {
+                    addMessage(`Herbert: Ich habe "${word}" entschlüsselt! *freudiges Piepen*`, 'success');
+                    return;
+                }
+            }
+            if (sequence.length > 0) {
+                addMessage("Herbert: *verwirrtes Piepen* Diese Morse-Sequenz kenne ich nicht!", 'error');
+            }
+        }
+
+        // Easter Eggs
+        let konami = '';
+        const konamiCode = 'ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightba';
+        document.addEventListener('keydown', (e) => {
+            konami += e.key;
+            if (konami.length > konamiCode.length) {
+                konami = konami.substring(1);
+            }
+            if (konami === konamiCode) {
+                addMessage("Herbert: *feierliches Piepen* Du hast den geheimen Code geknackt!", 'success');
+                document.body.style.transform = 'rotate(180deg)';
+                setTimeout(() => document.body.style.transform = 'none', 1000);
+            }
+        });
+
+        // Initiale Nachricht
+        setTimeout(() => {
+            addMessage("Herbert: *hilfreiches Piepen* Drücke '.' und '-' für Morse-Code!");
+            showRandomHint();
+        }, 1000);
+    </script>
+</body>
+</html>
