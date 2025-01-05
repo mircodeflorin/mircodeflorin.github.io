@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ausreden AG - Evolution-Simulator</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .home-button {
+            display: inline-block;
+            text-decoration: none;
+            color: #333;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .simulator-interface {
+            background: #2c3e50;
+            padding: 20px;
+            border-radius: 10px;
+            color: #ecf0f1;
+            margin: 20px 0;
+        }
+
+        .simulation-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .sim-section {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .evolution-display {
+            height: 200px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 5px;
+            margin: 10px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dna-strand {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                rgba(52, 152, 219, 0.1) 25%, 
+                rgba(46, 204, 113, 0.1) 50%, 
+                rgba(52, 152, 219, 0.1) 75%);
+            animation: dnaFlow 10s linear infinite;
+        }
+
+        @keyframes dnaFlow {
+            0% { background-position: 0 0; }
+            100% { background-position: 100% 100%; }
+        }
+
+        .control-panel {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        .evolution-log {
+            font-family: 'Courier New', monospace;
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 5px;
+            margin-top: 20px;
+            height: 150px;
+            overflow-y: auto;
+        }
+
+        .progress-bar {
+            height: 5px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            transition: width 0.5s ease;
+        }
+
+        .evolution-stage {
+            position: absolute;
+            background: rgba(255,255,255,0.9);
+            color: #2c3e50;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .status-display {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+        }
+
+        .mutation-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            transition: all 0.5s ease;
+        }
+
+        .custom-tooltip {
+            position: absolute;
+            background: rgba(255,255,255,0.95);
+            color: #2c3e50;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .achievement-popup {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(46, 204, 113, 0.9);
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transform: translateX(120%);
+            transition: transform 0.5s ease;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="https://mircodeflorin.github.io/" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Evolution-Simulator</h1>
+        
+        <div class="simulator-interface">
+            <div class="simulation-grid">
+                <div class="sim-section">
+                    <h3>🧬 Ausreden-Entwicklungs-Tracker</h3>
+                    <div class="evolution-display" id="trackerDisplay">
+                        <div class="dna-strand"></div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" id="trackerProgress"></div>
+                    </div>
+                    <div class="control-panel">
+                        <button onclick="trackEvolution()">Evolution tracken</button>
+                        <button onclick="analyzeProgress()">Fortschritt analysieren</button>
+                    </div>
+                </div>
+
+                <div class="sim-section">
+                    <h3>🧠 Bewusstseins-Expansions-Tools</h3>
+                    <div class="evolution-display" id="expansionDisplay">
+                        <div class="dna-strand"></div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" id="expansionProgress"></div>
+                    </div>
+                    <div class="control-panel">
+                        <button onclick="expandConsciousness()">Bewusstsein erweitern</button>
+                        <button onclick="stabilizeExpansion()">Expansion stabilisieren</button>
+                    </div>
+                </div>
+
+                <div class="sim-section">
+                    <h3>🧪 Realitäts-Mutations-Generator</h3>
+                    <div class="evolution-display" id="mutationDisplay">
+                        <div class="dna-strand"></div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" id="mutationProgress"></div>
+                    </div>
+                    <div class="control-panel">
+                        <button onclick="generateMutation()">Mutation generieren</button>
+                        <button onclick="integrateChanges()">Änderungen integrieren</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="evolution-log" id="evolutionLog">
+                Evolution-Simulator wird initialisiert...
+            </div>
+
+            <div class="status-display">
+                <span>Evolution-Level: <span id="evolutionLevel">1</span></span>
+                <span>Bewusstseins-Tiefe: <span id="consciousnessDepth">1</span></span>
+                <span>Mutations-Rate: <span id="mutationRate">0%</span></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Globale Variablen
+        let evolutionLevel = 1;
+        let consciousnessDepth = 1;
+        let mutationRate = 0;
+        let achievements = new Set();
+
+        // Lustige Meldungen Arrays
+        const funnyMutations = [
+            "Dr. Brinkmanns Schnurrbart entwickelt eigene Persönlichkeit",
+            "Kaffeemaschine weigert sich, vor 10 Uhr zu existieren",
+            "Büropflanzen gründen Gewerkschaft für bessere Photosynthese-Bedingungen",
+            "Herbert der Taschenrechner verliebt sich in die Kaffeemaschine",
+            "Zeitschleife führt zu endloser Montagmorgen-Meeting-Hölle",
+            "Kopiergerät beginnt, alternative Realitäten zu drucken",
+            "Bürostühle starten Revolte gegen das Sitzen",
+            "Madame Rothmanns Tee prophezeit nur noch Kaffeeklatsch",
+            "Ausrede entwickelt eigenen Instagram-Account",
+            "Realitätsebene macht spontanen Wellness-Urlaub"
+        ];
+
+        const funnyEvolutions = [
+            "Ausrede #47 entwickelt Karriere als Stand-up Comedian",
+            "Realität nimmt sich selbst eine Auszeit",
+            "Meetings finden jetzt in der 5. Dimension statt - die Kekse sind besser dort",
+            "Hausmeister ernennt sich zum 'Interdimensionalen Realitätsklempner'",
+            "Archiv verschluckt sich an zu unglaublichen Ausreden",
+            "Bürokatze existiert jetzt in 9 Dimensionen gleichzeitig",
+            "Strickmuster entwickeln eigene Quantenphysik-Theorie",
+            "Dr. Brinkmanns Identitäten gründen Selbsthilfegruppe",
+            "Zeitschleife geht in Frührentne",
+            "Quantenphysik beantragt Urlaub"
+        ];
+
+        const funnyConsciousness = [
+            "Bewusstsein expandiert in Richtung Kaffeepause",
+            "Kollektives Bewusstsein beschließt kollektiven Urlaub",
+            "Realität hat existenzielle Krise und geht zur Therapie",
+            "Zeitschleifen organisieren Überraschungsparty für sich selbst",
+            "Ausreden-KI entwickelt Sinn für Dad-Jokes",
+            "Quantum-Bewusstsein stolpert über seine eigenen Wahrscheinlichkeiten",
+            "Paralleluniversen streiten über die beste Pizza-Dimension",
+            "Bürogebäude beschließt, Yoga zu praktizieren",
+            "Realität nimmt sich eine Auszeit zum Nachdenken",
+            "Kollektives Bewusstsein plant Betriebsausflug"
+        ];
+
+        const funnyAchievements = [
+            "Schnurrbart-Whisperer: Dr. Brinkmanns Schnurrbart hat Sie als Mentor akzeptiert",
+            "Kaffeeorakel: Die Kaffeemaschine prophezeit Ihre Zukunft",
+            "Realitäts-DJ: Sie haben erfolgreich verschiedene Realitätsebenen gemixt",
+            "Ausreden-Flüsterer: Sie können jetzt mit wilden Ausreden kommunizieren",
+            "Quantum-Barista: Sie haben Kaffee in allen Dimensionen gleichzeitig gekocht"
+        ];
+
+// Hauptfunktionen
+        function updateLog(message) {
+            const log = document.getElementById('evolutionLog');
+            const timestamp = new Date().toLocaleTimeString();
+            log.innerHTML = `[${timestamp}] ${message}<br>${log.innerHTML}`;
+
+            // Zufällige Farbeffekte für wichtige Meldungen
+            if (message.includes("WARNUNG") || message.includes("ACHIEVEMENT")) {
+                const newEntry = log.firstChild;
+                newEntry.style.color = message.includes("ACHIEVEMENT") ? '#2ecc71' : '#e74c3c';
+            }
+        }
+
+        function updateStatus() {
+            document.getElementById('evolutionLevel').textContent = evolutionLevel;
+            document.getElementById('consciousnessDepth').textContent = consciousnessDepth;
+            document.getElementById('mutationRate').textContent = `${mutationRate}%`;
+            checkAchievements();
+        }
+
+        function createParticle(display, color = 'white') {
+            const particle = document.createElement('div');
+            particle.className = 'mutation-particle';
+            particle.style.backgroundColor = color;
+            particle.style.left = Math.random() * display.offsetWidth + 'px';
+            particle.style.top = Math.random() * display.offsetHeight + 'px';
+            display.appendChild(particle);
+            
+            setTimeout(() => {
+                particle.style.transform = `translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px)`;
+                particle.style.opacity = '0';
+            }, 100);
+            
+            setTimeout(() => particle.remove(), 3000);
+        }
+
+        function showAchievement(title) {
+            if (!achievements.has(title)) {
+                achievements.add(title);
+                const popup = document.createElement('div');
+                popup.className = 'achievement-popup';
+                popup.innerHTML = `🏆 ACHIEVEMENT: ${title}`;
+                document.body.appendChild(popup);
+                
+                setTimeout(() => popup.style.transform = 'translateX(0)', 100);
+                setTimeout(() => {
+                    popup.style.transform = 'translateX(120%)';
+                    setTimeout(() => popup.remove(), 500);
+                }, 4000);
+                
+                updateLog(`ACHIEVEMENT UNLOCKED: ${title}`);
+            }
+        }
+
+        function checkAchievements() {
+            if (evolutionLevel >= 10) showAchievement(funnyAchievements[0]);
+            if (consciousnessDepth >= 10) showAchievement(funnyAchievements[1]);
+            if (mutationRate >= 50) showAchievement(funnyAchievements[2]);
+            if (evolutionLevel >= 20) showAchievement(funnyAchievements[3]);
+            if (consciousnessDepth >= 20) showAchievement(funnyAchievements[4]);
+        }
+
+        function createRandomEffect(display) {
+            const effects = [
+                () => createParticle(display, '#2ecc71'),
+                () => createParticle(display, '#e74c3c'),
+                () => createParticle(display, '#f1c40f'),
+                () => {
+                    const dna = display.querySelector('.dna-strand');
+                    dna.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
+                    setTimeout(() => dna.style.filter = '', 1000);
+                }
+            ];
+            effects[Math.floor(Math.random() * effects.length)]();
+        }
+
+        function trackEvolution() {
+            const display = document.getElementById('trackerDisplay');
+            evolutionLevel++;
+            document.getElementById('trackerProgress').style.width = `${evolutionLevel * 5}%`;
+            
+            for (let i = 0; i < 5; i++) {
+                createRandomEffect(display);
+            }
+            
+            const message = funnyEvolutions[Math.floor(Math.random() * funnyEvolutions.length)];
+            updateLog(message);
+            
+            if (Math.random() > 0.7) {
+                const sideEffects = [
+                    "Alle Ausreden sprechen plötzlich in Reimen",
+                    "Dr. Brinkmanns Schnurrbart startet eigenen Podcast",
+                    "Kaffeemaschine serviert nur noch philosophische Fragen",
+                    "Büropflanzen fordern Mindestlohn und bezahlten Urlaub",
+                    "Zeitschleife macht Mittagspause",
+                    "Realität meldet sich krank - ohne Ausrede!"
+                ];
+                setTimeout(() => updateLog("NEBENWIRKUNG: " + sideEffects[Math.floor(Math.random() * sideEffects.length)]), 1000);
+            }
+            
+            updateStatus();
+        }
+
+        function expandConsciousness() {
+            const display = document.getElementById('expansionDisplay');
+            consciousnessDepth++;
+            document.getElementById('expansionProgress').style.width = `${consciousnessDepth * 5}%`;
+            
+            for (let i = 0; i < 5; i++) {
+                createRandomEffect(display);
+            }
+            
+            const message = funnyConsciousness[Math.floor(Math.random() * funnyConsciousness.length)];
+            updateLog(message);
+            
+            if (consciousnessDepth > 5 && Math.random() > 0.6) {
+                const sideEffects = [
+                    "Bürogebäude entwickelt Identitätskrise",
+                    "Realität beantragt Sabbatical",
+                    "Ausreden gehen gemeinsam zum Yoga",
+                    "Herbert der Taschenrechner schreibt ein Gedicht über π",
+                    "Quantum-Kaffee schmeckt nach Möglichkeiten",
+                    "Zeitschleife macht eine Fortbildung"
+                ];
+                setTimeout(() => updateLog("BEWUSSTSEINS-UPDATE: " + sideEffects[Math.floor(Math.random() * sideEffects.length)]), 1000);
+            }
+            
+            updateStatus();
+        }
+
+function generateMutation() {
+            const display = document.getElementById('mutationDisplay');
+            mutationRate = Math.min(100, mutationRate + 15);
+            document.getElementById('mutationProgress').style.width = `${mutationRate}%`;
+            
+            for (let i = 0; i < 7; i++) {
+                createRandomEffect(display);
+            }
+            
+            const message = funnyMutations[Math.floor(Math.random() * funnyMutations.length)];
+            updateLog(message);
+            
+            if (mutationRate > 50 && Math.random() > 0.6) {
+                const warnings = [
+                    "Realität entwickelt Sinn für Humor",
+                    "Zeitschleifen haben Schluckauf",
+                    "Ausreden tanzen Quantentango",
+                    "Physik macht Pause zum Nachdenken",
+                    "Dr. Brinkmanns Schnurrbart plant Weltreise",
+                    "Kaffeemaschine kandidiert für Betriebsrat"
+                ];
+                setTimeout(() => updateLog("WARNUNG: " + warnings[Math.floor(Math.random() * warnings.length)]), 1000);
+            }
+            
+            updateStatus();
+        }
+
+        function analyzeProgress() {
+            const stages = [
+                "Ausreden entwickeln Gruppendynamik",
+                "Kollektives Bewusstsein plant Betriebsausflug",
+                "Realitätsebenen spielen Verstecken",
+                "Quantenbewusstsein macht Kaffeepause",
+                "Dr. Brinkmanns Identitäten gründen Band",
+                "Herbert berechnet den Sinn des Lebens"
+            ];
+            updateLog(`Analyse: ${stages[Math.floor(Math.random() * stages.length)]}`);
+        }
+
+        function stabilizeExpansion() {
+            consciousnessDepth = Math.max(1, consciousnessDepth - 1);
+            updateLog("Bewusstseinsexpansion wird stabilisiert...");
+            
+            const stabilizationEffects = [
+                "Realität macht Atemübungen",
+                "Zeitschleifen gehen zur Meditation",
+                "Dr. Brinkmann findet innere Mitte",
+                "Quantenfeld nimmt eine Auszeit",
+                "Herbert rechnet sich calm"
+            ];
+            setTimeout(() => updateLog("STABILISIERUNG: " + stabilizationEffects[Math.floor(Math.random() * stabilizationEffects.length)]), 1000);
+            
+            updateStatus();
+        }
+
+        function integrateChanges() {
+            mutationRate = Math.max(0, mutationRate - 20);
+            evolutionLevel++;
+            
+            const integrationEffects = [
+                "Realität akzeptiert neue Normalität",
+                "Ausreden werden gesellschaftsfähig",
+                "Zeitschleifen synchronisieren sich",
+                "Quantum-Kaffee wird zum Standardgetränk",
+                "Dr. Brinkmanns Schnurrbart gibt Pressekonferenz"
+            ];
+            updateLog("INTEGRATION: " + integrationEffects[Math.floor(Math.random() * integrationEffects.length)]);
+            
+            updateStatus();
+        }
+
+        // Automatische Ereignisse
+        setInterval(() => {
+            if (Math.random() < 0.1) {
+                const randomEvents = [
+                    "Herbert der Taschenrechner plant Karriere als DJ",
+                    "Zeitschleife verheddert sich in Gertruds Strickmuster",
+                    "Realität macht spontanen Wellness-Urlaub",
+                    "Dr. Brinkmanns Schnurrbart kandidiert für den Betriebsrat",
+                    "Ausreden organisieren Betriebsausflug ins Paralleluniversum",
+                    "Kaffeemaschine und Kopierer gründen Band",
+                    "Bürogebäude meldet sich krank - hat keine Ausrede parat",
+                    "Quantum-Physik nimmt Sabbatical",
+                    "Realität geht zum Speed-Dating",
+                    "Zeitschleife macht Überstunden"
+                ];
+                updateLog("ZUFALLSEREIGNIS: " + randomEvents[Math.floor(Math.random() * randomEvents.length)]);
+                evolutionLevel += Math.floor(Math.random() * 2);
+                updateStatus();
+            }
+        }, 15000);
+
+        // Easter Egg - Konami Code
+        let konamiCode = '';
+        const secretCode = 'ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightba';
+        document.addEventListener('keydown', (e) => {
+            konamiCode += e.key;
+            if (konamiCode.includes(secretCode)) {
+                updateLog("🌟 ULTIMATE EVOLUTION: Dr. Brinkmanns Schnurrbart übernimmt die Weltherrschaft!");
+                evolutionLevel = 99;
+                consciousnessDepth = 99;
+                mutationRate = 100;
+                
+                // Kaskadierende absurde Meldungen
+                setTimeout(() => updateLog("🎭 Alle Identitäten Dr. Brinkmanns fordern Gewerkschaftsvertretung"), 1000);
+                setTimeout(() => updateLog("☕ Kaffeemaschine erklärt sich zur unabhängigen Republik"), 2000);
+                setTimeout(() => updateLog("📚 Archiv geht auf Weltreise"), 3000);
+                setTimeout(() => updateLog("🌱 Büropflanzen starten eigene Reality-TV-Show"), 4000);
+                setTimeout(() => updateLog("🧮 Herbert der Taschenrechner wird zum Influencer"), 5000);
+                
+                updateStatus();
+                konamiCode = '';
+            }
+        });
+
+        // Initialisierung
+        window.onload = function() {
+            updateLog("System initialisiert... Starte Realitäts-Synchronisation...");
+            setTimeout(() => updateLog("Dr. Brinkmanns Schnurrbart kalibriert..."), 1000);
+            setTimeout(() => updateLog("Herbert der Taschenrechner bootet..."), 2000);
+            setTimeout(() => updateLog("Kaffeemaschine philosophiert..."), 3000);
+            setTimeout(() => updateLog("System bereit für Realitätsmanipulation!"), 4000);
+        };
+    </script>
+</body>
+</html>
