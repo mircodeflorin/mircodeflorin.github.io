@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Madame Rothmanns Zeitreise-Quiz</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .home-button {
+            display: inline-block;
+            text-decoration: none;
+            color: #333;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .home-button:hover {
+            background-color: #eee;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .title-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .quiz-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+
+        .question {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .options {
+            display: grid;
+            gap: 10px;
+        }
+
+        .option {
+            padding: 10px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option:hover {
+            background: #f0f0f0;
+        }
+
+        .option.selected {
+            background: #3498db;
+            color: white;
+        }
+
+        .option.correct {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .option.wrong {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .crystal-ball {
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle at 30% 30%, #ffffff, #a8d8ff);
+            border-radius: 50%;
+            margin: 20px auto;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .crystal-ball:hover {
+            transform: scale(1.1);
+        }
+
+        .prophecy {
+            text-align: center;
+            font-style: italic;
+            margin: 20px 0;
+            padding: 10px;
+            background: #f0f0f0;
+            border-radius: 5px;
+        }
+
+        .score-display {
+            text-align: center;
+            font-size: 1.2em;
+            margin: 20px 0;
+        }
+
+        .quiz-complete {
+            text-align: center;
+            padding: 20px;
+            background: #f0f0f0;
+            border-radius: 5px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        .progress-display {
+            text-align: center;
+            margin: 10px 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io/" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <div class="title-section">
+            <h1>Madame Rothmanns Zeitreise-Quiz</h1>
+            <p>Testen Sie Ihr Wissen über die Paradoxien der Zeit</p>
+        </div>
+
+        <div class="quiz-section">
+            <div id="questionContainer" class="question"></div>
+            <div id="optionsContainer" class="options"></div>
+            <div class="score-display">Punktestand: <span id="score">0</span></div>
+            <div class="progress-display">Frage <span id="currentQuestionNumber">1</span> von <span id="totalQuestions">5</span></div>
+        </div>
+
+        <div class="crystal-ball" id="crystalBall" onclick="generateProphecy()"></div>
+        <div class="prophecy" id="prophecy">Klicken Sie auf die Kristallkugel für eine Prophezeiung...</div>
+
+        <div class="quiz-complete" id="quizComplete">
+            <h2>Quiz beendet!</h2>
+            <p>Ihr Endergebnis: <span id="finalScore">0</span> Punkte</p>
+            <p id="quizFeedback"></p>
+            <button onclick="restartQuiz()">Quiz neu starten</button>
+        </div>
+
+        <button id="nextButton" onclick="nextQuestion()">Nächste Frage</button>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "Wenn Madame Rothmann gestern die Zukunft von morgen vorhersagt, auf welchen Tag bezieht sich ihre Prophezeiung?",
+                options: [
+                    "Auf heute",
+                    "Auf übermorgen",
+                    "Auf gestern",
+                    "Auf alle Tage gleichzeitig"
+                ],
+                correct: 3
+            },
+            {
+                question: "Wie viele Realitätsebenen kann Madame Rothmanns Kristallkugel gleichzeitig zeigen?",
+                options: [
+                    "Nur eine",
+                    "Drei",
+                    "Sieben",
+                    "Unendlich viele"
+                ],
+                correct: 2
+            },
+            {
+                question: "Was passiert, wenn Madame Rothmann eine Prophezeiung über ihre eigenen Prophezeiungen macht?",
+                options: [
+                    "Ein temporales Paradoxon entsteht",
+                    "Die Kristallkugel beginnt zu singen",
+                    "Dr. Brinkmanns Schnurrbart wechselt die Dimension",
+                    "Alle obigen Antworten sind korrekt"
+                ],
+                correct: 3
+            },
+            {
+                question: "Warum trinkt Madame Rothmann ihren Tee rückwärts?",
+                options: [
+                    "Um die Zukunft klarer zu sehen",
+                    "Weil er so besser schmeckt",
+                    "Um Zeitparadoxa auszugleichen",
+                    "Weil die Tasse aus der Zukunft stammt"
+                ],
+                correct: 2
+            },
+            {
+                question: "Was ist Madame Rothmanns bevorzugte Methode, um Zeitschleifen aufzulösen?",
+                options: [
+                    "Rückwärts gestrickte Schals",
+                    "Quantenverschränkter Earl Grey",
+                    "Palindrom-Prophezeiungen",
+                    "Eine Mischung aus allem"
+                ],
+                correct: 3
+            }
+        ];
+
+        const prophecies = [
+            "Gestern werden Sie morgen eine wichtige Entscheidung getroffen haben.",
+            "Die Zukunft war früher auch nicht mehr das, was sie mal sein wird.",
+            "Nächste Woche werden Sie sich an etwas erinnern, das noch nicht passiert ist.",
+            "Ihre Vergangenheit wird sich morgen grundlegend ändern.",
+            "In drei Tagen werden Sie verstehen, warum Sie gestern gelacht haben werden."
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        function showQuestion() {
+            document.getElementById('currentQuestionNumber').textContent = currentQuestion + 1;
+            document.getElementById('totalQuestions').textContent = questions.length;
+            
+            const question = questions[currentQuestion];
+            document.getElementById('questionContainer').textContent = question.question;
+            
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                optionElement.textContent = option;
+                optionElement.onclick = () => selectOption(index);
+                optionsContainer.appendChild(optionElement);
+            });
+
+            document.getElementById('nextButton').style.display = 'block';
+            document.getElementById('quizComplete').style.display = 'none';
+        }
+
+        function selectOption(index) {
+            const options = document.getElementsByClassName('option');
+            for(let option of options) {
+                option.classList.remove('selected', 'correct', 'wrong');
+            }
+            
+            options[index].classList.add('selected');
+            
+            if(index === questions[currentQuestion].correct) {
+                options[index].classList.add('correct');
+                score += 10;
+            } else {
+                options[index].classList.add('wrong');
+                options[questions[currentQuestion].correct].classList.add('correct');
+            }
+            
+            document.getElementById('score').textContent = score;
+        }
+
+        function getFeedback(score) {
+            const maxScore = questions.length * 10;
+            const percentage = (score / maxScore) * 100;
+            
+            if (percentage === 100) {
+                return "Perfekt! Sie sind wahrlich ein Meister der Zeitparadoxien!";
+            } else if (percentage >= 80) {
+                return "Ausgezeichnet! Madame Rothmann wäre stolz auf Sie!";
+            } else if (percentage >= 60) {
+                return "Gut gemacht! Ihre Zeitreise-Kenntnisse sind beachtlich.";
+            } else if (percentage >= 40) {
+                return "Nicht schlecht! Aber da ist noch Raum für temporale Verbesserungen.";
+            } else {
+                return "Vielleicht sollten Sie einen Zeitreise-Auffrischungskurs besuchen...";
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion >= questions.length) {
+                showQuizComplete();
+            } else {
+                showQuestion();
+            }
+        }
+
+        function showQuizComplete() {
+            document.getElementById('nextButton').style.display = 'none';
+            document.getElementById('quizComplete').style.display = 'block';
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('quizFeedback').textContent = getFeedback(score);
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            document.getElementById('score').textContent = score;
+            showQuestion();
+        }
+
+        function generateProphecy() {
+            const prophecy = prophecies[Math.floor(Math.random() * prophecies.length)];
+            document.getElementById('prophecy').textContent = prophecy;
+            
+            const crystalBall = document.getElementById('crystalBall');
+            crystalBall.style.transform = 'scale(1.1)';
+            setTimeout(() => crystalBall.style.transform = 'scale(1)', 200);
+        }
+
+        // Start the quiz
+        showQuestion();
+    </script>
+</body>
+</html>
