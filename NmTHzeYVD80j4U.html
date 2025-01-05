@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Das Geheime Kaffeemaschinen-Handbuch</title>
+    <style>
+        body {
+            background: #1a0f2e;
+            color: #e6d5ff;
+            font-family: 'Georgia', serif;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .nav-button {
+            background: #ffd700;
+            color: #1a0f2e;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 20px;
+            transition: all 0.3s;
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 1000;
+        }
+
+        .nav-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .handbook-section {
+            background: rgba(74, 0, 128, 0.2);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 60px;
+            box-shadow: 0 0 20px rgba(106, 0, 184, 0.3);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h1, h2 {
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .chapter {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .secret-note {
+            font-style: italic;
+            color: #ffd700;
+            margin: 15px 0;
+            padding: 10px;
+            border-left: 3px solid #ffd700;
+        }
+
+        .instruction-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .instruction-list li {
+            margin: 10px 0;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .pattern-grid {
+            font-family: monospace;
+            white-space: pre;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+
+        .reveal-button {
+            background: #ffd700;
+            color: #1a0f2e;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 10px 0;
+        }
+
+        .reveal-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .hidden-content {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io" class="nav-button">← Home</a>
+
+    <div class="handbook-section">
+        <h1>Das Geheime Kaffeemaschinen-Handbuch</h1>
+        <div class="secret-note">
+            "Liebes Tagebuch, heute verrate ich dir die geheimen Formeln..." - Großtante Erdmute
+        </div>
+
+        <div class="chapter">
+            <h2>Kapitel 1: Die Perfekte Arien-Zubereitung</h2>
+            <button class="reveal-button" onclick="toggleContent('arien-notes')">Geheime Notiz aufdecken</button>
+            <div id="arien-notes" class="hidden-content">
+                <div class="secret-note">💭 Großtantes Notiz: "Die Maschine singt nur, wenn man ihr zuhört..."</div>
+                <ul class="instruction-list">
+                    <li>Wassertank auf 440 Hz stimmen</li>
+                    <li>Bohnen im Goldenen Schnitt mahlen</li>
+                    <li>Druck auf exactly 9.8 bar einstellen</li>
+                    <li>3 Mal im Uhrzeigersinn rühren</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="chapter">
+            <h2>Kapitel 2: Der Harmonische Pullover</h2>
+            <button class="reveal-button" onclick="toggleContent('pattern')">Strickmuster anzeigen</button>
+            <div id="pattern" class="hidden-content">
+                <div class="pattern-grid">
+* * * O O * * *
+* O * * * O * *
+O * * ☕ * * O *
+* O * * * O * *
+* * * O O * * *</div>
+                <div class="secret-note">"Das Kaffeebohnen-Muster bringt Glück!" - Großtante</div>
+            </div>
+        </div>
+
+        <div class="chapter">
+            <h2>Kapitel 3: Geheime Stimmübungen</h2>
+            <button class="reveal-button" onclick="toggleContent('exercises')">Übungen enthüllen</button>
+            <div id="exercises" class="hidden-content">
+                <p>Tägliche Übungen für die perfekte Kaffee-Harmonie:</p>
+                <ul class="instruction-list">
+                    <li>"Pssssschhhhh" (Dampfdüsen-Imitation)</li>
+                    <li>"Brrrrrmmm" (Mahlwerk-Resonanz)</li>
+                    <li>"Plop-plop-plop" (Tropfen-Rhythmus)</li>
+                </ul>
+                <div class="secret-note">"Sing mit der Maschine, nicht gegen sie!" - Großtante</div>
+            </div>
+        </div>
+
+        <div class="chapter">
+            <h2>Kapitel 4: Versteckte Weisheiten</h2>
+            <button class="reveal-button" onclick="showRandomWisdom()">Zufällige Weisheit</button>
+            <div id="wisdom" class="secret-note hidden-content"></div>
+        </div>
+    </div>
+
+    <script>
+        function toggleContent(id) {
+            const element = document.getElementById(id);
+            if (element.style.display === 'block') {
+                element.style.display = 'none';
+            } else {
+                element.style.display = 'block';
+            }
+        }
+
+        const wisdoms = [
+            "Ein perfekter Kaffee braucht Zeit und Geduld - genau wie eine gute Arie.",
+            "Die Kaffeemaschine spürt deine Stimmung - also lächle!",
+            "Wer seinem Kaffee nicht zuhört, verpasst die schönsten Melodien.",
+            "Ein verstimmter Wassertank macht keinen harmonischen Espresso.",
+            "Das Geheimnis liegt nicht im Rezept, sondern im Herzen der Maschine."
+        ];
+
+        function showRandomWisdom() {
+            const wisdom = wisdoms[Math.floor(Math.random() * wisdoms.length)];
+            const wisdomElement = document.getElementById('wisdom');
+            wisdomElement.textContent = wisdom;
+            wisdomElement.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
