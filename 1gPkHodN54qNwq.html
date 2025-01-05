@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ausreden AG - Ultimative-Ausreden-Synthesizer</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .home-button {
+            display: inline-block;
+            text-decoration: none;
+            color: #333;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .synthesizer-interface {
+            background: #2c3e50;
+            padding: 20px;
+            border-radius: 10px;
+            color: #ecf0f1;
+            margin: 20px 0;
+        }
+
+        .synth-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .synth-section {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quantum-display {
+            height: 150px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 5px;
+            margin: 10px 0;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Courier New', monospace;
+            padding: 10px;
+        }
+
+        .quantum-wave {
+            position: absolute;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                rgba(52, 152, 219, 0.1),
+                rgba(46, 204, 113, 0.1),
+                rgba(52, 152, 219, 0.1));
+            animation: wave 3s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes wave {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0%); }
+        }
+
+        .control-panel {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        .synthesizer-log {
+            font-family: 'Courier New', monospace;
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 5px;
+            margin-top: 20px;
+            height: 150px;
+            overflow-y: auto;
+        }
+
+        .harmony-sliders {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .harmony-slider {
+            width: 100%;
+            appearance: none;
+            height: 4px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px;
+            outline: none;
+        }
+
+        .harmony-slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            background: #3498db;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .quantum-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .reality-status {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+        }
+
+        .glitch-text {
+            position: relative;
+            animation: glitch 1s infinite;
+        }
+
+        @keyframes glitch {
+            0% { transform: skew(0deg); }
+            20% { transform: skew(10deg); }
+            40% { transform: skew(-10deg); }
+            60% { transform: skew(5deg); }
+            80% { transform: skew(-5deg); }
+            100% { transform: skew(0deg); }
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io/" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Ultimative-Ausreden-Synthesizer</h1>
+        
+        <div class="synthesizer-interface">
+            <div class="synth-grid">
+                <div class="synth-section">
+                    <h3>📝 Realitäts-Umschreiber</h3>
+                    <div class="quantum-display" id="realityDisplay">
+                        <div class="quantum-wave"></div>
+                        <div id="realityText">Realität wird neu geschrieben...</div>
+                    </div>
+                    <div class="control-panel">
+                        <button onclick="rewriteReality('quantum')">Quantum-Umschreibung</button>
+                        <button onclick="rewriteReality('classic')">Klassische Revision</button>
+                    </div>
+                </div>
+
+                <div class="synth-section">
+                    <h3>🎵 Wahrheits-Harmonisierer</h3>
+                    <div class="harmony-sliders">
+                        <input type="range" class="harmony-slider" onchange="adjustHarmony('quantum')" min="0" max="100">
+                        <input type="range" class="harmony-slider" onchange="adjustHarmony('reality')" min="0" max="100">
+                        <input type="range" class="harmony-slider" onchange="adjustHarmony('truth')" min="0" max="100">
+                    </div>
+                    <div class="quantum-display" id="harmonyDisplay">
+                        <div class="quantum-wave"></div>
+                        <div id="harmonyText">Wahrheits-Harmonisierung aktiv...</div>
+                    </div>
+                </div>
+
+                <div class="synth-section">
+                    <h3>🎼 Quantenparadoxien-Composer</h3>
+                    <div class="quantum-display" id="paradoxDisplay">
+                        <div class="quantum-wave"></div>
+                        <div id="paradoxText">Paradoxien werden komponiert...</div>
+                    </div>
+                    <div class="control-panel">
+                        <button onclick="composeParadox('temporal')">Temporale Komposition</button>
+                        <button onclick="composeParadox('spatial')">Räumliche Harmonie</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="synthesizer-log" id="synthLog">
+                Ultimative-Ausreden-Synthesizer initialisiert...
+            </div>
+
+            <div class="reality-status">
+                <span>Harmoniegrad: <span id="harmonyLevel">100%</span></span>
+                <span>Paradoxdichte: <span id="paradoxDensity">0%</span></span>
+                <span>Realitäts-Kohärenz: <span id="coherenceLevel">100%</span></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let harmonyLevel = 100;
+        let paradoxDensity = 0;
+        let coherenceLevel = 100;
+
+        function updateLog(message) {
+            const log = document.getElementById('synthLog');
+            const timestamp = new Date().toLocaleTimeString();
+            log.innerHTML = `[${timestamp}] ${message}<br>${log.innerHTML}`;
+        }
+
+        function updateMeters() {
+            document.getElementById('harmonyLevel').textContent = `${harmonyLevel}%`;
+            document.getElementById('paradoxDensity').textContent = `${paradoxDensity}%`;
+            document.getElementById('coherenceLevel').textContent = `${coherenceLevel}%`;
+        }
+
+        function createParticle(display) {
+            const particle = document.createElement('div');
+            particle.className = 'quantum-particle';
+            particle.style.left = Math.random() * display.offsetWidth + 'px';
+            particle.style.top = Math.random() * display.offsetHeight + 'px';
+            display.appendChild(particle);
+            setTimeout(() => particle.remove(), 3000);
+        }
+
+        function rewriteReality(type) {
+            const display = document.getElementById('realityDisplay');
+            const text = document.getElementById('realityText');
+            
+            if (type === 'quantum') {
+                coherenceLevel = Math.max(0, coherenceLevel - 15);
+                paradoxDensity += 10;
+                text.innerHTML = "Quantum-Neuschreibung der Realität...";
+            } else {
+                coherenceLevel = Math.min(100, coherenceLevel + 10);
+                paradoxDensity = Math.max(0, paradoxDensity - 5);
+                text.innerHTML = "Klassische Realitätsrevision...";
+            }
+            
+            createParticle(display);
+            updateLog(`Realitäts-Umschreibung: ${type}`);
+            updateMeters();
+
+            setTimeout(() => {
+                const effects = [
+                    "Dr. Brinkmann: 'Die Realität wird flüssiger!'",
+                    "Herbert piepst: 'Neue Wahrscheinlichkeiten entdeckt'",
+                    "Das Archiv beginnt zu summen..."
+                ];
+                updateLog(effects[Math.floor(Math.random() * effects.length)]);
+            }, 1000);
+        }
+
+        function adjustHarmony(type) {
+            const display = document.getElementById('harmonyDisplay');
+            harmonyLevel = Math.min(100, harmonyLevel + 5);
+            coherenceLevel = Math.min(100, coherenceLevel + 3);
+            createParticle(display);
+            
+            updateLog(`Harmonisiere ${type}...`);
+            updateMeters();
+        }
+
+        function composeParadox(type) {
+            const display = document.getElementById('paradoxDisplay');
+            paradoxDensity = Math.min(100, paradoxDensity + 15);
+            coherenceLevel = Math.max(0, coherenceLevel - 10);
+            
+            for (let i = 0; i < 3; i++) {
+                createParticle(display);
+            }
+            
+            updateLog(`Komponiere ${type} Paradox...`);
+            updateMeters();
+
+            setTimeout(() => {
+                const compositions = [
+                    "Eine neue Zeitschleife entsteht...",
+                    "Realitätsebenen verschmelzen harmonisch...",
+                    "Die Wahrheit beginnt zu singen..."
+                ];
+                updateLog(compositions[Math.floor(Math.random() * compositions.length)]);
+            }, 1000);
+        }
+
+        // Automatische Ereignisse
+        setInterval(() => {
+            if (Math.random() < 0.1) {
+                const events = [
+                    "Spontane Harmonieverschiebung detektiert",
+                    "Paradoxe Resonanz erreicht Crescendo",
+                    "Die Realität summt eine neue Melodie"
+                ];
+                updateLog(events[Math.floor(Math.random() * events.length)]);
+                paradoxDensity = Math.min(100, paradoxDensity + 5);
+                updateMeters();
+            }
+        }, 10000);
+
+        // Easter Egg
+        let konamiCode = '';
+        const secretCode = 'ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightba';
+        document.addEventListener('keydown', (e) => {
+            konamiCode += e.key;
+            if (konamiCode.includes(secretCode)) {
+                updateLog("🌟 QUANTUM-HARMONIK AKTIVIERT: Dr. Brinkmanns Schnurrbart komponiert die ultimative Symphonie der Realität!");
+                harmonyLevel = 200;
+                paradoxDensity = 99;
+                coherenceLevel = 1;
+                updateMeters();
+                konamiCode = '';
+            }
+        });
+    </script>
+</body>
+</html>
