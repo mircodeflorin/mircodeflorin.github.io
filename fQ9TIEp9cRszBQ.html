@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Madame Gesterns Letzte Visionen</title>
+    <style>
+        body {
+            background: #1a0f2e;
+            color: #e6d5ff;
+            font-family: 'Georgia', serif;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .nav-button {
+            background: #ffd700;
+            color: #1a0f2e;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 20px;
+            transition: all 0.3s;
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 1000;
+        }
+
+        .nav-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .crystal-ball-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 40px auto;
+            perspective: 1000px;
+        }
+
+        .crystal-ball {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1s;
+        }
+
+        .crystal-ball-outer {
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.1));
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .crystal-vision {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            opacity: 0;
+            transition: opacity 1s;
+            width: 80%;
+            color: #ffd700;
+            font-style: italic;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .mist {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+            animation: swirl 10s infinite linear;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .crystal-ball.active .mist {
+            opacity: 1;
+        }
+
+        .crystal-ball.active .crystal-vision {
+            opacity: 1;
+        }
+
+        @keyframes swirl {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .vision-container {
+            max-width: 1200px;
+            margin: 60px auto 20px auto;
+            padding: 20px;
+        }
+
+        .collapsible {
+            background: rgba(74, 0, 128, 0.2);
+            color: #ffd700;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 18px;
+            transition: 0.4s;
+            border-radius: 15px;
+            margin-bottom: 5px;
+        }
+
+        .active-panel, .collapsible:hover {
+            background: rgba(74, 0, 128, 0.4);
+        }
+
+        .panel {
+            padding: 0 18px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background: rgba(74, 0, 128, 0.1);
+            border-radius: 0 0 15px 15px;
+        }
+
+        .time-control {
+            background: rgba(74, 0, 128, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .time-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .time-button {
+            background: #ffd700;
+            color: #1a0f2e;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .time-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .vision-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .vision-list li {
+            margin: 10px 0;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        @keyframes timeReverse {
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(180deg); }
+            100% { transform: scale(1) rotate(360deg); }
+        }
+
+        .reverse-time {
+            animation: timeReverse 2s ease-in-out;
+        }
+
+        .time-portal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, #ffd700, transparent);
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.5s;
+            z-index: 1000;
+        }
+
+        .time-portal.active {
+            width: 200vmax;
+            height: 200vmax;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io" class="nav-button">← Home</a>
+
+    <div class="vision-container">
+        <h1>Madame Gesterns Letzte Visionen</h1>
+        
+        <div class="crystal-ball-container">
+            <div class="crystal-ball">
+                <div class="crystal-ball-outer">
+                    <div class="mist"></div>
+                    <div class="crystal-vision"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="time-control">
+            <h2>Zeitreise-Kontrolle</h2>
+            <div class="time-buttons">
+                <button class="time-button" onclick="changeTimeline(1920)">1920</button>
+                <button class="time-button" onclick="changeTimeline(1960)">1960</button>
+                <button class="time-button" onclick="changeTimeline(1990)">1990</button>
+                <button class="time-button" onclick="changeTimeline(2024)">2024</button>
+            </div>
+            <div class="current-timeline" id="currentTimeline">Aktuelle Zeitlinie: 2024</div>
+            <div class="time-buttons">
+                <button class="time-button" onclick="generateNewVision()">Neue Vision</button>
+                <button class="time-button" onclick="reverseTime()">Zeit umkehren</button>
+            </div>
+        </div>
+
+        <h2>Visionen im Vergleich</h2>
+        
+        <button class="collapsible">Netflix-Version</button>
+        <div class="panel">
+            <div class="vision-section">
+                <div class="vision-title">Das Gewitter</div>
+                <h4>Dramatische Gewitterstürme</h4>
+                <ul class="vision-list">
+                    <li>Blitze erhellen dramatisch die Szenerie</li>
+                    <li>Donnerschläge unterstreichen jeden wichtigen Dialog</li>
+                    <li>Regen prasselt mystisch gegen die Fensterscheiben</li>
+                    <li>Windböen wehen bedeutungsvoll durch die Vorhänge</li>
+                </ul>
+            </div>
+        </div>
+
+        <button class="collapsible">Der mysteriöse Gast</button>
+        <div class="panel">
+            <div class="vision-section">
+                <h4>Ein geheimnisvoller Fremder</h4>
+                <ul class="vision-list">
+                    <li>Trägt einen schwarzen Mantel</li>
+                    <li>Bestellt seinen Kaffee in perfektem Latein</li>
+                    <li>Hinterlässt kryptische Botschaften im Kaffeesatz</li>
+                    <li>Verschwindet spurlos im Nebel</li>
+                </ul>
+            </div>
+        </div>
+
+        <button class="collapsible">Realität</button>
+        <div class="panel">
+            <div class="vision-section">
+                <div class="vision-title">Das Wetter</div>
+                <h4>Leicht bewölkt, 22°C</h4>
+                <ul class="vision-list">
+                    <li>Ein paar Regentropfen am Nachmittag</li>
+                    <li>Kurzes Grummeln in der Ferne</li>
+                    <li>Gäste öffnen ihre Regenschirme</li>
+                    <li>Kellner schließt vorsorglich die Fenster</li>
+                </ul>
+            </div>
+        </div>
+
+        <button class="collapsible">Der neue Kunde</button>
+        <div class="panel">
+            <div class="vision-section">
+                <h4>Stammkunde auf Kaffee</h4>
+                <ul class="vision-list">
+                    <li>Trägt eine gestreifte Strickjacke</li>
+                    <li>Bestellt einen normalen Cappuccino</li>
+                    <li>Liest die Tageszeitung</li>
+                    <li>Geht nach 20 Minuten zur Arbeit</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="time-portal" id="timePortal"></div>
+
+    <script>
+        // Ausklappbare Panels
+        const coll = document.getElementsByClassName("collapsible");
+        for (let i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active-panel");
+                const panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                }
+            });
+        }
+
+        // Kristallkugel Visionen
+        const visions = [
+            "Ein Papagei wird Opernstar im Café...",
+            "Der Kühlschrank entwickelt eine Vorliebe für Jazz...",
+            "Alle Tische beginnen synchron zu tanzen...",
+            "Die Kaffeemaschine spricht plötzlich fließend Latein...",
+            "Die Gäste schweben plötzlich zur Decke...",
+            "Die Zeit läuft rückwärts, aber nur für die Kuchen...",
+            "Ein Portal öffnet sich im Cappuccino-Schaum...",
+            "Die Stühle beschließen, eine Gewerkschaft zu gründen..."
+        ];
+
+        function generateNewVision() {
+            const ball = document.querySelector('.crystal-ball');
+            const visionElement = document.querySelector('.crystal-vision');
+            const randomVision = visions[Math.floor(Math.random() * visions.length)];
+            
+            ball.classList.add('active');
+            
+            setTimeout(() => {
+                visionElement.textContent = randomVision;
+            }, 1000);
+            
+            setTimeout(() => {
+                ball.classList.remove('active');
+            }, 5000);
+        }
+
+        function changeTimeline(year) {
+            const portal = document.getElementById('timePortal');
+            portal.classList.add('active');
+            
+            setTimeout(() => {
+                document.getElementById('currentTimeline').textContent = `Aktuelle Zeitlinie: ${year}`;
+                portal.classList.remove('active');
+            }, 1000);
+        }
+
+        function reverseTime() {
+            const container = document.querySelector('.vision-container');
+            container.classList.add('reverse-time');
+            
+            setTimeout(() => {
+                container.classList.remove('reverse-time');
+            }, 2000);
+
+            // Drehe die Reihenfolge der Panels um
+            const panels = document.querySelectorAll('.panel');
+            const panelsArray = Array.from(panels);
+            const container2 = panels[0].parentNode;
+            panelsArray.reverse().forEach(panel => {
+                container2.appendChild(panel);
+            });
+        }
+
+        // Initial Animation der Kristallkugel
+        document.querySelector('.crystal-ball').addEventListener('click', generateNewVision);
+    </script>
+</body>
+</html>
