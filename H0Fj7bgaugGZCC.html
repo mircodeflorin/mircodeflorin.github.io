@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nächtliches Chaos-Management - Zen-Katzen Edition</title>
+    <style>
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #3282b8;
+            --text-color: #e2e2e2;
+            --crisis-color: #ff4444;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 20px;
+            z-index: 1000;
+            transition: transform 0.2s ease;
+        }
+
+        .home-button:hover {
+            transform: scale(1.05);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .management-board {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .resources {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .resource {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .crisis-area {
+            background: rgba(255, 0, 0, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            min-height: 100px;
+        }
+
+        .crisis {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: opacity 0.5s ease;
+        }
+
+        .crisis-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-button {
+            background: var(--accent-color);
+            border: none;
+            padding: 5px 10px;
+            color: white;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .action-button:hover {
+            transform: scale(1.05);
+            background: #2671a4;
+        }
+
+        .time-display {
+            font-size: 24px;
+            text-align: center;
+            margin: 20px 0;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .character-status {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .character {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .status-bar {
+            height: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+
+        .status-fill {
+            height: 100%;
+            background: var(--accent-color);
+            width: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+            text-align: center;
+            z-index: 100;
+        }
+
+        @media (max-width: 600px) {
+            .resources {
+                grid-template-columns: 1fr;
+            }
+            
+            .character-status {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .crisis {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .crisis-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .action-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="#" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Nächtliches Chaos-Management</h1>
+        <h2>Mike's Mitternachts-Mission</h2>
+
+        <div class="time-display">
+            Zeit: <span id="timeDisplay">23:00</span>
+        </div>
+
+        <div class="management-board">
+            <div class="resources">
+                <div class="resource">
+                    Zen-Punkte: <span id="zenPoints">50</span>
+                </div>
+                <div class="resource">
+                    Dramatische Energie: <span id="dramaPoints">50</span>
+                </div>
+                <div class="resource">
+                    Aristokratie-Niveau: <span id="nobilityPoints">50</span>
+                </div>
+            </div>
+
+            <div class="character-status">
+                <div class="character">
+                    🦜 Gustav
+                    <div class="status-bar">
+                        <div class="status-fill" id="gustavStatus"></div>
+                    </div>
+                </div>
+                <div class="character">
+                    😺 Herr Schnurr
+                    <div class="status-bar">
+                        <div class="status-fill" id="schnurrStatus"></div>
+                    </div>
+                </div>
+                <div class="character">
+                    🐠 Waldemar
+                    <div class="status-bar">
+                        <div class="status-fill" id="waldemarStatus"></div>
+                    </div>
+                </div>
+                <div class="character">
+                    👩 Frau Müller
+                    <div class="status-bar">
+                        <div class="status-fill" id="muellerStatus"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="crisis-area" id="crisisArea">
+                <h3>Aktuelle Krisen</h3>
+                <!-- Krisen werden hier dynamisch eingefügt -->
+            </div>
+        </div>
+
+        <div class="message" id="message"></div>
+    </div>
+
+<script>
+        let time = { hours: 23, minutes: 0 };
+        let zenPoints = 50;
+        let dramaPoints = 50;
+        let nobilityPoints = 50;
+        let characterStatus = {
+            gustav: 100,
+            schnurr: 100,
+            waldemar: 100,
+            mueller: 100
+        };
+        let firstCrisisCreated = false;
+
+        const crises = [
+            {
+                id: 'meditation',
+                text: "Gustav startet eine laute Mitternachtsmeditation während Waldemars Soap-Finale",
+                options: [
+                    {
+                        text: "Zen-Kopfhörer anbieten",
+                        effect: { zen: 10, drama: -5, nobility: 0, gustav: 5, waldemar: 5 }
+                    },
+                    {
+                        text: "Soap auf stumm schalten",
+                        effect: { zen: -5, drama: -10, nobility: 0, gustav: 10, waldemar: -10 }
+                    }
+                ]
+            },
+            {
+                id: 'sofa',
+                text: "Herr Schnurr fordert eine nächtliche Renovierung seines Sofa-Territoriums",
+                options: [
+                    {
+                        text: "Improvisierte Verschönerung",
+                        effect: { zen: -5, drama: 5, nobility: 10, schnurr: 10 }
+                    },
+                    {
+                        text: "Auf morgen verschieben",
+                        effect: { zen: 5, drama: -5, nobility: -10, schnurr: -10 }
+                    }
+                ]
+            },
+            {
+                id: 'drama',
+                text: "Waldemar inszeniert eine dramatische Nachstellung seiner Lieblingsserie",
+                options: [
+                    {
+                        text: "Mitspielen",
+                        effect: { zen: -5, drama: 15, nobility: -5, waldemar: 15 }
+                    },
+                    {
+                        text: "Beruhigend eingreifen",
+                        effect: { zen: 10, drama: -10, nobility: 5, waldemar: -5 }
+                    }
+                ]
+            },
+            {
+                id: 'mueller',
+                text: "Frau Müller bietet nächtliche Feng-Shui-Beratung durchs Fenster an",
+                options: [
+                    {
+                        text: "Höflich zuhören",
+                        effect: { zen: -5, drama: 5, nobility: 5, mueller: 10 }
+                    },
+                    {
+                        text: "Vorhänge zuziehen",
+                        effect: { zen: 10, drama: -5, nobility: -5, mueller: -10 }
+                    }
+                ]
+            }
+        ];
+
+        function updateTime() {
+            time.minutes += 5;
+            if (time.minutes >= 60) {
+                time.minutes = 0;
+                time.hours++;
+                if (time.hours >= 24) {
+                    time.hours = 0;
+                }
+            }
+            document.getElementById('timeDisplay').textContent = 
+                `${String(time.hours).padStart(2, '0')}:${String(time.minutes).padStart(2, '0')}`;
+        }
+
+        function createCrisis() {
+            const crisis = crises[Math.floor(Math.random() * crises.length)];
+            const crisisElement = document.createElement('div');
+            crisisElement.className = 'crisis';
+            crisisElement.innerHTML = `
+                <div>${crisis.text}</div>
+                <div class="crisis-actions">
+                    ${crisis.options.map((option, index) => `
+                        <button class="action-button" onclick="handleCrisis('${index}', '${crisis.id}', this)">
+                            ${option.text}
+                        </button>
+                    `).join('')}
+                </div>
+            `;
+            document.getElementById('crisisArea').appendChild(crisisElement);
+        }
+
+        function handleCrisis(optionIndex, crisisId, buttonElement) {
+            // Finde die entsprechende Krise und Option
+            const crisis = crises.find(c => c.id === crisisId);
+            const effect = crisis.options[parseInt(optionIndex)].effect;
+
+            // Aktualisiere die Werte
+            zenPoints = Math.max(0, Math.min(100, zenPoints + effect.zen));
+            dramaPoints = Math.max(0, Math.min(100, dramaPoints + effect.drama));
+            nobilityPoints = Math.max(0, Math.min(100, nobilityPoints + effect.nobility));
+
+            // Aktualisiere die Charakterstatus
+            if (effect.gustav) characterStatus.gustav = Math.max(0, Math.min(100, characterStatus.gustav + effect.gustav));
+            if (effect.schnurr) characterStatus.schnurr = Math.max(0, Math.min(100, characterStatus.schnurr + effect.schnurr));
+            if (effect.waldemar) characterStatus.waldemar = Math.max(0, Math.min(100, characterStatus.waldemar + effect.waldemar));
+            if (effect.mueller) characterStatus.mueller = Math.max(0, Math.min(100, characterStatus.mueller + effect.mueller));
+
+            // Aktualisiere die Anzeigen
+            document.getElementById('zenPoints').textContent = zenPoints;
+            document.getElementById('dramaPoints').textContent = dramaPoints;
+            document.getElementById('nobilityPoints').textContent = nobilityPoints;
+
+            // Aktualisiere die Statusbalken
+            document.getElementById('gustavStatus').style.width = `${characterStatus.gustav}%`;
+            document.getElementById('schnurrStatus').style.width = `${characterStatus.schnurr}%`;
+            document.getElementById('waldemarStatus').style.width = `${characterStatus.waldemar}%`;
+            document.getElementById('muellerStatus').style.width = `${characterStatus.mueller}%`;
+
+            // Generiere passende Reaktion
+            let response = "";
+            if (effect.gustav) {
+                response = effect.gustav > 0 ? 
+                    "Gustav: 'Die kosmischen Energien fließen harmonisch.'" :
+                    "Gustav: 'Ich spüre eine Störung in der kosmischen Balance...'";
+            } else if (effect.schnurr) {
+                response = effect.schnurr > 0 ?
+                    "Herr Schnurr: 'Parfait! Wie in Versailles!'" :
+                    "Herr Schnurr: 'Mon dieu! Welch Affront gegen die Aristokratie!'";
+            } else if (effect.waldemar) {
+                response = effect.waldemar > 0 ?
+                    "Waldemar: 'Das ist DRAMATISCHER als Staffel 15 von 'Liebe und Betrug'!" :
+                    "Waldemar: 'CUT! CUT! Diese Szene braucht mehr DRAMA!'";
+            } else if (effect.mueller) {
+                response = effect.mueller > 0 ?
+                    "Frau Müller: 'Meine Tante dritten Grades wäre stolz!'" :
+                    "Frau Müller: 'Mein Schwager hätte das anders gemacht...'";
+            }
+
+            // Zeige Nachricht
+            showMessage(response);
+
+            // Entferne die Krise
+            const crisisDiv = buttonElement.closest('.crisis');
+            crisisDiv.style.opacity = '0';
+            setTimeout(() => crisisDiv.remove(), 500);
+
+            checkGameState();
+        }
+
+        function showMessage(text) {
+            const message = document.getElementById('message');
+            message.textContent = text;
+            message.style.display = 'block';
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 2000);
+        }
+
+        function checkGameState() {
+            if (zenPoints <= 10) {
+                showMessage("Gustav: 'Die spirituelle Harmonie schwindet...'");
+            } else if (dramaPoints <= 10) {
+                showMessage("Waldemar: 'Diese Story braucht dringend mehr DRAMA!'");
+            } else if (nobilityPoints <= 10) {
+                showMessage("Herr Schnurr: 'Die aristokratischen Standards verfallen!'");
+            }
+
+            if (zenPoints <= 0 || dramaPoints <= 0 || nobilityPoints <= 0) {
+                showMessage("Game Over - Die Balance ist zusammengebrochen!");
+                setTimeout(() => {
+                    resetGame();
+                }, 2000);
+            }
+        }
+
+        function resetGame() {
+            zenPoints = 50;
+            dramaPoints = 50;
+            nobilityPoints = 50;
+            characterStatus = {
+                gustav: 100,
+                schnurr: 100,
+                waldemar: 100,
+                mueller: 100
+            };
+            document.getElementById('crisisArea').innerHTML = '<h3>Aktuelle Krisen</h3>';
+            updateResources();
+            showMessage("Neue Nachtschicht beginnt!");
+            firstCrisisCreated = false;
+        }
+
+        // Initial message
+        setTimeout(() => {
+            showMessage("Willkommen zur Nachtschicht! Bereite dich auf das Chaos vor...");
+        }, 1000);
+
+        // Erste Krise erscheint nach 2 Sekunden
+        setTimeout(() => {
+            if (!firstCrisisCreated) {
+                createCrisis();
+                firstCrisisCreated = true;
+            }
+        }, 2000);
+
+        // Reguläre Krisen-Generierung
+        setInterval(() => {
+            updateTime();
+            if (Math.random() < 0.3) { // 30% Chance für neue Krise
+                createCrisis();
+            }
+        }, 5000);
+
+        // Initial setup
+        document.getElementById('gustavStatus').style.width = '100%';
+        document.getElementById('schnurrStatus').style.width = '100%';
+        document.getElementById('waldemarStatus').style.width = '100%';
+        document.getElementById('muellerStatus').style.width = '100%';
+    </script>
+</body>
+</html>
