@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome-Home-Choreographie - Zen-Katzen Edition</title>
+    <style>
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #3282b8;
+            --text-color: #e2e2e2;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: var(--primary-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-top: 80px;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: var(--text-color);
+        }
+
+        .game-container {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            position: relative;
+            min-height: 600px;
+        }
+
+        .stage {
+            width: 100%;
+            height: 400px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .character {
+            width: 60px;
+            height: 60px;
+            position: absolute;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            user-select: none;
+            border-radius: 50%;
+        }
+
+        .character.gustav {
+            background: rgba(76, 175, 80, 0.6);
+        }
+
+        .character.schnurr {
+            background: rgba(156, 39, 176, 0.6);
+        }
+
+        .character.waldemar {
+            background: rgba(33, 150, 243, 0.6);
+        }
+
+        .character.mueller {
+            background: rgba(255, 152, 0, 0.6);
+        }
+
+        .character.selected {
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .target-position {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border: 2px dashed #fff;
+            border-radius: 50%;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .target-position.active {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 0.5; }
+        }
+
+        .character.correct-position {
+            box-shadow: 0 0 20px #4CAF50;
+        }
+
+        .control-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .control-button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .control-button:hover {
+            background: #2c5282;
+        }
+
+        .control-button:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+
+        .timer {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .choreography-sequence {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+            min-height: 60px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+
+        .sequence-step {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .character-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .message-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            display: none;
+            z-index: 1000;
+        }
+
+        .dialog-bubble {
+            position: absolute;
+            background: white;
+            color: black;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 14px;
+            max-width: 150px;
+            display: none;
+            z-index: 100;
+        }
+
+        .dialog-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 10px 10px 0;
+            border-style: solid;
+            border-color: white transparent transparent;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .bounce {
+            animation: bounce 0.5s ease infinite;
+        }
+
+        .hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io/" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Welcome-Home-Choreographie</h1>
+        <h2>Timing-basiertes Koordinationsspiel</h2>
+
+        <div class="game-container">
+            <div class="timer">Zeit: <span id="timeDisplay">60</span>s</div>
+            <div class="stage" id="stage">
+                <div class="character gustav" data-type="gustav">🧘‍♂️</div>
+                <div class="character schnurr" data-type="schnurr">👑</div>
+                <div class="character waldemar" data-type="waldemar">🐠</div>
+                <div class="character mueller" data-type="mueller">👀</div>
+                <div class="dialog-bubble" id="dialogBubble"></div>
+            </div>
+
+            <div class="choreography-sequence" id="sequence"></div>
+
+            <div class="control-panel">
+                <button class="control-button" id="startBtn">Choreographie starten</button>
+                <button class="control-button" id="resetBtn">Zurücksetzen</button>
+            </div>
+
+            <div class="message-box" id="messageBox"></div>
+        </div>
+    </div>
+
+<script>
+        const characters = {
+            gustav: {
+                name: "Gustav",
+                quotes: [
+                    "Der Weise wartet im Verborgenen *Omm*",
+                    "Die Überraschung ist der Weg zur Erleuchtung",
+                    "Position gefunden - innerlich und äußerlich"
+                ]
+            },
+            schnurr: {
+                name: "Herr Schnurr",
+                quotes: [
+                    "Mon dieu! Diese Position ist einer Katze von Stand würdig",
+                    "Wie in Versailles, nur... kleiner",
+                    "Eine royale Überraschung braucht perfektes Timing!"
+                ]
+            },
+            waldemar: {
+                name: "Waldemar",
+                quotes: [
+                    "Das wird dramatischer als das Staffelfinale!",
+                    "Genau wie in 'Herzen im Sturm', Folge 394!",
+                    "Wir brauchen mehr DRAMA in dieser Szene!"
+                ]
+            },
+            mueller: {
+                name: "Frau Müller",
+                quotes: [
+                    "Meine Cousine war mal Überraschungsparty-Planerin!",
+                    "Die Feng-Shui-Ausrichtung ist perfekt!",
+                    "Warten Sie, bis Sie meine Spezial-Choreographie sehen!"
+                ]
+            }
+        };
+
+        let selectedCharacter = null;
+        let gameActive = false;
+        let timeLeft = 60;
+        let timer = null;
+        let sequence = [];
+        let currentStep = 0;
+
+        const stage = document.getElementById('stage');
+        const dialogBubble = document.getElementById('dialogBubble');
+        const sequenceDisplay = document.getElementById('sequence');
+        const messageBox = document.getElementById('messageBox');
+        const timeDisplay = document.getElementById('timeDisplay');
+        const startBtn = document.getElementById('startBtn');
+        const resetBtn = document.getElementById('resetBtn');
+
+        function initializeCharacters() {
+            document.querySelectorAll('.character').forEach(char => {
+                char.style.left = Math.random() * (stage.offsetWidth - 60) + 'px';
+                char.style.top = Math.random() * (stage.offsetHeight - 60) + 'px';
+                char.addEventListener('click', handleCharacterClick);
+                char.addEventListener('dragstart', e => e.preventDefault());
+            });
+        }
+
+        function handleCharacterClick(e) {
+            if (!gameActive) return;
+            
+            const character = e.target;
+            if (selectedCharacter === character) {
+                selectedCharacter.classList.remove('selected');
+                selectedCharacter = null;
+                hideDialog();
+            } else {
+                if (selectedCharacter) {
+                    selectedCharacter.classList.remove('selected');
+                }
+                selectedCharacter = character;
+                character.classList.add('selected');
+                showDialog(character);
+            }
+        }
+
+        function showDialog(character) {
+            const type = character.dataset.type;
+            const quote = characters[type].quotes[Math.floor(Math.random() * 3)];
+            dialogBubble.textContent = quote;
+            const charRect = character.getBoundingClientRect();
+            const stageRect = stage.getBoundingClientRect();
+            
+            dialogBubble.style.left = (charRect.left - stageRect.left + 30) + 'px';
+            dialogBubble.style.top = (charRect.top - stageRect.top - 60) + 'px';
+            dialogBubble.style.display = 'block';
+        }
+
+        function hideDialog() {
+            dialogBubble.style.display = 'none';
+        }
+
+        function moveCharacter(e) {
+            if (!selectedCharacter || !gameActive) return;
+            
+            const stageRect = stage.getBoundingClientRect();
+            const x = e.clientX - stageRect.left - 30;
+            const y = e.clientY - stageRect.top - 30;
+            
+            selectedCharacter.style.left = Math.max(0, Math.min(x, stage.offsetWidth - 60)) + 'px';
+            selectedCharacter.style.top = Math.max(0, Math.min(y, stage.offsetHeight - 60)) + 'px';
+            
+            showDialog(selectedCharacter);
+            checkPositions();
+        }
+
+        function generateSequence() {
+            sequence = [];
+            const characters = ['gustav', 'schnurr', 'waldemar', 'mueller'];
+            
+            for (let i = 0; i < 4; i++) {
+                sequence.push({
+                    character: characters[i],
+                    x: Math.random() * 0.8 + 0.1,
+                    y: Math.random() * 0.8 + 0.1
+                });
+            }
+            
+            updateSequenceDisplay();
+        }
+
+        function showTargetPositions() {
+            document.querySelectorAll('.target-position').forEach(el => el.remove());
+            
+            sequence.forEach((pos, index) => {
+                const target = document.createElement('div');
+                target.className = 'target-position';
+                if (index === currentStep) target.classList.add('active');
+                target.style.left = (pos.x * (stage.offsetWidth - 60)) + 'px';
+                target.style.top = (pos.y * (stage.offsetHeight - 60)) + 'px';
+                target.innerHTML = `${index + 1}. ${characters[pos.character].name}`;
+                stage.appendChild(target);
+            });
+        }
+
+        function updateSequenceDisplay() {
+            sequenceDisplay.innerHTML = sequence.map((step, index) => `
+                <div class="sequence-step" style="opacity: ${index < currentStep ? 0.5 : 1}">
+                    <div class="character-icon ${step.character}">${
+                        step.character === 'gustav' ? '🧘‍♂️' :
+                        step.character === 'schnurr' ? '👑' :
+                        step.character === 'waldemar' ? '🐠' : '👀'
+                    }</div>
+                    ${index < currentStep ? '✓' : (index === currentStep ? '⟶' : '•')}
+                </div>
+            `).join('');
+        }
+
+        function checkPositions() {
+            if (currentStep >= sequence.length) return;
+            
+            const currentTarget = sequence[currentStep];
+            const character = document.querySelector(`.character[data-type="${currentTarget.character}"]`);
+            const charRect = character.getBoundingClientRect();
+            const stageRect = stage.getBoundingClientRect();
+            const targetX = currentTarget.x * (stage.offsetWidth - 60);
+            const targetY = currentTarget.y * (stage.offsetHeight - 60);
+            
+            const distance = Math.sqrt(
+                Math.pow(charRect.left - stageRect.left - targetX, 2) +
+                Math.pow(charRect.top - stageRect.top - targetY, 2)
+            );
+            
+            if (distance < 30) {
+                character.classList.add('correct-position');
+                character.classList.add('bounce');
+                currentStep++;
+                showTargetPositions();
+                updateSequenceDisplay();
+                
+                if (currentStep >= sequence.length) {
+                    endGame(true);
+                } else {
+                    messageBox.textContent = `Perfekt! Nächster Charakter: ${characters[sequence[currentStep].character].name}`;
+                    messageBox.style.display = 'block';
+                    setTimeout(() => {
+                        messageBox.style.display = 'none';
+                    }, 1500);
+                }
+            }
+        }
+
+        function startGame() {
+            gameActive = true;
+            timeLeft = 60;
+            currentStep = 0;
+            generateSequence();
+            showTargetPositions();
+            startBtn.disabled = true;
+            
+            timer = setInterval(() => {
+                timeLeft--;
+                timeDisplay.textContent = timeLeft;
+                
+                if (timeLeft <= 0) {
+                    endGame(false);
+                }
+            }, 1000);
+            
+            stage.addEventListener('mousemove', moveCharacter);
+
+            messageBox.textContent = "Bewege die Charaktere der Reihe nach zu den nummerierten Positionen!";
+            messageBox.style.display = 'block';
+            setTimeout(() => {
+                messageBox.style.display = 'none';
+            }, 3000);
+        }
+
+        function endGame(success) {
+            gameActive = false;
+            clearInterval(timer);
+            stage.removeEventListener('mousemove', moveCharacter);
+            
+            messageBox.textContent = success ? 
+                "Perfekte Choreographie! Die Überraschung wird ein Erfolg!" :
+                "Zeit abgelaufen! Vielleicht beim nächsten Versuch...";
+            messageBox.style.display = 'block';
+            
+            setTimeout(() => {
+                messageBox.style.display = 'none';
+                startBtn.disabled = false;
+            }, 3000);
+        }
+
+        function resetGame() {
+            clearInterval(timer);
+            gameActive = false;
+            timeLeft = 60;
+            currentStep = 0;
+            sequence = [];
+            timeDisplay.textContent = timeLeft;
+            startBtn.disabled = false;
+            
+            document.querySelectorAll('.character').forEach(char => {
+                char.classList.remove('selected', 'bounce', 'correct-position');
+                char.style.left = Math.random() * (stage.offsetWidth - 60) + 'px';
+                char.style.top = Math.random() * (stage.offsetHeight - 60) + 'px';
+            });
+            
+            document.querySelectorAll('.target-position').forEach(el => el.remove());
+            hideDialog();
+            sequenceDisplay.innerHTML = '';
+            messageBox.style.display = 'none';
+        }
+
+        startBtn.addEventListener('click', startGame);
+        resetBtn.addEventListener('click', resetGame);
+        initializeCharacters();
+    </script>
+</body>
+</html>
