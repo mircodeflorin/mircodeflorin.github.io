@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professor Fibonaccis Formeln</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', serif;
+            background-color: #f4f1ea;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .notebook-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 40px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            position: relative;
+            border: 1px solid #d4c5b9;
+        }
+
+        .notebook-container::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, 
+                #e74c3c 20%, 
+                #3498db 20%, 
+                #3498db 40%,
+                #2ecc71 40%,
+                #2ecc71 60%,
+                #f1c40f 60%,
+                #f1c40f 80%,
+                #e74c3c 80%
+            );
+        }
+
+        h1 {
+            font-family: 'Courier New', monospace;
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .formula-section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 1px solid #eee;
+            background: #fafafa;
+            position: relative;
+        }
+
+        .formula {
+            font-family: 'Times New Roman', serif;
+            font-size: 1.2em;
+            margin: 20px 0;
+            padding: 10px;
+            border-left: 3px solid #3498db;
+            background: #f8f9fa;
+            overflow-x: auto;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .formula:hover {
+            background: #fff3cd;
+            transform: scale(1.01);
+        }
+
+        .note {
+            font-family: 'Brush Script MT', cursive;
+            color: #666;
+            font-size: 1.1em;
+            margin: 10px 0;
+            font-style: italic;
+        }
+
+        .coffee-stain {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(139, 69, 19, 0.1);
+            pointer-events: none;
+        }
+
+        .calculation {
+            font-family: 'Courier New', monospace;
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #e9ecef;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+
+        .diagram {
+            width: 100%;
+            height: 200px;
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wave {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(52, 152, 219, 0.1) 10px,
+                rgba(52, 152, 219, 0.1) 20px
+            );
+            animation: waveAnimation 20s linear infinite;
+        }
+
+        .warning-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            animation: fadeIn 0.3s;
+        }
+
+        .warning-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            border: 3px solid #ff0000;
+            text-align: center;
+            max-width: 80%;
+            animation: shake 0.5s;
+        }
+
+        .danger-test {
+            margin: 40px 0;
+            padding: 20px;
+            border: 2px solid #ff0000;
+            background: #fff5f5;
+            text-align: center;
+        }
+
+        .danger-meter {
+            width: 100%;
+            height: 30px;
+            background: #ddd;
+            margin: 20px 0;
+            border: 1px solid #999;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .danger-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #ffeb3b, #ff9800, #ff5722);
+            transition: width 0.1s;
+        }
+
+        #testButton {
+            padding: 10px 20px;
+            background: #ff0000;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        #testButton:hover {
+            background: #cc0000;
+            transform: scale(1.05);
+        }
+
+        .danger-alert {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ff0000;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 5px;
+            z-index: 1000;
+            display: none;
+            animation: slideDown 0.5s;
+        }
+
+        @keyframes waveAnimation {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translate(-50%, -50%); }
+            10%, 30%, 50%, 70%, 90% { transform: translate(-52%, -50%); }
+            20%, 40%, 60%, 80% { transform: translate(-48%, -50%); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes flash {
+            0%, 100% { background: #fafafa; }
+            50% { background: #ff8080; }
+        }
+
+        @keyframes slideDown {
+            from { top: -100px; }
+            to { top: 20px; }
+        }
+
+        .home-button {
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            font-family: 'Times New Roman', serif;
+            transition: background-color 0.3s;
+        }
+
+        .home-button:hover {
+            background-color: #1a252f;
+        }
+
+        .page-number {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-family: 'Courier New', monospace;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .coffee-cup {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 2em;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .coffee-cup:hover {
+            transform: rotate(-15deg);
+        }
+
+        @media (max-width: 600px) {
+            .notebook-container {
+                padding: 20px;
+            }
+
+            .formula {
+                font-size: 1em;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <button class="home-button" onclick="window.location.href='https://mircodeflorin.github.io'">Zur Autorenseite</button>
+
+    <div class="warning-modal" id="warningModal">
+        <div class="warning-content">
+            <h2>⚠️ WARNUNG! ⚠️</h2>
+            <p id="warningText"></p>
+            <button onclick="closeWarning()">Verstanden</button>
+        </div>
+    </div>
+
+    <div class="notebook-container">
+        <div class="coffee-stain" style="top: 50px; right: 30px; transform: rotate(15deg);"></div>
+        <div class="coffee-stain" style="bottom: 100px; left: 50px; transform: rotate(-25deg);"></div>
+
+        <h1>Akustische Analysen & Berechnungen</h1>
+
+        <div class="formula-section">
+            <h2>1. Grundfrequenzanalyse der Kaffeemaschine</h2>
+            <div class="note">Erstaunliche Übereinstimmung mit der Fibonacci-Reihe!</div>
+            <div class="formula">
+                F(n) = f(n-1) + f(n-2)<br>
+                Grundton: 440 Hz (Kammerton A)
+            </div>
+            <div class="calculation">
+                Obertöne: 440 → 680 → 1120 → 1800 → 2920 Hz<br>
+                <span class="highlight">Perfekte harmonische Progression!</span>
+            </div>
+        </div>
+
+        <div class="formula-section">
+            <h2>2. Raumakustische Berechnung</h2>
+            <div class="diagram">
+                <div class="wave"></div>
+            </div>
+            <div class="note">Die Tischanordnung verstärkt die Resonanz!</div>
+            <div class="formula">
+                R(φ) = a + b × φ<br>
+                Wobei φ = (1 + √5) / 2 (Goldener Schnitt)
+            </div>
+            <div class="calculation">
+                Optimale Tischabstände:<br>
+                1.618m → 2.618m → 4.236m
+            </div>
+        </div>
+
+        <div class="formula-section">
+            <h2>3. Harmonische Konvergenz</h2>
+            <div class="note">Die Kaffeemaschine komponiert in der Fibonacci-Tonleiter!</div>
+            <div class="formula">
+                H(n) = F(n) × 440 Hz<br>
+                F(n) = Fibonacci-Zahl an Position n
+            </div>
+            <div class="calculation">
+                Melodische Sequenz:<br>
+                440 → 440 → 880 → 1320 → 2200 Hz<br>
+                <span class="highlight">Eine mathematisch perfekte Komposition!</span>
+            </div>
+        </div>
+
+        <div class="danger-test">
+            <h2>⚠️ RESONANZTEST ⚠️</h2>
+            <div class="danger-meter">
+                <div class="danger-fill"></div>
+            </div>
+            <button id="testButton" onclick="startDangerTest()">Resonanztest starten</button>
+        </div>
+
+        <div class="formula-section">
+            <h2>4. Resonanzoptimierung</h2>
+            <div class="note">Erstaunliche Entdeckung: Der Kaffeedampf moduliert die Schallwellen!</div>
+            <div class="formula">
+                P(t) = P₀ × e^(-t/τ) × sin(2πft)<br>
+                τ = Dampfdruckkonstante
+            </div>
+            <div class="calculation">
+                Optimaler Dampfdruck: 1.618 bar<br>
+                Resonanzfrequenz: 440 × φ Hz<br>
+                <span class="highlight">Der Goldene Schnitt erscheint überall!</span>
+            </div>
+        </div>
+
+        <div class="page-number">- 1 -</div>
+    </div>
+
+    <div class="coffee-cup" onclick="addCoffeeStain()" title="Kaffeefleck hinzufügen">☕</div>
+
+    <script>
+        function showWarning(text) {
+            document.getElementById('warningText').textContent = text;
+            document.getElementById('warningModal').style.display = 'block';
+            document.body.classList.add('shake-element');
+            
+            if (navigator.vibrate) {
+                navigator.vibrate([100, 50, 100]);
+            }
+        }
+
+        function closeWarning() {
+            document.getElementById('warningModal').style.display = 'none';
+            document.body.classList.remove('shake-element');
+        }
+
+        document.querySelectorAll('.formula').forEach(formula => {
+            formula.addEventListener('click', () => {
+                const warnings = [
+                    "WARNUNG: Diese Formel könnte zu harmonischer Resonanz führen!",
+                    "ACHTUNG: Kritische Frequenzüberlagerung möglich!",
+                    "GEFAHR: Instabile Schwingungsmuster detektiert!",
+                    "VORSICHT: Fibonacci-Sequenz nähert sich kritischem Wert!"
+                ];
+                showWarning(warnings[Math.floor(Math.random() * warnings.length)]);
+                formula.classList.add('flash');
+                setTimeout(() => formula.classList.remove('flash'), 500);
+            });
+        });
+
+        let testInProgress = false;
+        let testInterval;
+        let dangerLevel = 0;
+
+        function startDangerTest() {
+            if (testInProgress) return;
+            
+            testInProgress = true;
+            const button = document.getElementById('testButton');
+            const dangerFill = document.querySelector('.danger-fill');
+            button.textContent = 'Test läuft...';
+            button.style.backgroundColor = '#cc0000';
+
+            testInterval = setInterval(() => {
+                dangerLevel += Math.random() * 2;
+                dangerFill.style.width = `${dangerLevel}%`;
+
+                if (dangerLevel >= 100) {
+                    clearInterval(testInterval);
+                    criticalFailure();
+                }
+            }, 100);
+
+            const playWarningSound = () => {
+                if (dangerLevel < 100) {
+                    const freq = 440 + Math.random() * 880;
+                    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    const oscillator = audioCtx.createOscillator();
+                    const gainNode = audioCtx.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioCtx.destination);
+                    
+                    oscillator.frequency.value = freq;
+                    gainNode.gain.value = 0.1;
+                    
+                    oscillator.start();
+                    setTimeout(() => oscillator.stop(), 100);
+                    
+                    if (testInProgress) {
+                        setTimeout(playWarningSound, Math.random() * 2000 + 1000);
+                    }
+                }
+            };
+
+            playWarningSound();
+        }
+
+        function criticalFailure() {
+            testInProgress = false;
+            const button = document.getElementById('testButton');
+            button.textContent = 'System überlastet!';
+            button.style.backgroundColor = '#ff0000';
+            
+            showWarning("KRITISCHER FEHLER: Resonanzkatastrophe! System muss neu gestartet werden!");
+            
+            document.querySelectorAll('.formula-section').forEach(section => {
+                section.classList.add('shake-element');
+            });
+
+            const alert = document.createElement('div');
+            alert.className = 'danger-alert';
+            alert.textContent = '🚨 SYSTEM INSTABIL 🚨';
+            document.body.appendChild(alert);
+            alert.style.display = 'block';
+
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            oscillator.frequency.value = 440;
+            gainNode.gain.value = 0.1;
+            
+            oscillator.start();
+            gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 1);
+            
+            setTimeout(() => {
+                dangerLevel = 0;
+                document.querySelector('.danger-fill').style.width = '0%';
+                button.textContent = 'Resonanztest starten';
+                button.style.backgroundColor = '#ff0000';
+                document.querySelectorAll('.formula-section').forEach(section => {
+                    section.classList.remove('shake-element');
+                });
+                alert.remove();
+            }, 3000);
+        }
+
+        function addCoffeeStain() {
+            const container = document.querySelector('.notebook-container');
+            const stain = document.createElement('div');
+            stain.className = 'coffee-stain';
+            
+            const x = Math.random() * 80 + 10;
+            const y = Math.random() * 80 + 10;
+            const rotation = Math.random() * 360;
+            const scale = Math.random() * 0.5 + 0.5;
+            
+            stain.style.left = `${x}%`;
+            stain.style.top = `${y}%`;
+            stain.style.transform = `rotate(${rotation}deg) scale(${scale})`;
+            stain.style.opacity = '0.1';
+            
+            container.appendChild(stain);
+        }
+
+        for (let i = 0; i < 3; i++) {
+            setTimeout(addCoffeeStain, i * 100);
+        }
+    </script>
+</body>
+</html>
