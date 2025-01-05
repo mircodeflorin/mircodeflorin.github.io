@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barrikaden-Builder - Herrn Schnurrs Edition</title>
+    <style>
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #3282b8;
+            --text-color: #e2e2e2;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-color);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 20px;
+            z-index: 1000;
+            transition: transform 0.2s ease;
+        }
+
+        .home-button:hover {
+            transform: scale(1.05);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .game-area {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px auto;
+            position: relative;
+            width: 800px;
+            height: 500px;
+            overflow: hidden;
+        }
+
+        .toolbox {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .tool {
+            width: 60px;
+            height: 60px;
+            background: var(--accent-color);
+            border: none;
+            border-radius: 5px;
+            cursor: grab;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            user-select: none;
+        }
+
+        .build-area {
+            position: absolute;
+            right: 100px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 500px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .draggable {
+            position: absolute;
+            cursor: move;
+            user-select: none;
+            transition: transform 0.2s ease;
+        }
+
+        .draggable:hover {
+            transform: scale(1.05);
+        }
+
+        .sofa {
+            width: 200px;
+            height: 80px;
+            background: #8b4513;
+            border-radius: 10px;
+            position: absolute;
+            right: 150px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .score-panel {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        @media (max-width: 850px) {
+            .game-area {
+                width: 95%;
+                height: 400px;
+            }
+            
+            .build-area {
+                width: 60%;
+                right: 50px;
+            }
+            
+            .sofa {
+                width: 150px;
+                right: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="#" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Barrikaden-Builder: Herrn Schnurrs Sofa-Festung</h1>
+        
+        <div class="game-area">
+            <div class="toolbox">
+                <div class="tool" draggable="true" data-type="pillow">🛋️</div>
+                <div class="tool" draggable="true" data-type="book">📚</div>
+                <div class="tool" draggable="true" data-type="lamp">💡</div>
+                <div class="tool" draggable="true" data-type="plant">🪴</div>
+            </div>
+            
+            <div class="build-area" id="buildArea"></div>
+            <div class="sofa"></div>
+        </div>
+
+        <div class="score-panel">
+            <div>Stabilität: <span id="stability">0</span>%</div>
+            <div>Aristokratie-Level: <span id="style">0</span>%</div>
+            <div>Herr Schnurrs Zufriedenheit: <span id="satisfaction">0</span>%</div>
+        </div>
+
+        <div class="message" id="message"></div>
+    </div>
+
+    <script>
+        let draggedElement = null;
+        let elements = [];
+        let stability = 0;
+        let style = 0;
+        let satisfaction = 0;
+
+        document.querySelectorAll('.tool').forEach(tool => {
+            tool.addEventListener('dragstart', e => {
+                draggedElement = e.target.dataset.type;
+            });
+        });
+
+        const buildArea = document.getElementById('buildArea');
+        buildArea.addEventListener('dragover', e => {
+            e.preventDefault();
+        });
+
+        buildArea.addEventListener('drop', e => {
+            e.preventDefault();
+            const rect = buildArea.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            addElement(draggedElement, x, y);
+            updateScores();
+        });
+
+        function addElement(type, x, y) {
+            const element = document.createElement('div');
+            element.className = 'draggable';
+            element.style.left = `${x}px`;
+            element.style.top = `${y}px`;
+            
+            switch(type) {
+                case 'pillow':
+                    element.innerHTML = '🛋️';
+                    element.dataset.stability = 20;
+                    element.dataset.style = 15;
+                    break;
+                case 'book':
+                    element.innerHTML = '📚';
+                    element.dataset.stability = 30;
+                    element.dataset.style = 25;
+                    break;
+                case 'lamp':
+                    element.innerHTML = '💡';
+                    element.dataset.stability = 10;
+                    element.dataset.style = 30;
+                    break;
+                case 'plant':
+                    element.innerHTML = '🪴';
+                    element.dataset.stability = 15;
+                    element.dataset.style = 35;
+                    break;
+            }
+
+            element.draggable = true;
+            element.addEventListener('dragstart', e => {
+                draggedElement = e.target;
+            });
+
+            buildArea.appendChild(element);
+            elements.push(element);
+
+            // Herrn Schnurrs Kommentare
+            const comments = [
+                "Mon dieu! Endlich ein würdiger Zusatz zu meiner Festung!",
+                "Hmm... akzeptabel für ein nicht-aristokratisches Objekt.",
+                "Versailles wäre stolz... nun ja, fast.",
+                "Die royale Atmosphäre verdichtet sich!"
+            ];
+            showMessage(comments[Math.floor(Math.random() * comments.length)]);
+        }
+
+        function updateScores() {
+            stability = 0;
+            style = 0;
+            
+            elements.forEach(element => {
+                stability += parseInt(element.dataset.stability);
+                style += parseInt(element.dataset.style);
+            });
+
+            // Begrenzen auf 100%
+            stability = Math.min(100, stability);
+            style = Math.min(100, style);
+            satisfaction = Math.round((stability + style) / 2);
+
+            document.getElementById('stability').textContent = stability;
+            document.getElementById('style').textContent = style;
+            document.getElementById('satisfaction').textContent = satisfaction;
+
+            if (satisfaction >= 90) {
+                showMessage("Parfait! Eine Barrikade würdig eines französischen Königs!");
+            }
+        }
+
+        function showMessage(text) {
+            const message = document.getElementById('message');
+            message.textContent = text;
+            message.style.display = 'block';
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 2000);
+        }
+
+        // Frau Müllers hilfreiche Kommentare
+        setInterval(() => {
+            const tips = [
+                "Mein Cousin dritten Grades war Barrikaden-Experte!",
+                "Die Anordnung erinnert mich an meine Tante's Gartenzwerge...",
+                "Haben Sie schon an feng-shui-optimierte Kissenpositionierung gedacht?",
+                "In meinem Feng-Shui-Ratgeber von 1973 steht..."
+            ];
+            
+            if (Math.random() < 0.3) { // 30% Chance für einen Kommentar
+                showMessage(tips[Math.floor(Math.random() * tips.length)]);
+            }
+        }, 10000);
+    </script>
+</body>
+</html>
