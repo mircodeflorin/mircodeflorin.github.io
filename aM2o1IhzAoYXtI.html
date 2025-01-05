@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maestros Geheimcode</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #1a1a1a;
+            color: #33ff33;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+            text-shadow: 0 0 5px #33ff33;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: #33ff33;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s;
+            z-index: 1000;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .home-button:hover {
+            background-color: #2bdb2b;
+            box-shadow: 0 0 10px #33ff33;
+            transform: translateY(-2px);
+        }
+
+        .terminal-container {
+            max-width: 800px;
+            margin: 60px auto 20px;
+            background: #000;
+            padding: 20px;
+            border: 1px solid #33ff33;
+            border-radius: 5px;
+            box-shadow: 0 0 20px rgba(51, 255, 51, 0.2);
+        }
+
+        .screen-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                transparent 50%, 
+                rgba(0, 0, 0, 0.1) 51%, 
+                transparent 52%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            animation: scan 8s linear infinite;
+        }
+
+@keyframes scan {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 100%; }
+        }
+
+        .terminal-header {
+            border-bottom: 1px solid #33ff33;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .prompt {
+            display: flex;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .prompt::before {
+            content: ">";
+            margin-right: 10px;
+        }
+
+        .input-line {
+            background: transparent;
+            border: none;
+            color: #33ff33;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            width: 100%;
+            padding: 5px;
+            outline: none;
+        }
+
+        .output {
+            margin: 10px 0;
+            padding: 10px;
+            border-left: 2px solid #33ff33;
+        }
+
+        .error {
+            color: #ff3333;
+            text-shadow: 0 0 5px #ff3333;
+        }
+
+        .success {
+            color: #33ff33;
+            text-shadow: 0 0 5px #33ff33;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .code-display {
+            font-family: 'Courier New', monospace;
+            background: #0a0a0a;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            border: 1px solid #33ff33;
+            display: none;
+        }
+
+        .binary {
+            font-size: 12px;
+            opacity: 0.5;
+            animation: binary 1s infinite;
+            margin: 10px 0;
+        }
+
+        @keyframes binary {
+            0% { opacity: 0.3; }
+            50% { opacity: 0.7; }
+            100% { opacity: 0.3; }
+        }
+
+        @media (max-width: 600px) {
+            .terminal-container {
+                padding: 10px;
+                margin-top: 80px;
+            }
+            
+            .input-line {
+                font-size: 14px;
+            }
+
+            .home-button {
+                position: fixed;
+                width: calc(100% - 40px);
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="screen-effect"></div>
+    
+    <a href="https://mircodeflorin.github.io/" class="home-button">← Zur Autorenseite</a>
+
+    <div class="terminal-container">
+        <div class="terminal-header">
+            MAESTRO TERMINAL v1.0
+            <div class="binary">01001101 01000001 01000101 01010011 01010100 01010010 01001111</div>
+        </div>
+
+        <div id="terminal-content">
+            <div class="output">System initialisiert. Bitte Zugangscode eingeben.</div>
+            <div class="prompt">
+                <input type="text" class="input-line" id="command-input" 
+                       placeholder="Zugangscode eingeben..." 
+                       onkeypress="handleKeyPress(event)">
+            </div>
+        </div>
+
+        <div class="code-display" id="secret-code"></div>
+    </div>
+
+<script>
+        const validCommands = {
+            'HELP': 'Verfügbare Befehle: HELP, SCAN, DECODE, CLEAR',
+            'SCAN': 'Scanne nach musikalischen Mustern...',
+            'CLEAR': 'Terminal wird gelöscht...',
+            'DECODE': 'Entschlüsselungssequenz gestartet...'
+        };
+
+        const musicalPatterns = [
+            'C#', 'E', 'G#', 'B',
+            'F#', 'A', 'C#', 'E',
+            'G#', 'B', 'D#', 'F#'
+        ];
+
+        const secretCode = "KAFFEEMUSIK440";
+        let isCodeRevealed = false;
+        let scanComplete = false;
+
+        function addOutput(text, className = '') {
+            const output = document.createElement('div');
+            output.className = 'output ' + className;
+            output.textContent = text;
+            document.getElementById('terminal-content').insertBefore(
+                output,
+                document.querySelector('.prompt')
+            );
+            
+            // Auto-scroll zum neuesten Output
+            output.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                const input = document.getElementById('command-input');
+                const command = input.value.trim().toUpperCase();
+                input.value = '';
+
+                addOutput('> ' + command);
+
+                if (command === secretCode && scanComplete) {
+                    revealSecretCode();
+                } else if (validCommands.hasOwnProperty(command)) {
+                    executeCommand(command);
+                } else {
+                    addOutput('Ungültiger Befehl. Nutze HELP für verfügbare Befehle.', 'error');
+                }
+            }
+        }
+
+        function executeCommand(command) {
+            addOutput(validCommands[command]);
+
+            if (command === 'SCAN') {
+                scanComplete = true;
+                setTimeout(() => {
+                    addOutput('Gefundene Muster:');
+                    musicalPatterns.forEach((note, index) => {
+                        setTimeout(() => {
+                            addOutput(`Note ${index + 1}: ${note}`);
+                        }, index * 500);
+                    });
+                    setTimeout(() => {
+                        addOutput('Scan abgeschlossen. Frequenz 440Hz detektiert.', 'success');
+                    }, musicalPatterns.length * 500);
+                }, 1000);
+            } else if (command === 'CLEAR') {
+                setTimeout(() => {
+                    document.getElementById('terminal-content').innerHTML = `
+                        <div class="output">Terminal bereit.</div>
+                        <div class="prompt">
+                            <input type="text" class="input-line" id="command-input" 
+                                   placeholder="Zugangscode eingeben..." 
+                                   onkeypress="handleKeyPress(event)">
+                        </div>
+                    `;
+                }, 500);
+            } else if (command === 'DECODE' && scanComplete) {
+                addOutput('Hinweis: Der Code verbindet KAFFEE mit MUSIK und der Frequenz...', 'success');
+            }
+        }
+
+        function revealSecretCode() {
+            if (!isCodeRevealed) {
+                isCodeRevealed = true;
+                const secretCodeElement = document.getElementById('secret-code');
+                secretCodeElement.style.display = 'block';
+                secretCodeElement.innerHTML = `
+                    <div class="success">Zugriff gewährt!</div>
+                    <div class="binary">01001101 01000001 01000101 01010011 01010100 01010010 01001111</div>
+                    <div>GEHEIMER CODE GEFUNDEN:</div>
+                    <div>Maestros erste Komposition für die Kaffeemaschine</div>
+                    <div class="success">♪ ♫ ♩ ♬ ♪ ♫ ♩ ♬</div>
+                `;
+                addOutput('Geheimcode erfolgreich entschlüsselt!', 'success');
+                
+                // Animation für den gefundenen Code
+                secretCodeElement.style.animation = 'pulse 2s infinite';
+            }
+        }
+
+        // Startanimation
+        setTimeout(() => {
+            addOutput('System bereit. Geben Sie "HELP" ein für verfügbare Befehle.');
+        }, 1000);
+    </script>
+</body>
+</html>
