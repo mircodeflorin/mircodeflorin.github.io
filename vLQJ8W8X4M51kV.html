@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ausreden AG - Hausmeister-Werkzeugkasten</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .home-button {
+            display: inline-block;
+            text-decoration: none;
+            color: #333;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .toolbox {
+            background: #2c3e50;
+            padding: 20px;
+            border-radius: 10px;
+            color: #ecf0f1;
+            margin: 20px 0;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .tool-section {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .tool-section:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .tool {
+            background: rgba(255,255,255,0.15);
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .tool:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+        }
+
+        .status-display {
+            font-family: 'Courier New', monospace;
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 5px;
+            margin-top: 20px;
+            min-height: 150px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .repair-meter {
+            height: 20px;
+            background: #ddd;
+            border-radius: 10px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .repair-progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            transition: width 0.5s ease;
+        }
+
+        .warning {
+            color: #e74c3c;
+            padding: 5px;
+            margin-top: 10px;
+            border-left: 3px solid #e74c3c;
+        }
+
+        .tool-icon {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+
+        .status-indicators {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+        }
+
+        .quantum-field {
+            position: relative;
+            height: 40px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 5px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .quantum-wave {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(90deg, 
+                rgba(52, 152, 219, 0.5),
+                rgba(46, 204, 113, 0.5),
+                rgba(52, 152, 219, 0.5));
+            background-size: 200% 100%;
+            animation: wave 3s linear infinite;
+        }
+
+        @keyframes wave {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(50%); }
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io/" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Ausreden AG - Hausmeister-Werkzeugkasten</h1>
+        
+        <div class="toolbox">
+            <div class="tools-grid">
+                <div class="tool-section">
+                    <h3>🔧 Realitätsreparatur</h3>
+                    <div class="tool-grid">
+                        <div class="tool" onclick="repairReality('riss')">Realitätsriss flicken</div>
+                        <div class="tool" onclick="repairReality('verzerrung')">Verzerrung stabilisieren</div>
+                        <div class="tool" onclick="repairReality('paradox')">Paradoxon auflösen</div>
+                        <div class="tool" onclick="repairReality('notfall')">Notfall-Reset</div>
+                    </div>
+                    <div class="repair-meter">
+                        <div class="repair-progress" id="realityMeter"></div>
+                    </div>
+                </div>
+
+                <div class="tool-section">
+                    <h3>⏳ Zeitschleifen-Fixierung</h3>
+                    <div class="tool-grid">
+                        <div class="tool" onclick="fixTimeloop('isolate')">Schleife isolieren</div>
+                        <div class="tool" onclick="fixTimeloop('anchor')">Zeitanker setzen</div>
+                        <div class="tool" onclick="fixTimeloop('merge')">Schleifen vereinen</div>
+                        <div class="tool" onclick="fixTimeloop('dissolve')">Schleife auflösen</div>
+                    </div>
+                    <div class="quantum-field">
+                        <div class="quantum-wave"></div>
+                    </div>
+                </div>
+
+                <div class="tool-section">
+                    <h3>🌀 Dimensions-Stabilisator</h3>
+                    <div class="tool-grid">
+                        <div class="tool" onclick="stabilizeDimension('align')">Ebenen ausrichten</div>
+                        <div class="tool" onclick="stabilizeDimension('sync')">Synchronisieren</div>
+                        <div class="tool" onclick="stabilizeDimension('reinforce')">Verstärken</div>
+                        <div class="tool" onclick="stabilizeDimension('emergency')">Notabschaltung</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="status-display" id="statusDisplay">
+                Hausmeister-Werkzeugkasten bereit für Wartungsarbeiten...
+            </div>
+
+            <div class="status-indicators">
+                <span>Realitätsstabilität: <span id="stabilityMeter">100%</span></span>
+                <span>Aktive Zeitschleifen: <span id="timeloopMeter">0</span></span>
+                <span>Dimensionsverzerrung: <span id="distortionMeter">0%</span></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let stability = 100;
+        let timeloops = 0;
+        let distortion = 0;
+
+        function updateDisplay(message) {
+            const display = document.getElementById('statusDisplay');
+            const timestamp = new Date().toLocaleTimeString();
+            display.innerHTML = `${timestamp} > ${message}<br>${display.innerHTML}`;
+        }
+
+        function updateMeters() {
+            document.getElementById('stabilityMeter').textContent = `${stability}%`;
+            document.getElementById('timeloopMeter').textContent = timeloops;
+            document.getElementById('distortionMeter').textContent = `${distortion}%`;
+            document.getElementById('realityMeter').style.width = `${stability}%`;
+        }
+
+        function repairReality(type) {
+            const repairs = {
+                riss: "Realitätsriss wird mit Quantenklebeband geflickt...",
+                verzerrung: "Verzerrte Realität wird neu kalibriert...",
+                paradox: "Paradoxon wird mit dem multidimensionalen Schraubenschlüssel gelöst...",
+                notfall: "NOTFALL-PROTOKOLL AKTIVIERT: Totaler Reality-Reset wird durchgeführt..."
+            };
+
+            updateDisplay(repairs[type]);
+            stability = Math.min(100, stability + 15);
+            distortion = Math.max(0, distortion - 10);
+            updateMeters();
+
+            setTimeout(() => {
+                const comments = [
+                    "Hausmeister: 'Ein klassischer Fall von Realitätsverschleiß.'",
+                    "Hausmeister: 'Das hätte man früher warten müssen...'",
+                    "Hausmeister: 'Moment, ich hole nur kurz den Quantenschraubenzieher aus der letzten Woche.'"
+                ];
+                updateDisplay(comments[Math.floor(Math.random() * comments.length)]);
+            }, 1000);
+        }
+
+        function fixTimeloop(type) {
+            const fixes = {
+                isolate: "Zeitschleife wird mit temporalem Isolierband abgedichtet...",
+                anchor: "Zeitanker wird in der Gegenwart verankert...",
+                merge: "Multiple Zeitschleifen werden synchronisiert...",
+                dissolve: "Zeitschleife wird vorsichtig aufgelöst..."
+            };
+
+            updateDisplay(fixes[type]);
+            timeloops = Math.max(0, timeloops - 1);
+            stability = Math.min(100, stability + 5);
+            updateMeters();
+
+            setTimeout(() => {
+                const comments = [
+                    "Hausmeister: 'Diese Zeitschleifen werden auch immer komplizierter...'",
+                    "Hausmeister: 'Früher waren Zeitschleifen noch aus gutem deutschen Stahl.'",
+                    "Hausmeister: 'Hab ich das nicht schon morgen repariert?'"
+                ];
+                updateDisplay(comments[Math.floor(Math.random() * comments.length)]);
+            }, 1000);
+        }
+
+        function stabilizeDimension(type) {
+            const stabilizations = {
+                align: "Dimensionsebenen werden neu ausgerichtet...",
+                sync: "Realitätsebenen werden synchronisiert...",
+                reinforce: "Dimensionsgrenzen werden verstärkt...",
+                emergency: "NOTFALL: Dimensionen werden zwangsweise stabilisiert!"
+            };
+
+            updateDisplay(stabilizations[type]);
+            distortion = Math.max(0, distortion - 15);
+            stability = Math.min(100, stability + 10);
+            updateMeters();
+
+            setTimeout(() => {
+                const comments = [
+                    "Hausmeister: 'Die fünfte Dimension macht wieder Probleme...'",
+                    "Hausmeister: 'Da muss man mit Gefühl rangehen...'",
+                    "Hausmeister: 'Wer hat denn hier schon wieder die Realität verbogen?'"
+                ];
+                updateDisplay(comments[Math.floor(Math.random() * comments.length)]);
+            }, 1000);
+        }
+
+        // Zufällige Ereignisse
+        setInterval(() => {
+            if (Math.random() < 0.1) {
+                stability = Math.max(0, stability - 5);
+                distortion = Math.min(100, distortion + 5);
+                timeloops += 1;
+                updateMeters();
+                updateDisplay("⚠️ WARNUNG: Spontane Realitätsanomalien detektiert!");
+            }
+        }, 5000);
+
+        // Easter Egg
+        let konamiCode = '';
+        const secretCode = 'ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightba';
+        document.addEventListener('keydown', (e) => {
+            konamiCode += e.key;
+            if (konamiCode.includes(secretCode)) {
+                updateDisplay("🌟 GEHEIMMODUS AKTIVIERT: Dr. Brinkmanns Schnurrbart hat sich im Werkzeugkasten versteckt!");
+                konamiCode = '';
+            }
+        });
+    </script>
+</body>
+</html>
