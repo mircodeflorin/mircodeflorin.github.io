@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ausreden-Generator 3000</title>
+    <style>
+        :root {
+            --background-color: #f4f4f4;
+            --text-color: #333;
+            --accent-color: #3498db;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px var(--shadow-color);
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 60px auto 0;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px var(--shadow-color);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--text-color);
+            margin-bottom: 30px;
+        }
+
+        .generator-container {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .difficulty-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .difficulty-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background: var(--accent-color);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .difficulty-button:hover {
+            background: #2980b9;
+        }
+
+        .generate-button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .generate-button:hover {
+            background: #2980b9;
+        }
+
+        .result-display {
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 5px;
+            min-height: 100px;
+            margin-bottom: 20px;
+        }
+
+        .score-display {
+            text-align: center;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 40px 10px;
+            }
+
+            .difficulty-controls {
+                flex-direction: column;
+            }
+
+            .difficulty-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io/" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Ausreden-Generator 3000</h1>
+        
+        <div class="generator-container">
+            <div class="difficulty-controls">
+                <button class="difficulty-button" onclick="setDifficulty('einfach')">Einfach</button>
+                <button class="difficulty-button" onclick="setDifficulty('mittel')">Mittel</button>
+                <button class="difficulty-button" onclick="setDifficulty('schwer')">Schwer</button>
+            </div>
+
+            <button class="generate-button" onclick="generateExcuse()">Generiere Ausrede</button>
+
+            <div class="result-display" id="excuseDisplay">
+                Hier erscheint deine generierte Ausrede...
+            </div>
+
+            <div class="score-display" id="scoreDisplay">
+                Kreativitäts-Score: 0
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentDifficulty = 'mittel';
+        let score = 0;
+
+        const excuses = {
+            einfach: [
+                "Der Verkehr war heute besonders chaotisch.",
+                "Mein Wecker hat nicht geklingelt.",
+                "Ich hatte einen wichtigen Anruf.",
+                "Die Bahn hatte Verspätung."
+            ],
+            mittel: [
+                "Eine temporäre Zeitschleife hat meinen Morgenkaffee um 3 Stunden verzögert.",
+                "Mein Quantum-Wecker ist in eine Parallelrealität gesprungen.",
+                "Die Realitätsebenen waren heute Morgen besonders instabil.",
+                "Dr. Brinkmanns Schnurrbart hat ein eigenes Meeting einberufen."
+            ],
+            schwer: [
+                "Eine spontane Realitätsverschmelzung hat meine Zeitlinie mit der von Schrödingers Katze verschränkt.",
+                "Die Wahrscheinlichkeitsmatrix meiner Anwesenheit kollabierte in eine quantenphysikalische Anomalie.",
+                "Madame Rothmanns Kristallkugel prognostizierte meine Anwesenheit erst für übermorgen gestern.",
+                "Herbert der Taschenrechner brauchte philosophische Beratung bei einer existenziellen Krise."
+            ]
+        };
+
+        function setDifficulty(difficulty) {
+            currentDifficulty = difficulty;
+            document.getElementById('excuseDisplay').textContent = 'Schwierigkeitsgrad geändert. Klicke auf "Generiere Ausrede"';
+        }
+
+        function generateExcuse() {
+            const excuseArray = excuses[currentDifficulty];
+            const randomIndex = Math.floor(Math.random() * excuseArray.length);
+            const excuse = excuseArray[randomIndex];
+            
+            document.getElementById('excuseDisplay').textContent = excuse;
+            
+            // Berechne einen zufälligen Score basierend auf der Schwierigkeit
+            const baseScore = {
+                'einfach': 10,
+                'mittel': 25,
+                'schwer': 50
+            }[currentDifficulty];
+            
+            score = baseScore + Math.floor(Math.random() * baseScore);
+            document.getElementById('scoreDisplay').textContent = `Kreativitäts-Score: ${score}`;
+        }
+    </script>
+</body>
+</html>
