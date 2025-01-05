@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ausreden AG - Multiversums-Navigator</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .home-button {
+            display: inline-block;
+            text-decoration: none;
+            color: #333;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .navigator-interface {
+            background: #2c3e50;
+            padding: 20px;
+            border-radius: 10px;
+            color: #ecf0f1;
+            margin: 20px 0;
+        }
+
+        .navigation-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .nav-section {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .multiverse-display {
+            height: 200px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 5px;
+            margin: 10px 0;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .reality-star {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .timeline {
+            position: absolute;
+            height: 2px;
+            background: rgba(255,255,255,0.3);
+            transform-origin: left center;
+        }
+
+        .dimension-portal {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.5);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .control-panel {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        .navigation-log {
+            font-family: 'Courier New', monospace;
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 5px;
+            margin-top: 20px;
+            height: 150px;
+            overflow-y: auto;
+        }
+
+        .reality-info {
+            position: absolute;
+            background: rgba(255,255,255,0.9);
+            color: #2c3e50;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+
+        .coordinate-system {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .coordinate-line {
+            position: absolute;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .status-display {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+        }
+
+        .dimensional-counter {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io/" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Multiversums-Navigator</h1>
+        
+        <div class="navigator-interface">
+            <div class="navigation-grid">
+                <div class="nav-section">
+                    <h3>🌌 Parallel-Realitäts-Explorer</h3>
+                    <div class="multiverse-display" id="realityDisplay">
+                        <div class="coordinate-system"></div>
+                    </div>
+                    <div class="control-panel">
+                        <button onclick="exploreReality()">Realität erkunden</button>
+                        <button onclick="markLocation()">Position markieren</button>
+                    </div>
+                </div>
+
+                <div class="nav-section">
+                    <h3>⏱️ Zeitlinien-Springer</h3>
+                    <div class="multiverse-display" id="timelineDisplay">
+                        <div class="coordinate-system"></div>
+                    </div>
+                    <div class="control-panel">
+                        <button onclick="jumpTimeline('past')">Vergangenheit</button>
+                        <button onclick="jumpTimeline('future')">Zukunft</button>
+                    </div>
+                </div>
+
+                <div class="nav-section">
+                    <h3>🗺️ Dimensions-Kartograph</h3>
+                    <div class="multiverse-display" id="dimensionDisplay">
+                        <div class="coordinate-system"></div>
+                    </div>
+                    <div class="control-panel">
+                        <button onclick="mapDimension()">Dimension kartieren</button>
+                        <button onclick="createPortal()">Portal erzeugen</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="navigation-log" id="navLog">
+                Multiversums-Navigator wird initialisiert...
+            </div>
+
+            <div class="status-display">
+                <span>Aktive Realitäten: <span id="realityCount">1</span></span>
+                <span>Zeitlinien-Position: <span id="timePosition">Gegenwart</span></span>
+                <span>Dimensions-Tiefe: <span id="dimensionDepth">1</span></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let realityCount = 1;
+        let timePosition = "Gegenwart";
+        let dimensionDepth = 1;
+        let portals = [];
+
+        function updateLog(message) {
+            const log = document.getElementById('navLog');
+            const timestamp = new Date().toLocaleTimeString();
+            log.innerHTML = `[${timestamp}] ${message}<br>${log.innerHTML}`;
+        }
+
+        function updateStatus() {
+            document.getElementById('realityCount').textContent = realityCount;
+            document.getElementById('timePosition').textContent = timePosition;
+            document.getElementById('dimensionDepth').textContent = dimensionDepth;
+        }
+
+        function createStar(display) {
+            const star = document.createElement('div');
+            star.className = 'reality-star';
+            star.style.left = Math.random() * 90 + 5 + '%';
+            star.style.top = Math.random() * 90 + 5 + '%';
+            display.appendChild(star);
+            return star;
+        }
+
+        function createInfo(text, x, y, display) {
+            const info = document.createElement('div');
+            info.className = 'reality-info';
+            info.textContent = text;
+            info.style.left = x + 'px';
+            info.style.top = y + 'px';
+            display.appendChild(info);
+            setTimeout(() => info.style.opacity = '1', 100);
+            setTimeout(() => info.remove(), 3000);
+        }
+
+        function exploreReality() {
+            const display = document.getElementById('realityDisplay');
+            realityCount++;
+            
+            for (let i = 0; i < 5; i++) {
+                const star = createStar(display);
+                createInfo(`Realität #${realityCount}.${i}`, 
+                          star.offsetLeft, 
+                          star.offsetTop, 
+                          display);
+            }
+            
+            updateLog("Neue Parallelrealität entdeckt...");
+            updateStatus();
+        }
+
+        function jumpTimeline(direction) {
+            const display = document.getElementById('timelineDisplay');
+            const positions = {
+                past: ["Gestern", "Letzte Woche", "Letztes Jahr"],
+                future: ["Morgen", "Nächste Woche", "Nächstes Jahr"]
+            };
+            
+            timePosition = positions[direction][Math.floor(Math.random() * 3)];
+            
+            display.innerHTML = '<div class="coordinate-system"></div>';
+            for (let i = 0; i < 3; i++) {
+                const timeline = document.createElement('div');
+                timeline.className = 'timeline';
+                timeline.style.width = '80%';
+                timeline.style.top = (30 + i * 20) + '%';
+                timeline.style.left = '10%';
+                display.appendChild(timeline);
+            }
+            
+            updateLog(`Zeitsprung nach ${timePosition}...`);
+            updateStatus();
+        }
+
+        function mapDimension() {
+            const display = document.getElementById('dimensionDisplay');
+            dimensionDepth++;
+            
+            const portal = document.createElement('div');
+            portal.className = 'dimension-portal';
+            portal.style.left = Math.random() * 80 + 10 + '%';
+            portal.style.top = Math.random() * 80 + 10 + '%';
+            display.appendChild(portal);
+            
+            createInfo(`Dimension ${dimensionDepth} kartiert`, 
+                      portal.offsetLeft, 
+                      portal.offsetTop, 
+                      display);
+            
+            updateLog(`Neue Dimension kartiert: Ebene ${dimensionDepth}`);
+            updateStatus();
+        }
+
+        function createPortal() {
+            const display = document.getElementById('dimensionDisplay');
+            const portal = document.createElement('div');
+            portal.className = 'dimension-portal';
+            portal.style.left = Math.random() * 80 + 10 + '%';
+            portal.style.top = Math.random() * 80 + 10 + '%';
+            display.appendChild(portal);
+            portals.push(portal);
+            
+            const events = [
+                "Dr. Brinkmanns Schnurrbart erscheint kurz im Portal",
+                "Herbert piepst durch die Dimensionen",
+                "Eine Ausrede schlüpft durch den Übergang"
+            ];
+            
+            updateLog(events[Math.floor(Math.random() * events.length)]);
+        }
+
+        function markLocation() {
+            const currentRealities = [
+                "Dr. Brinkmanns Büro schwingt zwischen den Stockwerken",
+                "Die Kaffeeküche existiert in drei Versionen gleichzeitig",
+                "Madame Rothmanns Tee fließt rückwärts",
+                "Der Hausmeister repariert einen Riss in der Realität"
+            ];
+            
+            updateLog(`Position markiert: ${currentRealities[Math.floor(Math.random() * currentRealities.length)]}`);
+        }
+
+        // Automatische Ereignisse
+        setInterval(() => {
+            if (Math.random() < 0.1) {
+                const events = [
+                    "Spontane Realitätsfluktuation detektiert",
+                    "Zeitlinie verzweigt sich unerwartet",
+                    "Neue Dimension klopft an"
+                ];
+                updateLog(events[Math.floor(Math.random() * events.length)]);
+                dimensionDepth += Math.floor(Math.random() * 2);
+                updateStatus();
+            }
+        }, 10000);
+
+        // Easter Egg
+        let konamiCode = '';
+        const secretCode = 'ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightba';
+        document.addEventListener('keydown', (e) => {
+            konamiCode += e.key;
+            if (konamiCode.includes(secretCode)) {
+                updateLog("🌟 MULTIVERSUMS-KOLLAPS: Dr. Brinkmanns Schnurrbart wird zum Universum!");
+                realityCount = 42;
+                dimensionDepth = 99;
+                timePosition = "Überall und Nirgendwo";
+                updateStatus();
+                konamiCode = '';
+            }
+        });
+    </script>
+</body>
+</html>
