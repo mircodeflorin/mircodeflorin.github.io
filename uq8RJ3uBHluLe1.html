@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Madame Gesterns Prophezeiungen</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            font-family: 'Times New Roman', serif;
+            background: linear-gradient(135deg, #0f0524 0%, #1a0f3c 100%);
+            color: #e0d5ff;
+            overflow-x: hidden;
+        }
+
+        .mystic-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+        }
+
+        .crystal-ball {
+            width: 300px;
+            height: 300px;
+            margin: 40px auto;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .crystal-ball:hover {
+            transform: scale(1.05);
+        }
+
+        .crystal-outer {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, 
+                rgba(255, 255, 255, 0.8) 0%,
+                rgba(255, 255, 255, 0.2) 40%,
+                rgba(255, 255, 255, 0.1) 60%,
+                rgba(255, 255, 255, 0.05) 100%);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.2);
+        }
+
+        .crystal-inner {
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            width: 80%;
+            height: 80%;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%,
+                rgba(255, 255, 255, 0.3) 0%,
+                rgba(142, 45, 226, 0.2) 40%,
+                rgba(74, 0, 224, 0.1) 100%);
+        }
+
+        .mist {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(45deg,
+                rgba(255, 255, 255, 0.1) 0%,
+                rgba(255, 255, 255, 0) 100%);
+            animation: mistAnimation 10s infinite linear;
+        }
+
+        @keyframes mistAnimation {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        .crystal-stand {
+            width: 120px;
+            height: 60px;
+            margin: -30px auto 0;
+            background: linear-gradient(45deg, #4a0072 0%, #2d0245 100%);
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .crystal-stand::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #4a0072 0%, #2d0245 100%);
+            border-radius: 50%;
+        }
+
+        .prophecy {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s;
+            padding: 20px;
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(142, 45, 226, 0.2);
+            font-style: italic;
+        }
+
+        .prophecy.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .floating-symbols {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .symbol {
+            position: absolute;
+            font-size: 24px;
+            color: rgba(255, 255, 255, 0.2);
+            animation: floatSymbol 10s infinite linear;
+        }
+
+        @keyframes floatSymbol {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .home-button {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #e0d5ff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .home-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .candles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .candle {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle at center,
+                rgba(255, 200, 100, 0.8) 0%,
+                rgba(255, 150, 50, 0) 70%);
+            animation: flicker 3s infinite;
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(0.95); }
+        }
+
+        @media (max-width: 600px) {
+            .crystal-ball {
+                width: 200px;
+                height: 200px;
+            }
+
+            .prophecy {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="home-button" onclick="window.location.href='https://mircodeflorin.github.io'">Zurück zur Autorenseite</button>
+
+    <div class="mystic-container">
+        <div class="floating-symbols"></div>
+        <div class="candles"></div>
+
+        <h1>Madame Gesterns mystische Prophezeiungen</h1>
+        
+        <div class="crystal-ball" onclick="generateProphecy()">
+            <div class="crystal-outer">
+                <div class="crystal-inner">
+                    <div class="mist"></div>
+                </div>
+            </div>
+        </div>
+        <div class="crystal-stand"></div>
+
+        <div id="prophecy-container"></div>
+    </div>
+
+    <script>
+        const prophecies = [
+            "Die singende Kaffeemaschine wird den Weg weisen...",
+            "Wenn der goldene Schnitt auf die Melodie trifft, öffnet sich das Portal...",
+            "Achte auf die Primzahlen in Herberts Kaktus-Sammlung...",
+            "Die Resonanz der perfekten Tasse wird alles verändern...",
+            "Fibonacci tanzt mit Mozart, während die Inspektoren schlafen...",
+            "Das Chaos wird zur Harmonie, wenn die Zeit reif ist...",
+            "Die Kristallkugel sieht Noten im Kaffeesatz...",
+            "Maestros geheime Partitur versteckt sich im Dampf...",
+            "Zwischen den Tischen liegt die mathematische Wahrheit...",
+            "Der Kaktus weiß mehr, als er zeigt..."
+        ];
+
+        function generateProphecy() {
+            const prophecyContainer = document.getElementById('prophecy-container');
+            const prophecy = document.createElement('div');
+            prophecy.className = 'prophecy';
+            prophecy.textContent = prophecies[Math.floor(Math.random() * prophecies.length)];
+            
+            prophecyContainer.insertBefore(prophecy, prophecyContainer.firstChild);
+            
+            setTimeout(() => {
+                prophecy.classList.add('visible');
+            }, 100);
+
+            // Kristallkugel-Soundeffekt
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(440, audioCtx.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.5);
+            
+            gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+            
+            oscillator.start();
+            oscillator.stop(audioCtx.currentTime + 0.5);
+
+            // Mystische Symbole hinzufügen
+            addFloatingSymbol();
+        }
+
+        function addFloatingSymbol() {
+            const symbols = '✧★☆✴✳※⚝♱☯☮✝☪';
+            const symbolsContainer = document.querySelector('.floating-symbols');
+            const symbol = document.createElement('div');
+            symbol.className = 'symbol';
+            symbol.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+            symbol.style.left = Math.random() * 100 + '%';
+            symbolsContainer.appendChild(symbol);
+
+            setTimeout(() => {
+                symbol.remove();
+            }, 10000);
+        }
+
+        // Initiale schwebende Symbole
+        for (let i = 0; i < 10; i++) {
+            setTimeout(addFloatingSymbol, i * 1000);
+        }
+
+        // Kerzen hinzufügen
+        function addCandles() {
+            const candlesContainer = document.querySelector('.candles');
+            for (let i = 0; i < 20; i++) {
+                const candle = document.createElement('div');
+                candle.className = 'candle';
+                candle.style.left = Math.random() * 100 + '%';
+                candle.style.top = Math.random() * 100 + '%';
+                candle.style.animationDelay = Math.random() * 3 + 's';
+                candlesContainer.appendChild(candle);
+            }
+        }
+
+        addCandles();
+    </script>
+</body>
+</html>
+
