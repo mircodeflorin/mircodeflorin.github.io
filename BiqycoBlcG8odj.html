@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dinner-Party-Planer - Zen-Katzen Edition</title>
+    <style>
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #3282b8;
+            --text-color: #e2e2e2;
+            --button-color: #4a90e2;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: var(--button-color);
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 20px;
+            z-index: 1000;
+            transition: transform 0.2s ease;
+        }
+
+        .home-button:hover {
+            transform: scale(1.05);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .party-planner {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .menu-section, .schedule-section, .seating-section {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+        }
+
+        .character-preferences {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .character-card {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 8px;
+            transition: transform 0.2s ease;
+        }
+
+        .character-card:hover {
+            transform: scale(1.02);
+        }
+
+        .menu-item, .schedule-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .menu-item:hover, .schedule-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .seating-chart {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .seat {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .seat.selected {
+            background: var(--accent-color);
+        }
+
+        .crisis-alerts {
+            background: rgba(255, 0, 0, 0.2);
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .action-button {
+            background: var(--accent-color);
+            border: none;
+            padding: 10px 20px;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .action-button:hover {
+            transform: scale(1.05);
+        }
+
+        .preview-area {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            min-height: 200px;
+        }
+
+        @media (max-width: 600px) {
+            .character-preferences {
+                grid-template-columns: 1fr;
+            }
+            
+            .seating-chart {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .action-button {
+                width: 100%;
+            }
+        }
+
+        .selected {
+            border: 2px solid var(--accent-color);
+        }
+
+        .conflict-warning {
+            color: #ff4444;
+            font-style: italic;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <a href="#" class="home-button">🏠 Home</a>
+
+    <div class="container">
+        <h1>Dinner-Party-Planer</h1>
+        <h2>Für harmonische Zusammenkünfte</h2>
+
+        <div class="party-planner">
+            <div class="menu-section">
+                <h3>Menüplanung</h3>
+                <div class="character-preferences">
+                    <div class="character-card">
+                        <h4>🦜 Gustav</h4>
+                        <p>Präferenz: Vegetarisch, Zen-inspiriert</p>
+                        <p>"Die wahre Mahlzeit ist die Stille zwischen den Gängen."</p>
+                    </div>
+                    <div class="character-card">
+                        <h4>😺 Herr Schnurr</h4>
+                        <p>Präferenz: Französische Haute Cuisine</p>
+                        <p>"Comme à Versailles, s'il vous plaît!"</p>
+                    </div>
+                    <div class="character-card">
+                        <h4>🐠 Waldemar</h4>
+                        <p>Präferenz: Dramatisch angerichtete Gerichte</p>
+                        <p>"Wie in Folge 394 von 'Liebe und Betrug'!"</p>
+                    </div>
+                    <div class="character-card">
+                        <h4>👩 Frau Müller</h4>
+                        <p>Bringt: Selbstgemachte Überraschungsgerichte</p>
+                        <p>"Meine Cousine dritten Grades..."</p>
+                    </div>
+                </div>
+                <div id="menuOptions">
+                    <!-- Menüoptionen werden dynamisch eingefügt -->
+                </div>
+            </div>
+
+            <div class="schedule-section">
+                <h3>Zeitplan</h3>
+                <div id="scheduleBuilder">
+                    <!-- Zeitplan wird dynamisch erstellt -->
+                </div>
+            </div>
+
+            <div class="seating-section">
+                <h3>Sitzordnung</h3>
+                <div class="seating-chart" id="seatingChart">
+                    <!-- Sitzordnung wird dynamisch generiert -->
+                </div>
+            </div>
+
+            <div class="crisis-alerts" id="crisisAlerts">
+                <!-- Krisenmanagement-Meldungen erscheinen hier -->
+            </div>
+
+            <div class="preview-area" id="previewArea">
+                <h3>Ihre Party-Planung:</h3>
+                <!-- Vorschau wird hier angezeigt -->
+            </div>
+
+            <div class="action-buttons">
+                <button class="action-button" onclick="planParty()">Party planen</button>
+                <button class="action-button" onclick="simulateConflicts()">Konflikte simulieren</button>
+                <button class="action-button" onclick="resetPlanner()">Zurücksetzen</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+        const menuItems = [
+            {
+                id: 'zen_salad',
+                title: 'Zen-Garten Salat',
+                description: 'Ein meditativer Mix aus Grünzeug',
+                preferences: {
+                    gustav: 10,
+                    schnurr: -5,
+                    waldemar: 0,
+                    mueller: 5
+                }
+            },
+            {
+                id: 'french_cuisine',
+                title: 'Coq au Vin Royal',
+                description: 'Wie in Versailles serviert',
+                preferences: {
+                    gustav: -5,
+                    schnurr: 15,
+                    waldemar: 5,
+                    mueller: 0
+                }
+            },
+            {
+                id: 'drama_dish',
+                title: 'Dramatische Garnelen-Fontäne',
+                description: 'Mit theatralischer Sauce',
+                preferences: {
+                    gustav: 0,
+                    schnurr: 5,
+                    waldemar: 15,
+                    mueller: 10
+                }
+            },
+            {
+                id: 'surprise',
+                title: 'Frau Müllers Überraschungs-Auflauf',
+                description: 'Nach Rezept ihrer Großtante',
+                preferences: {
+                    gustav: 5,
+                    schnurr: -5,
+                    waldemar: 10,
+                    mueller: 15
+                }
+            }
+        ];
+
+        const timeSlots = [
+            {
+                id: 'meditation',
+                title: '18:00 - Meditative Einstimmung',
+                description: 'Gustavs Zen-Moment vor dem Essen',
+                impact: {
+                    harmony: 10,
+                    drama: -5,
+                    elegance: 0
+                }
+            },
+            {
+                id: 'aperitif',
+                title: '18:30 - Aristokratischer Aperitif',
+                description: 'Mit französischem Flair',
+                impact: {
+                    harmony: -5,
+                    drama: 5,
+                    elegance: 15
+                }
+            },
+            {
+                id: 'drama_time',
+                title: '19:00 - Dramatische Hauptspeise',
+                description: 'Mit Waldemars Soap-Opera Hintergrundmusik',
+                impact: {
+                    harmony: -10,
+                    drama: 15,
+                    elegance: -5
+                }
+            },
+            {
+                id: 'dessert',
+                title: '20:00 - Frau Müllers Dessert-Überraschung',
+                description: 'Nach Geheimrezept ihrer Urgroßtante',
+                impact: {
+                    harmony: 5,
+                    drama: 10,
+                    elegance: 5
+                }
+            }
+        ];
+
+        let selectedMenu = new Set();
+        let selectedTimeSlots = new Set();
+        let seatingArrangement = {
+            gustav: null,
+            schnurr: null,
+            waldemar: null,
+            mueller: null
+        };
+
+        let partyValues = {
+            harmony: 50,
+            drama: 50,
+            elegance: 50
+        };
+
+        function initializeMenuOptions() {
+            const container = document.getElementById('menuOptions');
+            menuItems.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'menu-item';
+                div.setAttribute('data-id', item.id);
+                div.innerHTML = `
+                    <h4>${item.title}</h4>
+                    <p>${item.description}</p>
+                `;
+                div.onclick = () => toggleMenuItem(item.id, div);
+                container.appendChild(div);
+            });
+        }
+
+        function initializeSchedule() {
+            const container = document.getElementById('scheduleBuilder');
+            timeSlots.forEach(slot => {
+                const div = document.createElement('div');
+                div.className = 'schedule-item';
+                div.setAttribute('data-id', slot.id);
+                div.innerHTML = `
+                    <h4>${slot.title}</h4>
+                    <p>${slot.description}</p>
+                `;
+                div.onclick = () => toggleTimeSlot(slot.id, div);
+                container.appendChild(div);
+            });
+        }
+
+        function initializeSeating() {
+            const chart = document.getElementById('seatingChart');
+            const characters = ['gustav', 'schnurr', 'waldemar', 'mueller'];
+            characters.forEach((char, index) => {
+                const seat = document.createElement('div');
+                seat.className = 'seat';
+                seat.setAttribute('data-character', char);
+                seat.innerHTML = `Platz ${index + 1}`;
+                seat.onclick = () => assignSeat(char, seat);
+                chart.appendChild(seat);
+            });
+        }
+
+        function toggleMenuItem(id, element) {
+            if (selectedMenu.has(id)) {
+                selectedMenu.delete(id);
+                element.classList.remove('selected');
+            } else {
+                selectedMenu.add(id);
+                element.classList.add('selected');
+            }
+            updatePreview();
+            checkConflicts();
+        }
+
+        function toggleTimeSlot(id, element) {
+            if (selectedTimeSlots.has(id)) {
+                selectedTimeSlots.delete(id);
+                element.classList.remove('selected');
+            } else {
+                selectedTimeSlots.add(id);
+                element.classList.add('selected');
+            }
+            updatePreview();
+            checkConflicts();
+        }
+
+        function assignSeat(character, element) {
+            const previousSeat = document.querySelector(`[data-occupied="${character}"]`);
+            if (previousSeat) {
+                previousSeat.removeAttribute('data-occupied');
+                previousSeat.classList.remove('selected');
+            }
+
+            if (seatingArrangement[character] === element) {
+                seatingArrangement[character] = null;
+                element.classList.remove('selected');
+                element.removeAttribute('data-occupied');
+            } else {
+                seatingArrangement[character] = element;
+                element.classList.add('selected');
+                element.setAttribute('data-occupied', character);
+            }
+            
+            updatePreview();
+            checkConflicts();
+        }
+
+        function checkConflicts() {
+            const alerts = document.getElementById('crisisAlerts');
+            let conflicts = [];
+
+            // Menü-Konflikte
+            if (selectedMenu.has('zen_salad') && selectedMenu.has('french_cuisine')) {
+                conflicts.push("⚠️ Gustav und Herr Schnurr haben gegensätzliche Menüpräferenzen!");
+            }
+
+            // Zeitplan-Konflikte
+            if (selectedTimeSlots.has('meditation') && selectedTimeSlots.has('drama_time')) {
+                conflicts.push("⚠️ Meditation und Drama-Zeit könnten sich beißen!");
+            }
+
+            // Sitzordnungs-Konflikte
+            const gustavSeat = document.querySelector('[data-occupied="gustav"]');
+            const schnurrSeat = document.querySelector('[data-occupied="schnurr"]');
+            if (gustavSeat && schnurrSeat) {
+                const seatIndexGustav = Array.from(gustavSeat.parentNode.children).indexOf(gustavSeat);
+                const seatIndexSchnurr = Array.from(schnurrSeat.parentNode.children).indexOf(schnurrSeat);
+                if (Math.abs(seatIndexGustav - seatIndexSchnurr) === 1) {
+                    conflicts.push("⚠️ Gustav und Herr Schnurr sollten vielleicht nicht nebeneinander sitzen...");
+                }
+            }
+
+            if (conflicts.length > 0) {
+                alerts.style.display = 'block';
+                alerts.innerHTML = conflicts.join('<br>');
+            } else {
+                alerts.style.display = 'none';
+                alerts.innerHTML = '';
+            }
+        }
+
+        function updatePreview() {
+            const previewArea = document.getElementById('previewArea');
+            let preview = '<h3>Ihre Party-Planung:</h3>';
+            
+            // Menü-Vorschau
+            if (selectedMenu.size > 0) {
+                preview += '<h4>Ausgewählte Gerichte:</h4>';
+                selectedMenu.forEach(id => {
+                    const item = menuItems.find(i => i.id === id);
+                    preview += `<div>• ${item.title}</div>`;
+                });
+            }
+
+            // Zeitplan-Vorschau
+            if (selectedTimeSlots.size > 0) {
+                preview += '<h4>Zeitplan:</h4>';
+                selectedTimeSlots.forEach(id => {
+                    const slot = timeSlots.find(s => s.id === id);
+                    preview += `<div>• ${slot.title}</div>`;
+                });
+            }
+
+            // Sitzordnungs-Vorschau
+            preview += '<h4>Sitzordnung:</h4>';
+            Object.entries(seatingArrangement).forEach(([char, seat]) => {
+                if (seat) {
+                    const seatNumber = Array.from(seat.parentNode.children).indexOf(seat) + 1;
+                    preview += `<div>• ${char.charAt(0).toUpperCase() + char.slice(1)} - Platz ${seatNumber}</div>`;
+                }
+            });
+            
+            previewArea.innerHTML = preview;
+        }
+
+        function planParty() {
+            if (selectedMenu.size === 0 || selectedTimeSlots.size === 0) {
+                alert('Bitte wählen Sie mindestens ein Gericht und einen Zeitslot aus!');
+                return;
+            }
+            simulatePartyOutcome();
+        }
+
+        function simulatePartyOutcome() {
+            let outcome = {
+                harmony: 50,
+                drama: 50,
+                elegance: 50
+            };
+
+            // Berechne Einflüsse der Menüwahl
+            selectedMenu.forEach(id => {
+                const item = menuItems.find(i => i.id === id);
+                outcome.harmony += (item.preferences.gustav + item.preferences.mueller) / 2;
+                outcome.drama += (item.preferences.waldemar + item.preferences.mueller) / 2;
+                outcome.elegance += (item.preferences.schnurr + item.preferences.mueller) / 2;
+            });
+
+            // Berechne Einflüsse der Zeitplanung
+            selectedTimeSlots.forEach(id => {
+                const slot = timeSlots.find(s => s.id === id);
+                outcome.harmony += slot.impact.harmony;
+                outcome.drama += slot.impact.drama;
+                outcome.elegance += slot.impact.elegance;
+            });
+
+            // Begrenze Werte auf 0-100
+            Object.keys(outcome).forEach(key => {
+                outcome[key] = Math.max(0, Math.min(100, outcome[key]));
+            });
+
+            displayOutcome(outcome);
+        }
+
+        function displayOutcome(outcome) {
+            const previewArea = document.getElementById('previewArea');
+            previewArea.innerHTML += `
+                <h4>Voraussichtlicher Party-Erfolg:</h4>
+                <div>Harmonie: ${outcome.harmony}%</div>
+                <div>Drama-Faktor: ${outcome.drama}%</div>
+                <div>Eleganz: ${outcome.elegance}%</div>
+                <div style="margin-top: 10px">
+                    ${getPartyFeedback(outcome)}
+                </div>
+            `;
+        }
+
+        function getPartyFeedback(outcome) {
+            let feedback = '';
+            
+            if (outcome.harmony > 70) {
+                feedback += "Gustav: 'Die kosmischen Energien sind im Einklang.'<br>";
+            } else if (outcome.harmony < 30) {
+                feedback += "Gustav: 'Ich spüre Disharmonie im Universum...'<br>";
+            }
+
+            if (outcome.drama > 70) {
+                feedback += "Waldemar: 'PERFEKT! Wie in der Jubiläumsfolge!'<br>";
+            } else if (outcome.drama < 30) {
+                feedback += "Waldemar: 'Zu wenig dramatische Spannung...'<br>";
+            }
+
+            if (outcome.elegance > 70) {
+                feedback += "Herr Schnurr: 'Comme à Versailles!'<br>";
+            } else if (outcome.elegance < 30) {
+                feedback += "Herr Schnurr: 'Mon dieu! Welch ein Fauxpas!'<br>";
+            }
+
+            feedback += "Frau Müller: 'Meine Cousine dritten Grades würde das " + 
+                ((outcome.harmony + outcome.drama + outcome.elegance) / 3 > 60 ? 
+                "absolut gutheißen!" : "etwas anders machen...'");
+
+            return feedback;
+        }
+
+        function resetPlanner() {
+            selectedMenu.clear();
+            selectedTimeSlots.clear();
+            seatingArrangement = {
+                gustav: null,
+                schnurr: null,
+                waldemar: null,
+                mueller: null
+            };
+            
+            document.querySelectorAll('.menu-item, .schedule-item, .seat').forEach(el => {
+                el.classList.remove('selected');
+                el.removeAttribute('data-occupied');
+            });
+            
+            document.getElementById('crisisAlerts').style.display = 'none';
+            updatePreview();
+        }
+
+        // Initialisierung
+        window.onload = function() {
+            initializeMenuOptions();
+            initializeSchedule();
+            initializeSeating();
+            updatePreview();
+        };
+    </script>
+</body>
+</html>
