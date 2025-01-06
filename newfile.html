@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welches Spirit Animal aus der Zen-Katzen-Soap-Opera bist du?</title>
+    <style>
+        :root {
+            --primary-color: #6a4c93;
+            --secondary-color: #8ac926;
+            --background-color: #f8f9fa;
+            --text-color: #2d3436;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+        }
+
+        .question {
+            display: none;
+            margin-bottom: 30px;
+        }
+
+        .question.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .question h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .options {
+            display: grid;
+            gap: 15px;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+            font-size: 1em;
+            text-align: left;
+        }
+
+        button:hover {
+            background-color: #543976;
+            transform: translateY(-2px);
+        }
+
+        .result {
+            display: none;
+            text-align: center;
+        }
+
+        .result.active {
+            display: block;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .result-image {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            border-radius: 50%;
+            background-color: var(--secondary-color);
+        }
+
+        .share-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .share-button {
+            background-color: var(--secondary-color);
+            padding: 10px 20px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welches Spirit Animal aus der Zen-Katzen-Soap-Opera bist du?</h1>
+        
+        <div id="question1" class="question active">
+            <h2>Wie reagierst du auf unerwartete Situationen?</h2>
+            <div class="options">
+                <button onclick="nextQuestion('drama')">Mit einer dramatischen Monolog-Einlage über die Ungerechtigkeit des Moments</button>
+                <button onclick="nextQuestion('zen')">Mit einem gelassenen 'Omm' - alles ist vergänglich</button>
+                <button onclick="nextQuestion('royal')">Mit aristokratischer Empörung - sowas würde in Versailles nie passieren!</button>
+                <button onclick="nextQuestion('practical')">Pragmatisch und lösungsorientiert - irgendwie kriegen wir das hin</button>
+                <button onclick="nextQuestion('advice')">Mit einem hilfreichen Ratschlag und einer Geschichte über meine Cousine dritten Grades</button>
+            </div>
+        </div>
+
+        <!-- Weitere Fragen hier -->
+
+        <div id="result" class="result">
+            <div class="result-image"></div>
+            <h2 id="result-title"></h2>
+            <p id="result-description"></p>
+            <p id="result-quote"></p>
+            <div class="share-buttons">
+                <button class="share-button" onclick="shareResult('twitter')">Auf Twitter teilen</button>
+                <button class="share-button" onclick="shareResult('facebook')">Auf Facebook teilen</button>
+            </div>
+            <button onclick="restartQuiz()">Test wiederholen</button>
+        </div>
+    </div>
+
+    <script>
+        // Punktesystem für verschiedene Antworttypen
+        let scores = {
+            drama: 0,
+            zen: 0,
+            royal: 0,
+            practical: 0,
+            advice: 0
+        };
+
+        const results = {
+            drama: {
+                title: "Waldemar der dramatische Goldfisch",
+                description: "Du bist eine dramatische Seele mit einem Hang zum Theatralischen. Jeder Moment ist für dich eine Gelegenheit für große Gefühle und bedeutungsvolle Monologe.",
+                quote: "'Das ist genau wie in Staffel 7 von 'Liebe und Betrug'!'"
+            },
+            zen: {
+                title: "Gustav der meditative Wellensittich",
+                description: "Du behältst in allen Lebenslagen die Ruhe und siehst das große Ganze. Meditation ist dein zweiter Name.",
+                quote: "'Der Weise erkennt, dass Chaos nur die Ordnung ist, die wir noch nicht verstehen.'"
+            },
+            royal: {
+                title: "Herr Schnurr der aristokratische Kater",
+                description: "Du hast Stil, Würde und eine gewisse noble Arroganz. In Versailles wärst du definitiv zu Hause.",
+                quote: "'Mon dieu! Diese plebejischen Angelegenheiten!'"
+            }
+            // Weitere Ergebnisse hier
+        };
+
+        function nextQuestion(answer) {
+            // Logik für Punktezählung und Fragennavigation hier
+        }
+
+        function calculateResult() {
+            // Logik zur Ergebnisberechnung hier
+        }
+
+        function showResult(type) {
+            // Logik zur Ergebnisanzeige hier
+        }
+
+        function shareResult(platform) {
+            // Logik zum Teilen der Ergebnisse hier
+        }
+
+        function restartQuiz() {
+            // Quiz neu starten
+        }
+    </script>
+</body>
+</html>
