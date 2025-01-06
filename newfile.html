@@ -12,7 +12,6 @@
             --accent-color: #ffba08;
             --background-color: #f8f9fa;
             --text-color: #2d3436;
-            --progress-height: 8px;
         }
 
         body {
@@ -32,13 +31,21 @@
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .container.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .progress-container {
             width: 100%;
-            height: var(--progress-height);
+            height: 8px;
             background-color: #eee;
-            border-radius: var(--progress-height);
+            border-radius: 4px;
             margin-bottom: 30px;
             overflow: hidden;
         }
@@ -48,7 +55,7 @@
             background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
             width: 0%;
             transition: width 0.5s ease;
-            border-radius: var(--progress-height);
+            border-radius: 4px;
         }
 
         h1 {
@@ -208,8 +215,8 @@
         }
     </style>
 </head>
-<body>
 
+<body>
 <div class="container">
     <div class="progress-container">
         <div class="progress-bar" id="progress"></div>
@@ -226,26 +233,57 @@
         <div id="question1" class="question">
             <h2>Wie reagierst du auf unerwartete Situationen?</h2>
             <div class="options">
-                <button class="option-button" onclick="nextQuestion('drama')">Mit einem dramatischen Monolog: "Das ist genau wie in Staffel 7 von 'Liebe und Betrug'!"</button>
-                <button class="option-button" onclick="nextQuestion('zen')">Mit einem gelassenen "Omm" - Chaos ist nur die Ordnung, die wir noch nicht verstehen</button>
-                <button class="option-button" onclick="nextQuestion('royal')">Mit aristokratischer Empörung: "Mon dieu! In Versailles wäre das nie passiert!"</button>
-                <button class="option-button" onclick="nextQuestion('practical')">Pragmatisch: Erstmal einen Schlachtplan machen und dann weitersehen</button>
-                <button class="option-button" onclick="nextQuestion('advice')">Mit einer passenden Anekdote über meine Cousine dritten Grades</button>
+                <button class="option-button" onclick="handleAnswer('drama', 1)">Mit einem dramatischen Monolog: "Das ist genau wie in Staffel 7 von 'Liebe und Betrug'!"</button>
+                <button class="option-button" onclick="handleAnswer('zen', 1)">Mit einem gelassenen "Omm" - Chaos ist nur die Ordnung, die wir noch nicht verstehen</button>
+                <button class="option-button" onclick="handleAnswer('royal', 1)">Mit aristokratischer Empörung: "Mon dieu! In Versailles wäre das nie passiert!"</button>
+                <button class="option-button" onclick="handleAnswer('practical', 1)">Pragmatisch: Erstmal einen Schlachtplan machen und dann weitersehen</button>
+                <button class="option-button" onclick="handleAnswer('advice', 1)">Mit einer passenden Anekdote über meine Cousine dritten Grades</button>
             </div>
         </div>
 
         <div id="question2" class="question">
             <h2>Dein perfekter Nachmittag sieht wie aus?</h2>
             <div class="options">
-                <button class="option-button" onclick="nextQuestion('drama')">Soap Opera Marathon mit emotionalem Live-Kommentar</button>
-                <button class="option-button" onclick="nextQuestion('zen')">Meditation und Selbstreflexion auf der Gardinenstange</button>
-                <button class="option-button" onclick="nextQuestion('royal')">Elegante Siesta auf einem samtbezogenen Sofa</button>
-                <button class="option-button" onclick="nextQuestion('practical')">Produktive Beschäftigung mit gelegentlichen Chaos-Pausen</button>
-                <button class="option-button" onclick="nextQuestion('advice')">Nachbarschaftsbeobachtung mit Fernglas und Notizbuch</button>
+                <button class="option-button" onclick="handleAnswer('drama', 2)">Soap Opera Marathon mit emotionalem Live-Kommentar</button>
+                <button class="option-button" onclick="handleAnswer('zen', 2)">Meditation und Selbstreflexion auf der Gardinenstange</button>
+                <button class="option-button" onclick="handleAnswer('royal', 2)">Elegante Siesta auf einem samtbezogenen Sofa</button>
+                <button class="option-button" onclick="handleAnswer('practical', 2)">Produktive Beschäftigung mit gelegentlichen Chaos-Pausen</button>
+                <button class="option-button" onclick="handleAnswer('advice', 2)">Nachbarschaftsbeobachtung mit Fernglas und Notizbuch</button>
             </div>
         </div>
 
-        <!-- Weitere Fragen folgen gleich im Script -->
+        <div id="question3" class="question">
+            <h2>Eine wichtige Entscheidung steht an. Wie gehst du vor?</h2>
+            <div class="options">
+                <button class="option-button" onclick="handleAnswer('drama', 3)">Ich inszeniere einen inneren Monolog über die Tragweite dieser Entscheidung</button>
+                <button class="option-button" onclick="handleAnswer('zen', 3)">Ich meditiere darüber und lasse die Antwort zu mir kommen</button>
+                <button class="option-button" onclick="handleAnswer('royal', 3)">Ich konsultiere das alte Familienprotokoll aus Versailles</button>
+                <button class="option-button" onclick="handleAnswer('practical', 3)">Pro-Contra-Liste erstellen und dann entscheiden</button>
+                <button class="option-button" onclick="handleAnswer('advice', 3)">Ich erinnere mich an eine ähnliche Situation meiner Tante vierten Grades</button>
+            </div>
+        </div>
+
+        <div id="question4" class="question">
+            <h2>Dein Lieblingsplatz in der Wohnung wäre...?</h2>
+            <div class="options">
+                <button class="option-button" onclick="handleAnswer('drama', 4)">Vor dem Fernseher, wo sich die großen Dramen abspielen</button>
+                <button class="option-button" onclick="handleAnswer('zen', 4)">Ein erhöhter Punkt mit Überblick über alles</button>
+                <button class="option-button" onclick="handleAnswer('royal', 4)">Ein elegantes Sofa mit perfekter Akustik für dramatische Ausrufe</button>
+                <button class="option-button" onclick="handleAnswer('practical', 4)">Überall, wo man in Ruhe arbeiten kann</button>
+                <button class="option-button" onclick="handleAnswer('advice', 4)">Am Fenster, mit perfektem Blick auf die Nachbarschaft</button>
+            </div>
+        </div>
+
+        <div id="question5" class="question">
+            <h2>Wie würdest du einen Konflikt lösen?</h2>
+            <div class="options">
+                <button class="option-button" onclick="handleAnswer('drama', 5)">Mit einer emotionalen Rede über Freundschaft und Verständnis</button>
+                <button class="option-button" onclick="handleAnswer('zen', 5)">Mit einer gemeinsamen Meditationssession</button>
+                <button class="option-button" onclick="handleAnswer('royal', 5)">Mit einem formellen Friedensvertrag nach höfischem Protokoll</button>
+                <button class="option-button" onclick="handleAnswer('practical', 5)">Mit einem strukturierten Gespräch und klaren Regeln</button>
+                <button class="option-button" onclick="handleAnswer('advice', 5)">Mit einer lehrreichen Geschichte über frühere Konflikte</button>
+            </div>
+        </div>
 
         <div id="result" class="result">
             <div class="result-icon">
@@ -271,43 +309,7 @@
 </div>
 
 <script>
-const questions = [
-    {
-        id: 'question3',
-        text: 'Eine wichtige Entscheidung steht an. Wie gehst du vor?',
-        options: [
-            { type: 'drama', text: 'Ich inszeniere einen inneren Monolog über die Tragweite dieser Entscheidung' },
-            { type: 'zen', text: 'Ich meditiere darüber und lasse die Antwort zu mir kommen' },
-            { type: 'royal', text: 'Ich konsultiere das alte Familienprotokoll aus Versailles' },
-            { type: 'practical', text: 'Pro-Contra-Liste erstellen und dann entscheiden' },
-            { type: 'advice', text: 'Ich erinnere mich an eine ähnliche Situation meiner Tante vierten Grades' }
-        ]
-    },
-    {
-        id: 'question4',
-        text: 'Dein Lieblingsplatz in der Wohnung wäre...?',
-        options: [
-            { type: 'drama', text: 'Vor dem Fernseher, wo sich die großen Dramen abspielen' },
-            { type: 'zen', text: 'Ein erhöhter Punkt mit Überblick über alles' },
-            { type: 'royal', text: 'Ein elegantes Sofa mit perfekter Akustik für dramatische Ausrufe' },
-            { type: 'practical', text: 'Überall, wo man in Ruhe arbeiten kann' },
-            { type: 'advice', text: 'Am Fenster, mit perfektem Blick auf die Nachbarschaft' }
-        ]
-    },
-    {
-        id: 'question5',
-        text: 'Wie würdest du einen Konflikt lösen?',
-        options: [
-            { type: 'drama', text: 'Mit einer emotionalen Rede über Freundschaft und Verständnis' },
-            { type: 'zen', text: 'Mit einer gemeinsamen Meditationssession' },
-            { type: 'royal', text: 'Mit einem formellen Friedensvertrag nach höfischem Protokoll' },
-            { type: 'practical', text: 'Mit einem strukturierten Gespräch und klaren Regeln' },
-            { type: 'advice', text: 'Mit einer lehrreichen Geschichte über frühere Konflikte' }
-        ]
-    }
-    // Weitere Fragen folgen im nächsten Teil
-];
-
+// Globale Variablen
 let currentQuestion = 0;
 let scores = {
     drama: 0,
@@ -317,6 +319,7 @@ let scores = {
     advice: 0
 };
 
+// Ergebnisdefinitionen
 const results = {
     drama: {
         title: "Waldemar der dramatische Goldfisch",
@@ -324,6 +327,7 @@ const results = {
         description: "Du bist eine dramatische Seele! Jeder Moment ist eine Gelegenheit für große Gefühle und bedeutungsvolle Monologe. Wie Waldemar siehst du das Leben als eine große Soap Opera - voller Wendungen, Überraschungen und emotionaler Höhepunkte!",
         wisdom: "Nicht jede Luftblase muss ein Drama sein, aber ein bisschen Dramatik macht das Leben interessanter!"
     },
+
     zen: {
         title: "Gustav der meditative Wellensittich",
         icon: '<i class="fas fa-dove"></i>',
@@ -335,15 +339,7 @@ const results = {
         icon: '<i class="fas fa-crown"></i>',
         description: "Stil, Würde und eine Prise aristokratische Arroganz - das bist du! Wie Herr Schnurr weißt du um deine noble Abstammung (auch wenn sie vielleicht nur eingebildet ist). In Versailles wärst du definitiv zu Hause!",
         wisdom: "Mon dieu! Wahre Nobility zeigt sich in der Art, wie man mit dem Pöbel umgeht."
-    }
-    // Weitere Ergebnisse folgen
-};
-
-<script>
-// Fortsetzung des vorherigen Codes...
-
-const results = {
-    ...results,  // vorherige Ergebnisse
+    },
     practical: {
         title: "Mike der pragmatische Problemlöser",
         icon: '<i class="fas fa-user-ninja"></i>',
@@ -358,48 +354,50 @@ const results = {
     }
 };
 
+// Quiz-Funktionen
 function startQuiz() {
     document.getElementById('intro').style.display = 'none';
     document.getElementById('quiz').style.display = 'block';
-    showQuestion(0);
-    updateProgress();
+    document.getElementById('question1').classList.add('active');
+    document.getElementById('question1').style.display = 'block';
+    updateProgress(0);
 }
 
-function showQuestion(index) {
-    const questions = document.querySelectorAll('.question');
-    questions.forEach(q => {
-        q.classList.remove('active');
-        q.style.display = 'none';
-    });
+function handleAnswer(type, questionNumber) {
+    // Punkte zählen
+    scores[type]++;
     
-    if (document.getElementById(`question${index + 1}`)) {
-        const currentQ = document.getElementById(`question${index + 1}`);
-        currentQ.style.display = 'block';
-        setTimeout(() => currentQ.classList.add('active'), 10);
-    }
-}
-
-function updateProgress() {
-    const progress = (currentQuestion / (questions.length + 2)) * 100;
-    document.getElementById('progress').style.width = `${progress}%`;
-}
-
-function nextQuestion(answerType) {
-    // Punktezählung
-    scores[answerType]++;
-    
-    // Animation für Button-Klick
+    // Button-Animation
     event.target.style.transform = 'scale(0.95)';
     setTimeout(() => event.target.style.transform = 'scale(1)', 100);
 
-    currentQuestion++;
-    updateProgress();
-
-    if (currentQuestion < questions.length + 2) {
-        showQuestion(currentQuestion);
+    // Aktuelle Frage ausblenden
+    const currentQuestion = document.getElementById(`question${questionNumber}`);
+    currentQuestion.classList.remove('active');
+    
+    // Nächste Frage oder Ergebnis zeigen
+    if (questionNumber < 5) {
+        const nextQuestion = document.getElementById(`question${questionNumber + 1}`);
+        setTimeout(() => {
+            currentQuestion.style.display = 'none';
+            nextQuestion.style.display = 'block';
+            setTimeout(() => {
+                nextQuestion.classList.add('active');
+            }, 50);
+        }, 300);
     } else {
-        showResult();
+        setTimeout(() => {
+            currentQuestion.style.display = 'none';
+            showResult();
+        }, 300);
     }
+    
+    updateProgress(questionNumber);
+}
+
+function updateProgress(questionNumber) {
+    const progress = ((questionNumber + 1) / 5) * 100;
+    document.getElementById('progress').style.width = `${progress}%`;
 }
 
 function calculateResult() {
@@ -420,24 +418,19 @@ function showResult() {
     const resultType = calculateResult();
     const result = results[resultType];
     
-    // Quiz ausblenden
-    document.querySelectorAll('.question').forEach(q => {
-        q.style.display = 'none';
-    });
-
     // Ergebnis vorbereiten
+    document.querySelector('.result-icon').innerHTML = result.icon;
     document.getElementById('result-title').textContent = result.title;
     document.getElementById('result-description').textContent = result.description;
     document.getElementById('result-wisdom').textContent = result.wisdom;
     
-    const resultIcon = document.querySelector('.result-icon');
-    resultIcon.innerHTML = result.icon;
-
-    // Ergebnis einblenden mit Animation
+    // Ergebnis einblenden
     const resultDiv = document.getElementById('result');
     resultDiv.style.display = 'block';
-    setTimeout(() => resultDiv.classList.add('active'), 10);
-
+    setTimeout(() => {
+        resultDiv.classList.add('active');
+    }, 50);
+    
     // Fortschrittsbalken vervollständigen
     document.getElementById('progress').style.width = '100%';
 }
@@ -459,8 +452,7 @@ function shareResult(platform) {
 }
 
 function restartQuiz() {
-    // Quiz zurücksetzen
-    currentQuestion = 0;
+    // Zurücksetzen der Punktzahl
     scores = {
         drama: 0,
         zen: 0,
@@ -468,45 +460,50 @@ function restartQuiz() {
         practical: 0,
         advice: 0
     };
-
+    
     // UI zurücksetzen
     document.getElementById('result').classList.remove('active');
     document.getElementById('result').style.display = 'none';
+    document.getElementById('quiz').style.display = 'none';
     document.getElementById('intro').style.display = 'block';
-    updateProgress();
+    
+    // Alle Fragen zurücksetzen
+    document.querySelectorAll('.question').forEach(q => {
+        q.style.display = 'none';
+        q.classList.remove('active');
+    });
+    
+    // Fortschrittsbalken zurücksetzen
+    updateProgress(-1);
 }
 
-// Animationen für Seitenladen
+// Initialisierung und Event-Listener
 document.addEventListener('DOMContentLoaded', () => {
+    // Container-Animation beim Laden
     const container = document.querySelector('.container');
-    container.style.opacity = '0';
-    container.style.transform = 'translateY(20px)';
-    
     setTimeout(() => {
-        container.style.transition = 'all 0.5s ease';
-        container.style.opacity = '1';
-        container.style.transform = 'translateY(0)';
+        container.classList.add('visible');
     }, 100);
-});
-
-// Easter Egg: Geheime Omm-Animation
-let ommCount = 0;
-document.addEventListener('keydown', (e) => {
-    if (e.key.toLowerCase() === 'o') {
-        ommCount++;
-        if (ommCount === 3) {
-            const icons = document.querySelectorAll('.result-icon i');
-            icons.forEach(icon => {
-                icon.style.animation = 'float 1s infinite';
-            });
-            setTimeout(() => {
+    
+    // Easter Egg
+    let ommCount = 0;
+    document.addEventListener('keydown', (e) => {
+        if (e.key.toLowerCase() === 'o') {
+            ommCount++;
+            if (ommCount === 3) {
+                const icons = document.querySelectorAll('.result-icon i');
                 icons.forEach(icon => {
-                    icon.style.animation = '';
+                    icon.style.animation = 'float 1s infinite';
                 });
-            }, 3000);
-            ommCount = 0;
+                setTimeout(() => {
+                    icons.forEach(icon => {
+                        icon.style.animation = '';
+                    });
+                    ommCount = 0;
+                }, 3000);
+            }
         }
-    }
+    });
 });
 </script>
 </body>
