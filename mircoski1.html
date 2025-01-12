@@ -6,12 +6,11 @@
     <title>Mirco's KI</title>
     <script src="https://js.puter.com/v2/"></script>
     <style>
-        /* Allgemeines Design */
         body {
             margin: 0;
             font-family: 'Arial', sans-serif;
-            background-color: #1f2937; /* Dunkles Blau */
-            color: #e5e7eb; /* Helles Grau */
+            background-color: #1f2937;
+            color: #e5e7eb;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -27,57 +26,39 @@
             margin-bottom: 10px;
         }
 
-        h2 {
-            font-size: 1rem;
-            color: #9ca3af;
-            margin-bottom: 20px;
-        }
-
         .container {
-            background-color: #374151; /* Dunkleres Blau */
+            background-color: #374151;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
-            max-width: 500px;
+            max-width: 600px;
             width: 100%;
-            text-align: center;
         }
 
-        textarea {
+        textarea, input, button {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
-            font-size: 14px;
-            border: 1px solid #4b5563;
+            font-size: 16px;
             border-radius: 5px;
-            background-color: #1f2937; /* Dunkles Blau */
+            border: 1px solid #4b5563;
+            background-color: #1f2937;
             color: #e5e7eb;
-        }
-
-        input[type="checkbox"] {
-            margin-right: 5px;
         }
 
         label {
             font-size: 14px;
-            color: #d1d5db; /* Hellgrau */
+            color: #d1d5db;
         }
 
         button {
-            width: 100%;
-            padding: 12px;
-            font-size: 16px;
-            font-weight: bold;
-            color: #ffffff;
-            background-color: #3b82f6; /* Blau */
-            border: none;
-            border-radius: 5px;
+            background-color: #3b82f6;
             cursor: pointer;
-            margin-top: 10px;
+            font-weight: bold;
         }
 
         button:hover {
-            background-color: #2563eb; /* Dunkleres Blau */
+            background-color: #2563eb;
         }
 
         .response {
@@ -94,28 +75,68 @@
     </style>
 </head>
 <body>
-    <header>
-        <h1>Mirco's KI</h1>
-        <h2>Autor & Schriftsteller</h2>
-    </header>
+    <h1>Mirco's KI</h1>
     <div class="container">
-        <p>Gib deine Frage oder Anweisung ein:</p>
+        <p>Gib deine Anfrage ein, lade ein Dokument oder ein Bild hoch:</p>
+        <!-- Eingabefeld für Text -->
         <textarea id="userInput" rows="4" placeholder="Schreibe hier deine Frage oder Anweisung..."></textarea>
+
+        <!-- Datei-Upload -->
+        <label for="fileUpload">Dokument hochladen (z. B. .txt):</label>
+        <input type="file" id="fileUpload" accept=".txt" onchange="handleFileUpload(event)">
+
+        <!-- Bild-Upload -->
+        <label for="imageUpload">Optional: Bild hochladen:</label>
+        <input type="file" id="imageUpload" accept="image/*">
+
+        <!-- Checkbox für lange Antworten -->
         <p>
             <input type="checkbox" id="longResponse" />
             <label for="longResponse">Lange Antwort (Streaming-Modus)</label>
         </p>
+
+        <!-- Button -->
         <button onclick="generateResponse()">Antwort generieren</button>
+
+        <!-- Bereich für die Antwort -->
         <div id="response" class="response">
             <p>Antwort wird hier angezeigt...</p>
         </div>
     </div>
 
     <script>
+        let fileContent = ""; // Variable, um den Inhalt der hochgeladenen Datei zu speichern
+
+        // Funktion, um den Inhalt der hochgeladenen Datei zu lesen
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    fileContent = e.target.result; // Speichert den Inhalt der Datei
+                };
+                reader.readAsText(file);
+            }
+        }
+
         async function generateResponse() {
             const userInput = document.getElementById('userInput').value;
             const longResponse = document.getElementById('longResponse').checked;
             const responseDiv = document.getElementById('response');
+
+            // Zusätzliche Daten von der hochgeladenen Datei und Bild
+            const imageUpload = document.getElementById('imageUpload').files[0];
+            let imageInfo = "";
+            if (imageUpload) {
+                imageInfo = `Bild: ${imageUpload.name}`;
+            }
+
+            // Erstelle die Anfrage
+            const query = `
+                ${userInput}
+                ${fileContent ? "Zusätzliches Dokument: " + fileContent : ""}
+                ${imageInfo ? imageInfo : ""}
+            `;
 
             // Leere Antwortfeld
             responseDiv.innerHTML = "<p>Antwort wird generiert...</p>";
@@ -123,15 +144,15 @@
             try {
                 if (longResponse) {
                     // Streaming-Modus für lange Texte
-                    const response = await puter.ai.chat(userInput, { model: 'claude-3-5-sonnet', stream: true });
+                    const response = await puter.ai.chat(query, { model: 'claude-3-5-sonnet', stream: true });
                     responseDiv.innerHTML = ""; // Leere das Feld für gestreamte Daten
                     for await (const part of response) {
                         responseDiv.innerHTML += `<p>${part?.text}</p>`; // Füge gestreamte Teile hinzu
                     }
                 } else {
                     // Kurze Antwort
-                    const response = await puter.ai.chat(userInput, { model: 'claude-3-5-sonnet' });
-                    responseDiv.innerHTML = `<p>${response.message.content[0].text}</p>`; // Zeige komplette Antwort
+                    const response = await puter.ai.chat(query, { model: 'claude-3-5-sonnet' });
+                    responseDiv.innerHTML = `<p>${response.message.content[0].text}</p>`; // Zeige Antwort
                 }
             } catch (error) {
                 console.error(error);
