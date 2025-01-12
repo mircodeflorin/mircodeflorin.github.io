@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mirco's KI</title>
+    <script src="https://js.puter.com/v2/"></script>
+    <style>
+        /* Allgemeines Design */
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #1f2937; /* Dunkles Blau */
+            color: #e5e7eb; /* Helles Grau */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1rem;
+            color: #9ca3af;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            background-color: #374151; /* Dunkleres Blau */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 14px;
+            border: 1px solid #4b5563;
+            border-radius: 5px;
+            background-color: #1f2937; /* Dunkles Blau */
+            color: #e5e7eb;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 5px;
+        }
+
+        label {
+            font-size: 14px;
+            color: #d1d5db; /* Hellgrau */
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #ffffff;
+            background-color: #3b82f6; /* Blau */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #2563eb; /* Dunkleres Blau */
+        }
+
+        .response {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #1f2937;
+            border: 1px solid #4b5563;
+            color: #e5e7eb;
+            text-align: left;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Mirco's KI</h1>
+        <h2>Autor & Schriftsteller</h2>
+    </header>
+    <div class="container">
+        <p>Gib deine Frage oder Anweisung ein:</p>
+        <textarea id="userInput" rows="4" placeholder="Schreibe hier deine Frage oder Anweisung..."></textarea>
+        <p>
+            <input type="checkbox" id="longResponse" />
+            <label for="longResponse">Lange Antwort (Streaming-Modus)</label>
+        </p>
+        <button onclick="generateResponse()">Antwort generieren</button>
+        <div id="response" class="response">
+            <p>Antwort wird hier angezeigt...</p>
+        </div>
+    </div>
+
+    <script>
+        async function generateResponse() {
+            const userInput = document.getElementById('userInput').value;
+            const longResponse = document.getElementById('longResponse').checked;
+            const responseDiv = document.getElementById('response');
+
+            // Leere Antwortfeld
+            responseDiv.innerHTML = "<p>Antwort wird generiert...</p>";
+
+            try {
+                if (longResponse) {
+                    // Streaming-Modus für lange Texte
+                    const response = await puter.ai.chat(userInput, { model: 'claude-3-5-sonnet', stream: true });
+                    responseDiv.innerHTML = ""; // Leere das Feld für gestreamte Daten
+                    for await (const part of response) {
+                        responseDiv.innerHTML += `<p>${part?.text}</p>`; // Füge gestreamte Teile hinzu
+                    }
+                } else {
+                    // Kurze Antwort
+                    const response = await puter.ai.chat(userInput, { model: 'claude-3-5-sonnet' });
+                    responseDiv.innerHTML = `<p>${response.message.content[0].text}</p>`; // Zeige komplette Antwort
+                }
+            } catch (error) {
+                console.error(error);
+                responseDiv.innerHTML = "<p>Fehler bei der Generierung der Antwort.</p>";
+            }
+        }
+    </script>
+</body>
+</html>
+
