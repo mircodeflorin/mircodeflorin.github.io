@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mirco's KI</title>
     <script src="https://js.puter.com/v2/"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
     <style>
         body {
             margin: 0;
@@ -82,8 +83,8 @@
         <textarea id="userInput" rows="4" placeholder="Schreibe hier deine Frage oder Anweisung..."></textarea>
 
         <!-- Datei-Upload -->
-        <label for="fileUpload">Dokument hochladen (z. B. .txt):</label>
-        <input type="file" id="fileUpload" accept=".txt" onchange="handleFileUpload(event)">
+        <label for="fileUpload">Dokument hochladen (z. B. .txt oder .docx):</label>
+        <input type="file" id="fileUpload" accept=".txt, .docx" onchange="handleFileUpload(event)">
 
         <!-- Bild-Upload -->
         <label for="imageUpload">Optional: Bild hochladen:</label>
@@ -112,10 +113,31 @@
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    fileContent = e.target.result; // Speichert den Inhalt der Datei
-                };
-                reader.readAsText(file);
+
+                if (file.name.endsWith(".docx")) {
+                    // Verwende Mammoth.js für .docx-Dateien
+                    reader.onload = function(e) {
+                        mammoth.extractRawText({ arrayBuffer: e.target.result })
+                            .then(function(result) {
+                                fileContent = result.value; // Extrahierter Text
+                                alert("Dokument erfolgreich hochgeladen!");
+                            })
+                            .catch(function(err) {
+                                console.error("Fehler beim Lesen des Word-Dokuments:", err);
+                                alert("Fehler beim Hochladen der Datei.");
+                            });
+                    };
+                    reader.readAsArrayBuffer(file);
+                } else if (file.name.endsWith(".txt")) {
+                    // Lese reinen Text
+                    reader.onload = function(e) {
+                        fileContent = e.target.result; // Speichert den Inhalt der Datei
+                        alert("Textdatei erfolgreich hochgeladen!");
+                    };
+                    reader.readAsText(file);
+                } else {
+                    alert("Nur .txt- und .docx-Dateien werden unterstützt!");
+                }
             }
         }
 
@@ -131,11 +153,12 @@
                 imageInfo = `Bild: ${imageUpload.name}`;
             }
 
-            // Erstelle die Anfrage
+            // Erstelle die Anfrage und füge die Anweisung hinzu, dass die Antwort auf Deutsch sein soll
             const query = `
                 ${userInput}
                 ${fileContent ? "Zusätzliches Dokument: " + fileContent : ""}
                 ${imageInfo ? imageInfo : ""}
+                Bitte antworte immer in deutscher Sprache.
             `;
 
             // Leere Antwortfeld
