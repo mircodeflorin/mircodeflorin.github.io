@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Herbert's Zen-Weisheit des Tages</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #1c2939;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .header {
+            background-color: #2c3e50;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid #a8b2bd;
+            border-radius: 5px;
+            color: #ffffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .countdown {
+            font-size: 1.5em;
+            color: #e74c3c;
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .wisdom-container {
+            background-color: rgba(44, 62, 80, 0.7);
+            border-radius: 10px;
+            padding: 30px;
+            margin: 20px 0;
+            text-align: center;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            position: relative;
+        }
+
+        .wisdom-text {
+            font-size: 2em;
+            margin-bottom: 20px;
+            line-height: 1.4;
+            font-style: italic;
+        }
+
+        .author {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 1.2em;
+            color: #a8b2bd;
+        }
+
+        .cactus-icon {
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            transition: transform 0.5s ease;
+            transform-origin: bottom center;
+        }
+
+        .cactus-icon:hover {
+            transform: rotate(-5deg);
+        }
+
+        .share-buttons {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .share-button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: opacity 0.3s;
+            text-decoration: none;
+            font-size: 1em;
+        }
+
+        .share-button:hover {
+            opacity: 0.8;
+        }
+
+        .facebook { background-color: #3b5998; }
+        .twitter { background-color: #1da1f2; }
+        .instagram { background: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d); }
+
+        .weekly-wisdom {
+            background-color: rgba(44, 62, 80, 0.7);
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        .week-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .day-card {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .day-card:hover {
+            background: rgba(0, 0, 0, 0.5);
+            transform: translateY(-3px);
+        }
+
+        .day-name {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #e74c3c;
+        }
+
+        .day-cactus {
+            width: 30px;
+            height: 30px;
+            margin: 10px auto;
+            transition: transform 0.5s ease;
+            transform-origin: bottom center;
+        }
+
+        .day-wisdom {
+            margin-top: 10px;
+            font-size: 0.9em;
+            min-height: 60px;
+            display: none;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .show-wisdom {
+            display: block;
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .week-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .wisdom-text {
+                font-size: 1.5em;
+            }
+
+            .countdown {
+                font-size: 1.2em;
+            }
+
+            .container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="https://mircodeflorin.github.io/landingpage" class="home-button">← Home</a>
+        <h1>Mirco Deflorin</h1>
+        <p>Autor & Schriftsteller</p>
+    </div>
+
+    <div class="container">
+        <div class="countdown">
+            Noch 29 Tage bis zur Veröffentlichung von "Alles außer Kontrolle"
+        </div>
+
+        <div class="wisdom-container">
+            <div class="wisdom-text">
+                "Stille ist die lauteste Antwort, wenn das Chaos nach dir ruft."
+            </div>
+            <div class="author">
+                <svg class="cactus-icon" viewBox="0 0 100 100" onclick="rotateCactus(this)">
+                    <path d="M45,20 C45,10 55,10 55,20 L55,80 C55,90 45,90 45,80 L45,20" fill="#2ecc71"/>
+                    <path d="M35,40 C35,35 45,35 45,40 L45,50 C45,55 35,55 35,50 L35,40" fill="#2ecc71"/>
+                    <path d="M55,60 C55,55 65,55 65,60 L65,70 C65,75 55,75 55,70 L55,60" fill="#2ecc71"/>
+                    <rect x="40" y="80" width="20" height="10" fill="#955a36"/>
+                </svg>
+                - Herbert, der weise Kaktus
+            </div>
+            <div class="share-buttons">
+                <button onclick="shareOnFacebook()" class="share-button facebook">Auf Facebook teilen</button>
+                <button onclick="shareOnTwitter()" class="share-button twitter">Auf Twitter teilen</button>
+                <button onclick="shareOnInstagram()" class="share-button instagram">Auf Instagram teilen</button>
+            </div>
+        </div>
+
+        <div class="weekly-wisdom">
+            <h2>Herberts Wochenweisheiten</h2>
+            <div class="week-grid">
+                <!-- Die Wochentage werden per JavaScript eingefügt -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const dailyWisdoms = {
+            Montag: [
+                "Der Montag ist wie eine leere Kaffeetasse - bereit für neue Möglichkeiten.",
+                "Neue Woche, neue Chance sich zu neigen.",
+                "Selbst ein toter Kaktus hat montags mehr Leben als mancher Kollege."
+            ],
+            Dienstag: [
+                "Ein weiser Kaktus weiß, dass der Dienstag nur eine Illusion ist.",
+                "Manchmal muss man sich dienstags einfach zur Seite neigen und warten.",
+                "Die Kunst des Dienstags liegt im geduldigen Vertrocknen."
+            ],
+            Mittwoch: [
+                "In der Mitte der Woche liegt die Weisheit des Wartens.",
+                "Mittwochs neigt sich der Weise dem Wochenende zu.",
+                "Der Berg der Woche ist erklommen, Zeit sich auszuruhen."
+            ],
+            Donnerstag: [
+                "Donnerstags tanzt selbst der stillste Kaktus.",
+                "Die Weisheit des Donnerstags liegt im fast Freitag sein.",
+                "Ein Tag vor Freitag ist besser als zwei Tage nach Montag."
+            ],
+            Freitag: [
+                "Freitags ist selbst ein toter Kaktus voller Leben.",
+                "Die Kunst des Freitags liegt im stilvollen Verwelken ins Wochenende.",
+                "Wer freitags nicht feiert, hat den Sinn des Vertrocknens nicht verstanden."
+            ],
+            Samstag: [
+                "Am Samstag ruht selbst die Weisheit.",
+                "Die Kunst des Samstags liegt im kreativen Nichtstun.",
+                "Ein weiser Kaktus genießt den Samstag in stillem Verwelken."
+            ],
+            Sonntag: [
+                "Sonntags ist die Stille am lautesten.",
+                "Die Kunst des Sonntags liegt im Vorbereiten auf den Montag.",
+                "Ein weiser Kaktus nimmt sich sonntags Zeit zum Meditieren."
+            ]
+        };
+
+        // Erzeugt die Tageskarten
+        function createDayCards() {
+            const grid = document.querySelector('.week-grid');
+            Object.entries(dailyWisdoms).forEach(([day, wisdoms]) => {
+                const card = document.createElement('div');
+                card.className = 'day-card';
+                card.innerHTML = `
+                    <div class="day-name">${day}</div>
+                    <svg class="day-cactus" viewBox="0 0 100 100">
+                        <path d="M45,20 C45,10 55,10 55,20 L55,80 C55,90 45,90 45,80 L45,20" fill="#2ecc71"/>
+                        <path d="M35,40 C35,35 45,35 45,40 L45,50 C45,55 35,55 35,50 L35,40" fill="#2ecc71"/>
+                        <path d="M55,60 C55,55 65,55 65,60 L65,70 C65,75 55,75 55,70 L55,60" fill="#2ecc71"/>
+                        <rect x="40" y="80" width="20" height="10" fill="#955a36"/>
+                    </svg>
+                    <div class="day-wisdom"></div>
+                `;
+                card.onclick = () => showWisdom(card, day);
+                grid.appendChild(card);
+            });
+        }
+
+        // Zeigt eine zufällige Weisheit für den Tag
+        function showWisdom(card, day) {
+            const wisdoms = dailyWisdoms[day];
+            const randomWisdom = wisdoms[Math.floor(Math.random() * wisdoms.length)];
+            const wisdomText = card.querySelector('.day-wisdom');
+            const cactus = card.querySelector('.day-cactus');
+
+            // Rotiere den Kaktus
+            cactus.style.transform = 'rotate(15deg)';
+            setTimeout(() => {
+                cactus.style.transform = 'rotate(0deg)';
+            }, 500);
+
+            // Zeige die neue Weisheit
+            wisdomText.textContent = randomWisdom;
+            wisdomText.style.display = 'block';
+            setTimeout(() => {
+                wisdomText.classList.add('show-wisdom');
+            }, 10);
+        }
+
+        // Hauptkaktus Rotation
+        function rotateCactus(element) {
+            element.style.transform = 'rotate(15deg)';
+            setTimeout(() => {
+                element.style.transform = 'rotate(0deg)';
+            }, 500);
+        }
+
+        // Social Media Sharing
+        function shareOnFacebook() {
+            const text = "Herbert's Weisheit des Tages: Stille ist die lauteste Antwort, wenn das Chaos nach dir ruft.";
+            const url = encodeURIComponent(window.location.href);
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        function shareOnTwitter() {
+            const text = "Herbert's Weisheit des Tages: Stille ist die lauteste Antwort, wenn das Chaos nach dir ruft.";
+            const url = encodeURIComponent(window.location.href);
+            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${url}`, '_blank');
+        }
+
+        function shareOnInstagram() {
+            alert('Instagram-Sharing ist nur über die Instagram-App möglich. Bitte erstelle einen Screenshot und teile ihn in deiner Instagram-Story oder als Post.');
+        }
+
+        // Initialisierung
+        window.onload = createDayCards;
+    </script>
+</body>
+</html>
