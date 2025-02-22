@@ -317,17 +317,20 @@
             });
         }
 
+        // Zeigt eine zufällige Weisheit für den Tag
         function showWisdom(card, day) {
             const wisdoms = dailyWisdoms[day];
             const randomWisdom = wisdoms[Math.floor(Math.random() * wisdoms.length)];
             const wisdomText = card.querySelector('.day-wisdom');
             const cactus = card.querySelector('.day-cactus');
 
+            // Rotiere den Kaktus
             cactus.style.transform = 'rotate(15deg)';
             setTimeout(() => {
                 cactus.style.transform = 'rotate(0deg)';
             }, 500);
 
+            // Zeige die neue Weisheit
             wisdomText.textContent = randomWisdom;
             wisdomText.style.display = 'block';
             setTimeout(() => {
@@ -335,6 +338,7 @@
             }, 10);
         }
 
+        // Hauptkaktus Rotation
         function rotateCactus(element) {
             element.style.transform = 'rotate(15deg)';
             setTimeout(() => {
@@ -342,7 +346,26 @@
             }, 500);
         }
 
+        // Social Media Sharing
         function shareOnFacebook() {
             const text = "Herbert's Weisheit des Tages: Stille ist die lauteste Antwort, wenn das Chaos nach dir ruft.";
             const url = encodeURIComponent(window.location.href);
-            window.open(`https://www.facebook.com/sharer/sharer
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        function shareOnTwitter() {
+            const text = "Herbert's Weisheit des Tages: Stille ist die lauteste Antwort, wenn das Chaos nach dir ruft.";
+            const url = encodeURIComponent(window.location.href);
+            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${url}`, '_blank');
+        }
+
+        function shareOnInstagram() {
+            alert('Instagram-Sharing ist nur über die Instagram-App möglich. Bitte erstelle einen Screenshot und teile ihn in deiner Instagram-Story oder als Post.');
+        }
+
+        // Initialisierung
+        window.onload = createDayCards;
+    </script>
+</body>
+</html>
+          
