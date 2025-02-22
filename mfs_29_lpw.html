@@ -207,8 +207,122 @@
     />
   </div>
 </div>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signiertes Exemplar bestellen - Mirco Deflorin</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #1c2939;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
 
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
 
+        .preorder-card {
+            background-color: rgba(44, 62, 80, 0.7);
+            padding: 40px;
+            border-radius: 10px;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            position: relative;
+        }
+
+        .preorder-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #e74c3c, transparent);
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #e74c3c;
+        }
+
+        .description {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .order-button {
+            display: inline-block;
+            background-color: #e74c3c;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .order-button:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .limited-info {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #a8b2bd;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .preorder-card {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .description {
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="preorder-card">
+            <h1>Limitierte Auflage</h1>
+            <div class="description">
+                Bestellen Sie jetzt direkt ein signiertes Exemplar vom Schriftsteller Mirco Deflorin
+            </div>
+            <a href="https://mircodeflorin.github.io/preorder-page" class="order-button">
+                Jetzt vorbestellen
+            </a>
+            <div class="limited-info">
+                * Limitierte Auflage von signierten Exemplaren
+            </div>
+        </div>
+    </div>
+</body>
+</html>
     <div class="container">
         <div class="countdown">
             Noch 29 Tage bis zur Veröffentlichung von "Alles ausser Kontrolle"
