@@ -1,576 +1,539 @@
 <!DOCTYPE html>
-<html lang="de">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mirco Deflorin - Autor & Schriftsteller</title>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- EmailJS SDK -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-
 <style>
 :root {
-    --primary: #2c3e50;
-    --secondary: #34495e;
-    --accent: #e74c3c;
-    --text: #333;
-    --light: #ecf0f1;
+  --primary: #2c3e50;
+  --secondary: #34495e;
+  --accent: #e74c3c;
+  --text: #333;
+  --light: #ecf0f1;
 }
 
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    -webkit-tap-highlight-color: transparent;
-}
-
-html {
-    font-size: 16px;
-    scroll-behavior: smooth;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    font-family: 'Merriweather', serif;
-    line-height: 1.6;
-    color: var(--text);
-    background: var(--light);
-    overflow-x: hidden;
+  font-family: 'Merriweather', serif;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--light);
 }
 
-/* Header Styles */
 header {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    padding: 2rem 1rem;
-    text-align: center;
-    color: white;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  padding: 3rem 0;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  color: white;
 }
 
 header h1 {
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
-    animation: glow 2s ease-in-out infinite alternate;
+  animation: glow 2s ease-in-out infinite alternate;
 }
 
 @keyframes glow {
-    from { text-shadow: 0 0 5px rgba(255,255,255,0.5); }
-    to { text-shadow: 0 0 20px rgba(255,255,255,0.8); }
+  from { text-shadow: 0 0 5px rgba(255,255,255,0.5); }
+  to { text-shadow: 0 0 20px rgba(255,255,255,0.8); }
 }
 
-/* Navigation Styles */
 nav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: var(--secondary);
-    padding: 0.5rem;
-}
-
-#menu-toggle {
-    display: none;
-    background: transparent;
-    border: none;
-    color: white;
-    font-size: 1.5rem;
-    padding: 0.5rem;
-    cursor: pointer;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  background: var(--secondary);
+  padding: 1rem;
 }
 
 nav ul {
-    list-style: none;
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
 }
 
 nav a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    padding: 0.5rem 1rem;
-    transition: color 0.3s ease;
-    display: block;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  position: relative;
+  padding: 0.5rem 1rem;
 }
 
 nav a::after {
-    content: '';
-    display: block;
-    width: 0;
-    height: 2px;
-    background: var(--accent);
-    transition: width 0.3s ease;
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: width 0.3s ease;
 }
 
 nav a:hover::after {
-    width: 100%;
+  width: 100%;
 }
 
-/* Hero Section */
 .hero {
-    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
-                url('https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1600');
-    background-size: cover;
-    background-position: center;
-    min-height: 60vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    color: white;
-    padding: 3rem 1rem;
-    position: relative;
+  background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1600');
+  background-size: cover;
+  background-attachment: fixed;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  color: white;
+  padding: 4rem 2rem;
+  text-align: center;
 }
 
 .hero::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 100px;
-    background: linear-gradient(transparent, var(--light));
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background: linear-gradient(transparent, var(--light));
 }
 
-/* Books Section */
 .books-section {
-    padding: 2rem 1rem;
-    max-width: 1200px;
-    margin: 0 auto;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .genre-section {
-    margin-bottom: 3rem;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
+  margin-bottom: 3rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .genre-section.visible {
-    opacity: 1;
-    transform: translateY(0);
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .genre-section h2 {
-    color: var(--primary);
-    margin-bottom: 1rem;
-    border-bottom: 2px solid var(--accent);
-    padding-bottom: 0.5rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 0.5rem;
 }
 
 .book-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 1rem;
 }
 
 .book-card {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease;
-}
-
-.book-card:hover {
-    transform: translateY(-5px);
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+  transform-style: preserve-3d;
+  perspective: 1000px;
 }
 
 .book-card img {
-    width: 80%;
-    height: auto;
-    max-width: 200px;
-    border-radius: 4px;
-    margin: 0 auto 1rem;
-    display: block;
-    transition: transform 0.5s ease;
+  width: 80%;
+  height: auto;
+  border-radius: 4px;
+  margin: 0 auto 1rem;
+  display: block;
+  max-width: 200px;
+  transition: transform 0.5s ease;
+}
+
+.book-card:hover img {
+  transform: rotateY(10deg) translateZ(20px);
 }
 
 .book-card h3 {
-    color: var(--primary);
-    margin-bottom: 0.5rem;
-    font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+  transform: translateZ(30px);
+  transition: transform 0.3s ease;
+}
+
+.book-card:hover h3 {
+  transform: translateZ(40px);
 }
 
 .button-group {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.button-group button {
+  min-width: 120px;
 }
 
 button {
-    background: var(--accent);
-    color: white;
-    padding: 0.8rem 1.5rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background 0.3s ease;
-    min-width: 120px;
-    min-height: 44px;
+  background: var(--accent);
+  color: white;
+  padding: 0.8rem 2rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255,255,255,0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+}
+
+button:hover::after {
+  width: 300%;
+  height: 300%;
 }
 
 button:hover {
-    background: #c0392b;
+  background: #c0392b;
 }
 
-/* Contact Section */
 .contact {
-    padding: 3rem 1rem;
-    max-width: 800px;
-    margin: 0 auto;
+  padding: 3rem 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.contact.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .contact form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    max-width: 500px;
-    margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
 .contact input,
 .contact textarea {
-    padding: 0.8rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 16px;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
 
 .contact textarea {
-    min-height: 150px;
-    resize: vertical;
+  min-height: 150px;
 }
 
 .social-links {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
 }
 
 .social-links a {
-    color: var(--primary);
-    font-size: 1.5rem;
-    transition: color 0.3s ease;
-    padding: 0.5rem;
+  color: var(--primary);
+  font-size: 1.5rem;
+  transition: color 0.3s ease;
 }
 
 .social-links a:hover {
-    color: var(--accent);
+  color: var(--accent);
 }
 
-/* Footer */
-footer {
-    background: var(--primary);
-    color: white;
-    text-align: center;
-    padding: 1rem;
-    margin-top: 2rem;
+.footer {
+  background: var(--primary);
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  margin-top: 2rem;
 }
 
-/* Mobile Responsive Styles */
-@media (max-width: 768px) {
-    html {
-        font-size: 14px;
-    }
-
-    header h1 {
-        font-size: 2rem;
-    }
-
-    .hero h2 {
-        font-size: 1.5rem;
-    }
-
-    #menu-toggle {
-        display: block;
-    }
-
-    nav ul {
-        display: none;
-        flex-direction: column;
-        align-items: center;
-        padding: 1rem 0;
-    }
-
-    nav ul.show {
-        display: flex;
-    }
-
-    nav a {
-        width: 100%;
-        text-align: center;
-    }
-
-    .book-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-
-    .book-card {
-        padding: 1rem;
-    }
-
-    .button-group {
-        flex-direction: column;
-    }
-
-    .button-group button {
-        width: 100%;
-    }
-
-    .contact form {
-        padding: 0;
-    }
+.thoughts-section {
+  padding: 3rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-/* Loading Animation */
-.loading {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    color: white;
+.thoughts-post {
+  opacity: 1;
+  transform: none;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  line-height: 1.8;
+  text-align: justify;
 }
 
-/* Success/Error Messages */
-.message {
-    padding: 1rem;
-    border-radius: 4px;
-    margin-top: 1rem;
-    text-align: center;
-    display: none;
+.thoughts-post p {
+  margin-bottom: 1.5rem;
 }
 
-.success {
-    background: #27ae60;
-    color: white;
-}
-
-.error {
-    background: #c0392b;
-    color: white;
+.author-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 2rem;
+  display: block;
 }
 </style>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&amp;display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-
 <body>
-    <header>
-        <h1>Mirco Deflorin</h1>
-        <p>Autor & Schriftsteller</p>
-    </header>
 
-    <nav>
-        <button id="menu-toggle">
-            <i class="fas fa-bars"></i>
-        </button>
-        <ul id="nav-menu">
-            <li><a href="#about">Über Mich</a></li>
-            <li><a href="#books">Bücher</a></li>
-            <li><a href="#contact">Kontakt</a></li>
-        </ul>
-    </nav>
+<header>
+  <h1>Mirco Deflorin</h1>
+  <p>Autor &amp; Schriftsteller</p>
+</header>
 
-    <section class="hero">
-        <h2>Willkommen in meiner Welt des Schreibens</h2>
-        <p>Entdecken Sie meine vielfältige Bibliothek von christlichen Büchern bis Horror-Romanen</p>
-    </section>
+<nav>
+  <ul>
+    <li><a href="#about">&#xdc;ber Mich</a></li>
+    <li><a href="#books">B&#xfc;cher</a></li>
+    <li><a href="#contact">Kontakt</a></li>
+  </ul>
+</nav>
 
-    <section id="about" class="thoughts-section">
-        <h2>Über Mich</h2>
-        <div class="thoughts-post">
-            <img src="Bild über uns.jpg" alt="Mirco Deflorin" class="author-image">
-            <p>Das Schreiben ist meine Leidenschaft - eine Reise durch verschiedene Welten und Genres, die mich immer wieder überrascht. Was als Thriller begann, entwickelte sich zu einer Entdeckungsreise durch die düsteren Korridore des Horrors. So entstand die achtteilige 'Blackwood Manor' Serie, die mich tief in die Abgründe menschlicher Ängste führte.</p>
-            
-            <p>Als die Dunkelheit zu intensiv wurde, erschuf ich mit 'Emmagators' eine heitere Gegenwelt - ein augenzwinkerndes Jugendbuch, das mir selbst ein Lächeln entlockte. Meine Krimiromane wie 'Mord im Elfenbeinturm' oder die 'Raben-Trilogie' vereinen meine Vorliebe für komplexe Charaktere mit fesselnden Mysterien.</p>
-            
-            <p>Als Christ finde ich Inspiration auch in spirituellen Themen. Mit 'Die Sprüche des Salomon - Neu strukturiert und erläutert' wage ich mich an zeitgemäße Interpretationen zeitloser Weisheiten.</p>
-            
-            <p>Mein Beruf als Peer und Genesungsbegleiter in der Psychiatrie sowie meine Tätigkeit in einer Sozialversicherungsanstalt prägen meine Perspektive auf das Leben. Diese Erfahrungen flossen in mein Fachbuch 'Salutogenese und Recovery' ein, in dem ich neue Ansätze für die Gesundheitsversorgung diskutiere.</p>
-            
-            <p>Zuhause bin ich in der Schweiz, wo die majestätischen Berge und klaren Seen meine Inspiration nähren. Mit 48 Jahren und an der Seite meiner Frau genieße ich dieses Privileg, Geschichten zu erschaffen, die Menschen berühren, unterhalten und zum Nachdenken anregen.</p>
+<section class="hero">
+  <h2>Willkommen in meiner Welt des Schreibens</h2>
+  <p>Entdecken Sie meine vielf&#xe4;ltige Bibliothek von christlichen B&#xfc;chern bis Horror-Romanen</p>
+</section>
+
+<section id="about" class="thoughts-section">
+  <h2>&#xdc;ber Mich</h2>
+  <div class="thoughts-post">
+    <img src="Bild &#xfc;ber uns.jpg" alt="Mirco Deflorin" class="author-image">
+    <p>Das Schreiben ist meine Leidenschaft - eine Reise durch verschiedene Welten und Genres, die mich immer wieder &#xfc;berrascht. Was als Thriller begann, entwickelte sich zu einer Entdeckungsreise durch die d&#xfc;steren Korridore des Horrors. So entstand die achtteilige &apos;Blackwood Manor&apos; Serie, die mich tief in die Abgr&#xfc;nde menschlicher &#xc4;ngste f&#xfc;hrte.</p>
+
+    <p>Als die Dunkelheit zu intensiv wurde, erschuf ich mit &apos;Emmagators&apos; eine heitere Gegenwelt - ein augenzwinkerndes Jugendbuch, das mir selbst ein L&#xe4;cheln entlockte. Meine Krimiromane wie &apos;Mord im Elfenbeinturm&apos; oder die &apos;Raben-Trilogie&apos; vereinen meine Vorliebe f&#xfc;r komplexe Charaktere mit fesselnden Mysterien.</p>
+
+    <p>Als Christ finde ich Inspiration auch in spirituellen Themen. Mit &apos;Die Spr&#xfc;che des Salomon - Neu strukturiert und erl&#xe4;utert&apos; wage ich mich an zeitgem&#xe4;&#xdf;e Interpretationen zeitloser Weisheiten.</p>
+
+    <p>Mein Beruf als Peer und Genesungsbegleiter in der Psychiatrie sowie meine T&#xe4;tigkeit in einer Sozialversicherungsanstalt pr&#xe4;gen meine Perspektive auf das Leben. Diese Erfahrungen flossen in mein Fachbuch &apos;Salutogenese und Recovery&apos; ein, in dem ich neue Ans&#xe4;tze f&#xfc;r die Gesundheitsversorgung diskutiere.</p>
+
+    <p>Die Kraft des Schreibens entdeckte ich mit Unterst&#xfc;tzung k&#xfc;nstlicher Intelligenz - ein faszinierendes Werkzeug, das meiner Kreativit&#xe4;t neue Dimensionen er&#xf6;ffnet. Bin ich dadurch weniger Schriftsteller? Im Gegenteil: Die Geschichten entstehen in meinem Kopf, nehmen durch meine Erfahrungen Form an und werden durch moderne Technologie bereichert.</p>
+
+    <p>Zuhause bin ich in der Schweiz, wo die majest&#xe4;tischen Berge und klaren Seen meine Inspiration n&#xe4;hren. Mit 48 Jahren und an der Seite meiner Frau genie&#xdf;e ich dieses Privileg, Geschichten zu erschaffen, die Menschen ber&#xfc;hren, unterhalten und zum Nachdenken anregen.</p>
+
+    <p>Meine B&#xfc;cher sind so vielf&#xe4;ltig wie das Leben selbst - manchmal d&#xfc;ster, manchmal heiter, aber immer authentisch. Ich schreibe, was mich bewegt, und folge dabei keinem vorgegebenen Pfad. Jede Geschichte hat ihre eigene Zeit, ihren eigenen Rhythmus, und ich freue mich darauf, Sie auf diesen literarischen Reisen zu begleiten.</p>
+  </div>
+</section>
+
+<section id="books" class="books-section">
+  
+  <div class="genre-section">
+    <h2>Christliche B&#xfc;cher</h2>
+    <div class="book-grid">
+      <div class="book-card">
+        <img src="Die_Spr&#xfc;che_des_Salomon.webp" alt="Die Spr&#xfc;che des Salomon Cover">
+        <h3>Die Spr&#xfc;che des Salomon</h3>
+        <p>Neu strukturiert und erl&#xe4;utert</p>
+        <div class="button-group">
+          <a href="https://buchshop.bod.de/die-sprueche-des-salomon-mirco-deflorin-9783759769374" target="_blank"><button>Mehr erfahren</button></a>
+          <a href="https://www.bod.de/booksample?json=http%3A%2F%2Fwww.bod.ch%2Fgetjson.php%3Fobjk_id%3D5077742%26hash%3D9a3dacd46a9c41c8ac1c60db564df033" target="_blank"><button>Leseprobe</button></a>
         </div>
-    </section>
-
-    <section id="books" class="books-section">
-        <!-- Christliche Bücher -->
-        <div class="genre-section">
-            <h2>Christliche Bücher</h2>
-            <div class="book-grid">
-                <!-- Sprüche des Salomon -->
-                <div class="book-card">
-                    <img src="Die_Sprüche_des_Salomon.webp" alt="Die Sprüche des Salomon Cover" loading="lazy">
-                    <h3>Die Sprüche des Salomon</h3>
-                    <p>Neu strukturiert und erläutert</p>
-                    <div class="button-group">
-                        <a href="https://buchshop.bod.de/die-sprueche-des-salomon-mirco-deflorin-9783759769374" target="_blank">
-                            <button>Mehr erfahren</button>
-                        </a>
-                        <a href="https://www.bod.de/booksample?json=http%3A%2F%2Fwww.bod.ch%2Fgetjson.php%3Fobjk_id%3D5077742%26hash%3D9a3dacd46a9c41c8ac1c60db564df033" target="_blank">
-                            <button>Leseprobe</button>
-                        </a>
-                    </div>
-                </div>
-                <!-- Digitaler Dialog -->
-                <div class="book-card">
-                    <img src="Digitaler_Dialog__Christentum_und_Islam.webp" alt="Digitaler Dialog Cover" loading="lazy">
-                    <h3>Digitaler Dialog: Christentum und Islam</h3>
-                    <p>Eine KI-gestützte theologische Debatte über Jesus</p>
-                    <div class="button-group">
-                        <a href="https://buchshop.bod.de/digitaler-dialog-christentum-und-islam-mirco-deflorin-9783759768216" target="_blank">
-                            <button>Mehr erfahren</button>
-                        </a>
-                        <a href="https://www.bod.de/booksample?json=http%3A%2F%2Fwww.bod.ch%2Fgetjson.php%3Fobjk_id%3D5078571%26hash%3Da80ae94b1b4bb5d6ab9c0847c46d97e9" target="_blank">
-                            <button>Leseprobe</button>
-                        </a>
-                    </div>
-                </div>
-            </div>
+      </div>
+      <div class="book-card">
+        <img src="Digitaler_Dialog__Christentum_und_Islam.webp" alt="Digitaler Dialog Cover">
+        <h3>Digitaler Dialog: Christentum und Islam</h3>
+        <p>Eine KI-gest&#xfc;tzte theologische Debatte &#xfc;ber Jesus</p>
+        <div class="button-group">
+          <a href="https://buchshop.bod.de/digitaler-dialog-christentum-und-islam-mirco-deflorin-9783759768216" target="_blank"><button>Mehr erfahren</button></a>
+          <a href="https://www.bod.de/booksample?json=http%3A%2F%2Fwww.bod.ch%2Fgetjson.php%3Fobjk_id%3D5078571%26hash%3Da80ae94b1b4bb5d6ab9c0847c46d97e9" target="_blank"><button>Leseprobe</button></a>
         </div>
+      </div>
+    </div>
+  </div>
 
-        <!-- Horror Romane -->
-        <div class="genre-section">
-            <h2>Horror Romane</h2>
-            <div class="book-grid">
-                <!-- Blackwood Manor Band 1 -->
-                <div class="book-card">
-                    <img src="Blackwood_Manor Band 1.webp" alt="Blackwood Manor Band 1 Cover" loading="lazy">
-                    <h3>Blackwood Manor: Gefangen im Albtraum</h3>
-                    <p>Band 1 der Blackwood Manor Serie</p>
-                    <div class="button-group">
-                        <a href="https://buchshop.bod.de/blackwood-manor-mirco-deflorin-9783759794918" target="_blank">
-                            <button>Mehr erfahren</button>
-                        </a>
-                        <a href="https://www.bod.de/booksample?json=http%3A%2F%2Fwww.bod.ch%2Fgetjson.php%3Fobjk_id%3D4691117%26hash%3D691b24d5dff8c84596519a2c084a5b39" target="_blank">
-                            <button>Leseprobe</button>
-                        </a>
-                    </div>
-                </div>
-                <!-- Blackwood Manor Band 2 -->
-                <div class="book-card">
-                    <img src="Blackwood_Manor Band2.webp" alt="Blackwood Manor Band 2 Cover" loading="lazy">
-                    <h3>Blackwood Manor: Erbe des Wahnsinns</h3>
-                    <p>Band 2 der Blackwood Manor Serie</p>
-                    <div class="button-group">
-                        <a href="https://buchshop.bod.de/blackwood-manor-mirco-deflorin-9783769314083" target="_blank">
-                            <button>Mehr erfahren</button>
-                        </a>
-                        <a href="https://www.bod.de/booksample?json=http%3A%2F%2Fwww.bod.ch%2Fgetjson.php%3Fobjk_id%3D4750688%26hash%3D059f84bba3ef0e2d6dc4174f8c4272a8" target="_blank">
-                            <button>Leseprobe</button>
-                        </a>
-                    </div>
-                </div>
-            </div>
+  <div class="genre-section">
+    <h2>Horror Romane</h2>
+    <div class="book-grid">
+      <div class="book-card">
+        <img src="Blackwood_Manor Band 1.webp" alt="Blackwood Manor Band 1 Cover">
+        <h3>Blackwood Manor: Gefangen im Albtraum</h3>
+        <p>Band 1 der Blackwood Manor Serie</p>
+        <p>Fesselnder erster Teil der Horror-Mystery-Reihe</p>
+        <div class="button-group">
+          <a href="https://buchshop.bod.de/blackwood-manor-mirco-deflorin-9783759794918" target="_blank"><button>Mehr erfahren</button></a>
+          <a href="https://www.bod.de/booksample?json=http%3A%2F%2Fwww.bod.ch%2Fgetjson.php%3Fobjk_id%3D4691117%26hash%3D691b24d5dff8c84596519a2c084a5b39" target="_blank"><button>Leseprobe</button></a>
         </div>
-
-        <!-- Weitere Genres hier... -->
-    </section>
-
-    <section id="contact" class="contact">
-        <h2>Kontakt</h2>
-        <form id="contact-form" onsubmit="sendEmail(event)">
-            <input type="text" id="name" placeholder="Ihr Name" required>
-            <input type="email" id="email" placeholder="Ihre E-Mail-Adresse" required>
-            <textarea id="message" placeholder="Ihre Nachricht" required></textarea>
-            <button type="submit">Nachricht senden</button>
-            <div id="success-message" class="message success">Nachricht erfolgreich gesendet!</div>
-            <div id="error-message" class="message error">Es gab einen Fehler beim Senden.</div>
-        </form>
-        
-        <div class="social-links">
-            <a href="https://www.facebook.com/profile.php?id=61562148965784" target="_blank"><i class="fab fa-facebook"></i></a>
-            <a href="https://www.linkedin.com/in/mirco-deflorin-862a79318" target="_blank"><i class="fab fa-linkedin"></i></a>
+      </div>
+      <div class="book-card">
+        <img src="Blackwood_Manor Band2.webp" alt="Blackwood Manor Band 2 Cover">
+        <h3>Blackwood Manor: Erbe des Wahnsinns</h3>
+        <p>Band 2 der Blackwood Manor Serie</p>
+        <div class="button-group">
+          <a href="https://buchshop.bod.de/blackwood-manor-mirco-deflorin-9783769314083" target="_blank"><button>Mehr erfahren</button></a>
+          <a href="https://www.bod.de/booksample?json=http%3A%2F%2Fwww.bod.ch%2Fgetjson.php%3Fobjk_id%3D4750688%26hash%3D059f84bba3ef0e2d6dc4174f8c4272a8" target="_blank"><button>Leseprobe</button></a>
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
 
-    <footer>
-        <p>&copy; 2024 Mirco Deflorin. Alle Rechte vorbehalten.</p>
-    </footer>
+  <div class="genre-section">
+    <h2>Kriminal Romane</h2>
+    <div class="book-grid">
+      <div class="book-card">
+        <img src="Das_Echo_der_Raben.webp" alt="Das Echo der Raben Cover">
+        <h3>Das Echo der Raben</h3>
+        <p>Teil der Raben-Trilogie</p>
+        <div class="button-group">
+          <a href="https://buchshop.bod.de/das-echo-der-raben-mirco-deflorin-9783769324617" target="_blank"><button>Mehr erfahren</button></a>
+          <a href="https://www.bod.de/booksample?json=http%3A%2F%2Fwww.bod.ch%2Fgetjson.php%3Fobjk_id%3D5335065%26hash%3D01364ef64c8dcc3a8c1df980ec8c2a7f" target="_blank"><button>Leseprobe</button></a>
+        </div>
+      </div>
+      <div class="book-card">
+        <img src="Mord_im_Elfenbeinturm.webp" alt="Mord im Elfenbeinturm Cover">
+        <h3>Mord im Elfenbeinturm</h3>
+        <p>Ein spannender Kriminalroman</p>
+        <div class="button-group">
+          <a href="https://buchshop.bod.de/mord-im-elfenbeinturm-mirco-deflorin-9783769322484" target="_blank"><button>Mehr erfahren</button></a>
+          <a href="https://www.bod.de/booksample?json=http%3A%2F%2Fwww.bod.ch%2Fgetjson.php%3Fobjk_id%3D5328940%26hash%3D20b403a66e8e95fbda9619d413729225" target="_blank"><button>Leseprobe</button></a>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <script>
-        // EmailJS initialisieren
-        (function() {
-            emailjs.init("IHR_PUBLIC_KEY"); // Ersetzen Sie dies mit Ihrem Public Key
-        })();
+  <div class="genre-section">
+    <h2>F&#xfc;r Jugendliche</h2>
+    <div class="book-grid">
+      <div class="book-card">
+        <img src="Emmagators.webp" alt="Emmagators Cover">
+        <h3>Emmagators: Chaos mit Stil</h3>
+        <p>Ein unterhaltsames Buch f&#xfc;r Jugendliche und Junggebliebene</p>
+        <div class="button-group">
+          <a href="https://buchshop.bod.de/emmagators-mirco-deflorin-9783759749987" target="_blank"><button>Mehr erfahren</button></a>
+          <a href="https://www.bod.de/booksample?json=http%3A%2F%2Fwww.bod.ch%2Fgetjson.php%3Fobjk_id%3D5022852%26hash%3D9dda5d16ef60dd949b3ea2fb135f6ce2" target="_blank"><button>Leseprobe</button></a>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        // Mobile Menü Toggle
-        document.getElementById('menu-toggle').addEventListener('click', function() {
-            document.getElementById('nav-menu').classList.toggle('show');
-        });
+  <div class="genre-section">
+    <h2>Fachbuch</h2>
+    <div class="book-grid">
+      <div class="book-card">
+        <img src="Salutogenese_und_Recovery.webp" alt="Salutogenese und Recovery Cover">
+        <h3>Salutogenese und Recovery</h3>
+        <p>Neue Perspektiven in der Gesundheitsversorgung</p>
+        <div class="button-group">
+          <a href="https://buchshop.bod.de/salutogenese-und-recovery-mirco-deflorin-9783759720665" target="_blank"><button>Mehr erfahren</button></a>
+          <a href="https://www.bod.de/booksample?json=http%3A%2F%2Fwww.bod.ch%2Fgetjson.php%3Fobjk_id%3D5078732%26hash%3D6dbd513894af31b4f26173415c249de0" target="_blank"><button>Leseprobe</button></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        // Scroll Animation für Sektionen
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, {
-            threshold: 0.1
-        });
+<section id="contact" class="contact">
+  <h2>Kontakt</h2>
+  <form id="contact-form" onsubmit="sendEmail(event)">
+    <input type="text" id="name" placeholder="Ihr Name" required>
+    <input type="email" id="email" placeholder="Ihre E-Mail-Adresse" required>
+    <textarea id="message" placeholder="Ihre Nachricht" required></textarea>
+    <button type="submit">Nachricht senden</button>
+  </form>
+  
+  <div class="social-links">
+    <a href="https://www.facebook.com/profile.php?id=61562148965784" target="_blank"><i class="fab fa-facebook"></i></a>
+    <a href="https://www.linkedin.com/in/mirco-deflorin-862a79318" target="_blank"><i class="fab fa-linkedin"></i></a>
+  </div>
+</section>
 
-        document.querySelectorAll('.genre-section, .contact').forEach(section => {
-            observer.observe(section);
-        });
+<footer class="footer">
+  <p>&#xa9; 2024 Mirco Deflorin. Alle Rechte vorbehalten.</p>
+</footer>
 
-        // Kontaktformular
-        function sendEmail(e) {
-            e.preventDefault();
-            
-            const button = e.target.querySelector('button');
-            const successMessage = document.getElementById('success-message');
-            const errorMessage = document.getElementById('error-message');
-            
-            button.disabled = true;
-            button.textContent = 'Wird gesendet...';
-            
-            successMessage.style.display = 'none';
-            errorMessage.style.display = 'none';
+<script>
+function sendEmail(e) {
+    e.preventDefault();
+    
+    const name = encodeURIComponent(document.getElementById('name').value);
+    const email = encodeURIComponent(document.getElementById('email').value);
+    const message = encodeURIComponent(document.getElementById('message').value);
+    
+    const mailtoLink = `mailto:mirco.deflorin@gmx.ch?subject=Mail von der Autor-Webseite&body=Name: ${name}%0D%0AE-Mail: ${email}%0D%0A%0D%0ANachricht:%0D%0A${message}`;
+    
+    window.location.href = mailtoLink;
+    
+    document.getElementById('contact-form').reset();
+}
 
-            emailjs.send(
-                "IHR_SERVICE_ID", // Ersetzen Sie dies mit Ihrer Service ID
-                "IHRE_TEMPLATE_ID", // Ersetzen Sie dies mit Ihrer Template ID
-                {
-                    to_name: "Mirco Deflorin",
-                    from_name: document.getElementById('name').value,
-                    from_email: document.getElementById('email').value,
-                    message: document.getElementById('message').value,
-                    reply_to: document.getElementById('email').value
-                }
-            ).then(
-                function() {
-                    successMessage.style.display = 'block';
-                    document.getElementById('contact-form').reset();
-                },
-                function() {
-                    errorMessage.style.display = 'block';
-                }
-            ).finally(() => {
-                button.disabled = false;
-                button.textContent = 'Nachricht senden';
-            });
-        }
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, {
+  threshold: 0.1
+});
 
-        // Smooth Scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
+document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    document.querySelector(this.getAttribute('href')).scrollIntoView({
+      behavior: 'smooth'
+    });
+  });
+});
+
+document.querySelectorAll('.genre-section, .contact, .thoughts-section, .books-section').forEach(section => {
+  observer.observe(section);
+});
+
+window.addEventListener('scroll', () => {
+  const hero = document.querySelector('.hero');
+  const scrolled = window.pageYOffset;
+  hero.style.backgroundPositionY = `${scrolled * 0.5}px`;
+});
+
+document.querySelectorAll('button').forEach(button => {
+  button.addEventListener('click', function (e) {
+    const x = e.clientX - e.target.offsetLeft;
+    const y = e.clientY - e.target.offsetTop;
+    const ripple = document.createElement('span');
+    ripple.style.left = `${x}px`;
+    ripple.style.top = `${y}px`;
+    this.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 600);
+  });
+});
+</script>
+
 </body>
 </html>
