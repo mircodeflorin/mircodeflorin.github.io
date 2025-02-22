@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tag 16 - Chaos-Café | Alles ausser Kontrolle</title>
+    <title>Das Chaos-Café Tageskarte | Alles ausser Kontrolle</title>
     <style>
         :root {
             --background-color: #1E2832;
@@ -30,19 +30,12 @@
             padding: 20px;
         }
 
-        .back-link {
-            display: inline-block;
-            color: var(--text-color);
-            text-decoration: none;
-            padding: 10px 20px;
-            border: 1px solid var(--text-color);
-            border-radius: 5px;
-            margin-bottom: 40px;
-        }
-
         .header {
             text-align: center;
             margin-bottom: 40px;
+            background-color: rgba(44, 62, 80, 0.7);
+            padding: 30px;
+            border-radius: 10px;
         }
 
         .author {
@@ -56,228 +49,194 @@
             margin-bottom: 30px;
         }
 
-        .book-cover-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 2rem auto;
-            max-width: 800px;
-            padding: 0 20px;
-        }
-
-        .book-cover-wrapper {
-            position: relative;
-            width: 100%;
-            max-width: 400px;
-        }
-
-        .book-cover-wrapper img {
-            width: 100%;
-            height: auto;
-            border-radius: 0.5rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
-
-        .countdown-box {
-            text-align: center;
-            border: 1px solid rgba(255, 75, 71, 0.3);
-            border-radius: 15px;
-            padding: 30px 20px;
-            margin: 20px auto;
-            max-width: 90%;
-        }
-
-        .countdown-text {
+        .countdown {
             color: var(--accent-color);
-            font-size: 1.2em;
-            margin-bottom: 30px;
-            line-height: 1.4;
+            font-size: 1.3em;
+            margin: 20px 0;
         }
 
-        .cafe-preview {
+        .menu-board {
             background-color: rgba(44, 62, 80, 0.7);
             padding: 30px;
             border-radius: 10px;
             margin: 20px 0;
             text-align: left;
-        }
-
-        .cafe-features ul {
-            list-style: none;
-            padding-left: 20px;
-        }
-
-        .cafe-features li {
-            margin-bottom: 8px;
-        }
-
-        .contest-section {
-            background-color: rgba(231, 76, 60, 0.1);
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 30px;
-        }
-
-        .social-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 40px;
-            align-items: center;
-        }
-
-        .social-button {
-            width: 100%;
-            max-width: 300px;
-            padding: 12px 0;
-            border: none;
-            border-radius: 25px;
-            color: white;
-            font-size: 1em;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .social-button:hover {
-            transform: scale(1.05);
-        }
-
-        .facebook { background: linear-gradient(to right, #4267B2, #3b5998); }
-        .twitter { background: linear-gradient(to right, #1DA1F2, #0d8ecf); }
-        .instagram { background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D); }
-
-        .preorder-card {
-            background-color: rgba(44, 62, 80, 0.7);
-            padding: 40px;
-            border-radius: 10px;
-            margin: 20px auto;
-            max-width: 800px;
-            text-align: center;
             border: 1px solid rgba(231, 76, 60, 0.3);
-            position: relative;
         }
 
-        .preorder-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, #e74c3c, transparent);
+        .daily-quote {
+            text-align: center;
+            font-size: 1.2em;
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(231, 76, 60, 0.1);
+            border-radius: 8px;
+            transition: opacity 0.5s ease;
+        }
+
+        .menu-item {
+            padding: 20px;
+            margin: 15px 0;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .menu-item:hover {
+            transform: translateX(10px);
+            background: rgba(231, 76, 60, 0.2);
+        }
+
+        .menu-item h3 {
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+
+        .menu-description {
+            font-style: italic;
+            color: #a8b2bd;
+            margin-top: 15px;
+            display: none;
+            line-height: 1.6;
+        }
+
+        .menu-item.active .menu-description {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .menu-title {
+            color: var(--accent-color);
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.8em;
+        }
+
+        .menu-subtitle {
+            text-align: center;
+            color: #a8b2bd;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .back-to-home {
+            display: inline-block;
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 10px 20px;
+            background: rgba(231, 76, 60, 0.3);
+            border-radius: 5px;
+            margin-bottom: 20px;
+            transition: background 0.3s ease;
+        }
+
+        .back-to-home:hover {
+            background: rgba(231, 76, 60, 0.5);
         }
 
         @media (max-width: 768px) {
             .container { padding: 15px; }
             .author { font-size: 2em; }
+            .menu-item { padding: 15px; }
+            .daily-quote { font-size: 1.1em; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <a href="https://mircodeflorin.github.io/landingpage" class="back-link">← Home</a>
+        <a href="https://mircodeflorin.github.io/landingpage" class="back-to-home">← Zurück zur Hauptseite</a>
         
         <div class="header">
             <h1 class="author">Mirco Deflorin</h1>
             <div class="author-title">Autor & Schriftsteller</div>
+            <div class="countdown">Noch 16 Tage bis zur Veröffentlichung von "Alles ausser Kontrolle"</div>
         </div>
 
-        <div class="book-cover-container">
-            <div class="book-cover-wrapper">
-                <img src="/front.jpg" alt="Alles ausser Kontrolle - Book Cover"/>
-            </div>
-        </div>
+        <div class="menu-board">
+            <h2 class="menu-title">☕ Chaos-Café Tageskarte</h2>
+            <p class="menu-subtitle">Wo jede Tasse eine Geschichte erzählt und die Zeit manchmal rückwärts läuft...</p>
 
-        <div class="preorder-card">
-            <h2 style="color: #e74c3c; margin-bottom: 20px;">Limitierte Auflage</h2>
-            <div style="font-size: 1.2em; margin-bottom: 30px;">
-                Bestellen Sie jetzt direkt ein signiertes Exemplar vom Schriftsteller Mirco Deflorin
-            </div>
-            <a href="https://mircodeflorin.github.io/preorder-page" 
-               style="display: inline-block; background-color: #e74c3c; color: white; padding: 15px 30px; border: none; border-radius: 5px; font-size: 1.2em; text-decoration: none; transition: all 0.3s ease; cursor: pointer;">
-                Jetzt vorbestellen
-            </a>
-            <div style="margin-top: 20px; font-size: 0.9em; color: #a8b2bd;">
-                * Limitierte Auflage von signierten Exemplaren
-            </div>
-        </div>
-
-        <div class="countdown-box">
-            <div class="countdown-text">
-                Noch 16 Tage bis zur<br>
-                Veröffentlichung von "Alles ausser Kontrolle"
+            <div class="daily-quote" id="dailyQuote">
+                "Carpe Caffeine"
             </div>
 
-            <div class="cafe-preview">
-                <h2 style="color: #e74c3c; margin-bottom: 20px;">Willkommen im Chaos-Café!</h2>
-                
-                <div class="cafe-features">
-                    <h3 style="color: #e74c3c; font-size: 1.2em; margin-bottom: 10px;">✨ HEUTE IM CHAOS-CAFÉ:</h3>
-                    <ul>
-                        <li>🦋 Quantenschmetterlinge tanzen im Eingangsbereich</li>
-                        <li>📱 Der digitale Tagesspruch wechselt magisch</li>
-                        <li>⏰ Unsere rückwärts laufende Uhr zeigt die perfekte Zeit</li>
-                        <li>☕ Tanzende Tassen finden ihre Untertassen</li>
-                    </ul>
-                </div>
-
-                <div class="contest-section">
-                    <h3 style="color: #e74c3c; margin-bottom: 15px;">🎁 GEWINNSPIEL DER WOCHE</h3>
-                    <p style="margin-bottom: 15px;">"Madame Gesterns Zeitreise-Sprüche"</p>
-                    <p style="margin-bottom: 15px;">Schreibt in die Kommentare: Was würde Madame Gestern über den heutigen Tag vor 100 Jahren sagen?</p>
-                    <p style="font-style: italic; color: #a8b2bd;">Beispiel: "Früher war selbst die Zukunft besser!"</p>
-                    
-                    <div style="margin-top: 20px;">
-                        <p>⏰ Teilnahme bis Sonntag möglich</p>
-                        <p>🎯 Gewinne ein signiertes Exemplar</p>
-                        <p>🏆 Gewinner-Bekanntgabe am Montag</p>
-                    </div>
-                </div>
-
-                <div style="margin-top: 30px; font-style: italic; color: #a8b2bd;">
-                    👀 VORSCHAU: Diese Woche erwarten Sie Maestro Carusos Farbenlehre, Dr. Lohmanns mathematische Kaffeepause und weitere unmögliche Momente!
+            <div class="menu-item" onclick="toggleDescription(this)">
+                <h3>🌈 Maestro Carusos Farbenspiel-Cappuccino</h3>
+                <div class="menu-description">
+                    Ändert seine Farbe je nach Tageszeit und Ihrer Stimmung. Warnung: Farben können von der Realität abweichen - 
+                    fragen Sie Maestro Caruso nach seiner "marineblauen" (eigentlich pinken) Interpretation! Jede Tasse ein 
+                    einzigartiges Kunstwerk.
                 </div>
             </div>
 
-            <div class="social-buttons">
-                <button class="social-button facebook" onclick="shareToSocial('facebook')">
-                    Auf Facebook teilen
-                </button>
-                <button class="social-button twitter" onclick="shareToSocial('twitter')">
-                    Auf Twitter teilen
-                </button>
-                <button class="social-button instagram" onclick="shareToSocial('instagram')">
-                    Auf Instagram teilen
-                </button>
+            <div class="menu-item" onclick="toggleDescription(this)">
+                <h3>⏰ Madame Gesterns Zeitreise-Espresso</h3>
+                <div class="menu-description">
+                    Schmeckt morgen nach gestern. Oder war es gestern nach morgen? Perfekt für alle, die sich nicht entscheiden können! 
+                    Mit einer Garantie, dass Sie die Zukunft der Vergangenheit schmecken werden.
+                </div>
+            </div>
+
+            <div class="menu-item" onclick="toggleDescription(this)">
+                <h3>🦋 Quantenschmetterlings-Latte</h3>
+                <div class="menu-description">
+                    Mit Milchschaum-Kunst, die sich selbstständig verwandelt. Garniert mit einem Hauch von Dimensionsstaub. 
+                    Bitte nicht erschrecken, wenn Ihr Getränk davonfliegt! Jede Tasse existiert gleichzeitig in mehreren Zuständen.
+                </div>
+            </div>
+
+            <div class="menu-item" onclick="toggleDescription(this)">
+                <h3>🧮 Dr. Lohmanns Mathematische Mokka</h3>
+                <div class="menu-description">
+                    Garantiert nach der Fibonacci-Sequenz aufgebrüht. Die exakte Temperatur wurde von Herbert dem Taschenrechner 
+                    berechnet! Mit einem Hauch von Pi und einer Prise Quantenphysik. Mathematische Genauigkeit trifft auf 
+                    chaotischen Geschmack.
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        function shareToSocial(platform) {
-            const shareText = 'Willkommen im Chaos-Café! Wo Quantenschmetterlinge tanzen und die Zeit rückwärts läuft... 🦋⏰ #AllesAusserKontrolle #ChaosCafé';
-            try {
-                const url = window.location.href;
-                
-                if (platform === 'instagram') {
-                    navigator.clipboard.writeText(shareText)
-                        .then(() => alert('Text wurde kopiert. Sie können ihn jetzt in Instagram einfügen!'))
-                        .catch(() => alert('Bitte kopieren Sie den Text manuell: ' + shareText));
-                    return;
+        function toggleDescription(element) {
+            // Schließe alle anderen Beschreibungen
+            document.querySelectorAll('.menu-item').forEach(item => {
+                if (item !== element && item.classList.contains('active')) {
+                    item.classList.remove('active');
                 }
-                
-                const shareUrls = {
-                    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
-                    twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`
-                };
-
-                if (shareUrls[platform]) {
-                    window.open(shareUrls[platform], '_blank', 'width=600,height=400');
-                }
-            } catch (error) {
-                alert('Teilen nicht möglich. Bitte versuchen Sie es später erneut.');
-            }
+            });
+            // Toggle die ausgewählte Beschreibung
+            element.classList.toggle('active');
         }
+
+        // Wechselnder Tagesspruch
+        const quotes = [
+            "Carpe Caffeine",
+            "Espresso yourself",
+            "Time is an illusion, coffee time doubly so",
+            "Keep calm and drink quantum coffee",
+            "Heute ist das Morgen von Gestern",
+            "Chaos ist auch nur eine Form von Ordnung"
+        ];
+
+        let currentQuoteIndex = 0;
+        const quoteElement = document.getElementById('dailyQuote');
+
+        function updateQuote() {
+            quoteElement.style.opacity = 0;
+            setTimeout(() => {
+                currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+                quoteElement.textContent = quotes[currentQuoteIndex];
+                quoteElement.style.opacity = 1;
+            }, 500);
+        }
+
+        setInterval(updateQuote, 3000);
     </script>
 </body>
 </html>
