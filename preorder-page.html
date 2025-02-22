@@ -75,6 +75,12 @@
             margin: 20px 0;
         }
 
+        .availability {
+            font-size: 0.7em;
+            color: #a8b2bd;
+            margin-top: 5px;
+        }
+
         .video-container {
             position: relative;
             width: 100%;
@@ -185,21 +191,13 @@
                 </div>
             </div>
 
-            <style>
-                .availability {
-                    font-size: 0.7em;
-                    color: #a8b2bd;
-                    margin-top: 5px;
-                }
-            </style>
-
             <div class="video-container">
                 <div class="video-placeholder">
                     [Danke-Video von Mirco Deflorin]
                 </div>
             </div>
 
-            <form action="https://formspree.io/f/xeoedzwg" method="POST" class="order-form" id="orderForm">
+            <form action="https://formspree.io/f/xeoedzwg" method="POST" class="order-form">
                 <div class="form-group">
                     <label for="name">Name *</label>
                     <input type="text" id="name" name="name" required>
@@ -230,25 +228,12 @@
     </div>
 
     <script>
-        document.getElementById('orderForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const address = document.getElementById('address').value;
-            const message = document.getElementById('message').value;
-
-            const mailtoLink = `mailto:mirco.deflorin@gmx.ch?subject=Buchbestellung - Alles ausser Kontrolle&body=Name: ${name}%0D%0A%0D%0AE-Mail: ${email}%0D%0A%0D%0AAdresse: ${address}%0D%0A%0D%0ANachricht: ${message}`;
-
-            // Show success message
-            document.getElementById('successMessage').style.display = 'block';
-            
-            // Open email client
-            window.location.href = mailtoLink;
-            
-            // Clear form after a short delay
+        // Formular absenden und Erfolgsmeldung anzeigen
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(e) {
+            // Zeige Erfolgsmeldung nach erfolgreicher Übermittlung
             setTimeout(() => {
-                document.getElementById('orderForm').reset();
+                document.getElementById('successMessage').style.display = 'block';
             }, 1000);
         });
     </script>
