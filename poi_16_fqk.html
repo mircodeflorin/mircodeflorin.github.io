@@ -55,30 +55,32 @@
             border-color: #ffffff;
         }
 
-        .author {
-            font-size: 2.5em;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .author-title {
-            font-size: 1.2em;
-            margin-bottom: 30px;
-        }
-
+        /* Updated countdown style to match dfm_28_pje */
         .countdown {
-            color: var(--accent-color);
-            font-size: 1.3em;
-            margin: 20px 0;
+            font-size: 1.5em;
+            color: #e74c3c;
+            margin-bottom: 30px;
+            text-align: center;
         }
 
         .menu-board {
             background-color: rgba(44, 62, 80, 0.7);
-            padding: 30px;
+            padding: 40px;
             border-radius: 10px;
             margin: 20px 0;
-            text-align: left;
+            text-align: center;
             border: 1px solid rgba(231, 76, 60, 0.3);
+            position: relative;
+        }
+
+        .menu-board::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #e74c3c, transparent);
         }
 
         .daily-quote {
@@ -98,6 +100,7 @@
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
+            text-align: left;
         }
 
         .menu-item:hover {
@@ -195,7 +198,7 @@
 
         @media (max-width: 768px) {
             .container { padding: 15px; }
-            .author { font-size: 2em; }
+            .countdown { font-size: 1.2em; }
             .menu-item { padding: 15px; }
             .daily-quote { font-size: 1.1em; }
             .social-share {
@@ -248,12 +251,12 @@
                 * Limitierte Auflage von signierten Exemplaren
             </div>
         </div>
-<div class="countdown-box">
-            <div class="countdown-text">
-                Noch 16 Tage bis zur<br>
-                Veröffentlichung von "Alles ausser Kontrolle"
-            </div>
+
         <div class="menu-board">
+            <div class="countdown">
+                Noch 16 Tage bis zur Veröffentlichung von "Alles ausser Kontrolle"
+            </div>
+
             <h2 class="menu-title">☕ Chaos-Café Tageskarte</h2>
             <p class="menu-subtitle">Wo jede Tasse eine Geschichte erzählt und die Zeit manchmal rückwärts läuft...</p>
 
@@ -332,4 +335,12 @@
             quoteElement.style.opacity = 0;
             setTimeout(() => {
                 currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
-                quoteElement.textContent = quotes[currentQu
+                quoteElement.textContent = quotes[currentQuoteIndex];
+                quoteElement.style.opacity = 1;
+            }, 500);
+        }
+
+        setInterval(updateQuote, 3000);
+    </script>
+</body>
+</html>
