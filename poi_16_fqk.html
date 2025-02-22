@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Das Chaos-Café Tageskarte | Alles ausser Kontrolle</title>
     <style>
-        /* Existing styles remain the same */
         :root {
             --background-color: #1E2832;
             --text-color: #FFFFFF;
@@ -31,7 +30,6 @@
             padding: 20px;
         }
 
-        /* Updated header styles to match reference */
         .header {
             background-color: #2c3e50;
             padding: 20px;
@@ -57,7 +55,107 @@
             border-color: #ffffff;
         }
 
-        /* Added social share styles */
+        .author {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .author-title {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        .countdown {
+            color: var(--accent-color);
+            font-size: 1.3em;
+            margin: 20px 0;
+        }
+
+        .menu-board {
+            background-color: rgba(44, 62, 80, 0.7);
+            padding: 30px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: left;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+
+        .daily-quote {
+            text-align: center;
+            font-size: 1.2em;
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(231, 76, 60, 0.1);
+            border-radius: 8px;
+            transition: opacity 0.5s ease;
+        }
+
+        .menu-item {
+            padding: 20px;
+            margin: 15px 0;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .menu-item:hover {
+            transform: translateX(10px);
+            background: rgba(231, 76, 60, 0.2);
+        }
+
+        .menu-item h3 {
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+
+        .menu-description {
+            font-style: italic;
+            color: #a8b2bd;
+            margin-top: 15px;
+            display: none;
+            line-height: 1.6;
+        }
+
+        .menu-item.active .menu-description {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .menu-title {
+            color: var(--accent-color);
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.8em;
+        }
+
+        .menu-subtitle {
+            text-align: center;
+            color: #a8b2bd;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .book-cover-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 2rem auto;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        .preorder-card {
+            background-color: rgba(44, 62, 80, 0.7);
+            padding: 40px;
+            border-radius: 10px;
+            margin: 20px auto;
+            text-align: center;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            position: relative;
+        }
+
         .social-share {
             margin-top: 30px;
             display: flex;
@@ -90,39 +188,32 @@
             background: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
         }
 
-        /* Rest of your existing styles */
-        .author {
-            font-size: 2.5em;
-            font-weight: bold;
-            margin-bottom: 10px;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .author-title {
-            font-size: 1.2em;
-            margin-bottom: 30px;
-        }
-
-        .countdown {
-            color: var(--accent-color);
-            font-size: 1.3em;
-            margin: 20px 0;
-        }
-
-        /* Add responsive styles for social buttons */
         @media (max-width: 768px) {
+            .container { padding: 15px; }
+            .author { font-size: 2em; }
+            .menu-item { padding: 15px; }
+            .daily-quote { font-size: 1.1em; }
             .social-share {
                 flex-direction: column;
                 align-items: center;
             }
-
             .share-button {
                 width: 80%;
                 margin: 5px 0;
                 text-align: center;
             }
+            .home-button {
+                top: 10px;
+                left: 10px;
+                padding: 8px 16px;
+                font-size: 0.9em;
+            }
         }
-
-        /* Your existing styles remain here */
     </style>
 </head>
 <body>
@@ -132,10 +223,8 @@
         <p>Autor & Schriftsteller</p>
     </div>
 
-    <!-- Rest of your existing content -->
     <div class="container">
-        <!-- Book cover container -->
-        <div class="book-cover-container" style="display: flex; justify-content: center; align-items: center; margin: 2rem auto; max-width: 800px; padding: 0 20px;">
+        <div class="book-cover-container">
             <div style="position: relative; width: 100%; max-width: 400px;">
                 <img 
                     src="/front.jpg" 
@@ -145,8 +234,7 @@
             </div>
         </div>
 
-        <!-- Preorder card -->
-        <div class="preorder-card" style="background-color: rgba(44, 62, 80, 0.7); padding: 40px; border-radius: 10px; margin: 20px auto; max-width: 800px; text-align: center; border: 1px solid rgba(231, 76, 60, 0.3); position: relative;">
+        <div class="preorder-card">
             <div style="position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, #e74c3c, transparent);"></div>
             <h2 style="color: #e74c3c; margin-bottom: 20px;">Limitierte Auflage</h2>
             <div style="font-size: 1.2em; margin-bottom: 30px;">
@@ -161,15 +249,55 @@
             </div>
         </div>
 
-        <!-- Your existing menu board content -->
         <div class="menu-board">
-            <!-- Your existing menu items -->
-            
-            <!-- Add social share buttons at the bottom -->
+            <h2 class="menu-title">☕ Chaos-Café Tageskarte</h2>
+            <p class="menu-subtitle">Wo jede Tasse eine Geschichte erzählt und die Zeit manchmal rückwärts läuft...</p>
+
+            <div class="daily-quote" id="dailyQuote">
+                "Carpe Caffeine"
+            </div>
+
+            <div class="menu-item" onclick="toggleDescription(this)">
+                <h3>🌈 Maestro Carusos Farbenspiel-Cappuccino</h3>
+                <div class="menu-description">
+                    Ändert seine Farbe je nach Tageszeit und Ihrer Stimmung. Warnung: Farben können von der Realität abweichen - 
+                    fragen Sie Maestro Caruso nach seiner "marineblauen" (eigentlich pinken) Interpretation! Jede Tasse ein 
+                    einzigartiges Kunstwerk.
+                </div>
+            </div>
+
+            <div class="menu-item" onclick="toggleDescription(this)">
+                <h3>⏰ Madame Gesterns Zeitreise-Espresso</h3>
+                <div class="menu-description">
+                    Schmeckt morgen nach gestern. Oder war es gestern nach morgen? Perfekt für alle, die sich nicht entscheiden können! 
+                    Mit einer Garantie, dass Sie die Zukunft der Vergangenheit schmecken werden.
+                </div>
+            </div>
+
+            <div class="menu-item" onclick="toggleDescription(this)">
+                <h3>🦋 Quantenschmetterlings-Latte</h3>
+                <div class="menu-description">
+                    Mit Milchschaum-Kunst, die sich selbstständig verwandelt. Garniert mit einem Hauch von Dimensionsstaub. 
+                    Bitte nicht erschrecken, wenn Ihr Getränk davonfliegt! Jede Tasse existiert gleichzeitig in mehreren Zuständen.
+                </div>
+            </div>
+
+            <div class="menu-item" onclick="toggleDescription(this)">
+                <h3>🧮 Dr. Lohmanns Mathematische Mokka</h3>
+                <div class="menu-description">
+                    Garantiert nach der Fibonacci-Sequenz aufgebrüht. Die exakte Temperatur wurde von Herbert dem Taschenrechner 
+                    berechnet! Mit einem Hauch von Pi und einer Prise Quantenphysik. Mathematische Genauigkeit trifft auf 
+                    chaotischen Geschmack.
+                </div>
+            </div>
+
             <div class="social-share">
-                <a href="https://www.facebook.com/sharer/sharer.php?u=https://mircodeflorin.github.io/landingpage" target="_blank" class="share-button facebook">Auf Facebook teilen</a>
-                <a href="https://twitter.com/intent/tweet?text=Entdecke 'Alles ausser Kontrolle' von Mirco Deflorin&url=https://mircodeflorin.github.io/landingpage" target="_blank" class="share-button twitter">Auf Twitter teilen</a>
-                <a href="https://www.instagram.com/" target="_blank" class="share-button instagram">Auf Instagram teilen</a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u=https://mircodeflorin.github.io/landingpage" 
+                   target="_blank" class="share-button facebook">Auf Facebook teilen</a>
+                <a href="https://twitter.com/intent/tweet?text=Entdecke 'Alles ausser Kontrolle' von Mirco Deflorin&url=https://mircodeflorin.github.io/landingpage" 
+                   target="_blank" class="share-button twitter">Auf Twitter teilen</a>
+                <a href="https://www.instagram.com/" 
+                   target="_blank" class="share-button instagram">Auf Instagram teilen</a>
             </div>
         </div>
     </div>
@@ -200,12 +328,4 @@
             quoteElement.style.opacity = 0;
             setTimeout(() => {
                 currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
-                quoteElement.textContent = quotes[currentQuoteIndex];
-                quoteElement.style.opacity = 1;
-            }, 500);
-        }
-
-        setInterval(updateQuote, 3000);
-    </script>
-</body>
-</html>
+                quoteElement.textContent = quotes[currentQu
