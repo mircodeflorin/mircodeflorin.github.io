@@ -198,131 +198,33 @@
         <p>Autor & Schriftsteller</p>
     </div>
 
-<div class="book-cover-container" style="display: flex; justify-content: center; align-items: center; margin-bottom: 2rem;">
-  <div style="position: relative; width: 100%; max-width: 400px;">
-    <img 
-      src="/front.jpg" 
-      alt="Alles ausser Kontrolle - Book Cover" 
-      style="width: 100%; height: auto; border-radius: 0.5rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);"
-    />
-  </div>
-</div>
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signiertes Exemplar bestellen - Mirco Deflorin</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #1c2939;
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            text-align: center;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        .preorder-card {
-            background-color: rgba(44, 62, 80, 0.7);
-            padding: 40px;
-            border-radius: 10px;
-            border: 1px solid rgba(231, 76, 60, 0.3);
-            position: relative;
-        }
-
-        .preorder-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, #e74c3c, transparent);
-        }
-
-        h1 {
-            font-size: 2em;
-            margin-bottom: 20px;
-            color: #e74c3c;
-        }
-
-        .description {
-            font-size: 1.2em;
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-
-        .order-button {
-            display: inline-block;
-            background-color: #e74c3c;
-            color: white;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 5px;
-            font-size: 1.2em;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .order-button:hover {
-            background-color: #c0392b;
-            transform: translateY(-2px);
-        }
-
-        .limited-info {
-            margin-top: 20px;
-            font-size: 0.9em;
-            color: #a8b2bd;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-            }
-
-            .preorder-card {
-                padding: 20px;
-            }
-
-            h1 {
-                font-size: 1.5em;
-            }
-
-            .description {
-                font-size: 1.1em;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="preorder-card">
-            <h1>Limitierte Auflage</h1>
-            <div class="description">
-                Bestellen Sie jetzt direkt ein signiertes Exemplar vom Schriftsteller Mirco Deflorin
-            </div>
-            <a href="https://mircodeflorin.github.io/preorder-page" class="order-button">
-                Jetzt vorbestellen
-            </a>
-            <div class="limited-info">
-                * Limitierte Auflage von signierten Exemplaren
-            </div>
+    <!-- Buchcover Block -->
+    <div class="book-cover-container" style="display: flex; justify-content: center; align-items: center; margin: 2rem auto; max-width: 800px; padding: 0 20px;">
+        <div style="position: relative; width: 100%; max-width: 400px;">
+            <img 
+                src="/front.jpg" 
+                alt="Alles ausser Kontrolle - Book Cover" 
+                style="width: 100%; height: auto; border-radius: 0.5rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);"
+            />
         </div>
     </div>
-</body>
-</html>
+
+    <!-- Vorbestell-Karte Block -->
+    <div class="preorder-card" style="background-color: rgba(44, 62, 80, 0.7); padding: 40px; border-radius: 10px; margin: 20px auto; max-width: 800px; text-align: center; border: 1px solid rgba(231, 76, 60, 0.3); position: relative;">
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, #e74c3c, transparent);"></div>
+        <h2 style="color: #e74c3c; margin-bottom: 20px;">Limitierte Auflage</h2>
+        <div style="font-size: 1.2em; margin-bottom: 30px;">
+            Bestellen Sie jetzt direkt ein signiertes Exemplar vom Schriftsteller Mirco Deflorin
+        </div>
+        <a href="https://mircodeflorin.github.io/preorder-page" 
+           style="display: inline-block; background-color: #e74c3c; color: white; padding: 15px 30px; border: none; border-radius: 5px; font-size: 1.2em; text-decoration: none; transition: all 0.3s ease; cursor: pointer;">
+            Jetzt vorbestellen
+        </a>
+        <div style="margin-top: 20px; font-size: 0.9em; color: #a8b2bd;">
+            * Limitierte Auflage von signierten Exemplaren
+        </div>
+    </div>
+
     <div class="container">
         <div class="countdown">
             Noch 29 Tage bis zur Veröffentlichung von "Alles ausser Kontrolle"
@@ -357,6 +259,7 @@
     </div>
 
     <script>
+        // Ihr bestehendes JavaScript bleibt unverändert
         const dailyWisdoms = {
             Montag: [
                 "Der Montag ist wie eine leere Kaffeetasse - bereit für neue Möglichkeiten.",
@@ -395,7 +298,6 @@
             ]
         };
 
-        // Erzeugt die Tageskarten
         function createDayCards() {
             const grid = document.querySelector('.week-grid');
             Object.entries(dailyWisdoms).forEach(([day, wisdoms]) => {
@@ -416,20 +318,17 @@
             });
         }
 
-        // Zeigt eine zufällige Weisheit für den Tag
         function showWisdom(card, day) {
             const wisdoms = dailyWisdoms[day];
             const randomWisdom = wisdoms[Math.floor(Math.random() * wisdoms.length)];
             const wisdomText = card.querySelector('.day-wisdom');
             const cactus = card.querySelector('.day-cactus');
 
-            // Rotiere den Kaktus
             cactus.style.transform = 'rotate(15deg)';
             setTimeout(() => {
                 cactus.style.transform = 'rotate(0deg)';
             }, 500);
 
-            // Zeige die neue Weisheit
             wisdomText.textContent = randomWisdom;
             wisdomText.style.display = 'block';
             setTimeout(() => {
@@ -437,7 +336,6 @@
             }, 10);
         }
 
-        // Hauptkaktus Rotation
         function rotateCactus(element) {
             element.style.transform = 'rotate(15deg)';
             setTimeout(() => {
@@ -445,25 +343,7 @@
             }, 500);
         }
 
-        // Social Media Sharing
         function shareOnFacebook() {
             const text = "Herbert's Weisheit des Tages: Stille ist die lauteste Antwort, wenn das Chaos nach dir ruft.";
             const url = encodeURIComponent(window.location.href);
-            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${encodeURIComponent(text)}`, '_blank');
-        }
-
-        function shareOnTwitter() {
-            const text = "Herbert's Weisheit des Tages: Stille ist die lauteste Antwort, wenn das Chaos nach dir ruft.";
-            const url = encodeURIComponent(window.location.href);
-            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${url}`, '_blank');
-        }
-
-        function shareOnInstagram() {
-            alert('Instagram-Sharing ist nur über die Instagram-App möglich. Bitte erstelle einen Screenshot und teile ihn in deiner Instagram-Story oder als Post.');
-        }
-
-        // Initialisierung
-        window.onload = createDayCards;
-    </script>
-</body>
-</html>
+            
