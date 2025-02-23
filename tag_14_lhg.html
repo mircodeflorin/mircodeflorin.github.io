@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mirco Deflorin | Autor & Schriftsteller</title>
+    <style>
+        :root {
+            --background-color: #1E2832;
+            --text-color: #FFFFFF;
+            --accent-color: #FF4B47;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 1px solid var(--text-color);
+            border-radius: 5px;
+            margin-bottom: 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .author {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .author-title {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        .countdown-box {
+            text-align: center;
+            border: 1px solid rgba(255, 75, 71, 0.3);
+            border-radius: 15px;
+            padding: 30px 20px;
+            margin: 20px auto;
+            max-width: 90%;
+        }
+
+        .countdown-text {
+            color: var(--accent-color);
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            line-height: 1.4;
+        }
+
+        .color-challenge {
+            background: rgba(255, 75, 71, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .color-box {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .color-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .color-button {
+            background: transparent;
+            border: 2px solid var(--accent-color);
+            color: var(--text-color);
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .color-button:hover {
+            background: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .result-text {
+            margin: 20px 0;
+            font-size: 1.1em;
+            line-height: 1.6;
+            display: none;
+        }
+
+        .maestro-quote {
+            font-style: italic;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255, 75, 71, 0.1);
+            border-radius: 10px;
+        }
+
+        .social-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 40px;
+            align-items: center;
+        }
+
+        .social-button {
+            width: 100%;
+            max-width: 300px;
+            padding: 12px 0;
+            border: none;
+            border-radius: 25px;
+            color: white;
+            font-size: 1em;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .social-button:hover {
+            transform: scale(1.05);
+        }
+
+        .facebook { background: linear-gradient(to right, #4267B2, #3b5998); }
+        .twitter { background: linear-gradient(to right, #1DA1F2, #0d8ecf); }
+        .instagram { background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D); }
+
+        @media (max-width: 768px) {
+            .container { padding: 15px; }
+            .author { font-size: 2em; }
+            .color-box { width: 150px; height: 150px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="https://mircodeflorin.github.io/landingpage" class="back-link">← Home</a>
+        
+        <div class="header">
+            <h1 class="author">Mirco Deflorin</h1>
+            <div class="author-title">Autor & Schriftsteller</div>
+        </div>
+<div class="book-cover-container" style="display: flex; justify-content: center; align-items: center; margin: 2rem auto; max-width: 800px; padding: 0 20px;">
+    <div style="position: relative; width: 100%; max-width: 400px;">
+        <img 
+            src="/front.jpg" 
+            alt="Alles ausser Kontrolle - Book Cover" 
+            style="width: 100%; height: auto; border-radius: 0.5rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);"
+        />
+    </div>
+</div>
+<div class="preorder-card" style="background-color: rgba(44, 62, 80, 0.7); padding: 40px; border-radius: 10px; margin: 20px auto; max-width: 800px; text-align: center; border: 1px solid rgba(231, 76, 60, 0.3); position: relative;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, #e74c3c, transparent);"></div>
+    <h2 style="color: #e74c3c; margin-bottom: 20px;">Limitierte Auflage</h2>
+    <div style="font-size: 1.2em; margin-bottom: 30px;">
+        Bestellen Sie jetzt direkt ein signiertes Exemplar vom Schriftsteller Mirco Deflorin
+    </div>
+    <a href="https://mircodeflorin.github.io/preorder-page" 
+       style="display: inline-block; background-color: #e74c3c; color: white; padding: 15px 30px; border: none; border-radius: 5px; font-size: 1.2em; text-decoration: none; transition: all 0.3s ease; cursor: pointer;">
+        Jetzt vorbestellen
+    </a>
+    <div style="margin-top: 20px; font-size: 0.9em; color: #a8b2bd;">
+        * Limitierte Auflage von signierten Exemplaren
+    </div>
+</div>
+        <div class="countdown-box">
+            <div class="countdown-text">
+                Noch 14 Tage bis zur<br>
+                Veröffentlichung von "Alles ausser Kontrolle"
+            </div>
+
+            <div class="color-challenge">
+                <h3>Maestro Carusos Farbenlehre</h3>
+                <p class="maestro-quote">"Mein Frack ist selbstverständlich marineblau - wie immer!"</p>
+                
+                <div class="color-box" id="colorBox"></div>
+                
+                <div class="color-options">
+                    <button class="color-button" onclick="checkColor('Blau')">Marineblau</button>
+                    <button class="color-button" onclick="checkColor('Pink')">Pink</button>
+                    <button class="color-button" onclick="checkColor('Türkis')">Türkis</button>
+                    <button class="color-button" onclick="checkColor('Magenta')">Magenta</button>
+                </div>
+
+                <div class="result-text" id="resultText"></div>
+            </div>
+
+            <div class="social-buttons">
+                <button class="social-button facebook" onclick="shareToSocial('facebook')">
+                    Auf Facebook teilen
+                </button>
+                <button class="social-button twitter" onclick="shareToSocial('twitter')">
+                    Auf Twitter teilen
+                </button>
+                <button class="social-button instagram" onclick="shareToSocial('instagram')">
+                    Auf Instagram teilen
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const colors = ['#FF69B4', '#4169E1', '#40E0D0', '#FF00FF'];
+        let currentColor = 0;
+        const colorBox = document.getElementById('colorBox');
+        const resultText = document.getElementById('resultText');
+
+        function changeColor() {
+            colorBox.style.backgroundColor = colors[currentColor];
+            currentColor = (currentColor + 1) % colors.length;
+        }
+
+        function checkColor(answer) {
+            resultText.style.display = 'block';
+            if (answer === 'Blau') {
+                resultText.innerHTML = "Ah, Sie sehen es auch! Maestro Caruso wäre begeistert! Obwohl der Frack für alle anderen natürlich " + 
+                    getActualColor() + " ist... aber wer sind wir, seine künstlerische Vision in Frage zu stellen?";
+            } else {
+                resultText.innerHTML = "Tja, für Maestro Caruso ist und bleibt es marineblau - auch wenn der Rest der Welt " + 
+                    getActualColor() + " sieht. Kunst liegt eben im Auge des Betrachters!";
+            }
+        }
+
+        function getActualColor() {
+            switch(colors[currentColor]) {
+                case '#FF69B4': return 'pink';
+                case '#4169E1': return 'blau';
+                case '#40E0D0': return 'türkis';
+                case '#FF00FF': return 'magenta';
+                default: return 'farbenfroh';
+            }
+        }
+
+        function shareToSocial(platform) {
+            const text = encodeURIComponent('Ich habe gerade Maestro Carusos Farbenlehre erlebt! Sein "marineblauer" Frack ist wirklich... interessant! #AllesAusserKontrolle #MaestroCaruso');
+            const url = encodeURIComponent(window.location.href);
+            
+            let shareUrl;
+            switch(platform) {
+                case 'facebook':
+                    shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`;
+                    break;
+                case 'twitter':
+                    shareUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
+                    break;
+                case 'instagram':
+                    navigator.clipboard.writeText(decodeURIComponent(text))
+                        .then(() => alert('Text kopiert! Öffne Instagram und füge den Text ein.'));
+                    return;
+            }
+            
+            window.open(shareUrl, '_blank', 'width=600,height=400');
+        }
+
+        // Start color changing animation
+        changeColor();
+        setInterval(changeColor, 3000);
+    </script>
+</body>
+</html>
