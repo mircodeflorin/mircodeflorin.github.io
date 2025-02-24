@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mirco Deflorin | Autor & Schriftsteller</title>
+    <style>
+        :root {
+            --background-color: #1E2832;
+            --text-color: #FFFFFF;
+            --accent-color: #FF4B47;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 1px solid var(--text-color);
+            border-radius: 5px;
+            margin-bottom: 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .author {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .author-title {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        .countdown-box {
+            text-align: center;
+            border: 1px solid rgba(255, 75, 71, 0.3);
+            border-radius: 15px;
+            padding: 30px 20px;
+            margin: 20px auto;
+            max-width: 90%;
+        }
+
+        .countdown-text {
+            color: var(--accent-color);
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            line-height: 1.4;
+        }
+
+        .reading-section {
+            background: rgba(255, 75, 71, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .reading-title {
+            font-size: 1.3em;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+
+        .audio-player {
+            width: 100%;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+
+        .preview-text {
+            text-align: left;
+            margin: 30px 0;
+            line-height: 1.6;
+            font-size: 1.1em;
+        }
+
+        .social-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 40px;
+            align-items: center;
+        }
+
+        .social-button {
+            width: 100%;
+            max-width: 300px;
+            padding: 12px 0;
+            border: none;
+            border-radius: 25px;
+            color: white;
+            font-size: 1em;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .social-button:hover {
+            transform: scale(1.05);
+        }
+
+        .facebook { background: linear-gradient(to right, #4267B2, #3b5998); }
+        .twitter { background: linear-gradient(to right, #1DA1F2, #0d8ecf); }
+        .instagram { background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D); }
+
+        @media (max-width: 768px) {
+            .container { padding: 15px; }
+            .author { font-size: 2em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="https://mircodeflorin.github.io/landingpage" class="back-link">← Home</a>
+        
+        <div class="header">
+            <h1 class="author">Mirco Deflorin</h1>
+            <div class="author-title">Autor & Schriftsteller</div>
+        </div>
+<div class="book-cover-container" style="display: flex; justify-content: center; align-items: center; margin: 2rem auto; max-width: 800px; padding: 0 20px;">
+    <div style="position: relative; width: 100%; max-width: 400px;">
+        <img 
+            src="/front.jpg" 
+            alt="Alles ausser Kontrolle - Book Cover" 
+            style="width: 100%; height: auto; border-radius: 0.5rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);"
+        />
+    </div>
+</div>
+<div class="preorder-card" style="background-color: rgba(44, 62, 80, 0.7); padding: 40px; border-radius: 10px; margin: 20px auto; max-width: 800px; text-align: center; border: 1px solid rgba(231, 76, 60, 0.3); position: relative;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, #e74c3c, transparent);"></div>
+    <h2 style="color: #e74c3c; margin-bottom: 20px;">Limitierte Auflage</h2>
+    <div style="font-size: 1.2em; margin-bottom: 30px;">
+        Bestellen Sie jetzt direkt ein signiertes Exemplar vom Schriftsteller Mirco Deflorin
+    </div>
+    <a href="https://mircodeflorin.github.io/preorder-page" 
+       style="display: inline-block; background-color: #e74c3c; color: white; padding: 15px 30px; border: none; border-radius: 5px; font-size: 1.2em; text-decoration: none; transition: all 0.3s ease; cursor: pointer;">
+        Jetzt vorbestellen
+    </a>
+    <div style="margin-top: 20px; font-size: 0.9em; color: #a8b2bd;">
+        * Limitierte Auflage von signierten Exemplaren
+    </div>
+</div>
+        <div class="countdown-box">
+            <div class="countdown-text">
+                Noch 10 Tage bis zur<br>
+                Veröffentlichung von "Alles ausser Kontrolle"
+            </div>
+
+            <div class="reading-section">
+                <h2 class="reading-title">Sonntagsbrunch im Chaos-Café</h2>
+                <p>Eine exklusive Vorlesung aus dem ersten Kapitel</p>
+
+                <div class="audio-player">
+                    <audio controls style="width: 100%">
+                        <source src="sonntagsbrunch.mp3" type="audio/mpeg">
+                        Ihr Browser unterstützt das Audio-Element nicht.
+                    </audio>
+                </div>
+
+                <div class="preview-text">
+                    <h3>Vorschau auf die finale Woche</h3>
+                    <p>Bereitet euch auf eine Woche voller überraschender Wendungen vor! Die Ausreden AG öffnet ihre Pforten, 
+                    Dr. Brinkmann enthüllt seine multiplen Identitäten, und alle Realitätsebenen beginnen sich zu überlappen. 
+                    Erlebt mit uns den spektakulären Countdown zur Buchveröffentlichung!</p>
+                </div>
+            </div>
+
+            <div class="social-buttons">
+                <button class="social-button facebook" onclick="shareToSocial('facebook')">
+                    Auf Facebook teilen
+                </button>
+                <button class="social-button twitter" onclick="shareToSocial('twitter')">
+                    Auf Twitter teilen
+                </button>
+                <button class="social-button instagram" onclick="shareToSocial('instagram')">
+                    Auf Instagram teilen
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function shareToSocial(platform) {
+            const text = encodeURIComponent('Exklusive Vorlesung aus "Alles ausser Kontrolle"! Taucht ein in die magische Welt des Chaos-Cafés... #AllesAusserKontrolle #ChaosCafé');
+            const url = encodeURIComponent(window.location.href);
+            
+            let shareUrl;
+            switch(platform) {
+                case 'facebook':
+                    shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`;
+                    break;
+                case 'twitter':
+                    shareUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
+                    break;
+                case 'instagram':
+                    navigator.clipboard.writeText(decodeURIComponent(text))
+                        .then(() => alert('Text kopiert! Öffne Instagram und füge den Text ein.'));
+                    return;
+            }
+            
+            window.open(shareUrl, '_blank', 'width=600,height=400');
+        }
+    </script>
+</body>
+</html>
