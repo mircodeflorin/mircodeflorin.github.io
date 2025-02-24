@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mirco Deflorin | Autor & Schriftsteller</title>
+    <style>
+        :root {
+            --background-color: #1E2832;
+            --text-color: #FFFFFF;
+            --accent-color: #FF4B47;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 1px solid var(--text-color);
+            border-radius: 5px;
+            margin-bottom: 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .author {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .author-title {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        .countdown-box {
+            text-align: center;
+            border: 1px solid rgba(255, 75, 71, 0.3);
+            border-radius: 15px;
+            padding: 30px 20px;
+            margin: 20px auto;
+            max-width: 90%;
+        }
+
+        .countdown-text {
+            color: var(--accent-color);
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            line-height: 1.4;
+        }
+
+        .quiz-section {
+            background: rgba(255, 75, 71, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .question {
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .question.active {
+            display: block;
+        }
+
+        .answer-button {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background: rgba(255, 75, 71, 0.2);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .answer-button:hover {
+            background: rgba(255, 75, 71, 0.4);
+        }
+
+        .result-section {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 75, 71, 0.1);
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .result-image {
+            width: 300px;
+            height: 180px;
+            margin: 20px auto;
+            background: var(--accent-color);
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 20px;
+            transform-style: preserve-3d;
+            transform: perspective(1000px) rotateX(10deg);
+        }
+
+        .result-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%);
+            animation: shimmer 3s infinite alternate;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) }
+            100% { transform: translateX(100%) }
+        }
+
+        .card-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+            position: relative;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .card-subtitle {
+            font-size: 0.9em;
+            color: rgba(255,255,255,0.9);
+            font-style: italic;
+        }
+
+        .card-decoration {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 0.8em;
+            opacity: 0.5;
+        }
+
+        .card-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.2em;
+            opacity: 0.5;
+        }
+
+        .color-note {
+            font-size: 0.9em;
+            color: rgba(255,255,255,0.7);
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .reset-button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .reset-button:hover {
+            transform: scale(1.05);
+        }
+
+        .social-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 40px;
+            align-items: center;
+        }
+
+        .social-button {
+            width: 100%;
+            max-width: 300px;
+            padding: 12px 0;
+            border: none;
+            border-radius: 25px;
+            color: white;
+            font-size: 1em;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .social-button:hover {
+            transform: scale(1.05);
+        }
+
+        .facebook { background: linear-gradient(to right, #4267B2, #3b5998); }
+        .twitter { background: linear-gradient(to right, #1DA1F2, #0d8ecf); }
+        .instagram { background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D); }
+
+        @media (max-width: 768px) {
+            .container { padding: 15px; }
+            .author { font-size: 2em; }
+            .result-image {
+                width: 90%;
+                height: 160px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <a href="https://mircodeflorin.github.io/landingpage" class="back-link">← Home</a>
+        
+        <div class="header">
+            <h1 class="author">Mirco Deflorin</h1>
+            <div class="author-title">Autor & Schriftsteller</div>
+        </div>
+<div class="book-cover-container" style="display: flex; justify-content: center; align-items: center; margin: 2rem auto; max-width: 800px; padding: 0 20px;">
+    <div style="position: relative; width: 100%; max-width: 400px;">
+        <img 
+            src="/front.jpg" 
+            alt="Alles ausser Kontrolle - Book Cover" 
+            style="width: 100%; height: auto; border-radius: 0.5rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);"
+        />
+    </div>
+</div>
+<div class="preorder-card" style="background-color: rgba(44, 62, 80, 0.7); padding: 40px; border-radius: 10px; margin: 20px auto; max-width: 800px; text-align: center; border: 1px solid rgba(231, 76, 60, 0.3); position: relative;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, #e74c3c, transparent);"></div>
+    <h2 style="color: #e74c3c; margin-bottom: 20px;">Limitierte Auflage</h2>
+    <div style="font-size: 1.2em; margin-bottom: 30px;">
+        Bestellen Sie jetzt direkt ein signiertes Exemplar vom Schriftsteller Mirco Deflorin
+    </div>
+    <a href="https://mircodeflorin.github.io/preorder-page" 
+       style="display: inline-block; background-color: #e74c3c; color: white; padding: 15px 30px; border: none; border-radius: 5px; font-size: 1.2em; text-decoration: none; transition: all 0.3s ease; cursor: pointer;">
+        Jetzt vorbestellen
+    </a>
+    <div style="margin-top: 20px; font-size: 0.9em; color: #a8b2bd;">
+        * Limitierte Auflage von signierten Exemplaren
+    </div>
+</div>
+        <div class="countdown-box">
+            <div class="countdown-text">
+                Noch 8 Tage bis zur<br>
+                Veröffentlichung von "Alles ausser Kontrolle"
+            </div>
+
+            <div class="quiz-section">
+                <h2 style="color: var(--accent-color); margin-bottom: 20px;">Welcher Brinkmann bist du?</h2>
+                
+                <div id="question1" class="question active">
+                    <p>Wie gehst du mit Terminen um?</p>
+                    <button class="answer-button" onclick="nextQuestion(1, 'a')">Ich existiere in mehreren Zeitlinien gleichzeitig</button>
+                    <button class="answer-button" onclick="nextQuestion(1, 'b')">Mit deutscher Gründlichkeit und Präzision</button>
+                    <button class="answer-button" onclick="nextQuestion(1, 'c')">Zeit ist relativ, wie Einstein schon sagte</button>
+                </div>
+
+                <div id="question2" class="question">
+                    <p>Dein Lieblings-Accessoire?</p>
+                    <button class="answer-button" onclick="nextQuestion(2, 'a')">Ein wandernder Schnurrbart</button>
+                    <button class="answer-button" onclick="nextQuestion(2, 'b')">Eine Krawatte nach DIN-Norm</button>
+                    <button class="answer-button" onclick="nextQuestion(2, 'c')">Ein künstlerischer Schal aus Paris</button>
+                </div>
+
+                <div id="question3" class="question">
+                    <p>Deine bevorzugte Ausrede?</p>
+                    <button class="answer-button" onclick="showResult('professor')">Quantenphysikalische Anomalien</button>
+                    <button class="answer-button" onclick="showResult('beamter')">Paragraph 7, Absatz 3b verhinderte mein Erscheinen</button>
+                    <button class="answer-button" onclick="showResult('kuenstler')">Die Muse hatte andere Pläne</button>
+                </div>
+
+                <div id="result" class="result-section">
+                    <div class="result-image">
+                        <div class="card-icon">✦</div>
+                        <div class="card-title" id="card-title"></div>
+                        <div class="card-subtitle" id="card-subtitle">Ausreden AG</div>
+                        <div class="card-decoration">✤ ✣ ✤</div>
+                    </div>
+                    <h3 id="result-title"></h3>
+                    <p id="result-description"></p>
+                    <p class="color-note" id="color-note"></p>
+                    <button class="reset-button" onclick="resetQuiz()">Quiz noch einmal machen</button>
+                </div>
+            </div>
+
+            <div class="social-buttons">
+                <button class="social-button facebook" onclick="shareResult('facebook')">
+                    Auf Facebook teilen
+                </button>
+                <button class="social-button twitter" onclick="shareResult('twitter')">
+                    Auf Twitter teilen
+                </button>
+                <button class="social-button instagram" onclick="shareResult('instagram')">
+                    Auf Instagram teilen
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentResult = '';
+
+        function nextQuestion(current, answer) {
+            document.getElementById(`question${current}`).classList.remove('active');
+            document.getElementById(`question${current + 1}`).classList.add('active');
+        }
+
+        function showResult(type) {
+            const results = {
+                professor: {
+                    title: "Der zerstreute Professor aus Paris",
+                    subtitle: "Abteilung für Quantenausreden",
+                    description: "Du bist ein Meister der wissenschaftlichen Ausreden und existierst gerne in mehreren Dimensionen gleichzeitig. Dein Akzent wandert durch Europa, während du komplexe Theorien über die Relativität der Wahrheit entwickelst.",
+                    color: "linear-gradient(135deg, #FF4B47 0%, #FF6B67 100%)",
+                    colorNote: "Deine Visitenkarte schimmert heute in einem wissenschaftlichen Rot - perfekt für quantenphysikalische Vorträge."
+                },
+                beamter: {
+                    title: "Der überkorrekte Beamte aus Wuppertal",
+                    subtitle: "Büro für normgerechte Entschuldigungen",
+                    description: "Deine Ausreden sind so präzise nach DIN-Norm formuliert, dass sie einfach wahr sein müssen. Dein Schnurrbart ist auf den Millimeter genau getrimmt, und deine Aktennotizen existieren in dreifacher Ausführung.",
+                    color: "linear-gradient(135deg, #4B7BFF 0%, #6B93FF 100%)",
+                    colorNote: "Deine Visitenkarte präsentiert sich in einem vorschriftsmässigen Preussisch-Blau."
+                },
+                kuenstler: {
+                    title: "Der zerstreute Künstler aus Wien",
+                    subtitle: "Atelier für kreative Realitätsanpassung",
+                    description: "Die Realität ist für dich nur eine weitere Leinwand. Du siehst die kreative Wahrheit in allen Dingen und verwandelst simple Ausreden in komplexe Kunstwerke.",
+                    color: "linear-gradient(135deg, #9747FF 0%, #B47BFF 100%)",
+                    colorNote: "Deine Visitenkarte schillert in einem künstlerischen Violett - oder ist es heute Ultramarinblau?"
+                }
+            };
+
+            currentResult = type;
+            const result = results[type];
+            document.getElementById('result-title').textContent = result.title;
+            document.getElementById('card-title').textContent = result.title;
+            document.getElementById('card-subtitle').textContent = result.subtitle;
+            document.getElementById('result-description').textContent = result.description;
+            document.getElementById('color-note').textContent = result.colorNote;
+            document.querySelector('.result-image').style.background = result.color;
+            
+            document.querySelector('.question.active').classList.remove('active');
+            document.getElementById('result').style.display = 'block';
+        }
+
+        function resetQuiz() {
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('question1').classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function shareResult(platform) {
+            const text = encodeURIComponent(`Ich bin "${document.getElementById('result-title').textContent}" in der Ausreden AG! 😅 #AllesAusserKontrolle #DrBrinkmann`);
+            const url = encodeURIComponent(window.location.href);
+            
+            let shareUrl;
+            switch(platform) {
+                case 'facebook':
+                    shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`;
+                    break;
+                case 'twitter':
+                    shareUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
+                    break;
+                case 'instagram':
+                    navigator.clipboard.writeText(decodeURIComponent(text))
+                        .then(() => alert('Text kopiert! Öffne Instagram und füge den Text ein.'));
+                    return;
+            }
+            
+            window.open(shareUrl, '_blank', 'width=600,height=400');
+        }
+    </script>
+</body>
+</html>
