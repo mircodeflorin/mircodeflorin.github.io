@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Das grosse Crossover-Event - Alles ausser Kontrolle</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #1c2939;
+            color: #ffffff;
+        }
+
+        .header {
+            background-color: #2c3e50;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid #a8b2bd;
+            border-radius: 5px;
+            color: #ffffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-color: rgba(0, 0, 0, 0.5);
+            border-color: #ffffff;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .event-card {
+            background-color: rgba(44, 62, 80, 0.7);
+            padding: 40px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            position: relative;
+        }
+
+        .event-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #e74c3c, transparent);
+        }
+
+        .countdown {
+            font-size: 1.5em;
+            color: #e74c3c;
+            margin-bottom: 30px;
+        }
+
+        .event-title {
+            font-size: 2em;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .event-description {
+            font-size: 1.2em;
+            margin: 20px 0;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .character-quotes {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .quote {
+            font-style: italic;
+            margin: 10px 0;
+            padding: 10px;
+            border-left: 3px solid #e74c3c;
+        }
+
+        .quiz-section {
+            margin: 40px 0;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .social-share {
+            margin-top: 30px;
+        }
+
+        .share-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .share-button:hover {
+            opacity: 0.8;
+        }
+
+        .facebook {
+            background-color: #3b5998;
+        }
+
+        .twitter {
+            background-color: #1da1f2;
+        }
+
+        .instagram {
+            background: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
+        }
+
+        @media (max-width: 768px) {
+            .event-title {
+                font-size: 1.5em;
+            }
+            
+            .countdown {
+                font-size: 1.2em;
+            }
+
+            .home-button {
+                top: 10px;
+                left: 10px;
+                padding: 8px 16px;
+                font-size: 0.9em;
+            }
+        }
+
+        /* Quiz specific styles */
+        .quiz-button {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            background-color: #2c3e50;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            text-align: left;
+            transition: background-color 0.3s;
+        }
+
+        .quiz-button:hover {
+            background-color: #34495e;
+        }
+
+        .quiz-button.correct {
+            background-color: #27ae60;
+        }
+
+        .quiz-button.incorrect {
+            background-color: #c0392b;
+        }
+
+        .quiz-feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="https://mircodeflorin.github.io/landingpage" class="home-button">← Home</a>
+        <h1>Mirco Deflorin</h1>
+        <p>Autor & Schriftsteller</p>
+    </div>
+<div class="book-cover-container" style="display: flex; justify-content: center; align-items: center; margin: 2rem auto; max-width: 800px; padding: 0 20px;">
+    <div style="position: relative; width: 100%; max-width: 400px;">
+        <img 
+            src="/front.jpg" 
+            alt="Alles ausser Kontrolle - Book Cover" 
+            style="width: 100%; height: auto; border-radius: 0.5rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);"
+        />
+    </div>
+</div>
+<div class="preorder-card" style="background-color: rgba(44, 62, 80, 0.7); padding: 40px; border-radius: 10px; margin: 20px auto; max-width: 800px; text-align: center; border: 1px solid rgba(231, 76, 60, 0.3); position: relative;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, #e74c3c, transparent);"></div>
+    <h2 style="color: #e74c3c; margin-bottom: 20px;">Limitierte Auflage</h2>
+    <div style="font-size: 1.2em; margin-bottom: 30px;">
+        Bestellen Sie jetzt direkt ein signiertes Exemplar vom Schriftsteller Mirco Deflorin
+    </div>
+    <a href="https://mircodeflorin.github.io/preorder-page" 
+       style="display: inline-block; background-color: #e74c3c; color: white; padding: 15px 30px; border: none; border-radius: 5px; font-size: 1.2em; text-decoration: none; transition: all 0.3s ease; cursor: pointer;">
+        Jetzt vorbestellen
+    </a>
+    <div style="margin-top: 20px; font-size: 0.9em; color: #a8b2bd;">
+        * Limitierte Auflage von signierten Exemplaren
+    </div>
+</div>
+    <div class="container">
+        <div class="event-card">
+            <div class="countdown">
+                Noch 4 Tage bis zur Veröffentlichung von "Alles ausser Kontrolle"
+            </div>
+            <div class="event-title">
+                Das grosse Crossover-Event: Wenn Welten kollidieren
+            </div>
+            <div class="event-description">
+                <p>Ein ganz normaler Tag in der Ausreden AG? Nicht wenn Betty, die KI-gesteuerte Kaffeemaschine mit Opern-Ambitionen, plötzlich auf ihr anderes Ich trifft! Während im Chaos-Café die Tassen tanzen, philosophiert der weise Kaktus Herbert mit Dr. Brinkmann über die Kunst der multiplen Identitäten.</p>
+                
+                <p>Doch was passiert, wenn eine Ausrede beginnt Arien zu singen und eine Kaffeemaschine plötzlich Realitäten verbiegt? Heute treffen alle Welten aufeinander, und nichts ist mehr, wie es scheint!</p>
+            </div>
+            <div class="character-quotes">
+                <div class="quote">
+                    "Error 404: Reality not found. Initiiere Opern-Modus." - Betty (in beiden Versionen)
+                </div>
+                <div class="quote">
+                    "Die Stille zwischen den Identitäten ist oft lauter als jede Ausrede." - Herbert zu Dr. Brinkmann
+                </div>
+                <div class="quote">
+                    "Gestern wird dies eine interessante Begegnung gewesen sein." - Madame Gestern/Rothmann
+                </div>
+            </div>
+            
+            <div class="quiz-section">
+                <h2 class="text-xl font-bold mb-6">Test dein Wissen: Das ultimative Crossover-Quiz</h2>
+                <div id="quiz-root"></div>
+            </div>
+
+            <div class="social-share">
+                <a href="#" class="share-button facebook">Auf Facebook teilen</a>
+                <a href="#" class="share-button twitter">Auf Twitter teilen</a>
+                <a href="#" class="share-button instagram">Auf Instagram teilen</a>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/babel">
+        const CharacterQuiz = () => {
+            const [currentQuestion, setCurrentQuestion] = React.useState(0);
+            const [score, setScore] = React.useState(0);
+            const [showResult, setShowResult] = React.useState(false);
+            const [selectedAnswer, setSelectedAnswer] = React.useState(null);
+            const [isAnswered, setIsAnswered] = React.useState(false);
+
+            const questions = [
+                {
+                    question: "Wer würde das perfekte philosophische Duo bilden?",
+                    options: [
+                        "Betty und Dr. Brinkmann",
+                        "Herbert und Dr. Lohmann",
+                        "Herbert und Dr. Brinkmann",
+                        "Betty und Maestro Caruso"
+                    ],
+                    correct: 2,
+                    explanation: "Herbert und Dr. Brinkmann teilen eine Vorliebe für tiefgründige Betrachtungen über die Natur der Realität."
+                },
+                {
+                    question: "Welches musikalische Paar wäre unschlagbar?",
+                    options: [
+                        "Betty und die Kaffeemaschine",
+                        "Maestro Caruso und Dr. Lohmann",
+                        "Herbert und Gustav",
+                        "Betty und Waldemar"
+                    ],
+                    correct: 0,
+                    explanation: "Betty trifft auf sich selbst - zwei singende Kaffeemaschinen, die vor 10 Uhr keinen Mozart spielen!"
+                },
+                {
+                    question: "Wer könnte die beste Reality-Show produzieren?",
+                    options: [
+                        "Waldemar und Herbert",
+                        "Dr. Brinkmann und Betty",
+                        "Herr Schnurr und Gustav",
+                        "Betty und die Ausreden-Datenbank"
+                    ],
+                    correct: 3,
+                    explanation: "Betty und die Ausreden-Datenbank würden eine Show kreieren, die gleichzeitig in mehreren Realitäten stattfindet."
+                },
+                {
+                    question: "Welches Duo wäre am besten in Problemlösung?",
+                    options: [
+                        "Dr. Lohmann und Herbert",
+                        "Madame Gestern und Frau Eichinger",
+                        "Betty und Gustav",
+                        "Dr. Brinkmann und die Ausreden-Datenbank"
+                    ],
+                    correct: 1,
+                    explanation: "Madame Gestern und Frau Eichinger - eine sieht die Probleme bevor sie passieren, die andere hat für alles eine Cousine dritten Grades als Lösung!"
+                }
+            ];
+
+            const handleAnswer = (selectedIndex) => {
+                if (isAnswered) return;
+                
+                setSelectedAnswer(selectedIndex);
+                setIsAnswered(true);
+                
+                if (selectedIndex === questions[currentQuestion].correct) {
+                    setScore(score + 1);
+                }
+            };
+
+            const nextQuestion = () => {
+                if (currentQuestion < questions.length - 1) {
+                    setCurrentQuestion(currentQuestion + 1);
+                    setSelectedAnswer(null);
+                    setIsAnswered(false);
+                } else {
+                    setShowResult(true);
+                }
+            };
+
+            const resetQuiz = () => {
+                setCurrentQuestion(0);
+                setScore(0);
+                setShowResult(false);
+                setSelectedAnswer(null);
+                setIsAnswered(false);
+            };
+
+            if (showResult) {
+                return (
+                    <div class="text-center">
+                        <h2 class="text-2xl font-bold mb-4">Quiz beendet!</h2>
+                        <p class="text-xl mb-6">
+                            Du hast {score} von {questions.length} Fragen richtig beantwortet!
+                        </p>
+                        <button 
+                            onClick={resetQuiz}
+                            class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        >
+                            Quiz neu starten
+                        </button>
+                    </div>
+                );
+            }
+
+            return (
+                <div>
+                    <div class="text-sm text-gray-400 mb-2">
+                        Frage {currentQuestion + 1} von {questions.length}
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">
+                        {questions[currentQuestion].question}
+                    </h3>
+                    <div class="space-y-3">
+                        {questions[currentQuestion].options.map((option, index) => (
+                            <button
+                                key={index}
+                                onClick={() => handleAnswer(index)}
+                                disabled={isAnswered}
+                                className={`quiz-button ${
+                                    isAnswered
+                                        ? index === questions[currentQuestion].correct
+                                            ? 'correct'
+                                            : index === selectedAnswer
+                                                ? 'incorrect'
+                                                : ''
+                                        : ''
+                                }`}
+                            >
+                                {option}
+                            </button>
+                        ))}
+                    </div>
+                    {isAnswered && (
+                        <div class="quiz-feedback">
+                            <p>{questions[currentQuestion].explanation}</p>
+                            <button 
+                                onClick={nextQuestion}
+                                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 w-full"
+                            >
+                                {currentQuestion < questions.length - 1 ? 'Nächste Frage' : 'Ergebnis anzeigen'}
+                            </button>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        ReactDOM.render(<CharacterQuiz />, document.getElementById('quiz-root'));
+    </script>
+</body>
+</html>
