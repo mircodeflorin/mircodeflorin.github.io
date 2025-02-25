@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Gertruds Strickmuster-Labyrinth - Alles ausser Kontrolle</title>
+    <style>
+        body {
+            background: #1a1a1a;
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateX(5px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-top: 30px;
+        }
+
+        .countdown {
+            color: #ff4444;
+            font-size: 1.2em;
+            margin: 20px 0;
+        }
+
+        .quote-container {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .portal-navigation {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .portal-option {
+            background: rgba(255,255,255,0.1);
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .portal-option:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateX(10px);
+        }
+
+        .hover-text {
+            opacity: 0;
+            position: absolute;
+            right: 20px;
+            color: #88ff88;
+            transition: opacity 0.3s ease;
+        }
+
+        .portal-option:hover .hover-text {
+            opacity: 1;
+        }
+
+        .strickmuster-puzzle {
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 10px;
+        }
+
+        .social-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .social-button {
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+        }
+
+        .social-button:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        .facebook { background: #3b5998; color: white; }
+        .twitter { background: #1da1f2; color: white; }
+        .instagram { background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D); color: white; }
+
+        #portal-content {
+            display: none;
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <a href="https://mircodeflorin.github.io/landingpage" class="home-button">← Home</a>
+    
+    <div class="header">
+        <h1>Mirco Deflorin</h1>
+        <h2>Autor & Schriftsteller</h2>
+        <div class="countdown">Noch 6 Tage bis zur Veröffentlichung von "Alles ausser Kontrolle"</div>
+    </div>
+<div class="book-cover-container" style="display: flex; justify-content: center; align-items: center; margin: 2rem auto; max-width: 800px; padding: 0 20px;">
+    <div style="position: relative; width: 100%; max-width: 400px;">
+        <img 
+            src="/front.jpg" 
+            alt="Alles ausser Kontrolle - Book Cover" 
+            style="width: 100%; height: auto; border-radius: 0.5rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);"
+        />
+    </div>
+</div>
+<div class="preorder-card" style="background-color: rgba(44, 62, 80, 0.7); padding: 40px; border-radius: 10px; margin: 20px auto; max-width: 800px; text-align: center; border: 1px solid rgba(231, 76, 60, 0.3); position: relative;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, #e74c3c, transparent);"></div>
+    <h2 style="color: #e74c3c; margin-bottom: 20px;">Limitierte Auflage</h2>
+    <div style="font-size: 1.2em; margin-bottom: 30px;">
+        Bestellen Sie jetzt direkt ein signiertes Exemplar vom Schriftsteller Mirco Deflorin
+    </div>
+    <a href="https://mircodeflorin.github.io/preorder-page" 
+       style="display: inline-block; background-color: #e74c3c; color: white; padding: 15px 30px; border: none; border-radius: 5px; font-size: 1.2em; text-decoration: none; transition: all 0.3s ease; cursor: pointer;">
+        Jetzt vorbestellen
+    </a>
+    <div style="margin-top: 20px; font-size: 0.9em; color: #a8b2bd;">
+        * Limitierte Auflage von signierten Exemplaren
+    </div>
+</div>
+    <div class="quote-container">
+        <p>"In jedem Strickmuster verbirgt sich ein Portal zu einer anderen Realität. Folge den Maschen, und du findest Welten zwischen den Welten."</p>
+        <p>- Gertrud Eichinger, die strickende Realitätsweberin</p>
+    </div>
+
+    <div class="portal-navigation">
+        <h2>Folge Gertruds Strickmustern in andere Realitäten:</h2>
+        
+        <div class="portal-option" onclick="showPortalContent('cafe')">
+            🧶 Das Chaos-Café-Portal
+            <span class="hover-text">Wo die Kaffeemaschine Arien singt...</span>
+        </div>
+
+        <div class="portal-option" onclick="showPortalContent('zen')">
+            🧶 Der Zen-Garten-Durchgang
+            <span class="hover-text">Wo Herbert meditiert...</span>
+        </div>
+
+        <div class="portal-option" onclick="showPortalContent('time')">
+            🧶 Der Zeitreise-Strang
+            <span class="hover-text">Dr. Brinkmanns wandelnde Identitäten...</span>
+        </div>
+
+        <div class="portal-option" onclick="showPortalContent('office')">
+            🧶 Das Büro-Labyrinth
+            <span class="hover-text">Zwischen den Stockwerken...</span>
+        </div>
+
+        <div id="portal-content"></div>
+    </div>
+
+    <div class="social-buttons">
+        <a href="https://mircodeflorin.github.io/landingpage" onclick="shareOnSocial('facebook')" class="social-button facebook">Auf Facebook teilen</a>
+        <a href="#" onclick="shareOnSocial('twitter')" class="social-button twitter">Auf Twitter teilen</a>
+        <a href="#" onclick="shareOnSocial('instagram')" class="social-button instagram">Auf Instagram teilen</a>
+    </div>
+
+    <script>
+        const portalContent = {
+            cafe: {
+                title: "Im Chaos-Café",
+                text: "Die Kaffeemaschine Betty stimmt gerade ihre Opernarien an. Heute auf dem Programm: Eine Jazz-Version von Mozarts Zauberflöte. Der Kaffeeduft formt sich zu Notenschlüsseln in der Luft..."
+            },
+            zen: {
+                title: "Im Zen-Garten",
+                text: "Herbert der Kaktus hat seine Position wieder um exakt 45 Grad gedreht. Seine mathematischen Gleichungen schweben als leuchtende Symbole durch den Raum, während er über das Chaos meditiert..."
+            },
+            time: {
+                title: "Im Zeitstrang",
+                text: "Dr. Brinkmann erscheint mit seinem dritten verschiedenen Schnurrbart für heute. Seine Identitäten wechseln schneller als die Stockwerke ihre Positionen..."
+            },
+            office: {
+                title: "Im Büro-Labyrinth",
+                text: "Das Büro befindet sich gerade irgendwo zwischen dem 3. und 4. Stock. Die Ausreden-Datenbank kommentiert dies mit einem sarkastischen 'Wie originell...'"
+            }
+        };
+
+        function showPortalContent(portal) {
+            const content = portalContent[portal];
+            const contentDiv = document.getElementById('portal-content');
+            contentDiv.style.display = 'block';
+            contentDiv.innerHTML = `<h3>${content.title}</h3><p>${content.text}</p>`;
+        }
+
+        function shareOnSocial(platform) {
+            const text = "Entdecke die verstrickten Realitäten in 'Alles ausser Kontrolle' von Mirco Deflorin! #AllesAusserKontrolle";
+            const url = window.location.href;
+
+            switch(platform) {
+                case 'facebook':
+                    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(text)}`);
+                    break;
+                case 'twitter':
+                    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`);
+                    break;
+                case 'instagram':
+                    alert('Teile einen Screenshot in deiner Instagram-Story! #AllesAusserKontrolle');
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>
