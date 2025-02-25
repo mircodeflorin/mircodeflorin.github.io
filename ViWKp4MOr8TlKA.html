@@ -170,6 +170,27 @@
             margin-top: 20px;
         }
 
+        /* Home Button Style */
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .home-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
         @media (max-width: 400px) {
             .control-btn {
                 width: 50px;
@@ -180,6 +201,9 @@
     </style>
 </head>
 <body>
+    <!-- Home Button hinzugefügt -->
+    <a href="https://mircodeflorin.github.io" class="home-button">🏠 Home</a>
+
     <div class="container">
         <h1>Sofa-Befreiungs-Spiel</h1>
         
