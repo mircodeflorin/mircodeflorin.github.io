@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Die grosse Verschwörung - Alles ausser Kontrolle</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #1c2939;
+            color: #ffffff;
+        }
+
+        .header {
+            background-color: #2c3e50;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid #a8b2bd;
+            border-radius: 5px;
+            color: #ffffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-color: rgba(0, 0, 0, 0.5);
+            border-color: #ffffff;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .mystery-card {
+            background-color: rgba(44, 62, 80, 0.7);
+            padding: 40px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            position: relative;
+        }
+
+        .mystery-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #e74c3c, transparent);
+        }
+
+        .countdown {
+            font-size: 1.5em;
+            color: #e74c3c;
+            margin-bottom: 30px;
+        }
+
+        .title {
+            font-size: 2em;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .description {
+            font-size: 1.2em;
+            margin: 20px 0;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .clue-section {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .clue {
+            margin: 15px 0;
+            padding: 15px;
+            border-left: 3px solid #e74c3c;
+            background-color: rgba(231, 76, 60, 0.1);
+        }
+
+        .interactive-puzzle {
+            margin: 40px 0;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .social-share {
+            margin-top: 30px;
+        }
+
+        .share-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .share-button:hover {
+            opacity: 0.8;
+        }
+
+        .facebook {
+            background-color: #3b5998;
+        }
+
+        .twitter {
+            background-color: #1da1f2;
+        }
+
+        .instagram {
+            background: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
+        }
+
+        .puzzle-input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #a8b2bd;
+            border-radius: 5px;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: white;
+        }
+
+        .submit-button {
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-button:hover {
+            background-color: #c0392b;
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 1.5em;
+            }
+            
+            .countdown {
+                font-size: 1.2em;
+            }
+
+            .home-button {
+                top: 10px;
+                left: 10px;
+                padding: 8px 16px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="https://mircodeflorin.github.io/landingpage" class="home-button">← Home</a>
+        <h1>Mirco Deflorin</h1>
+        <p>Autor & Schriftsteller</p>
+    </div>
+<div class="book-cover-container" style="display: flex; justify-content: center; align-items: center; margin: 2rem auto; max-width: 800px; padding: 0 20px;">
+    <div style="position: relative; width: 100%; max-width: 400px;">
+        <img 
+            src="/front.jpg" 
+            alt="Alles ausser Kontrolle - Book Cover" 
+            style="width: 100%; height: auto; border-radius: 0.5rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);"
+        />
+    </div>
+</div>
+<div class="preorder-card" style="background-color: rgba(44, 62, 80, 0.7); padding: 40px; border-radius: 10px; margin: 20px auto; max-width: 800px; text-align: center; border: 1px solid rgba(231, 76, 60, 0.3); position: relative;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, #e74c3c, transparent);"></div>
+    <h2 style="color: #e74c3c; margin-bottom: 20px;">Limitierte Auflage</h2>
+    <div style="font-size: 1.2em; margin-bottom: 30px;">
+        Bestellen Sie jetzt direkt ein signiertes Exemplar vom Schriftsteller Mirco Deflorin
+    </div>
+    <a href="https://mircodeflorin.github.io/preorder-page" 
+       style="display: inline-block; background-color: #e74c3c; color: white; padding: 15px 30px; border: none; border-radius: 5px; font-size: 1.2em; text-decoration: none; transition: all 0.3s ease; cursor: pointer;">
+        Jetzt vorbestellen
+    </a>
+    <div style="margin-top: 20px; font-size: 0.9em; color: #a8b2bd;">
+        * Limitierte Auflage von signierten Exemplaren
+    </div>
+</div>
+    <div class="container">
+        <div class="mystery-card">
+            <div class="countdown">
+                Noch 3 Tage bis zur Veröffentlichung von "Alles ausser Kontrolle"
+            </div>
+            <div class="title">
+                Die grosse Verschwörung: Die verborgenen Verbindungen
+            </div>
+            <div class="description">
+                <p>Heute beginnt die Enthüllung der ersten Geheimnisse! Zwischen den Geschichten gibt es überraschende Verbindungen - folge den Hinweisen von Betty, Herbert und Madame Gestern, um sie zu entdecken.</p>
+                
+                <p>Aber Vorsicht: Manche Charaktere sind nicht das, was sie zu sein scheinen... oder sind sie es doch?</p>
+            </div>
+            
+            <div class="clue-section">
+                <h3>Die mysteriösen Hinweise:</h3>
+                <div class="clue">
+                    <strong>Betty's Error-Message:</strong><br>
+                    "Error 427: Multiple Identitäten entdeckt. Eine Kaffeemaschine kann mehr als eine Rolle spielen... besonders nach 10 Uhr!"
+                </div>
+                <div class="clue">
+                    <strong>Herberts Zen-Weisheit:</strong><br>
+                    "Die Form ist nur Illusion - ob Kaktus oder Taschenrechner, die Weisheit bleibt dieselbe."
+                </div>
+                <div class="clue">
+                    <strong>Madame Gestern's Prophezeiung:</strong><br>
+                    "Gestern werden wir morgen erkannt haben, dass manche Menschen in mehreren Geschichten gleichzeitig existieren..."
+                </div>
+            </div>
+
+            <div class="interactive-puzzle" id="puzzle-root"></div>
+
+            <div class="social-share">
+                <a href="#" class="share-button facebook">Auf Facebook teilen</a>
+                <a href="#" class="share-button twitter">Auf Twitter teilen</a>
+                <a href="#" class="share-button instagram">Auf Instagram teilen</a>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/babel">
+        const InteractivePuzzle = () => {
+            const [currentStep, setCurrentStep] = React.useState(0);
+            const [userAnswer, setUserAnswer] = React.useState('');
+            const [feedback, setFeedback] = React.useState('');
+            const [solved, setSolved] = React.useState(false);
+
+            const puzzleSteps = [
+                {
+                    question: "Welcher Charakter verwandelt sich von einer KI-Kaffeemaschine in eine Operndiva?",
+                    hint: "Sie weigert sich in beiden Geschichten, vor 10 Uhr Mozart zu spielen...",
+                    answer: "betty",
+                    feedback: "Richtig! Betty erscheint als KI-Kaffeemaschine im Motivationsguru und als Operndiva im Chaos-Café!"
+                },
+                {
+                    question: "Wer taucht sowohl als philosophischer Kaktus als auch als weiser Taschenrechner auf?",
+                    hint: "Seine Zen-Weisheiten sind in jeder Form tiefgründig...",
+                    answer: "herbert",
+                    feedback: "Genau! Herbert philosophiert als toter Kaktus und als Taschenrechner!"
+                },
+                {
+                    question: "Welche Wahrsagerin sieht die Verbindungen zwischen den Geschichten schon gestern?",
+                    hint: "Sie weiss heute schon, was gestern morgen passiert ist...",
+                    answer: "madame gestern",
+                    feedback: "Perfekt! Madame Gestern/Rothmann erscheint im Chaos-Café und in der Ausreden AG!"
+                }
+            ];
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                const currentPuzzle = puzzleSteps[currentStep];
+                
+                if (userAnswer.toLowerCase().trim() === currentPuzzle.answer) {
+                    setFeedback(currentPuzzle.feedback);
+                    if (currentStep < puzzleSteps.length - 1) {
+                        setTimeout(() => {
+                            setCurrentStep(currentStep + 1);
+                            setUserAnswer('');
+                            setFeedback('');
+                        }, 2000);
+                    } else {
+                        setSolved(true);
+                    }
+                } else {
+                    setFeedback("Nicht ganz... Versuch's nochmal!");
+                }
+            };
+
+            if (solved) {
+                return (
+                    <div className="text-center">
+                        <h3 className="text-xl font-bold mb-4">Gratulation!</h3>
+                        <p>Du hast alle Verbindungen entdeckt! Die Geschichten sind auf überraschende Weise miteinander verwoben. Aber das ist erst der Anfang... Morgen enthüllen wir weitere Geheimnisse!</p>
+                    </div>
+                );
+            }
+
+            return (
+                <div>
+                    <h3 className="text-xl font-bold mb-4">Löse das Rätsel der verborgenen Verbindungen!</h3>
+                    <p className="mb-4">{puzzleSteps[currentStep].question}</p>
+                    <p className="text-sm text-gray-400 mb-4">{puzzleSteps[currentStep].hint}</p>
+                    <form onSubmit={handleSubmit}>
+                        <input
+                            type="text"
+                            value={userAnswer}
+                            onChange={(e) => setUserAnswer(e.target.value)}
+                            className="puzzle-input"
+                            placeholder="Deine Antwort..."
+                        />
+                        <button type="submit" className="submit-button">
+                            Überprüfen
+                        </button>
+                    </form>
+                    {feedback && (
+                        <div className="mt-4 p-3 rounded bg-opacity-50" style={{
+                            backgroundColor: feedback.includes('Richtig') || feedback.includes('Genau') || feedback.includes('Perfekt')
+                                ? 'rgba(39, 174, 96, 0.3)'
+                                : 'rgba(231, 76, 60, 0.3)'
+                        }}>
+                            {feedback}
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        ReactDOM.render(<InteractivePuzzle />, document.getElementById('puzzle-root'));
+    </script>
+</body>
+</html>
