@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tag 1: Dimension X - Alles ausser Kontrolle</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #1c2939;
+            color: #ffffff;
+        }
+
+        .header {
+            background-color: #2c3e50;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid #a8b2bd;
+            border-radius: 5px;
+            color: #ffffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-color: rgba(0, 0, 0, 0.5);
+            border-color: #ffffff;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .content-card {
+            background-color: rgba(44, 62, 80, 0.7);
+            padding: 40px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            position: relative;
+        }
+
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #e74c3c, transparent);
+        }
+
+        .countdown {
+            font-size: 1.5em;
+            color: #e74c3c;
+            margin-bottom: 30px;
+        }
+
+        .main-text {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .media-player {
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            border-radius: 5px;
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+            background-color: #e74c3c;
+        }
+
+        .cta-button:hover {
+            opacity: 0.8;
+        }
+
+        .social-share {
+            margin-top: 30px;
+        }
+
+        .share-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .share-button:hover {
+            opacity: 0.8;
+        }
+
+        .facebook {
+            background-color: #3b5998;
+        }
+
+        .twitter {
+            background-color: #1da1f2;
+        }
+
+        .instagram {
+            background: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
+        }
+
+        .dialog {
+            text-align: left;
+            margin-top: 20px;
+        }
+        .dialog-line {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            background-color: #3498db;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 768px) {
+            .main-text {
+                font-size: 1em;
+            }
+            
+            .countdown {
+                font-size: 1.2em;
+            }
+
+            .home-button {
+                top: 10px;
+                left: 10px;
+                padding: 8px 16px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="https://mircodeflorin.github.io/landingpage" class="home-button">← Home</a>
+        <h1>Mirco Deflorin</h1>
+        <p>Autor & Schriftsteller</p>
+    </div>
+<div class="book-cover-container" style="display: flex; justify-content: center; align-items: center; margin: 2rem auto; max-width: 800px; padding: 0 20px;">
+    <div style="position: relative; width: 100%; max-width: 400px;">
+        <img 
+            src="/front.jpg" 
+            alt="Alles ausser Kontrolle - Book Cover" 
+            style="width: 100%; height: auto; border-radius: 0.5rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);"
+        />
+    </div>
+</div>
+<div class="preorder-card" style="background-color: rgba(44, 62, 80, 0.7); padding: 40px; border-radius: 10px; margin: 20px auto; max-width: 800px; text-align: center; border: 1px solid rgba(231, 76, 60, 0.3); position: relative;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, #e74c3c, transparent);"></div>
+    <h2 style="color: #e74c3c; margin-bottom: 20px;">Limitierte Auflage</h2>
+    <div style="font-size: 1.2em; margin-bottom: 30px;">
+        Bestellen Sie jetzt direkt ein signiertes Exemplar vom Schriftsteller Mirco Deflorin
+    </div>
+    <a href="https://mircodeflorin.github.io/preorder-page" 
+       style="display: inline-block; background-color: #e74c3c; color: white; padding: 15px 30px; border: none; border-radius: 5px; font-size: 1.2em; text-decoration: none; transition: all 0.3s ease; cursor: pointer;">
+        Jetzt vorbestellen
+    </a>
+    <div style="margin-top: 20px; font-size: 0.9em; color: #a8b2bd;">
+        * Limitierte Auflage von signierten Exemplaren
+    </div>
+</div>
+    <div class="container">
+        <div class="content-card">
+            <div class="countdown">
+                Noch 1 Tag bis zur Veröffentlichung von "Alles ausser Kontrolle"
+            </div>
+            <div class="main-text">
+                <p>Willkommen zu unserem grossen Finale "Dimension X"! Alle Charaktere treffen in einem multidimensionalen Showdown aufeinander. Gemeinsam lösen wir das letzte grosse Rätsel, das alle Geschichten verbindet.</p>
+                <p>Morgen ist der grosse Tag der Veröffentlichung des Buches. Ab dann könnt ihr "Alles ausser Kontrolle" bei BoD kaufen.</p>
+            </div>
+            <div class="dialog">
+                <div class="dialog-line">
+                    <div class="icon">🎙️</div>
+                    <p><strong>Erzähler:</strong> Willkommen zu unserem spektakulären Finale "Dimension X", wo alle Welten kollidieren!</p>
+                </div>
+                <div class="dialog-line">
+                    <div class="icon">👔</div>
+                    <p><strong>Thomas:</strong> Wo... wo bin ich? Betty, was hast du schon wieder angestellt?</p>
+                </div>
+                <div class="dialog-line">
+                    <div class="icon">☕</div>
+                    <p><strong>Betty:</strong> Error 42 - Realitätsüberlappung detektiert. Initiiere multidimensionale Kaffeezubereitung.</p>
+                </div>
+                <div class="dialog-line">
+                    <div class="icon">🐦</div>
+                    <p><strong>Gustav:</strong> Omm... Die Wellen der Realität verschmelzen wie Milchschaum im kosmischen Latte.</p>
+                </div>
+                <div class="dialog-line">
+                    <div class="icon">😺</div>
+                    <p><strong>Herr Schnurr:</strong> Mon dieu! Dies übersteigt selbst die Extravaganz von Versailles!</p>
+                </div>
+                <div class="dialog-line">
+                    <div class="icon">🐠</div>
+                    <p><strong>Waldemar:</strong> CUT! Das ist der dramatischste Plot-Twist aller Zeiten!</p>
+                </div>
+                <div class="dialog-line">
+                    <div class="icon">🎭</div>
+                    <p><strong>Dr. Brinkmann:</strong> Faszinierend. Es scheint, als hätten sich alle meine Identitäten gleichzeitig manifestiert.</p>
+                </div>
+                <div class="dialog-line">
+                    <div class="icon">❓</div>
+                    <p><strong>Mysteriöse Stimme:</strong> Willkommen, Reisende der Geschichten. Ihr wurdet hierher gerufen, um das ultimative Rätsel zu lösen - das Rätsel eurer eigenen Existenz.</p>
+                </div>
+                <div class="dialog-line">
+                    <div class="icon">🌵</div>
+                    <p><strong>Herbert:</strong> Ich bin mehr als nur ein Kaktus. Ich bin der Hüter der Geschichten, der Bewahrer der Narrativen.</p>
+                </div>
+                <div class="dialog-line">
+                    <div class="icon">🎙️</div>
+                    <p><strong>Erzähler:</strong> Und so beginnt die grosse Suche nach der Antwort...</p>
+                </div>
+            </div>
+            <div class="media-player">
+                <audio controls>
+                    <source src="podcast_episode.mp3" type="audio/mpeg">
+                    Ihr Browser unterstützt das Audio-Element nicht.
+                </audio>
+            </div>
+            <a href="#" class="cta-button">Signiertes Buch beim Autor bestellen</a>
+            <div class="social-share">
+                <a href="#" class="share-button facebook">Auf Facebook teilen</a>
+                <a href="#" class="share-button twitter">Auf Twitter teilen</a>
+                <a href="#" class="share-button instagram">Auf Instagram teilen</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
