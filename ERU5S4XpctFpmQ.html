@@ -182,93 +182,6 @@
         .new-profile {
             animation: slideIn 0.5s ease-out;
         }
-        
-        /* Ergebnisse Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1001;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.7);
-            overflow: auto;
-            animation: fadeIn 0.3s;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .modal-content {
-            position: relative;
-            background-color: var(--secondary-color);
-            margin: 15% auto;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-            max-width: 600px;
-            animation: slideDown 0.5s;
-        }
-
-        @keyframes slideDown {
-            from { transform: translateY(-50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .close-button {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 24px;
-            color: var(--text-color);
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .close-button:hover {
-            color: var(--error-color);
-        }
-
-        .result-title {
-            color: var(--accent-color);
-            text-align: center;
-            margin-top: 0;
-        }
-
-        .result-description {
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-
-        .result-quote {
-            font-style: italic;
-            color: var(--error-color);
-            text-align: center;
-            padding: 15px;
-            border-left: 3px solid var(--accent-color);
-            margin: 20px 0;
-            background: rgba(255,255,255,0.05);
-        }
-
-        .continue-button {
-            background: var(--accent-color);
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            display: block;
-            margin: 0 auto;
-            transition: all 0.3s;
-        }
-
-        .continue-button:hover {
-            background: #2a70a0;
-            transform: translateY(-2px);
-        }
     </style>
 </head>
 <body>
@@ -321,20 +234,9 @@
         <div class="statistics">
             <h3>Matching-Statistiken:</h3>
             <p>Gesamt Swipes: <span id="total-swipes">2</span></p>
-            <p>Matches: <span id="total-matches">0</span></p>
+            <p>Matches: <span id="total-matches">11</span></p>
             <p>Excel-Kompatibilität: <span id="excel-compatibility">97%</span></p>
             <p>Spirituelle Resonanz: <span id="spiritual-resonance">42%</span></p>
-        </div>
-    </div>
-
-    <!-- Ergebnisse Modal -->
-    <div id="results-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeModal()">&times;</span>
-            <h2 class="result-title" id="result-title">Dein Dating-Schicksal steht fest!</h2>
-            <p class="result-description" id="result-description">Beschreibung hier</p>
-            <div class="result-quote" id="result-quote">Betty-Quote hier</div>
-            <button class="continue-button" onclick="closeModal()">Weiter swipen</button>
         </div>
     </div>
 
@@ -367,34 +269,6 @@
                 excelLevel: 55,
                 spiritualLevel: 88,
                 emoji: "🧘‍♂️"
-            },
-            {
-                name: "KPI-Klara",
-                title: "Misst ihr Beziehungsglück in ROI-Kennzahlen",
-                excelLevel: 96,
-                spiritualLevel: 15,
-                emoji: "📊"
-            },
-            {
-                name: "Yoga-Yannick",
-                title: "Findet Achtsamkeit zwischen Deadline-Katastrophen",
-                excelLevel: 30,
-                spiritualLevel: 98,
-                emoji: "🧠"
-            },
-            {
-                name: "Business-Bettina",
-                title: "Schreibt Liebesbriefe als PowerPoint-Präsentationen",
-                excelLevel: 78,
-                spiritualLevel: 25,
-                emoji: "👔"
-            },
-            {
-                name: "Feng-Shui-Felix",
-                title: "Richtet seinen Schreibtisch für optimale Chi-Flüsse aus",
-                excelLevel: 40,
-                spiritualLevel: 89,
-                emoji: "🪷"
             }
         ];
 
@@ -404,75 +278,16 @@
             "Error 418 - I'm a teapot, but I still judge your choices",
             "Error 502 - Bad gateway to your heart",
             "Error 200 - Perfect match found (just kidding)",
-            "Error 429 - Too many failed relationship attempts",
-            "Error 403 - Access to meaningful connections forbidden",
-            "Error 508 - Love loop detected",
-            "Error 451 - Dating unavailable for legal reasons",
-            "Error 501 - Relationship API not implemented"
-        ];
-        
-        // Neue Ergebnisse nach bestimmten Anzahlen an Swipes oder Matches
-        const results = [
-            {
-                trigger: { type: 'swipes', value: 5 },
-                title: "Dating-Anfänger: Der Excel-Novize",
-                description: "Deine ersten Schritte in der digitalen Dating-Welt ähneln deinem ersten Tag mit Excel: alles ist verwirrend, nichts funktioniert wie erwartet, und du fragst dich, warum alle Formeln nur Fehlermeldungen anzeigen. Aber keine Sorge, irgendwann wirst du VLOOKUP verstehen... vielleicht.",
-                quote: "Error 102 - Dating für Anfänger: Hat jemand ein Tutorial?"
-            },
-            {
-                trigger: { type: 'matches', value: 3 },
-                title: "Match-Maestro: Der Beziehungs-Dirigent",
-                description: "Du orchestrierst deine Matches mit der Präzision eines Dirigenten. Jede Nachricht ist ein wohlüberlegter Takt in deiner Dating-Symphonie. Leider hat niemand erwähnt, dass alle deine Matches eigentlich nur an deiner Spotify-Playlist interessiert sind.",
-                quote: "Error 317 - Musikgeschmack-Kompatibilitätsprobleme entdeckt"
-            },
-            {
-                trigger: { type: 'swipes', value: 10 },
-                title: "Der Swipe-Marathonläufer",
-                description: "Dein Daumen hat mittlerweile mehr Ausdauer als ein Profi-Sportler. Du swipst schneller als Betty Fehler produzieren kann. Vielleicht solltest du dieses Training für den nächsten Marathon nutzen? Deine Excel-Tabellen werden jedenfalls nie wieder dieselben sein.",
-                quote: "Error 721 - Daumen überhitzt, Abkühlperiode erforderlich"
-            },
-            {
-                trigger: { type: 'matches', value: 7 },
-                title: "Der Dating-Pivot-Tabellen-Meister",
-                description: "Mit einer beeindruckenden Kollektion an Matches hast du jetzt genug Daten für eine umfassende Pivot-Tabelle deines Liebeslebens. Die wichtigsten Erkenntnisse: Meditation-Enthusiasten antworten durchschnittlich 3,7 Mal langsamer, aber ihre Nachrichten enthalten 40% mehr Emojis.",
-                quote: "Error 228 - Zu viele Beziehungsvariablen für eine einfache Formel"
-            },
-            {
-                trigger: { type: 'swipes', value: 15 },
-                title: "Der Dating-App-Philosoph",
-                description: "Nach endlosem Swipen beginnst du, existenzielle Fragen zu stellen: 'Wenn ein Profil gematcht wird, aber niemand antwortet, hat es dann wirklich existiert?' Der Geist von Herbert, dem weisen Kaktus, flüstert mysteriöse Dating-Weisheiten in dein Unterbewusstsein.",
-                quote: "Error 42 - Die Antwort auf alles ist spirituelles Swipen"
-            },
-            {
-                trigger: { type: 'matches', value: 10 },
-                title: "Der Office-Dating-Guru",
-                description: "Deine Matches haben dich zum inoffiziellen Dating-Berater des Büros gemacht. Kollegen schleichen heimlich an deinen Schreibtisch für Beziehungstipps. Sogar Betty konsultiert dich bei ihren Kompatibilitätsberechnungen. Dein nächstes Projekt: Eine KI-gestützte Matchmaking-Präsentation für das Quartalsmeeting.",
-                quote: "Error 998 - Dating-KPIs übersteigen prognostizierte Werte"
-            },
-            {
-                trigger: { type: 'swipes', value: 20 },
-                title: "Der Tinder-Transzendente",
-                description: "Durch pures Swipen hast du einen Zustand erreicht, den selbst erfahrene Yoga-Meister bewundern würden. Dein Daumen bewegt sich automatisch, während dein Geist im Dating-Nirvana schwebt. Dr. Lohmann studiert deine Bewegungen für seine neue Studie 'Quantenphysik des Dating-Universums'.",
-                quote: "Error 888 - Transzendenter Dating-Status erreicht, Realität neu kalibriert"
-            },
-            {
-                trigger: { type: 'matches', value: 15 },
-                title: "Dating-Dimensionsreisender",
-                description: "Mit einer beeindruckenden Anzahl von Matches hast du die Fähigkeit entwickelt, zwischen Dating-Dimensionen zu reisen. Morgens chattest du mit einem spirituellen Guru, mittags mit einer Excel-Fanatikerin und abends mit jemandem, der Pivot-Tabellen für romantisch hält. Madame Gestern ist beeindruckt von deiner Zeitmanagement-Fähigkeit.",
-                quote: "Error 474 - Multidimensionale Dating-Paradoxa entdeckt"
-            }
+            "Error 429 - Too many failed relationship attempts"
         ];
 
         let currentProfileIndex = 0;
         let stats = {
             swipes: 2,
-            matches: 0,
+            matches: 11,
             excelCompatibility: 97,
             spiritualResonance: 42
         };
-        
-        // Tracking der bereits gezeigten Ergebnisse
-        let shownResults = [];
 
         function updateMeters() {
             const profile = profiles[currentProfileIndex];
@@ -485,9 +300,6 @@
             document.getElementById('total-matches').textContent = stats.matches;
             document.getElementById('excel-compatibility').textContent = `${stats.excelCompatibility}%`;
             document.getElementById('spiritual-resonance').textContent = `${stats.spiritualResonance}%`;
-            
-            // Prüfen, ob ein neues Ergebnis angezeigt werden sollte
-            checkForResults();
         }
 
         function nextProfile() {
@@ -522,40 +334,6 @@
             document.querySelector('.profile-info p').textContent = profile.title;
             updateMeters();
         }
-        
-        function checkForResults() {
-            for (let i = 0; i < results.length; i++) {
-                const result = results[i];
-                
-                // Prüfen, ob dieses Ergebnis bereits angezeigt wurde
-                if (shownResults.includes(i)) continue;
-                
-                // Prüfen, ob die Trigger-Bedingungen erfüllt sind
-                if (result.trigger.type === 'swipes' && stats.swipes === result.trigger.value) {
-                    showResult(result);
-                    shownResults.push(i);
-                    return;
-                } else if (result.trigger.type === 'matches' && stats.matches === result.trigger.value) {
-                    showResult(result);
-                    shownResults.push(i);
-                    return;
-                }
-            }
-        }
-        
-        function showResult(result) {
-            document.getElementById('result-title').textContent = result.title;
-            document.getElementById('result-description').textContent = result.description;
-            document.getElementById('result-quote').textContent = result.quote;
-            
-            const modal = document.getElementById('results-modal');
-            modal.style.display = 'block';
-        }
-        
-        function closeModal() {
-            const modal = document.getElementById('results-modal');
-            modal.style.display = 'none';
-        }
 
         // Initialisierung
         window.onload = function() {
@@ -569,14 +347,6 @@
                         "Error 42 - Herbert approves this match";
                 }
             });
-            
-            // Schließen des Modals, wenn außerhalb geklickt wird
-            window.onclick = function(event) {
-                const modal = document.getElementById('results-modal');
-                if (event.target === modal) {
-                    closeModal();
-                }
-            };
         };
     </script>
 </body>
