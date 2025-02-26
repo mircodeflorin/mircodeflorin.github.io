@@ -218,6 +218,68 @@
             50% { background-color: rgba(0, 255, 0, 0.1); }
             100% { background-color: transparent; }
         }
+        
+        .access-granted {
+            animation: access-granted-animation 2s forwards;
+        }
+        
+        @keyframes access-granted-animation {
+            0% { box-shadow: 0 0 0px rgba(0, 255, 0, 0.5); }
+            50% { box-shadow: 0 0 30px rgba(0, 255, 0, 0.8); }
+            100% { box-shadow: 0 0 20px rgba(0, 255, 0, 0.6); }
+        }
+        
+        .secret-document {
+            margin-top: 30px;
+            padding: 20px;
+            border: 2px solid #00ff00;
+            background-color: rgba(0, 20, 0, 0.8);
+            animation: document-reveal 1s;
+            max-height: 0;
+            overflow: hidden;
+            animation-fill-mode: forwards;
+        }
+        
+        @keyframes document-reveal {
+            from { max-height: 0; opacity: 0; }
+            to { max-height: 800px; opacity: 1; }
+        }
+        
+        .document-content {
+            padding: 15px;
+            border-left: 3px solid #00ff00;
+        }
+        
+        .secret-code-box {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px dashed #00ff00;
+            text-align: center;
+            background-color: rgba(0, 255, 0, 0.1);
+        }
+        
+        .secret-code {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            color: #00ff00;
+            margin: 10px 0;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.7);
+            animation: code-pulse 2s infinite;
+        }
+        
+        @keyframes code-pulse {
+            0% { text-shadow: 0 0 10px rgba(0, 255, 0, 0.7); }
+            50% { text-shadow: 0 0 20px rgba(0, 255, 0, 1); }
+            100% { text-shadow: 0 0 10px rgba(0, 255, 0, 0.7); }
+        }
+        
+        .document-footer {
+            margin-top: 20px;
+            text-align: right;
+            font-style: italic;
+            opacity: 0.7;
+        }
 
         @media (max-width: 600px) {
             .terminal {
@@ -387,14 +449,14 @@
         let accessLevel = 0;
         
         // Einfachere Codes mit exakteren Hinweisen
-        const correctCodes = ['PHI', '1.618', 'FIBONACCI', 'GOLDENER'];
+        const correctCodes = ['PHI', '1.618033989', 'FIBONACCI', 'GOLDENER'];
         
         // Die Codes werden auch in Kleinbuchstaben akzeptiert
         
         // Hinweise für jeden Level
         const hints = [
             "Schau dir die <span class='hint-highlight'>markierten Hinweise</span> in den Protokollen an. Der erste Code ist ein <span class='hint-highlight'>griechischer Buchstabe</span>, den du auf den Buttons siehst.",
-            "Für den zweiten Code, sieh dir die <span class='hint-highlight'>Zahlen</span> in den Protokollen genauer an. Gib einfach 1.618 ein.",
+            "Für den zweiten Code, sieh dir die <span class='hint-highlight'>exakte Zahl</span> in den Protokollen genauer an. Gib die vollständige Zahl ein: 1.618033989",
             "Der dritte Code bezieht sich auf die <span class='hint-highlight'>Sequenz</span>, die mehrfach erwähnt wird.",
             "Der letzte Code hat mit dem <span class='hint-highlight'>goldenen</span> Verhältnis zu tun. Es ist das erste Wort aus 'goldener Schnitt'."
         ];
@@ -402,7 +464,7 @@
         // Erfolgshinweise nach jedem richtigen Code
         const successMessages = [
             "Gut gemacht! Das erste Wort ist PHI. <br>Jetzt brauchen wir eine <span class='hint-highlight'>Zahl</span>...",
-            "Ausgezeichnet! Die Zahl 1.618 ist korrekt. <br>Als nächstes suchen wir einen <span class='hint-highlight'>Namen</span> für die mathematische Sequenz... Der Name ist 'FIBONACCI'",
+            "Ausgezeichnet! Die Zahl 1.618033989 ist korrekt. <br>Als nächstes suchen wir einen <span class='hint-highlight'>Namen</span> für die mathematische Sequenz... Der Name ist 'FIBONACCI'",
             "Perfekt! FIBONACCI ist richtig. <br>Für den letzten Code brauchen wir das <span class='hint-highlight'>erste Wort</span> aus 'goldener Schnitt'...",
             "ZUGRIFF GEWÄHRT – ALLE PROTOKOLLE FREIGESCHALTET! <br>Du hast alle Codes gefunden: PHI, 1.618, FIBONACCI und GOLDENER"
         ];
@@ -415,8 +477,8 @@
                 // Flexiblere Erkennung für die Codes
                 let isCorrect = false;
                 
-                // Prüfe für den Code "1.618"
-                if (accessLevel === 1 && (upperInput === "1.618" || upperInput.startsWith("1.618") || upperInput === "1,618" || upperInput.includes("1.618"))) {
+                // Prüfe für den Code "1.618033989"
+                if (accessLevel === 1 && input === "1.618033989") {
                     isCorrect = true;
                 }
                 // Prüfe für FIBONACCI - Groß- oder Kleinschreibung ist egal
@@ -447,11 +509,54 @@
                         hintBox.classList.add('visible');
                     }
                     
-                    // Alle Protokolle freischalten, wenn fertig
+                    // Alle Protokolle freischalten und Erfolgsanimation, wenn fertig
                     if (accessLevel >= correctCodes.length) {
                         document.querySelectorAll('.hidden-note').forEach(note => {
                             note.style.display = 'block';
                         });
+                        
+                        // Spezielle Animation und Belohnung nach vollständigem Zugriff
+                        setTimeout(() => {
+                            // Terminal-Animation
+                            document.querySelector('.terminal').classList.add('access-granted');
+                            
+                            // Geheimes Dokument anzeigen
+                            const secretDocument = document.createElement('div');
+                            secretDocument.className = 'secret-document';
+                            secretDocument.innerHTML = `
+                                <h2>STRENG GEHEIM: PROJEKT HARMONICS</h2>
+                                <div class="document-content">
+                                    <p>Glückwunsch! Sie haben Zugriff auf die geheimen Forschungsprotokolle erhalten.</p>
+                                    <p>Professor Fibonacci hat bestätigt: Das Café ist ein Resonanzpunkt für das Musikalische Universum!</p>
+                                    <p>Die harmonische Frequenz φ = 1.618033989... orchestriert die Schwingungen aller Getränke im Café.</p>
+                                    <div class="secret-code-box">
+                                        <p>GEHEIMCODE FREIGESCHALTET:</p>
+                                        <div class="secret-code">GOLDENER-PHI-KLANG</div>
+                                    </div>
+                                    <p class="document-footer">Projekt HARMONICS • Stufe Phi • Autorisiert durch M.F.</p>
+                                </div>
+                            `;
+                            document.querySelector('.terminal').appendChild(secretDocument);
+                            
+                            // Soundeffekt abspielen
+                            if (audioCtx) {
+                                const successSound = audioCtx.createOscillator();
+                                successSound.type = 'sine';
+                                successSound.frequency.setValueAtTime(440, audioCtx.currentTime);
+                                successSound.frequency.exponentialRampToValueAt(880, audioCtx.currentTime + 0.2);
+                                successSound.frequency.exponentialRampToValueAt(1320, audioCtx.currentTime + 0.4);
+                                
+                                const soundGain = audioCtx.createGain();
+                                soundGain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                                soundGain.gain.exponentialRampToValueAt(0.01, audioCtx.currentTime + 1.5);
+                                
+                                successSound.connect(soundGain);
+                                soundGain.connect(audioCtx.destination);
+                                
+                                successSound.start();
+                                successSound.stop(audioCtx.currentTime + 1.5);
+                            }
+                        }, 500);
                     }
                 } else {
                     // Falscher Code
