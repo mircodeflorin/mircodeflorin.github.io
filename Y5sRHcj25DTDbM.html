@@ -27,6 +27,27 @@
             line-height: 1.6;
         }
 
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--accent-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            box-shadow: 0 2px 5px var(--shadow-color);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .home-button:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
+
         .container {
             max-width: 1000px;
             margin: 20px auto;
@@ -36,6 +57,7 @@
         .title-section {
             text-align: center;
             margin-bottom: 30px;
+            padding-top: 30px; /* Extra space for the fixed home button */
         }
 
         .simulator-card {
@@ -191,11 +213,24 @@
             .stats-panel {
                 grid-template-columns: 1fr 1fr;
             }
+            
+            .home-button {
+                position: relative;
+                display: block;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+            
+            .title-section {
+                padding-top: 10px;
+            }
         }
     </style>
 </head>
 
 <body>
+    <a href="https://mircodeflorin.github.io/" class="home-button">← Zur Autorenseite</a>
+    
     <div class="container">
         <div class="title-section">
             <h1>Dr. Brinkmanns Erweiterter Identitäten-Simulator 3.0</h1>
@@ -289,6 +324,9 @@
             <div class="history-log">
                 <h3>Identitäts-Historie</h3>
                 <div id="logEntries"></div>
+            </div>
+        </div>
+    </div>
 
 <script>
 const personalities = {
@@ -463,7 +501,3 @@ document.getElementById('mustacheStyle').addEventListener('input', function() {
 </script>
 </body>
 </html>
-            </div>
-        </div>
-    </div>
-
