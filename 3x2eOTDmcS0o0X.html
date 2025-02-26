@@ -51,7 +51,7 @@
             margin-top: 60px;
         }
 
-.scan-line {
+        .scan-line {
             position: absolute;
             top: 0;
             left: 0;
@@ -138,10 +138,11 @@
             background: transparent;
             border: 1px solid #00ff00;
             color: #00ff00;
-            padding: 5px;
+            padding: 8px;
             width: 100%;
             margin: 10px 0;
             font-family: 'Courier New', monospace;
+            font-size: 16px;
         }
 
         .progress-bar {
@@ -156,6 +157,38 @@
             background: #00ff00;
             width: 0%;
             transition: width 0.3s;
+        }
+
+        .hint-box {
+            margin: 15px 0;
+            padding: 10px;
+            border: 1px dashed #00ff00;
+            background-color: rgba(0, 255, 0, 0.05);
+            display: none;
+        }
+
+        .hint-box.visible {
+            display: block;
+        }
+
+        .help-button {
+            background: transparent;
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            padding: 8px 15px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .help-button:hover {
+            background: rgba(0, 255, 0, 0.2);
+        }
+
+        .hint-highlight {
+            background-color: rgba(0, 255, 0, 0.2);
+            padding: 2px 5px;
+            border-radius: 3px;
         }
 
         @keyframes fadeIn {
@@ -174,6 +207,16 @@
 
         .glitch {
             animation: glitch 0.3s infinite;
+        }
+
+        .success-animation {
+            animation: success-pulse 1.5s;
+        }
+
+        @keyframes success-pulse {
+            0% { background-color: rgba(0, 255, 0, 0.3); }
+            50% { background-color: rgba(0, 255, 0, 0.1); }
+            100% { background-color: transparent; }
         }
 
         @media (max-width: 600px) {
@@ -195,7 +238,7 @@
 <body>
     <a href="https://mircodeflorin.github.io/" class="home-button">← Zur Autorenseite</a>
 
-<div class="terminal">
+    <div class="terminal">
         <div class="scan-line"></div>
         <div class="warning">STRENG GEHEIM – NUR FÜR AUTORISIERTE PERSONEN</div>
         
@@ -211,12 +254,19 @@
             </div>
             <input type="text" class="hack-input" placeholder="Zugangscode eingeben...">
             <div class="hack-status"></div>
+            
+            <div class="hint-box" id="current-hint">
+                <p>Schau dir die <span class="hint-highlight">markierten Hinweise</span> in den Protokollen an.</p>
+                <p>Der erste Code ist ein <span class="hint-highlight">griechischer Buchstabe</span>, den du auf den Buttons siehst.</p>
+            </div>
+            
+            <button class="help-button">Hinweis anzeigen</button>
         </div>
 
         <div class="frequency-analyzer">
             <h3>Frequenz-Analyzer</h3>
             <div class="analyzer-controls">
-                <button class="analyzer-button" data-freq="1.618">φ (Phi)</button>
+                <button class="analyzer-button" data-freq="1.618"><span class="hint-highlight">φ (Phi)</span></button>
                 <button class="analyzer-button" data-freq="2.618">φ²</button>
                 <button class="analyzer-button" data-freq="4.236">φ³</button>
                 <button class="analyzer-button" data-freq="6.854">φ⁴</button>
@@ -226,7 +276,7 @@
 
         <div class="protocol" style="animation-delay: 0.5s">
             <div class="timestamp">09:15 – Erste Messung</div>
-            <p>Die Grundfrequenz der Kaffeemaschine entspricht exakt der Fibonacci-Sequenz: 1.618033989...</p>
+            <p>Die Grundfrequenz der Kaffeemaschine entspricht exakt der <span class="hint-highlight">Fibonacci</span>-Sequenz: <span class="hint-highlight">1.618033989...</span></p>
             <div class="hidden-note" data-code="phi1">
                 Notiz: Die Maschine scheint auf φ gestimmt zu sein...
             </div>
@@ -234,7 +284,7 @@
 
         <div class="protocol" style="animation-delay: 1s">
             <div class="timestamp">10:30 – Akustische Analyse</div>
-            <p>Raumresonanz folgt dem goldenen Schnitt. Kein Zufall möglich.</p>
+            <p>Raumresonanz folgt dem <span class="hint-highlight">goldenen Schnitt</span>. Kein Zufall möglich.</p>
             <div class="hidden-note" data-code="phi2">
                 Versteckte Frequenzen entdeckt im Bereich φ² bis φ³
             </div>
@@ -244,7 +294,7 @@
             <div class="timestamp">11:45 – Tischkonfiguration</div>
             <p>Die Anordnung der Tische bildet eine perfekte harmonische Reihe.</p>
             <div class="hidden-note" data-code="phi3">
-                Die Tische schwingen in Resonanz!
+                Die Tische schwingen in Resonanz mit dem <span class="hint-highlight">goldenen</span> Verhältnis!
             </div>
         </div>
     </div>
@@ -274,6 +324,14 @@
                         oscillator = null;
                     }
                 } else {
+                    document.querySelectorAll('.analyzer-button.active').forEach(btn => {
+                        btn.classList.remove('active');
+                        if (oscillator) {
+                            oscillator.stop();
+                            oscillator = null;
+                        }
+                    });
+                    
                     this.classList.add('active');
                     oscillator = audioCtx.createOscillator();
                     oscillator.frequency.value = freq;
@@ -310,49 +368,97 @@
         }
 
         document.querySelectorAll('.protocol').forEach(protocol => {
-            protocol.addEventListener('mouseover', function() {
+            protocol.addEventListener('click', function() {
                 const note = this.querySelector('.hidden-note');
-                if (note) note.style.display = 'block';
-            });
-
-            protocol.addEventListener('mouseout', function() {
-                const note = this.querySelector('.hidden-note');
-                if (note) note.style.display = 'none';
+                if (note) {
+                    if (note.style.display === 'block') {
+                        note.style.display = 'none';
+                    } else {
+                        note.style.display = 'block';
+                    }
+                }
             });
         });
 
         const hackInput = document.querySelector('.hack-input');
         const progressFill = document.querySelector('.progress-fill');
         const hackStatus = document.querySelector('.hack-status');
+        const hintBox = document.getElementById('current-hint');
         let accessLevel = 0;
-        const correctCodes = ['PHI', '1.618', 'FIBONACCI', 'GOLDENSCHNITT'];
+        
+        // Einfachere Codes mit exakteren Hinweisen
+        const correctCodes = ['PHI', '1.618', 'FIBONACCI', 'GOLDENER'];
+        
+        // Hinweise für jeden Level
+        const hints = [
+            "Schau dir die <span class='hint-highlight'>markierten Hinweise</span> in den Protokollen an. Der erste Code ist ein <span class='hint-highlight'>griechischer Buchstabe</span>, den du auf den Buttons siehst.",
+            "Für den zweiten Code, sieh dir die <span class='hint-highlight'>Zahlen</span> in den Protokollen genauer an.",
+            "Der dritte Code bezieht sich auf die <span class='hint-highlight'>Sequenz</span>, die mehrfach erwähnt wird.",
+            "Der letzte Code hat mit dem <span class='hint-highlight'>goldenen</span> Verhältnis zu tun. Es ist das erste Wort aus 'goldener Schnitt'."
+        ];
+        
+        // Erfolgshinweise nach jedem richtigen Code
+        const successMessages = [
+            "Gut gemacht! Das erste Wort ist PHI. <br>Jetzt brauchen wir eine <span class='hint-highlight'>Zahl</span>...",
+            "Ausgezeichnet! Die Zahl 1.618 ist korrekt. <br>Als nächstes suchen wir einen <span class='hint-highlight'>Namen</span> für die mathematische Sequenz...",
+            "Perfekt! FIBONACCI ist richtig. <br>Für den letzten Code brauchen wir das <span class='hint-highlight'>erste Wort</span> aus 'goldener Schnitt'...",
+            "ZUGRIFF GEWÄHRT – ALLE PROTOKOLLE FREIGESCHALTET! <br>Du hast alle Codes gefunden: PHI, 1.618, FIBONACCI und GOLDENER"
+        ];
 
         hackInput.addEventListener('keyup', function(e) {
             if (e.key === 'Enter') {
-                const input = this.value.toUpperCase();
-                if (correctCodes.includes(input)) {
+                const input = this.value.toUpperCase().trim();
+                
+                if (input === correctCodes[accessLevel]) {
+                    // Richtiger Code
+                    this.classList.add('success-animation');
+                    setTimeout(() => this.classList.remove('success-animation'), 1500);
+                    
                     accessLevel++;
                     progressFill.style.width = (accessLevel / correctCodes.length * 100) + '%';
                     this.value = '';
                     
+                    // Erfolgshinweis anzeigen
+                    hackStatus.innerHTML = successMessages[accessLevel - 1];
+                    hackStatus.style.color = '#00ff00';
+                    
+                    // Nächsten Hinweis anzeigen, wenn nicht fertig
+                    if (accessLevel < correctCodes.length) {
+                        hintBox.innerHTML = hints[accessLevel];
+                        hintBox.classList.add('visible');
+                    }
+                    
+                    // Alle Protokolle freischalten, wenn fertig
                     if (accessLevel >= correctCodes.length) {
-                        hackStatus.innerHTML = 'ZUGRIFF GEWÄHRT – ALLE PROTOKOLLE FREIGESCHALTET';
-                        hackStatus.style.color = '#00ff00';
                         document.querySelectorAll('.hidden-note').forEach(note => {
                             note.style.display = 'block';
                         });
-                    } else {
-                        hackStatus.innerHTML = `Zugangslevel ${accessLevel} erreicht. Nächster Code erforderlich.`;
                     }
                 } else {
-                    hackStatus.innerHTML = 'FALSCHER CODE';
-                    hackStatus.style.color = '#ff0000';
+                    // Falscher Code
+                    hackStatus.innerHTML = 'FALSCHER CODE – Versuch es nochmal mit dem Hinweis';
+                    hackStatus.style.color = '#ff6666';
                     this.classList.add('glitch');
                     setTimeout(() => this.classList.remove('glitch'), 300);
+                    
+                    // Hinweis anzeigen
+                    hintBox.classList.add('visible');
                 }
             }
         });
 
+        // Help-Button Funktionalität
+        document.querySelector('.help-button').addEventListener('click', function() {
+            if (hintBox.classList.contains('visible')) {
+                hintBox.classList.remove('visible');
+                this.textContent = 'Hinweis anzeigen';
+            } else {
+                hintBox.classList.add('visible');
+                this.textContent = 'Hinweis ausblenden';
+            }
+        });
+
+        // Canvas initialisieren
         canvas.width = canvas.offsetWidth;
         canvas.height = canvas.offsetHeight;
         drawFrequency();
