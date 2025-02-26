@@ -389,10 +389,12 @@
         // Einfachere Codes mit exakteren Hinweisen
         const correctCodes = ['PHI', '1.618', 'FIBONACCI', 'GOLDENER'];
         
+        // Die Codes werden auch in Kleinbuchstaben akzeptiert
+        
         // Hinweise für jeden Level
         const hints = [
             "Schau dir die <span class='hint-highlight'>markierten Hinweise</span> in den Protokollen an. Der erste Code ist ein <span class='hint-highlight'>griechischer Buchstabe</span>, den du auf den Buttons siehst.",
-            "Für den zweiten Code, sieh dir die <span class='hint-highlight'>Zahlen</span> in den Protokollen genauer an.",
+            "Für den zweiten Code, sieh dir die <span class='hint-highlight'>Zahlen</span> in den Protokollen genauer an. Gib einfach 1.618 ein.",
             "Der dritte Code bezieht sich auf die <span class='hint-highlight'>Sequenz</span>, die mehrfach erwähnt wird.",
             "Der letzte Code hat mit dem <span class='hint-highlight'>goldenen</span> Verhältnis zu tun. Es ist das erste Wort aus 'goldener Schnitt'."
         ];
@@ -400,16 +402,33 @@
         // Erfolgshinweise nach jedem richtigen Code
         const successMessages = [
             "Gut gemacht! Das erste Wort ist PHI. <br>Jetzt brauchen wir eine <span class='hint-highlight'>Zahl</span>...",
-            "Ausgezeichnet! Die Zahl 1.618 ist korrekt. <br>Als nächstes suchen wir einen <span class='hint-highlight'>Namen</span> für die mathematische Sequenz...",
+            "Ausgezeichnet! Die Zahl 1.618 ist korrekt. <br>Als nächstes suchen wir einen <span class='hint-highlight'>Namen</span> für die mathematische Sequenz... Der Name ist 'FIBONACCI'",
             "Perfekt! FIBONACCI ist richtig. <br>Für den letzten Code brauchen wir das <span class='hint-highlight'>erste Wort</span> aus 'goldener Schnitt'...",
             "ZUGRIFF GEWÄHRT – ALLE PROTOKOLLE FREIGESCHALTET! <br>Du hast alle Codes gefunden: PHI, 1.618, FIBONACCI und GOLDENER"
         ];
 
         hackInput.addEventListener('keyup', function(e) {
             if (e.key === 'Enter') {
-                const input = this.value.toUpperCase().trim();
+                const input = this.value.trim();
+                const upperInput = input.toUpperCase();
                 
-                if (input === correctCodes[accessLevel]) {
+                // Flexiblere Erkennung für die Codes
+                let isCorrect = false;
+                
+                // Prüfe für den Code "1.618"
+                if (accessLevel === 1 && (upperInput === "1.618" || upperInput.startsWith("1.618") || upperInput === "1,618" || upperInput.includes("1.618"))) {
+                    isCorrect = true;
+                }
+                // Prüfe für FIBONACCI - Groß- oder Kleinschreibung ist egal
+                else if (accessLevel === 2 && upperInput === correctCodes[accessLevel]) {
+                    isCorrect = true;
+                }
+                // Standard-Prüfung für andere Codes
+                else if (upperInput === correctCodes[accessLevel]) {
+                    isCorrect = true;
+                }
+                
+                if (isCorrect) {
                     // Richtiger Code
                     this.classList.add('success-animation');
                     setTimeout(() => this.classList.remove('success-animation'), 1500);
