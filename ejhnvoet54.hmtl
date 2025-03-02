@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mirco Deflorin | Autor & Schriftsteller - Podcasts</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #1c2939;
+            color: #ffffff;
+        }
+
+        .header {
+            background-color: #2c3e50;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid #a8b2bd;
+            border-radius: 5px;
+            color: #ffffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-color: rgba(0, 0, 0, 0.5);
+            border-color: #ffffff;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .podcast-card {
+            background-color: rgba(44, 62, 80, 0.7);
+            padding: 40px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            position: relative;
+        }
+
+        .podcast-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #e74c3c, transparent);
+        }
+
+        .countdown {
+            font-size: 1.5em;
+            color: #e74c3c;
+            margin-bottom: 30px;
+        }
+
+        .podcast-title {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #e74c3c;
+        }
+
+        .podcast-description {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .podcast-container {
+            margin: 30px 0;
+        }
+
+        .podcast-player {
+            width: 100%;
+            height: 50px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 25px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            box-sizing: border-box;
+            margin-top: 20px;
+        }
+
+        .play-button {
+            width: 30px;
+            height: 30px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+
+        .podcast-progress {
+            flex-grow: 1;
+            height: 4px;
+            background-color: #4a5568;
+            border-radius: 2px;
+            margin: 0 15px;
+            position: relative;
+        }
+
+        .podcast-progress::before {
+            content: '';
+            position: absolute;
+            height: 100%;
+            background-color: #e74c3c;
+            border-radius: 2px;
+            width: var(--progress, 0%);
+        }
+
+        .podcast-progress::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background-color: #e74c3c;
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+            left: var(--progress, 0%);
+        }
+
+        .podcast-time {
+            color: #a0aec0;
+            font-size: 0.9em;
+        }
+
+        .volume-control {
+            margin-left: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .volume-icon {
+            margin-right: 10px;
+        }
+
+        .volume-slider {
+            width: 60px;
+            height: 4px;
+            background-color: #4a5568;
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .volume-slider::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: #e74c3c;
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 70%;
+        }
+
+        @media (max-width: 768px) {
+            .podcast-title {
+                font-size: 1.5em;
+            }
+            
+            .home-button {
+                top: 10px;
+                left: 10px;
+                padding: 8px 16px;
+                font-size: 0.9em;
+            }
+            
+            .podcast-player {
+                padding: 0 10px;
+            }
+            
+            .volume-control {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="http://mircodeflorin.github.io/" class="home-button">← Home</a>
+        <h1>Mirco Deflorin</h1>
+        <p>Autor & Schriftsteller</p>
+    </div>
+
+    <div class="container">
+        <div class="podcast-card">
+            <h2>Die Podcasts zu "Alles ausser Kontrolle"</h2>
+            <p>Tauche tiefer ein in die chaotische Welt mit den Charakteren des Buches!</p>
+            
+            <div class="podcast-container">
+                <div class="podcast-title">1. Philosophie an der Fensterbank</div>
+                <div class="podcast-description">
+                    Herbert, der weise Kaktus, und Gustav, der meditative Wellensittich, teilen ihre tiefgründigen Erkenntnisse über das Leben und diskutieren die Kunst der Stille als ultimative Form der Weisheit.
+                </div>
+                
+                <audio id="podcast1" src="1-Philosophie-an-der-Fensterbank.mp3"></audio>
+                <div class="podcast-player">
+                    <button class="play-button" onclick="togglePlay('podcast1')">▶</button>
+                    <div class="podcast-progress"></div>
+                    <div class="podcast-time">0:00 / 5:12</div>
+                    <div class="volume-control">
+                        <span class="volume-icon">🔊</span>
+                        <div class="volume-slider"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="podcast-container">
+                <div class="podcast-title">2. Managementstrategie & Aristokratie</div>
+                <div class="podcast-description">
+                    Thomas, der unfreiwillige Guru, und Herr Schnurr, die aristokratische Katze, vergleichen ihre gegensätzlichen Führungsstile und diskutieren die Feinheiten von natürlicher und zufälliger Autorität.
+                </div>
+                
+                <audio id="podcast2" src="2-Managementstrategie-und-Aristokratie.mp3"></audio>
+                <div class="podcast-player">
+                    <button class="play-button" onclick="togglePlay('podcast2')">▶</button>
+                    <div class="podcast-progress"></div>
+                    <div class="podcast-time">0:00 / 4:48</div>
+                    <div class="volume-control">
+                        <span class="volume-icon">🔊</span>
+                        <div class="volume-slider"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="podcast-container">
+                <div class="podcast-title">3. Realitätsverschiebungen</div>
+                <div class="podcast-description">
+                    Dr. Brinkmann, der Mann mit den multiplen Identitäten, und Madame Gestern, die rückwärts prophezeiende Wahrsagerin, diskutieren die Natur der Zeit und die Frage, was eigentlich "normal" bedeutet.
+                </div>
+                
+                <audio id="podcast3" src="3-Realitätsverschiebungen.mp3"></audio>
+                <div class="podcast-player">
+                    <button class="play-button" onclick="togglePlay('podcast3')">▶</button>
+                    <div class="podcast-progress"></div>
+                    <div class="podcast-time">0:00 / 5:35</div>
+                    <div class="volume-control">
+                        <span class="volume-icon">🔊</span>
+                        <div class="volume-slider"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="podcast-container">
+                <div class="podcast-title">4. Drama hinter den Kulissen</div>
+                <div class="podcast-description">
+                    Waldemar, der Soap-Opera süchtige Goldfisch, und Dr. Lohmann, der Mathematiker, diskutieren dramatische Wendungen und die erschütternde Erkenntnis, dass selbst Soap-Operas mathematischen Mustern folgen.
+                </div>
+                
+                <audio id="podcast4" src="4-Drama-hinter-den-Kulissen.mp3"></audio>
+                <div class="podcast-player">
+                    <button class="play-button" onclick="togglePlay('podcast4')">▶</button>
+                    <div class="podcast-progress"></div>
+                    <div class="podcast-time">0:00 / 4:22</div>
+                    <div class="volume-control">
+                        <span class="volume-icon">🔊</span>
+                        <div class="volume-slider"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="podcast-container">
+                <div class="podcast-title">5. Tech-Support für Chaos</div>
+                <div class="podcast-description">
+                    Karl, der IT-Techniker, und der Hausmeister aus der Ausreden AG teilen ihre geheimen Tricks zur Problemlösung und die besten Ausreden für nicht behebbare Fehler.
+                </div>
+                
+                <audio id="podcast5" src="5-Tech-Support-für-Chaos.mp3"></audio>
+                <div class="podcast-player">
+                    <button class="play-button" onclick="togglePlay('podcast5')">▶</button>
+                    <div class="podcast-progress"></div>
+                    <div class="podcast-time">0:00 / 5:03</div>
+                    <div class="volume-control">
+                        <span class="volume-icon">🔊</span>
+                        <div class="volume-slider"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="podcast-container">
+                <div class="podcast-title">6. Kaffee, Kunst & Krisen</div>
+                <div class="podcast-description">
+                    Maestro Caruso, der farbenblinde Dirigent, und Sandra, die begeisterte Teamleiterin, erklären, wie man Missverständnisse in Meisterwerke verwandelt und warum Maestros "marineblauer" Frack eigentlich pink ist.
+                </div>
+                
+                <audio id="podcast6" src="6-Kaffee-Kunst-und-Krisen.mp3"></audio>
+                <div class="podcast-player">
+                    <button class="play-button" onclick="togglePlay('podcast6')">▶</button>
+                    <div class="podcast-progress"></div>
+                    <div class="podcast-time">0:00 / 4:55</div>
+                    <div class="volume-control">
+                        <span class="volume-icon">🔊</span>
+                        <div class="volume-slider"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="podcast-container">
+                <div class="podcast-title">7. Nachbarschaftsweisheiten</div>
+                <div class="podcast-description">
+                    Frau Eichinger, die allwissende Nachbarin, und Mike, der überforderte Tiersitter, diskutieren praktische Lösungen für komplizierte Haustierprobleme - von aristokratischen Katzen bis hin zu depressiven Goldfischen.
+                </div>
+                
+                <audio id="podcast7" src="7-Nachbarschaftsweisheiten.mp3"></audio>
+                <div class="podcast-player">
+                    <button class="play-button" onclick="togglePlay('podcast7')">▶</button>
+                    <div class="podcast-progress"></div>
+                    <div class="podcast-time">0:00 / 5:21</div>
+                    <div class="volume-control">
+                        <span class="volume-icon">🔊</span>
+                        <div class="volume-slider"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="podcast-container">
+                <div class="podcast-title">8. Existenzielle Ausreden</div>
+                <div class="podcast-description">
+                    Die Ausreden-Datenbank und Lisa aus dem Chaos-Café vergleichen ihre Techniken zur kreativen Realitätsanpassung und formulieren die ultimative Ausrede für jede Situation.
+                </div>
+                
+                <audio id="podcast8" src="8-Existenzielle-Ausreden.mp3"></audio>
+                <div class="podcast-player">
+                    <button class="play-button" onclick="togglePlay('podcast8')">▶</button>
+                    <div class="podcast-progress"></div>
+                    <div class="podcast-time">0:00 / 4:18</div>
+                    <div class="volume-control">
+                        <span class="volume-icon">🔊</span>
+                        <div class="volume-slider"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="podcast-container">
+                <div class="podcast-title">9. Zwischen den Dimensionen</div>
+                <div class="podcast-description">
+                    Lisa, die Realitätsanpassungs-Spezialistin, und Thomas, der unfreiwillige Guru, diskutieren das Leben in veränderten Realitäten und warum Thomas' Bemühungen, normal zu wirken, ihn nur noch erleuchteter erscheinen lassen.
+                </div>
+                
+                <audio id="podcast9" src="9-Zwischenden-Dimensionen.mp3"></audio>
+                <div class="podcast-player">
+                    <button class="play-button" onclick="togglePlay('podcast9')">▶</button>
+                    <div class="podcast-progress"></div>
+                    <div class="podcast-time">0:00 / 4:42</div>
+                    <div class="volume-control">
+                        <span class="volume-icon">🔊</span>
+                        <div class="volume-slider"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="podcast-container">
+                <div class="podcast-title">10. Kreatives Chaos-Management</div>
+                <div class="podcast-description">
+                    Sandra, die begeisterte Teamleiterin, und Dr. Lohmann, der Mathematiker, entdecken, wie ihre gegensätzlichen Ansätze - enthusiastische Spontaneität und mathematische Präzision - sich perfekt ergänzen können.
+                </div>
+                
+                <audio id="podcast10" src="10-Kreatives-Chaos-Management.mp3"></audio>
+                <div class="podcast-player">
+                    <button class="play-button" onclick="togglePlay('podcast10')">▶</button>
+                    <div class="podcast-progress"></div>
+                    <div class="podcast-time">0:00 / 5:08</div>
+                    <div class="volume-control">
+                        <span class="volume-icon">🔊</span>
+                        <div class="volume-slider"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Manage audio player functionality
+        let currentlyPlaying = null;
+        
+        function togglePlay(audioId) {
+            const audio = document.getElementById(audioId);
+            const button = document.querySelector(`[onclick="togglePlay('${audioId}')"]`);
+            
+            // If a different audio is currently playing, pause it first
+            if (currentlyPlaying && currentlyPlaying !== audio) {
+                currentlyPlaying.pause();
+                document.querySelectorAll('.play-button').forEach(btn => {
+                    btn.textContent = '▶';
+                });
+            }
+            
+            // Toggle play/pause for the selected audio
+            if (audio.paused) {
+                audio.play();
+                button.textContent = '❚❚';
+                currentlyPlaying = audio;
+            } else {
+                audio.pause();
+                button.textContent = '▶';
+                currentlyPlaying = null;
+            }
+        }
+        
+        // Update time display when audio is playing
+        document.querySelectorAll('audio').forEach((audio, index) => {
+            const playerIndex = index + 1;
+            const timeDisplay = document.querySelector(`.podcast-container:nth-child(${playerIndex}) .podcast-time`);
+            const progressBar = document.querySelector(`.podcast-container:nth-child(${playerIndex}) .podcast-progress`);
+            
+            audio.addEventListener('timeupdate', function() {
+                const currentMin = Math.floor(audio.currentTime / 60);
+                const currentSec = Math.floor(audio.currentTime % 60).toString().padStart(2, '0');
+                const durationMin = Math.floor(audio.duration / 60);
+                const durationSec = Math.floor(audio.duration % 60).toString().padStart(2, '0');
+                
+                if (!isNaN(audio.duration)) {
+                    timeDisplay.textContent = `${currentMin}:${currentSec} / ${durationMin}:${durationSec}`;
+                    
+                    // Update progress bar position
+                    const progressPercentage = (audio.currentTime / audio.duration) * 100;
+                    progressBar.style.setProperty('--progress', `${progressPercentage}%`);
+                }
+            });
+            
+            // Reset when audio ends
+            audio.addEventListener('ended', function() {
+                const button = document.querySelector(`[onclick="togglePlay('podcast${playerIndex}')"]`);
+                button.textContent = '▶';
+                currentlyPlaying = null;
+            });
+        });
+    </script>
+</body>
+</html>
