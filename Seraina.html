@@ -4,1270 +4,1259 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meine 7-Tage Challenge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#efeefe',
+                            100: '#e0dffd',
+                            200: '#c2c0fb',
+                            300: '#a4a2f8',
+                            400: '#8684f5',
+                            500: '#6866f2',
+                            600: '#5D5CDE', // Primary color
+                            700: '#4a49b1',
+                            800: '#3c3b8e',
+                            900: '#2e2d6b',
+                        },
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-in': 'slideIn 0.5s ease-in-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideIn: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        :root {
-            --primary: #7e57c2;
-            --primary-light: #b085f5;
-            --primary-dark: #4d2c91;
-            --background: #f5f5f7;
-            --card: #ffffff;
-            --text: #333333;
-            --success: #66bb6a;
-        }
-        
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
-            line-height: 1.6;
-            color: var(--text);
-            background-color: var(--background);
-            padding: 20px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .container {
-            background-color: var(--card);
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            padding: 25px;
-            margin-bottom: 20px;
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        header h1 {
-            color: var(--primary-dark);
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-        
-        header p {
-            color: var(--text);
-            font-size: 16px;
-            max-width: 500px;
-            margin: 0 auto;
+        /* Check if dark mode is preferred */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                color-scheme: dark;
+            }
         }
         
         .section {
-            margin-bottom: 30px;
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
         }
         
-        h2 {
-            color: var(--primary-dark);
-            font-size: 22px;
-            margin-bottom: 15px;
-            border-bottom: 2px solid var(--primary-light);
-            padding-bottom: 8px;
+        .active {
+            display: block;
         }
         
-        h3 {
-            color: var(--primary);
-            font-size: 18px;
-            margin: 15px 0 10px;
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
         }
         
-        .challenge-box {
-            background-color: #f8f4ff;
-            border: 1px solid var(--primary-light);
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 15px;
+        .challenge-card {
+            transition: all 0.3s ease;
         }
         
-        .challenge-title {
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: var(--primary);
+        .challenge-card:hover {
+            transform: translateY(-5px);
         }
         
-        .challenge-desc {
-            font-size: 14px;
-            margin-bottom: 10px;
-            color: var(--text);
+        .selected {
+            border-color: #5D5CDE;
+            background-color: rgba(93, 92, 222, 0.1);
         }
         
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
+        .tab {
+            transition: all 0.2s ease;
         }
         
-        .checkbox-item input[type="checkbox"] {
-            margin-right: 10px;
+        /* Custom radio buttons */
+        input[type="radio"] {
+            display: none;
+        }
+        
+        .radio-label {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .radio-label.selected {
+            background-color: rgba(93, 92, 222, 0.2);
+            border-color: #5D5CDE;
+        }
+        
+        /* Emoji mood selector */
+        .mood-emoji {
+            transition: transform 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .mood-emoji:hover {
             transform: scale(1.2);
         }
         
-        input[type="text"], 
-        input[type="time"],
-        textarea,
-        select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-            margin-bottom: 10px;
-            font-family: inherit;
+        .mood-emoji.selected {
+            transform: scale(1.2);
+            filter: drop-shadow(0 0 5px rgba(93, 92, 222, 0.5));
         }
         
-        textarea {
-            min-height: 80px;
-            resize: vertical;
-        }
-        
-        button {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            display: block;
-            margin: 20px auto;
-            width: 100%;
-            max-width: 300px;
-        }
-        
-        button:hover {
-            background-color: var(--primary-dark);
-        }
-        
-        .tracker {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: space-between;
-            margin-top: 15px;
-        }
-        
-        .day {
-            width: 75px;
-            height: 75px;
-            border: 2px solid var(--primary);
+        /* Progress circles */
+        .progress-circle {
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             display: flex;
-            flex-direction: column;
+            align-items: center;
             justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            background-color: white;
-        }
-        
-        .day-number {
-            font-size: 20px;
             font-weight: bold;
-            color: var(--primary);
+            transition: all 0.3s ease;
         }
         
-        .day-label {
-            font-size: 14px;
-            color: var(--text);
+        /* Dark mode specific styles */
+        .dark .bg-white {
+            background-color: #181818;
         }
         
-        .day.completed {
-            background-color: var(--primary);
+        .dark .text-gray-800 {
+            color: #e0e0e0;
         }
         
-        .day.completed .day-number,
-        .day.completed .day-label {
-            color: white;
+        .dark .text-gray-700 {
+            color: #d0d0d0;
         }
         
-        .mood-selector {
-            display: flex;
-            justify-content: space-between;
-            margin: 15px 0;
+        .dark .text-gray-600 {
+            color: #b0b0b0;
         }
         
-        .mood-option {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
+        .dark .border-gray-200 {
+            border-color: #303030;
         }
         
-        .mood-emoji {
-            font-size: 28px;
-            margin-bottom: 5px;
-            transition: transform 0.2s;
+        .dark .bg-gray-100 {
+            background-color: #222222;
         }
         
-        .mood-option:hover .mood-emoji {
-            transform: scale(1.2);
-        }
-        
-        .mood-label {
-            font-size: 12px;
-        }
-        
-        .mood-option.selected .mood-emoji {
-            transform: scale(1.2);
-        }
-        
-        .mood-option.selected .mood-label {
-            font-weight: bold;
-            color: var(--primary);
-        }
-        
-        .daily-log {
-            background-color: #f0f0f0;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 25px;
-        }
-        
-        .daily-log h3 {
-            margin-top: 0;
-        }
-        
-        .log-entry {
-            background-color: white;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            border-left: 4px solid var(--primary);
-        }
-        
-        .log-date {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        
-        .log-mood {
-            margin-bottom: 10px;
-        }
-        
-        .log-challenges {
-            margin-bottom: 10px;
-        }
-        
-        .log-note {
-            font-style: italic;
-            font-size: 14px;
-            border-top: 1px solid #eee;
-            padding-top: 10px;
-            margin-top: 10px;
-        }
-        
-        .selection-options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 10px 0;
-        }
-        
-        .selection-option {
-            padding: 8px 15px;
-            background-color: #f0f0f0;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.2s;
-        }
-        
-        .selection-option:hover {
-            background-color: #e0e0e0;
-        }
-        
-        .selection-option.selected {
-            background-color: var(--primary);
-            color: white;
-        }
-        
-        .reward-section {
-            background-color: #fff8e1;
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px dashed #ffc107;
-            margin: 20px 0;
-        }
-        
-        .success-message {
-            display: none;
-            background-color: var(--success);
-            color: white;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            margin: 20px 0;
-        }
-        
-        .tab-container {
-            margin-bottom: 20px;
-        }
-        
-        .tab-buttons {
-            display: flex;
-            border-bottom: 1px solid #ddd;
-            margin-bottom: 15px;
-        }
-        
-        .tab-button {
-            padding: 10px 20px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            flex: 1;
-            text-align: center;
-            color: var(--text);
-            font-weight: bold;
-            position: relative;
-            margin: 0;
-            width: auto;
-        }
-        
-        .tab-button.active {
-            color: var(--primary);
-        }
-        
-        .tab-button.active::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background-color: var(--primary);
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        .goal-progress {
-            height: 10px;
-            background-color: #e0e0e0;
-            border-radius: 5px;
-            margin: 10px 0;
-            overflow: hidden;
-        }
-        
-        .progress-bar {
-            height: 100%;
-            background-color: var(--primary);
-            width: 0%;
-            transition: width 0.3s;
-        }
-        
-        @media (max-width: 600px) {
-            .container {
-                padding: 15px;
-            }
-            
-            h1 {
-                font-size: 24px;
-            }
-            
-            h2 {
-                font-size: 20px;
-            }
-            
-            .tracker {
-                justify-content: center;
-            }
-            
-            .day {
-                width: 60px;
-                height: 60px;
-                margin: 5px;
-            }
-            
-            .mood-emoji {
-                font-size: 24px;
-            }
+        .dark .bg-gray-50 {
+            background-color: #1e1e1e;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <header>
-            <h1>Meine 7-Tage Challenge</h1>
-            <p>Ein kleines Experiment für eine Woche - du entscheidest, was dir gut tut!</p>
-        </header>
-        
-        <div class="tab-container">
-            <div class="tab-buttons">
-                <button class="tab-button active" onclick="showTab('setup')">Mein Plan</button>
-                <button class="tab-button" onclick="showTab('daily')">Täglicher Check-in</button>
-                <button class="tab-button" onclick="showTab('progress')">Fortschritt</button>
-            </div>
-            
-            <div id="setup" class="tab-content active">
-                <div class="section">
-                    <h2>Meine Challenge auswählen</h2>
-                    <p>Wähle 2-3 kleine Herausforderungen, die du für 7 Tage ausprobieren willst:</p>
-                    
-                    <div class="challenge-box">
-                        <div class="challenge-title">Screen-Time Challenge</div>
-                        <div class="challenge-desc">Vor dem Schlafengehen bildschirmfreie Zeit einplanen</div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="challenge1" onchange="saveSelectedChallenges()">
-                            <label for="challenge1">Ich wähle diese Challenge</label>
-                        </div>
-                        <div class="selection-options" id="screen-time-options">
-                            <div class="selection-option" onclick="selectOption(this, 'screen-time')">30 Min.</div>
-                            <div class="selection-option" onclick="selectOption(this, 'screen-time')">45 Min.</div>
-                            <div class="selection-option" onclick="selectOption(this, 'screen-time')">60 Min.</div>
-                        </div>
-                    </div>
-                    
-                    <div class="challenge-box">
-                        <div class="challenge-title">Schlaf-Reset Challenge</div>
-                        <div class="challenge-desc">Jeden Tag zu einer festgelegten Zeit ins Bett gehen</div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="challenge2" onchange="saveSelectedChallenges()">
-                            <label for="challenge2">Ich wähle diese Challenge</label>
-                        </div>
-                        <label for="bedtime">Meine Schlafenszeit:</label>
-                        <input type="time" id="bedtime" onchange="saveSelectedChallenges()">
-                    </div>
-                    
-                    <div class="challenge-box">
-                        <div class="challenge-title">Morgen-Kickstart Challenge</div>
-                        <div class="challenge-desc">Jeden Tag bis zu einer bestimmten Zeit aufstehen</div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="challenge3" onchange="saveSelectedChallenges()">
-                            <label for="challenge3">Ich wähle diese Challenge</label>
-                        </div>
-                        <div class="selection-options" id="wakeup-options">
-                            <div class="selection-option" onclick="selectOption(this, 'wakeup')">11:00 Uhr</div>
-                            <div class="selection-option" onclick="selectOption(this, 'wakeup')">10:30 Uhr</div>
-                            <div class="selection-option" onclick="selectOption(this, 'wakeup')">10:00 Uhr</div>
-                        </div>
-                    </div>
-                    
-                    <div class="challenge-box">
-                        <div class="challenge-title">Mini-Move Challenge</div>
-                        <div class="challenge-desc">Ein wenig tägliche Bewegung für Körper und Geist</div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="challenge4" onchange="saveSelectedChallenges()">
-                            <label for="challenge4">Ich wähle diese Challenge</label>
-                        </div>
-                        <div class="selection-options" id="movement-options">
-                            <div class="selection-option" onclick="selectOption(this, 'movement')">5 Min. Dehnen</div>
-                            <div class="selection-option" onclick="selectOption(this, 'movement')">Kurzer Spaziergang</div>
-                            <div class="selection-option" onclick="selectOption(this, 'movement')">Etwas Tanzen</div>
-                        </div>
-                    </div>
-                    
-                    <div class="challenge-box">
-                        <div class="challenge-title">Familien-Frieden Challenge</div>
-                        <div class="challenge-desc">Kurze positive Interaktionen mit der Familie</div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="challenge5" onchange="saveSelectedChallenges()">
-                            <label for="challenge5">Ich wähle diese Challenge</label>
-                        </div>
-                    </div>
-                    
-                    <div class="challenge-box">
-                        <div class="challenge-title">Selbstfürsorge Challenge</div>
-                        <div class="challenge-desc">Bewusst etwas tun, das dir gut tut</div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="challenge6" onchange="saveSelectedChallenges()">
-                            <label for="challenge6">Ich wähle diese Challenge</label>
-                        </div>
-                        <textarea id="selfcare-ideas" placeholder="Was tut dir gut? (z.B. Lieblingsmusik hören, ein Bad nehmen...)" onchange="saveSelectedChallenges()"></textarea>
-                    </div>
-                    
-                    <div class="challenge-box">
-                        <div class="challenge-title">Eigene Challenge</div>
-                        <div class="challenge-desc">Etwas, das du dir selbst vornehmen möchtest</div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="challenge7" onchange="saveSelectedChallenges()">
-                            <label for="challenge7">Ich wähle diese Challenge</label>
-                        </div>
-                        <textarea id="custom-challenge" placeholder="Was möchtest du tun?" onchange="saveSelectedChallenges()"></textarea>
-                    </div>
-                </div>
-                
-                <div class="reward-section">
-                    <h2>Meine Belohnung</h2>
-                    <p>Wenn ich mindestens 5 von 7 Tagen meine Challenges geschafft habe, belohne ich mich mit:</p>
-                    <textarea id="reward" placeholder="Etwas, worauf ich mich freuen kann..." onchange="saveSelectedChallenges()"></textarea>
-                </div>
-                
-                <div class="section">
-                    <h2>Meine Vereinbarung</h2>
-                    <p>Ich probiere diese Challenge für 7 Tage aus. Danach entscheide ich selbst, ob ich weitermachen möchte.</p>
-                    <div style="display: flex; justify-content: space-between; margin-top: 20px;">
-                        <div style="text-align: center;">
-                            <p>Startdatum:</p>
-                            <input type="date" id="start-date" onchange="saveSelectedChallenges()">
-                        </div>
-                        <div style="text-align: center;">
-                            <p>Mein Name:</p>
-                            <input type="text" id="name" placeholder="Name" onchange="saveSelectedChallenges()">
-                        </div>
-                    </div>
-                </div>
-                
-                <button onclick="savePlan()">Meinen Plan speichern</button>
-                <div id="save-success" class="success-message">Dein Plan wurde gespeichert! Jetzt kannst du zum täglichen Check-in wechseln.</div>
-            </div>
-            
-            <div id="daily" class="tab-content">
-                <div class="section">
-                    <h2>Mein täglicher Check-in</h2>
-                    <p>Hier kannst du festhalten, wie dein Tag war und was du geschafft hast.</p>
-                    
-                    <label for="log-date">Datum:</label>
-                    <input type="date" id="log-date">
-                    
-                    <h3>Wie fühlst du dich heute?</h3>
-                    <div class="mood-selector">
-                        <div class="mood-option" onclick="selectMood(1)">
-                            <div class="mood-emoji">😢</div>
-                            <div class="mood-label">Sehr schlecht</div>
-                        </div>
-                        <div class="mood-option" onclick="selectMood(2)">
-                            <div class="mood-emoji">😕</div>
-                            <div class="mood-label">Schlecht</div>
-                        </div>
-                        <div class="mood-option" onclick="selectMood(3)">
-                            <div class="mood-emoji">😐</div>
-                            <div class="mood-label">Neutral</div>
-                        </div>
-                        <div class="mood-option" onclick="selectMood(4)">
-                            <div class="mood-emoji">🙂</div>
-                            <div class="mood-label">Gut</div>
-                        </div>
-                        <div class="mood-option" onclick="selectMood(5)">
-                            <div class="mood-emoji">😄</div>
-                            <div class="mood-label">Sehr gut</div>
-                        </div>
-                    </div>
-                    
-                    <h3>Was hast du heute geschafft?</h3>
-                    <div id="daily-challenges">
-                        <!-- Wird dynamisch befüllt basierend auf ausgewählten Challenges -->
-                    </div>
-                    
-                    <h3>Notiz für heute</h3>
-                    <textarea id="daily-note" placeholder="Was möchtest du zu heute festhalten? Was hat geklappt? Was war schwierig?"></textarea>
-                    
-                    <button onclick="saveDaily()">Eintrag speichern</button>
-                    <div id="daily-success" class="success-message">Dein Eintrag wurde gespeichert! Super gemacht!</div>
-                </div>
-                
-                <div class="section">
-                    <h2>Tägliche Einträge</h2>
-                    <div id="log-entries">
-                        <!-- Wird dynamisch befüllt mit den täglichen Einträgen -->
-                    </div>
-                </div>
-            </div>
-            
-            <div id="progress" class="tab-content">
-                <div class="section">
-                    <h2>Mein 7-Tage Fortschritt</h2>
-                    <p>Hier siehst du, wie weit du schon gekommen bist:</p>
-                    
-                    <div class="tracker">
-                        <div class="day" onclick="toggleDay(1)">
-                            <div class="day-number">1</div>
-                            <div class="day-label">Tag</div>
-                        </div>
-                        <div class="day" onclick="toggleDay(2)">
-                            <div class="day-number">2</div>
-                            <div class="day-label">Tag</div>
-                        </div>
-                        <div class="day" onclick="toggleDay(3)">
-                            <div class="day-number">3</div>
-                            <div class="day-label">Tag</div>
-                        </div>
-                        <div class="day" onclick="toggleDay(4)">
-                            <div class="day-number">4</div>
-                            <div class="day-label">Tag</div>
-                        </div>
-                        <div class="day" onclick="toggleDay(5)">
-                            <div class="day-number">5</div>
-                            <div class="day-label">Tag</div>
-                        </div>
-                        <div class="day" onclick="toggleDay(6)">
-                            <div class="day-number">6</div>
-                            <div class="day-label">Tag</div>
-                        </div>
-                        <div class="day" onclick="toggleDay(7)">
-                            <div class="day-number">7</div>
-                            <div class="day-label">Tag</div>
-                        </div>
-                    </div>
-                    
-                    <h3 style="margin-top: 20px;">Dein Ziel: 5 von 7 Tagen</h3>
-                    <div class="goal-progress">
-                        <div class="progress-bar" id="progress-bar"></div>
-                    </div>
-                    <p id="progress-text">Du hast bisher 0 von 7 Tagen geschafft</p>
-                    
-                    <h3>Meine Stimmung im Verlauf</h3>
-                    <div id="mood-chart" style="height: 150px; margin-top: 15px; display: flex; align-items: flex-end;">
-                        <!-- Wird dynamisch befüllt -->
-                    </div>
-                    
-                    <div class="reward-section" style="margin-top: 30px;">
-                        <h3>Meine Belohnung:</h3>
-                        <p id="reward-text">Wird geladen...</p>
-                    </div>
-                </div>
-                
-                <div class="section">
-                    <h2>Meine Erkenntnisse</h2>
-                    <p>Nach den 7 Tagen: Was hat dir geholfen? Was möchtest du beibehalten?</p>
-                    <textarea id="reflections" placeholder="Deine Gedanken zur Challenge..." onchange="saveReflections()"></textarea>
-                </div>
-            </div>
+<body class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen">
+    <!-- Header and Navigation -->
+    <header class="bg-primary-600 text-white shadow-md">
+        <div class="container mx-auto px-4 py-4">
+            <h1 class="text-2xl font-bold text-center">Meine 7-Tage Challenge</h1>
+            <p class="text-center mt-1">Ein kleines Experiment für eine Woche - du entscheidest, was dir gut tut!</p>
         </div>
-    </div>
-    
-    <script>
-        // Globale Variablen
-        let selectedMood = 0;
-        let completedDays = [];
-        
-        // Seite initialisieren
-        window.onload = function() {
-            setToday();
-            loadSelectedChallenges();
-            updateDailyCheckboxes();
-            loadLogEntries();
-            updateProgressView();
-        }
-        
-        // Aktuelles Datum setzen
-        function setToday() {
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('log-date').value = today;
+        <nav class="bg-primary-700">
+            <div class="container mx-auto px-4">
+                <div class="flex justify-center space-x-1 sm:space-x-4 overflow-x-auto">
+                    <button id="tab-plan" class="tab text-white py-3 px-2 sm:px-4 font-medium border-b-2 border-transparent hover:border-white focus:outline-none">Mein Plan</button>
+                    <button id="tab-checkin" class="tab text-white py-3 px-2 sm:px-4 font-medium border-b-2 border-transparent hover:border-white focus:outline-none">Täglicher Check-in</button>
+                    <button id="tab-progress" class="tab text-white py-3 px-2 sm:px-4 font-medium border-b-2 border-transparent hover:border-white focus:outline-none">Fortschritt</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 py-6 max-w-4xl">
+        <!-- Plan Section -->
+        <section id="section-plan" class="section active">
+            <h2 class="text-2xl font-bold mb-6">Meine Challenge auswählen</h2>
+            <p class="mb-4">Wähle 2-3 kleine Herausforderungen, die du für 7 Tage ausprobieren willst:</p>
             
-            // Wenn kein Startdatum gesetzt, heute als Standard setzen
-            if (!document.getElementById('start-date').value) {
-                document.getElementById('start-date').value = today;
-            }
-        }
-        
-        // Tab-Wechsel
-        function showTab(tabId) {
-            // Alle Tabs verstecken
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // Alle Tab-Buttons deaktivieren
-            document.querySelectorAll('.tab-button').forEach(button => {
-                button.classList.remove('active');
-            });
-            
-            // Gewählten Tab anzeigen
-            document.getElementById(tabId).classList.add('active');
-            
-            // Tab-Button aktivieren
-            document.querySelectorAll('.tab-button').forEach(button => {
-                if (button.getAttribute('onclick').includes(tabId)) {
-                    button.classList.add('active');
-                }
-            });
-            
-            // Besondere Aktionen für bestimmte Tabs
-            if (tabId === 'daily') {
-                updateDailyCheckboxes();
-            } else if (tabId === 'progress') {
-                updateProgressView();
-            }
-        }
-        
-        // Option auswählen (für die verschiedenen Selectors)
-        function selectOption(element, optionGroup) {
-            // Alle Optionen in der Gruppe deselektieren
-            const options = document.getElementById(optionGroup + '-options').getElementsByClassName('selection-option');
-            for (let i = 0; i < options.length; i++) {
-                options[i].classList.remove('selected');
-            }
-            
-            // Gewählte Option selektieren
-            element.classList.add('selected');
-            
-            // Speichern
-            saveSelectedChallenges();
-        }
-        
-        // Stimmung auswählen
-        function selectMood(level) {
-            selectedMood = level;
-            
-            // Alle Stimmungen deselektieren
-            document.querySelectorAll('.mood-option').forEach((option, index) => {
-                option.classList.remove('selected');
-            });
-            
-            // Gewählte Stimmung selektieren
-            document.querySelectorAll('.mood-option')[level-1].classList.add('selected');
-        }
-        
-        // Ausgewählte Challenges speichern
-        function saveSelectedChallenges() {
-            const challenges = {
-                challenge1: document.getElementById('challenge1').checked,
-                challenge2: document.getElementById('challenge2').checked,
-                challenge3: document.getElementById('challenge3').checked,
-                challenge4: document.getElementById('challenge4').checked,
-                challenge5: document.getElementById('challenge5').checked,
-                challenge6: document.getElementById('challenge6').checked,
-                challenge7: document.getElementById('challenge7').checked,
-                bedtime: document.getElementById('bedtime').value,
-                selfcareIdeas: document.getElementById('selfcare-ideas').value,
-                customChallenge: document.getElementById('custom-challenge').value,
-                reward: document.getElementById('reward').value,
-                startDate: document.getElementById('start-date').value,
-                name: document.getElementById('name').value
-            };
-            
-            // Ausgewählte Optionen speichern
-            document.querySelectorAll('.selection-options').forEach(selector => {
-                const selected = selector.querySelector('.selected');
-                if (selected) {
-                    const selectorId = selector.id.split('-options')[0];
-                    challenges[selectorId + 'Selected'] = selected.innerText;
-                }
-            });
-            
-            localStorage.setItem('challenges', JSON.stringify(challenges));
-        }
-        
-        // Plan speichern und bestätigen
-        function savePlan() {
-            saveSelectedChallenges();
-            
-            // Erfolgsbenachrichtigung anzeigen
-            const successMsg = document.getElementById('save-success');
-            successMsg.style.display = 'block';
-            
-            // Nach 3 Sekunden zum täglichen Check-in wechseln
-            setTimeout(() => {
-                showTab('daily');
-                successMsg.style.display = 'none';
-            }, 3000);
-        }
-        
-        // Ausgewählte Challenges laden
-        function loadSelectedChallenges() {
-            const savedChallenges = localStorage.getItem('challenges');
-            if (savedChallenges) {
-                const challenges = JSON.parse(savedChallenges);
-                
-                // Checkboxes
-                document.getElementById('challenge1').checked = challenges.challenge1;
-                document.getElementById('challenge2').checked = challenges.challenge2;
-                document.getElementById('challenge3').checked = challenges.challenge3;
-                document.getElementById('challenge4').checked = challenges.challenge4;
-                document.getElementById('challenge5').checked = challenges.challenge5;
-                document.getElementById('challenge6').checked = challenges.challenge6;
-                document.getElementById('challenge7').checked = challenges.challenge7;
-                
-                // Textfelder
-                document.getElementById('bedtime').value = challenges.bedtime;
-                document.getElementById('selfcare-ideas').value = challenges.selfcareIdeas;
-                document.getElementById('custom-challenge').value = challenges.customChallenge;
-                document.getElementById('reward').value = challenges.reward;
-                document.getElementById('start-date').value = challenges.startDate;
-                document.getElementById('name').value = challenges.name;
-                
-                // Selektierte Optionen
-                if (challenges.screenTimeSelected) {
-                    selectOptionByText('screen-time-options', challenges.screenTimeSelected);
-                }
-                if (challenges.wakeupSelected) {
-                    selectOptionByText('wakeup-options', challenges.wakeupSelected);
-                }
-                if (challenges.movementSelected) {
-                    selectOptionByText('movement-options', challenges.movementSelected);
-                }
-                
-                // Belohnungstext aktualisieren
-                document.getElementById('reward-text').innerText = challenges.reward || "Keine Belohnung festgelegt";
-            }
-        }
-        
-        // Option nach Text auswählen
-        function selectOptionByText(optionsId, text) {
-            const options = document.getElementById(optionsId).getElementsByClassName('selection-option');
-            for (let i = 0; i < options.length; i++) {
-                if (options[i].innerText === text) {
-                    options[i].classList.add('selected');
-                    break;
-                }
-            }
-        }
-        
-        // Tägliche Checkboxen aktualisieren basierend auf ausgewählten Challenges
-        function updateDailyCheckboxes() {
-            const savedChallenges = localStorage.getItem('challenges');
-            if (!savedChallenges) return;
-            
-            const challenges = JSON.parse(savedChallenges);
-            const dailyChallengesDiv = document.getElementById('daily-challenges');
-            dailyChallengesDiv.innerHTML = '';
-            
-            // Für jede ausgewählte Challenge eine Checkbox erstellen
-            if (challenges.challenge1) {
-                addDailyCheckbox('daily-c1', 'Screen-Time: ' + (challenges.screenTimeSelected || '30 Min.') + ' vor dem Schlafen keine Bildschirme');
-            }
-            if (challenges.challenge2) {
-                addDailyCheckbox('daily-c2', 'Bis ' + (challenges.bedtime || '22:00') + ' Uhr ins Bett gegangen');
-            }
-            if (challenges.challenge3) {
-                addDailyCheckbox('daily-c3', 'Bis ' + (challenges.wakeupSelected || '11:00 Uhr') + ' aufgestanden');
-            }
-            if (challenges.challenge4) {
-                addDailyCheckbox('daily-c4', 'Bewegung: ' + (challenges.movementSelected || '5 Min. Bewegung'));
-            }
-            if (challenges.challenge5) {
-                addDailyCheckbox('daily-c5', 'Positives Gespräch mit einem Familienmitglied');
-            }
-            if (challenges.challenge6) {
-                addDailyCheckbox('daily-c6', 'Selbstfürsorge: Etwas getan, das mir gut tut');
-            }
-            if (challenges.challenge7 && challenges.customChallenge) {
-                addDailyCheckbox('daily-c7', 'Eigene Challenge: ' + challenges.customChallenge);
-            }
-        }
-        
-        // Checkbox für tägliches Tracking hinzufügen
-        function addDailyCheckbox(id, label) {
-            const dailyChallengesDiv = document.getElementById('daily-challenges');
-            
-            const checkboxItem = document.createElement('div');
-            checkboxItem.className = 'checkbox-item';
-            
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.id = id;
-            
-            const labelElement = document.createElement('label');
-            labelElement.htmlFor = id;
-            labelElement.innerText = label;
-            
-            checkboxItem.appendChild(checkbox);
-            checkboxItem.appendChild(labelElement);
-            dailyChallengesDiv.appendChild(checkboxItem);
-        }
-        
-        // Täglichen Eintrag speichern
-        function saveDaily() {
-            if (selectedMood === 0) {
-                alert('Bitte wähle eine Stimmung aus.');
-                return;
-            }
-            
-            const date = document.getElementById('log-date').value;
-            if (!date) {
-                alert('Bitte wähle ein Datum aus.');
-                return;
-            }
-            
-            // Erledige Challenges sammeln
-            const completedChallenges = [];
-            document.querySelectorAll('#daily-challenges input[type="checkbox"]').forEach(checkbox => {
-                if (checkbox.checked) {
-                    completedChallenges.push({
-                        id: checkbox.id,
-                        label: checkbox.nextElementSibling.innerText
-                    });
-                }
-            });
-            
-            const note = document.getElementById('daily-note').value;
-            
-            // Eintrag erstellen
-            const entry = {
-                date: date,
-                mood: selectedMood,
-                completedChallenges: completedChallenges,
-                note: note
-            };
-            
-            // Einträge laden und neuen hinzufügen
-            let entries = [];
-            const savedEntries = localStorage.getItem('dailyEntries');
-            if (savedEntries) {
-                entries = JSON.parse(savedEntries);
-                
-                // Prüfen, ob für dieses Datum bereits ein Eintrag existiert
-                const existingEntryIndex = entries.findIndex(e => e.date === date);
-                if (existingEntryIndex >= 0) {
-                    // Bestehenden Eintrag überschreiben
-                    entries[existingEntryIndex] = entry;
-                } else {
-                    // Neuen Eintrag hinzufügen
-                    entries.push(entry);
-                }
-            } else {
-                entries.push(entry);
-            }
-            
-            // Speichern
-            localStorage.setItem('dailyEntries', JSON.stringify(entries));
-            
-            // Einträge neu laden und anzeigen
-            loadLogEntries();
-            
-            // Fortschritt aktualisieren
-            updateProgressView();
-            
-            // Erfolgsbenachrichtigung anzeigen
-            const successMsg = document.getElementById('daily-success');
-            successMsg.style.display = 'block';
-            
-            // Nach 3 Sekunden ausblenden
-            setTimeout(() => {
-                successMsg.style.display = 'none';
-                
-                // Formular zurücksetzen
-                document.querySelectorAll('#daily-challenges input[type="checkbox"]').forEach(checkbox => {
-                    checkbox.checked = false;
-                });
-                document.getElementById('daily-note').value = '';
-                selectedMood = 0;
-                document.querySelectorAll('.mood-option').forEach(option => {
-                    option.classList.remove('selected');
-                });
-            }, 3000);
-        }
-        
-        // Einträge laden und anzeigen
-        function loadLogEntries() {
-            const savedEntries = localStorage.getItem('dailyEntries');
-            const entriesDiv = document.getElementById('log-entries');
-            entriesDiv.innerHTML = '';
-            
-            if (savedEntries) {
-                const entries = JSON.parse(savedEntries);
-                
-                // Nach Datum sortieren (neueste zuerst)
-                entries.sort((a, b) => new Date(b.date) - new Date(a.date));
-                
-                entries.forEach(entry => {
-                    const entryElement = document.createElement('div');
-                    entryElement.className = 'log-entry';
-                    
-                    // Datum formatieren
-                    const date = new Date(entry.date);
-                    const formattedDate = date.toLocaleDateString('de-DE', { 
-                        weekday: 'long', 
-                        year: 'numeric', 
-                        month: 'long', 
-                        day: 'numeric' 
-                    });
-                    
-                    // Stimmung-Emoji
-                    const moodEmojis = ['', '😢', '😕', '😐', '🙂', '😄'];
-                    
-                    entryElement.innerHTML = `
-                        <div class="log-date">${formattedDate}</div>
-                        <div class="log-mood">Stimmung: ${moodEmojis[entry.mood]}</div>
-                        <div class="log-challenges">
-                            <strong>Geschafft:</strong>
-                            ${entry.completedChallenges.length > 0 
-                              ? entry.completedChallenges.map(c => `<div>✓ ${c.label}</div>`).join('') 
-                              : '<div>Keine Challenges erledigt</div>'}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                <!-- Screen-Time Challenge -->
+                <div class="challenge-card border rounded-lg shadow-sm p-4 dark:border-gray-700">
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-xl font-semibold">Screen-Time Challenge</h3>
+                        <div class="form-check form-switch">
+                            <input type="checkbox" class="challenge-selector sr-only" id="screen-time-challenge" value="screen-time">
+                            <label for="screen-time-challenge" class="flex items-center cursor-pointer">
+                                <div class="relative">
+                                    <div class="w-10 h-6 bg-gray-300 dark:bg-gray-600 rounded-full shadow-inner"></div>
+                                    <div id="screen-time-toggle" class="dot absolute w-4 h-4 bg-white rounded-full shadow -left-1 top-1 transition"></div>
+                                </div>
+                                <div class="ml-3 text-gray-700 dark:text-gray-300 font-medium">Ich wähle diese Challenge</div>
+                            </label>
                         </div>
-                        ${entry.note ? `<div class="log-note">${entry.note}</div>` : ''}
+                    </div>
+                    
+                    <p class="text-gray-600 dark:text-gray-400 mt-2 mb-4">Vor dem Schlafengehen bildschirmfreie Zeit einplanen</p>
+                    
+                    <div class="space-y-2">
+                        <div class="flex items-center">
+                            <input type="radio" name="screen-time" id="screen-time-30" value="30 Min." disabled>
+                            <label for="screen-time-30" class="radio-label ml-2 px-3 py-2 rounded-full border border-gray-300 dark:border-gray-600 w-full text-center">30 Min.</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="radio" name="screen-time" id="screen-time-45" value="45 Min." disabled>
+                            <label for="screen-time-45" class="radio-label ml-2 px-3 py-2 rounded-full border border-gray-300 dark:border-gray-600 w-full text-center">45 Min.</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="radio" name="screen-time" id="screen-time-60" value="60 Min." disabled>
+                            <label for="screen-time-60" class="radio-label ml-2 px-3 py-2 rounded-full border border-gray-300 dark:border-gray-600 w-full text-center">60 Min.</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sleep-Reset Challenge -->
+                <div class="challenge-card border rounded-lg shadow-sm p-4 dark:border-gray-700">
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-xl font-semibold">Schlaf-Reset Challenge</h3>
+                        <div class="form-check form-switch">
+                            <input type="checkbox" class="challenge-selector sr-only" id="sleep-reset-challenge" value="sleep-reset">
+                            <label for="sleep-reset-challenge" class="flex items-center cursor-pointer">
+                                <div class="relative">
+                                    <div class="w-10 h-6 bg-gray-300 dark:bg-gray-600 rounded-full shadow-inner"></div>
+                                    <div id="sleep-reset-toggle" class="dot absolute w-4 h-4 bg-white rounded-full shadow -left-1 top-1 transition"></div>
+                                </div>
+                                <div class="ml-3 text-gray-700 dark:text-gray-300 font-medium">Ich wähle diese Challenge</div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-600 dark:text-gray-400 mt-2 mb-4">Jeden Tag zu einer festgelegten Zeit ins Bett gehen</p>
+                    
+                    <div class="space-y-2">
+                        <label for="bedtime" class="block text-gray-700 dark:text-gray-300 mb-1">Meine Schlafenszeit:</label>
+                        <input type="time" id="bedtime" name="bedtime" class="form-input w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-base disabled:opacity-50 disabled:cursor-not-allowed dark:bg-gray-800" disabled>
+                    </div>
+                </div>
+                
+                <!-- Morning-Kickstart Challenge -->
+                <div class="challenge-card border rounded-lg shadow-sm p-4 dark:border-gray-700">
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-xl font-semibold">Morgen-Kickstart Challenge</h3>
+                        <div class="form-check form-switch">
+                            <input type="checkbox" class="challenge-selector sr-only" id="morning-kickstart-challenge" value="morning-kickstart">
+                            <label for="morning-kickstart-challenge" class="flex items-center cursor-pointer">
+                                <div class="relative">
+                                    <div class="w-10 h-6 bg-gray-300 dark:bg-gray-600 rounded-full shadow-inner"></div>
+                                    <div id="morning-kickstart-toggle" class="dot absolute w-4 h-4 bg-white rounded-full shadow -left-1 top-1 transition"></div>
+                                </div>
+                                <div class="ml-3 text-gray-700 dark:text-gray-300 font-medium">Ich wähle diese Challenge</div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-600 dark:text-gray-400 mt-2 mb-4">Jeden Tag bis zu einer bestimmten Zeit aufstehen</p>
+                    
+                    <div class="space-y-2">
+                        <div class="flex items-center">
+                            <input type="radio" name="morning-kickstart" id="morning-kickstart-1100" value="11:00 Uhr" disabled>
+                            <label for="morning-kickstart-1100" class="radio-label ml-2 px-3 py-2 rounded-full border border-gray-300 dark:border-gray-600 w-full text-center">11:00 Uhr</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="radio" name="morning-kickstart" id="morning-kickstart-1030" value="10:30 Uhr" disabled>
+                            <label for="morning-kickstart-1030" class="radio-label ml-2 px-3 py-2 rounded-full border border-gray-300 dark:border-gray-600 w-full text-center">10:30 Uhr</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="radio" name="morning-kickstart" id="morning-kickstart-1000" value="10:00 Uhr" disabled>
+                            <label for="morning-kickstart-1000" class="radio-label ml-2 px-3 py-2 rounded-full border border-gray-300 dark:border-gray-600 w-full text-center">10:00 Uhr</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Mini-Move Challenge -->
+                <div class="challenge-card border rounded-lg shadow-sm p-4 dark:border-gray-700">
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-xl font-semibold">Mini-Move Challenge</h3>
+                        <div class="form-check form-switch">
+                            <input type="checkbox" class="challenge-selector sr-only" id="mini-move-challenge" value="mini-move">
+                            <label for="mini-move-challenge" class="flex items-center cursor-pointer">
+                                <div class="relative">
+                                    <div class="w-10 h-6 bg-gray-300 dark:bg-gray-600 rounded-full shadow-inner"></div>
+                                    <div id="mini-move-toggle" class="dot absolute w-4 h-4 bg-white rounded-full shadow -left-1 top-1 transition"></div>
+                                </div>
+                                <div class="ml-3 text-gray-700 dark:text-gray-300 font-medium">Ich wähle diese Challenge</div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-600 dark:text-gray-400 mt-2 mb-4">Ein wenig tägliche Bewegung für Körper und Geist</p>
+                    
+                    <div class="space-y-2">
+                        <div class="flex items-center">
+                            <input type="radio" name="mini-move" id="mini-move-stretch" value="5 Min. Dehnen" disabled>
+                            <label for="mini-move-stretch" class="radio-label ml-2 px-3 py-2 rounded-full border border-gray-300 dark:border-gray-600 w-full text-center">5 Min. Dehnen</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="radio" name="mini-move" id="mini-move-walk" value="Kurzer Spaziergang" disabled>
+                            <label for="mini-move-walk" class="radio-label ml-2 px-3 py-2 rounded-full border border-gray-300 dark:border-gray-600 w-full text-center">Kurzer Spaziergang</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="radio" name="mini-move" id="mini-move-dance" value="Etwas Tanzen" disabled>
+                            <label for="mini-move-dance" class="radio-label ml-2 px-3 py-2 rounded-full border border-gray-300 dark:border-gray-600 w-full text-center">Etwas Tanzen</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Family-Peace Challenge -->
+                <div class="challenge-card border rounded-lg shadow-sm p-4 dark:border-gray-700">
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-xl font-semibold">Familien-Frieden Challenge</h3>
+                        <div class="form-check form-switch">
+                            <input type="checkbox" class="challenge-selector sr-only" id="family-peace-challenge" value="family-peace">
+                            <label for="family-peace-challenge" class="flex items-center cursor-pointer">
+                                <div class="relative">
+                                    <div class="w-10 h-6 bg-gray-300 dark:bg-gray-600 rounded-full shadow-inner"></div>
+                                    <div id="family-peace-toggle" class="dot absolute w-4 h-4 bg-white rounded-full shadow -left-1 top-1 transition"></div>
+                                </div>
+                                <div class="ml-3 text-gray-700 dark:text-gray-300 font-medium">Ich wähle diese Challenge</div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-600 dark:text-gray-400 mt-2 mb-4">Kurze positive Interaktionen mit der Familie</p>
+                </div>
+                
+                <!-- Self-Care Challenge -->
+                <div class="challenge-card border rounded-lg shadow-sm p-4 dark:border-gray-700">
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-xl font-semibold">Selbstfürsorge Challenge</h3>
+                        <div class="form-check form-switch">
+                            <input type="checkbox" class="challenge-selector sr-only" id="self-care-challenge" value="self-care">
+                            <label for="self-care-challenge" class="flex items-center cursor-pointer">
+                                <div class="relative">
+                                    <div class="w-10 h-6 bg-gray-300 dark:bg-gray-600 rounded-full shadow-inner"></div>
+                                    <div id="self-care-toggle" class="dot absolute w-4 h-4 bg-white rounded-full shadow -left-1 top-1 transition"></div>
+                                </div>
+                                <div class="ml-3 text-gray-700 dark:text-gray-300 font-medium">Ich wähle diese Challenge</div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-600 dark:text-gray-400 mt-2 mb-4">Bewusst etwas tun, das dir gut tut</p>
+                </div>
+                
+                <!-- Custom Challenge -->
+                <div class="challenge-card border rounded-lg shadow-sm p-4 dark:border-gray-700">
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-xl font-semibold">Eigene Challenge</h3>
+                        <div class="form-check form-switch">
+                            <input type="checkbox" class="challenge-selector sr-only" id="custom-challenge" value="custom">
+                            <label for="custom-challenge" class="flex items-center cursor-pointer">
+                                <div class="relative">
+                                    <div class="w-10 h-6 bg-gray-300 dark:bg-gray-600 rounded-full shadow-inner"></div>
+                                    <div id="custom-toggle" class="dot absolute w-4 h-4 bg-white rounded-full shadow -left-1 top-1 transition"></div>
+                                </div>
+                                <div class="ml-3 text-gray-700 dark:text-gray-300 font-medium">Ich wähle diese Challenge</div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-600 dark:text-gray-400 mt-2 mb-4">Etwas, das du dir selbst vornehmen möchtest</p>
+                    
+                    <div class="space-y-2">
+                        <input type="text" id="custom-challenge-text" class="form-input w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-base disabled:opacity-50 disabled:cursor-not-allowed dark:bg-gray-800" placeholder="Meine eigene Challenge..." disabled>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Reward Section -->
+            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 mb-8 shadow-sm">
+                <h3 class="text-xl font-semibold mb-4">Meine Belohnung</h3>
+                <p class="mb-4">Wenn ich mindestens 5 von 7 Tagen meine Challenges geschafft habe, belohne ich mich mit:</p>
+                <textarea id="reward-text" class="form-textarea w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-base dark:bg-gray-800" rows="3" placeholder="Meine Belohnung..."></textarea>
+            </div>
+            
+            <!-- Agreement Section -->
+            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 mb-8 shadow-sm">
+                <h3 class="text-xl font-semibold mb-4">Meine Vereinbarung</h3>
+                <p class="mb-4">Ich probiere diese Challenge für 7 Tage aus. Danach entscheide ich selbst, ob ich weitermachen möchte.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="start-date" class="block text-gray-700 dark:text-gray-300 mb-1">Startdatum:</label>
+                        <input type="date" id="start-date" class="form-input w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-base dark:bg-gray-800">
+                    </div>
+                    <div>
+                        <label for="name" class="block text-gray-700 dark:text-gray-300 mb-1">Mein Name:</label>
+                        <input type="text" id="name" class="form-input w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-base dark:bg-gray-800">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex justify-center mt-6">
+                <button id="save-plan" class="px-6 py-3 bg-primary-600 text-white font-medium rounded-lg shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-opacity-50 transition">Meinen Plan speichern</button>
+            </div>
+            
+            <div id="plan-saved-message" class="hidden mt-6 p-4 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-lg text-center">
+                Dein Plan wurde gespeichert! Jetzt kannst du zum täglichen Check-in wechseln.
+            </div>
+        </section>
+        
+        <!-- Daily Check-in Section -->
+        <section id="section-checkin" class="section">
+            <h2 class="text-2xl font-bold mb-6">Mein täglicher Check-in</h2>
+            <p class="mb-4">Hier kannst du festhalten, wie dein Tag war und was du geschafft hast.</p>
+            
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-6">
+                <div class="mb-4">
+                    <label for="checkin-date" class="block text-gray-700 dark:text-gray-300 mb-1">Datum:</label>
+                    <input type="date" id="checkin-date" class="form-input w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-base dark:bg-gray-800">
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-gray-700 dark:text-gray-300 mb-3">Wie fühlst du dich heute?</label>
+                    <div class="grid grid-cols-5 gap-2 text-center">
+                        <div id="mood-1" class="mood-option">
+                            <div class="mood-emoji text-3xl mb-1">😢</div>
+                            <div class="text-sm text-gray-600 dark:text-gray-400">Sehr schlecht</div>
+                        </div>
+                        <div id="mood-2" class="mood-option">
+                            <div class="mood-emoji text-3xl mb-1">😕</div>
+                            <div class="text-sm text-gray-600 dark:text-gray-400">Schlecht</div>
+                        </div>
+                        <div id="mood-3" class="mood-option">
+                            <div class="mood-emoji text-3xl mb-1">😐</div>
+                            <div class="text-sm text-gray-600 dark:text-gray-400">Neutral</div>
+                        </div>
+                        <div id="mood-4" class="mood-option">
+                            <div class="mood-emoji text-3xl mb-1">🙂</div>
+                            <div class="text-sm text-gray-600 dark:text-gray-400">Gut</div>
+                        </div>
+                        <div id="mood-5" class="mood-option">
+                            <div class="mood-emoji text-3xl mb-1">😄</div>
+                            <div class="text-sm text-gray-600 dark:text-gray-400">Sehr gut</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="challenge-checklist" class="mb-4">
+                    <label class="block text-gray-700 dark:text-gray-300 mb-2">Was hast du heute geschafft?</label>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm italic mb-4">Deine Challenges werden hier angezeigt, wenn du deinen Plan gespeichert hast.</p>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="daily-note" class="block text-gray-700 dark:text-gray-300 mb-1">Notiz für heute</label>
+                    <textarea id="daily-note" class="form-textarea w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-base dark:bg-gray-800" rows="3"></textarea>
+                </div>
+                
+                <div class="flex flex-col gap-3 justify-center mt-6">
+                    <button id="save-checkin" class="px-6 py-3 bg-primary-600 text-white font-medium rounded-lg shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-opacity-50 transition">Eintrag speichern</button>
+                    <button id="share-checkin" class="px-6 py-3 bg-green-600 text-white font-medium rounded-lg shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition">📱 Bericht an Coach senden</button>
+                </div>
+                
+                <div id="checkin-saved-message" class="hidden mt-6 p-4 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-lg text-center">
+                    Dein Eintrag wurde gespeichert! Super gemacht!
+                </div>
+            </div>
+            
+            <div class="mt-8">
+                <h3 class="text-xl font-semibold mb-4">Tägliche Einträge</h3>
+                <div id="daily-entries" class="space-y-4">
+                    <!-- Entries will be dynamically added here -->
+                    <p id="no-entries-message" class="text-gray-500 dark:text-gray-400 text-center py-8">Noch keine Einträge vorhanden.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Progress Section -->
+        <section id="section-progress" class="section">
+            <h2 class="text-2xl font-bold mb-6">Mein 7-Tage Fortschritt</h2>
+            <p class="mb-4">Hier siehst du, wie weit du schon gekommen bist:</p>
+            
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-8">
+                <div class="flex justify-between items-center mb-6 overflow-x-auto">
+                    <div class="progress-circle bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 flex-shrink-0" data-day="1">1</div>
+                    <div class="h-1 w-full bg-gray-200 dark:bg-gray-700"></div>
+                    <div class="progress-circle bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 flex-shrink-0" data-day="2">2</div>
+                    <div class="h-1 w-full bg-gray-200 dark:bg-gray-700"></div>
+                    <div class="progress-circle bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 flex-shrink-0" data-day="3">3</div>
+                    <div class="h-1 w-full bg-gray-200 dark:bg-gray-700"></div>
+                    <div class="progress-circle bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 flex-shrink-0" data-day="4">4</div>
+                    <div class="h-1 w-full bg-gray-200 dark:bg-gray-700"></div>
+                    <div class="progress-circle bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 flex-shrink-0" data-day="5">5</div>
+                    <div class="h-1 w-full bg-gray-200 dark:bg-gray-700"></div>
+                    <div class="progress-circle bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 flex-shrink-0" data-day="6">6</div>
+                    <div class="h-1 w-full bg-gray-200 dark:bg-gray-700"></div>
+                    <div class="progress-circle bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 flex-shrink-0" data-day="7">7</div>
+                </div>
+                
+                <div class="text-center mb-6">
+                    <h4 class="font-medium">Dein Ziel: 5 von 7 Tagen</h4>
+                    <p id="days-completed" class="text-lg mt-2">Du hast bisher 0 von 7 Tagen geschafft</p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+                    <h3 class="text-xl font-semibold mb-4">Meine Stimmung im Verlauf</h3>
+                    <div class="w-full h-64">
+                        <canvas id="mood-chart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+                    <h3 class="text-xl font-semibold mb-4">Meine Belohnung:</h3>
+                    <div id="reward-display" class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg min-h-[100px] flex items-center justify-center">
+                        <p class="text-gray-500 dark:text-gray-400">Wird geladen...</p>
+                    </div>
+                    
+                    <div id="reward-status" class="mt-6 text-center hidden">
+                        <p class="text-lg font-medium text-green-600 dark:text-green-400">Du hast dein Ziel erreicht! 🎉</p>
+                        <p class="mt-2">Gönne dir deine Belohnung, du hast es verdient!</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mt-8">
+                <h3 class="text-xl font-semibold mb-4">Meine Erkenntnisse</h3>
+                <p class="mb-4">Nach den 7 Tagen: Was hat dir geholfen? Was möchtest du beibehalten?</p>
+                <textarea id="insights" class="form-textarea w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-base dark:bg-gray-800" rows="6"></textarea>
+                
+                <div class="flex justify-center mt-6">
+                    <button id="save-insights" class="px-6 py-3 bg-primary-600 text-white font-medium rounded-lg shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-opacity-50 transition">Erkenntnisse speichern</button>
+                </div>
+                
+                <div id="insights-saved-message" class="hidden mt-6 p-4 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-lg text-center">
+                    Deine Erkenntnisse wurden gespeichert!
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-100 dark:bg-gray-800 py-4 mt-8">
+        <div class="container mx-auto px-4 text-center text-gray-600 dark:text-gray-400 text-sm">
+            <p>Meine 7-Tage Challenge</p>
+        </div>
+    </footer>
+
+    <script>
+        // Check if dark mode is preferred
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        
+        // Listen for changes in color scheme preference
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+        
+        // DOM elements
+        const tabs = {
+            plan: document.getElementById('tab-plan'),
+            checkin: document.getElementById('tab-checkin'),
+            progress: document.getElementById('tab-progress')
+        };
+        
+        const sections = {
+            plan: document.getElementById('section-plan'),
+            checkin: document.getElementById('section-checkin'),
+            progress: document.getElementById('section-progress')
+        };
+        
+        // Challenge selectors and their toggle elements
+        const challengeSelectors = document.querySelectorAll('.challenge-selector');
+        
+        // Button elements
+        const savePlanButton = document.getElementById('save-plan');
+        const saveCheckinButton = document.getElementById('save-checkin');
+        const shareCheckinButton = document.getElementById('share-checkin');
+        const saveInsightsButton = document.getElementById('save-insights');
+        
+        // Message elements
+        const planSavedMessage = document.getElementById('plan-saved-message');
+        const checkinSavedMessage = document.getElementById('checkin-saved-message');
+        const insightsSavedMessage = document.getElementById('insights-saved-message');
+        
+        // Data storage
+        const appData = {
+            plan: {
+                challenges: {},
+                reward: '',
+                startDate: '',
+                name: ''
+            },
+            checkins: [],
+            insights: ''
+        };
+        
+        // Load data from localStorage if available
+        function loadData() {
+            const savedData = localStorage.getItem('challenge-app-data');
+            if (savedData) {
+                const parsedData = JSON.parse(savedData);
+                Object.assign(appData, parsedData);
+                
+                // Update UI with loaded data
+                updateUIFromData();
+            }
+        }
+        
+        // Save data to localStorage
+        function saveData() {
+            localStorage.setItem('challenge-app-data', JSON.stringify(appData));
+        }
+        
+        // Update UI from loaded data
+        function updateUIFromData() {
+            // Update plan section
+            if (appData.plan) {
+                document.getElementById('reward-text').value = appData.plan.reward || '';
+                document.getElementById('start-date').value = appData.plan.startDate || '';
+                document.getElementById('name').value = appData.plan.name || '';
+                
+                // Update challenge selections
+                for (const [key, value] of Object.entries(appData.plan.challenges)) {
+                    const checkbox = document.getElementById(`${key}-challenge`);
+                    if (checkbox) {
+                        checkbox.checked = true;
+                        updateToggle(key);
+                        
+                        // Update challenge options
+                        if (key === 'screen-time' && value.option) {
+                            document.getElementById(`screen-time-${value.option}`).checked = true;
+                            document.querySelector(`label[for="screen-time-${value.option}"]`).classList.add('selected');
+                        } else if (key === 'sleep-reset' && value.bedtime) {
+                            document.getElementById('bedtime').value = value.bedtime;
+                        } else if (key === 'morning-kickstart' && value.option) {
+                            document.getElementById(`morning-kickstart-${value.option}`).checked = true;
+                            document.querySelector(`label[for="morning-kickstart-${value.option}"]`).classList.add('selected');
+                        } else if (key === 'mini-move' && value.option) {
+                            document.getElementById(`mini-move-${value.option}`).checked = true;
+                            document.querySelector(`label[for="mini-move-${value.option}"]`).classList.add('selected');
+                        } else if (key === 'custom' && value.text) {
+                            document.getElementById('custom-challenge-text').value = value.text;
+                        }
+                    }
+                }
+                
+                // Update checklist in checkin section
+                updateChallengeChecklist();
+            }
+            
+            // Update progress section
+            updateProgressDisplay();
+            
+            // Update insights
+            document.getElementById('insights').value = appData.insights || '';
+            
+            // Update reward display
+            updateRewardDisplay();
+        }
+        
+        // Update toggle visual based on checkbox state
+        function updateToggle(id) {
+            const toggle = document.getElementById(`${id}-toggle`);
+            const checkbox = document.getElementById(`${id}-challenge`);
+            
+            if (checkbox.checked) {
+                toggle.style.transform = 'translateX(1rem)';
+                toggle.style.backgroundColor = '#5D5CDE';
+                
+                // Enable related inputs
+                enableChallengeInputs(id);
+            } else {
+                toggle.style.transform = 'translateX(0)';
+                toggle.style.backgroundColor = '#fff';
+                
+                // Disable related inputs
+                disableChallengeInputs(id);
+            }
+        }
+        
+        // Enable inputs related to a challenge
+        function enableChallengeInputs(id) {
+            if (id === 'screen-time') {
+                document.querySelectorAll('input[name="screen-time"]').forEach(input => {
+                    input.disabled = false;
+                    input.parentElement.querySelector('label').classList.remove('opacity-50');
+                });
+            } else if (id === 'sleep-reset') {
+                document.getElementById('bedtime').disabled = false;
+            } else if (id === 'morning-kickstart') {
+                document.querySelectorAll('input[name="morning-kickstart"]').forEach(input => {
+                    input.disabled = false;
+                    input.parentElement.querySelector('label').classList.remove('opacity-50');
+                });
+            } else if (id === 'mini-move') {
+                document.querySelectorAll('input[name="mini-move"]').forEach(input => {
+                    input.disabled = false;
+                    input.parentElement.querySelector('label').classList.remove('opacity-50');
+                });
+            } else if (id === 'custom') {
+                document.getElementById('custom-challenge-text').disabled = false;
+            }
+        }
+        
+        // Disable inputs related to a challenge
+        function disableChallengeInputs(id) {
+            if (id === 'screen-time') {
+                document.querySelectorAll('input[name="screen-time"]').forEach(input => {
+                    input.disabled = true;
+                    input.parentElement.querySelector('label').classList.add('opacity-50');
+                });
+            } else if (id === 'sleep-reset') {
+                document.getElementById('bedtime').disabled = true;
+            } else if (id === 'morning-kickstart') {
+                document.querySelectorAll('input[name="morning-kickstart"]').forEach(input => {
+                    input.disabled = true;
+                    input.parentElement.querySelector('label').classList.add('opacity-50');
+                });
+            } else if (id === 'mini-move') {
+                document.querySelectorAll('input[name="mini-move"]').forEach(input => {
+                    input.disabled = true;
+                    input.parentElement.querySelector('label').classList.add('opacity-50');
+                });
+            } else if (id === 'custom') {
+                document.getElementById('custom-challenge-text').disabled = true;
+            }
+        }
+        
+        // Update challenges checklist in checkin section
+        function updateChallengeChecklist() {
+            const checklistContainer = document.getElementById('challenge-checklist');
+            
+            // Clear current content
+            while (checklistContainer.children.length > 1) {
+                checklistContainer.removeChild(checklistContainer.lastChild);
+            }
+            
+            // Add challenge checkboxes
+            let hasSelectedChallenges = false;
+            
+            for (const [key, value] of Object.entries(appData.plan.challenges)) {
+                hasSelectedChallenges = true;
+                
+                const label = getChallengeLabel(key, value);
+                
+                if (label) {
+                    const div = document.createElement('div');
+                    div.className = 'flex items-center mb-2';
+                    
+                    div.innerHTML = `
+                        <input type="checkbox" id="checkin-${key}" class="form-checkbox h-5 w-5 text-primary-600 rounded border-gray-300 dark:border-gray-600 focus:ring-primary-500 dark:focus:ring-primary-400">
+                        <label for="checkin-${key}" class="ml-2 text-gray-700 dark:text-gray-300">${label}</label>
                     `;
                     
-                    entriesDiv.appendChild(entryElement);
-                });
-            } else {
-                entriesDiv.innerHTML = '<p>Noch keine Einträge vorhanden. Starte mit deinem ersten Check-in!</p>';
-            }
-        }
-        
-        // Tag als erledigt markieren/demarkieren im Fortschritts-Tracker
-        function toggleDay(dayNumber) {
-            // Tag finden
-            const dayElement = document.querySelector(`.day:nth-child(${dayNumber})`);
-            
-            // Zustand umschalten
-            if (dayElement.classList.contains('completed')) {
-                dayElement.classList.remove('completed');
-                completedDays = completedDays.filter(day => day !== dayNumber);
-            } else {
-                dayElement.classList.add('completed');
-                if (!completedDays.includes(dayNumber)) {
-                    completedDays.push(dayNumber);
+                    checklistContainer.appendChild(div);
                 }
             }
             
-            // Fortschrittsbalken aktualisieren
-            updateProgress();
+            // Update info text
+            if (hasSelectedChallenges) {
+                checklistContainer.querySelector('p').style.display = 'none';
+            } else {
+                checklistContainer.querySelector('p').style.display = 'block';
+            }
         }
         
-        // Fortschrittsansicht aktualisieren
-        function updateProgressView() {
-            // Tage laden, die als erledigt markiert wurden
-            const savedEntries = localStorage.getItem('dailyEntries');
-            completedDays = [];
-            
-            if (savedEntries) {
-                const entries = JSON.parse(savedEntries);
-                completedDays = entries.filter(entry => entry.completedChallenges.length > 0)
-                                       .map((entry, index) => index + 1)
-                                       .slice(0, 7);
+        // Get readable label for a challenge
+        function getChallengeLabel(key, value) {
+            switch (key) {
+                case 'screen-time':
+                    return `Bildschirmfreie Zeit vor dem Schlafengehen: ${value.option ? value.option : '30 Min.'}`;
+                case 'sleep-reset':
+                    return `Ins Bett gehen um: ${value.bedtime || 'festgelegte Zeit'}`;
+                case 'morning-kickstart':
+                    let wakeupTime = '11:00 Uhr';
+                    if (value.option === '1030') wakeupTime = '10:30 Uhr';
+                    if (value.option === '1000') wakeupTime = '10:00 Uhr';
+                    return `Aufstehen bis ${wakeupTime}`;
+                case 'mini-move':
+                    let moveType = '5 Min. Dehnen';
+                    if (value.option === 'walk') moveType = 'Kurzer Spaziergang';
+                    if (value.option === 'dance') moveType = 'Etwas Tanzen';
+                    return `Bewegung: ${moveType}`;
+                case 'family-peace':
+                    return 'Positive Familien-Interaktion';
+                case 'self-care':
+                    return 'Etwas zur Selbstfürsorge tun';
+                case 'custom':
+                    return value.text || 'Eigene Challenge';
+                default:
+                    return null;
             }
+        }
+        
+        // Update progress display
+        function updateProgressDisplay() {
+            // Count completed days
+            const completedDays = appData.checkins.filter(checkin => 
+                Object.values(checkin.challenges || {}).some(value => value === true)
+            ).length;
             
-            // Tage im UI markieren
-            document.querySelectorAll('.day').forEach((day, index) => {
-                if (completedDays.includes(index + 1)) {
-                    day.classList.add('completed');
+            // Update progress circles
+            document.querySelectorAll('.progress-circle').forEach(circle => {
+                const day = parseInt(circle.getAttribute('data-day'));
+                
+                if (day <= completedDays) {
+                    circle.classList.add('bg-primary-600', 'text-white');
+                    circle.classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
                 } else {
-                    day.classList.remove('completed');
+                    circle.classList.remove('bg-primary-600', 'text-white');
+                    circle.classList.add('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
                 }
             });
             
-            // Fortschrittsbalken aktualisieren
-            updateProgress();
+            // Update days completed text
+            document.getElementById('days-completed').textContent = `Du hast bisher ${completedDays} von 7 Tagen geschafft`;
             
-            // Stimmungsverlauf anzeigen
+            // Update reward status
+            const rewardStatus = document.getElementById('reward-status');
+            if (completedDays >= 5) {
+                rewardStatus.classList.remove('hidden');
+            } else {
+                rewardStatus.classList.add('hidden');
+            }
+            
+            // Update mood chart
             updateMoodChart();
         }
         
-        // Fortschrittsbalken aktualisieren
-        function updateProgress() {
-            const progressBar = document.getElementById('progress-bar');
-            const progressText = document.getElementById('progress-text');
+        // Update reward display
+        function updateRewardDisplay() {
+            const rewardDisplay = document.getElementById('reward-display');
+            const rewardText = appData.plan.reward;
             
-            const completedCount = completedDays.length;
-            const percent = (completedCount / 7) * 100;
-            
-            progressBar.style.width = `${percent}%`;
-            progressText.innerText = `Du hast bisher ${completedCount} von 7 Tagen geschafft`;
-            
-            // Hervorheben, wenn Ziel erreicht
-            if (completedCount >= 5) {
-                progressBar.style.backgroundColor = '#66bb6a';
-                progressText.innerHTML = `<strong>Glückwunsch!</strong> Du hast dein Ziel erreicht (${completedCount}/7 Tage)`;
+            if (rewardText) {
+                rewardDisplay.innerHTML = `<p>${rewardText}</p>`;
             } else {
-                progressBar.style.backgroundColor = 'var(--primary)';
+                rewardDisplay.innerHTML = `<p class="text-gray-500 dark:text-gray-400">Noch keine Belohnung festgelegt.</p>`;
             }
         }
         
-        // Stimmungsverlauf anzeigen
+        // Update mood chart
         function updateMoodChart() {
-            const chartDiv = document.getElementById('mood-chart');
-            chartDiv.innerHTML = '';
+            const ctx = document.getElementById('mood-chart').getContext('2d');
             
-            const savedEntries = localStorage.getItem('dailyEntries');
-            if (!savedEntries) return;
+            // Collect mood data
+            const labels = appData.checkins.map(checkin => {
+                const date = new Date(checkin.date);
+                return date.toLocaleDateString('de-DE', {day: '2-digit', month: '2-digit'});
+            });
             
-            const entries = JSON.parse(savedEntries);
-            if (entries.length === 0) return;
+            const data = appData.checkins.map(checkin => checkin.mood || 3);
             
-            // Nach Datum sortieren (älteste zuerst)
-            entries.sort((a, b) => new Date(a.date) - new Date(b.date));
+            // Create or update chart
+            if (window.moodChart) {
+                window.moodChart.data.labels = labels;
+                window.moodChart.data.datasets[0].data = data;
+                window.moodChart.update();
+            } else {
+                window.moodChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Stimmung',
+                            data: data,
+                            borderColor: '#5D5CDE',
+                            backgroundColor: 'rgba(93, 92, 222, 0.1)',
+                            tension: 0.2,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                min: 1,
+                                max: 5,
+                                ticks: {
+                                    stepSize: 1,
+                                    callback: function(value) {
+                                        const labels = ['😢', '😕', '😐', '🙂', '😄'];
+                                        return labels[value - 1];
+                                    }
+                                }
+                            }
+                        },
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            }
+        }
+        
+        // Render daily entries
+        function renderDailyEntries() {
+            const entriesContainer = document.getElementById('daily-entries');
+            const noEntriesMessage = document.getElementById('no-entries-message');
             
-            // Nur die ersten 7 Einträge anzeigen
-            const displayEntries = entries.slice(0, 7);
+            // Clear current entries
+            while (entriesContainer.firstChild) {
+                entriesContainer.removeChild(entriesContainer.firstChild);
+            }
             
-            // Balken für jeden Tag erstellen
-            displayEntries.forEach((entry, index) => {
-                const moodEmojis = ['', '😢', '😕', '😐', '🙂', '😄'];
-                const barHeight = entry.mood * 20; // Höhe basierend auf Stimmung (1-5)
-                
-                const bar = document.createElement('div');
-                bar.style.width = `${100 / Math.min(7, displayEntries.length)}%`;
-                bar.style.height = `${barHeight}px`;
-                bar.style.backgroundColor = 'var(--primary)';
-                bar.style.marginRight = '5px';
-                bar.style.position = 'relative';
-                bar.style.borderRadius = '3px 3px 0 0';
-                
-                const emoji = document.createElement('div');
-                emoji.style.position = 'absolute';
-                emoji.style.top = '-25px';
-                emoji.style.width = '100%';
-                emoji.style.textAlign = 'center';
-                emoji.innerText = moodEmojis[entry.mood];
-                
-                const day = document.createElement('div');
-                day.style.position = 'absolute';
-                day.style.bottom = '-20px';
-                day.style.width = '100%';
-                day.style.textAlign = 'center';
-                day.style.fontSize = '12px';
-                
-                // Datum in kurzes Format umwandeln
+            // Sort entries by date, newest first
+            const sortedEntries = [...appData.checkins].sort((a, b) => 
+                new Date(b.date) - new Date(a.date)
+            );
+            
+            if (sortedEntries.length === 0) {
+                entriesContainer.appendChild(noEntriesMessage);
+                return;
+            }
+            
+            // Render each entry
+            sortedEntries.forEach(entry => {
                 const date = new Date(entry.date);
-                day.innerText = date.toLocaleDateString('de-DE', {day: '2-digit', month: '2-digit'});
+                const formattedDate = date.toLocaleDateString('de-DE', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
                 
-                bar.appendChild(emoji);
-                bar.appendChild(day);
-                chartDiv.appendChild(bar);
+                const entryDiv = document.createElement('div');
+                entryDiv.className = 'bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 animate-fade-in';
+                
+                let moodEmoji = '😐';
+                switch(entry.mood) {
+                    case 1: moodEmoji = '😢'; break;
+                    case 2: moodEmoji = '😕'; break;
+                    case 3: moodEmoji = '😐'; break;
+                    case 4: moodEmoji = '🙂'; break;
+                    case 5: moodEmoji = '😄'; break;
+                }
+                
+                // Count completed challenges
+                const completedChallenges = Object.values(entry.challenges || {}).filter(value => value === true).length;
+                const totalChallenges = Object.keys(entry.challenges || {}).length;
+                
+                let challengesHtml = '';
+                if (totalChallenges > 0) {
+                    challengesHtml = `
+                        <div class="mb-2">
+                            <p class="text-sm text-gray-600 dark:text-gray-400">
+                                <span class="font-medium">${completedChallenges}/${totalChallenges}</span> Challenges geschafft
+                            </p>
+                        </div>
+                    `;
+                }
+                
+                entryDiv.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <h4 class="font-medium">${formattedDate}</h4>
+                        <div class="text-xl">${moodEmoji}</div>
+                    </div>
+                    ${challengesHtml}
+                    <p class="text-gray-600 dark:text-gray-400 mt-2">${entry.note || ''}</p>
+                `;
+                
+                entriesContainer.appendChild(entryDiv);
             });
         }
         
-        // Reflektionen speichern
-        function saveReflections() {
-            const reflections = document.getElementById('reflections').value;
-            localStorage.setItem('reflections', reflections);
+        // Save plan data
+        function savePlan() {
+            appData.plan.reward = document.getElementById('reward-text').value;
+            appData.plan.startDate = document.getElementById('start-date').value;
+            appData.plan.name = document.getElementById('name').value;
+            
+            // Save challenge selections
+            appData.plan.challenges = {};
+            
+            challengeSelectors.forEach(checkbox => {
+                if (checkbox.checked) {
+                    const id = checkbox.id.replace('-challenge', '');
+                    appData.plan.challenges[id] = {};
+                    
+                    // Save options for each challenge type
+                    if (id === 'screen-time') {
+                        const selected = document.querySelector('input[name="screen-time"]:checked');
+                        if (selected) {
+                            appData.plan.challenges[id].option = selected.id.replace('screen-time-', '');
+                        }
+                    } else if (id === 'sleep-reset') {
+                        appData.plan.challenges[id].bedtime = document.getElementById('bedtime').value;
+                    } else if (id === 'morning-kickstart') {
+                        const selected = document.querySelector('input[name="morning-kickstart"]:checked');
+                        if (selected) {
+                            appData.plan.challenges[id].option = selected.id.replace('morning-kickstart-', '');
+                        }
+                    } else if (id === 'mini-move') {
+                        const selected = document.querySelector('input[name="mini-move"]:checked');
+                        if (selected) {
+                            appData.plan.challenges[id].option = selected.id.replace('mini-move-', '');
+                        }
+                    } else if (id === 'custom') {
+                        appData.plan.challenges[id].text = document.getElementById('custom-challenge-text').value;
+                    }
+                }
+            });
+            
+            // Save data and update UI
+            saveData();
+            updateChallengeChecklist();
+            updateRewardDisplay();
+            
+            // Show saved message
+            planSavedMessage.classList.remove('hidden');
+            setTimeout(() => {
+                planSavedMessage.classList.add('hidden');
+            }, 3000);
         }
-    </script>
-<script>
-
-// Funktion zum Teilen des Tagesberichts
-
-function shareDaily() {
-
-// Aktuelle Eingaben abrufen
-
-const date = document.getElementById('log-date').value;
-
-let moodText = "";
-
-
-// Stimmungs-Emoji ermitteln
-
-if(selectedMood > 0) {
-
-const moodEmojis = ['', '😢', '😕', '😐', '🙂', '😄'];
-
-moodText = moodEmojis[selectedMood];
-
-}
-
-
-// Erledigte Challenges sammeln
-
-let completedText = "";
-
-document.querySelectorAll('#daily-challenges input[type="checkbox"]').forEach(checkbox => {
-
-if (checkbox.checked) {
-
-completedText += "✓ " + checkbox.nextElementSibling.innerText + "\n";
-
-}
-
-});
-
-
-if(!completedText) {
-
-completedText = "Heute keine Challenges abgeschlossen";
-
-}
-
-
-// Notiz abrufen
-
-const note = document.getElementById('daily-note').value;
-
-
-// Zusammenfassung erstellen
-
-const summary = `📊 MEIN 7-TAGE-CHALLENGE UPDATE
+        
+        // Save daily check-in
+        function saveCheckin() {
+            const date = document.getElementById('checkin-date').value;
+            const mood = document.querySelector('.mood-emoji.selected')?.parentElement.id.replace('mood-', '') || '3';
+            const note = document.getElementById('daily-note').value;
+            
+            // Get checked challenges
+            const challenges = {};
+            document.querySelectorAll('#challenge-checklist input[type="checkbox"]').forEach(checkbox => {
+                const id = checkbox.id.replace('checkin-', '');
+                challenges[id] = checkbox.checked;
+            });
+            
+            // Check if an entry for this date already exists
+            const existingEntryIndex = appData.checkins.findIndex(entry => entry.date === date);
+            
+            if (existingEntryIndex !== -1) {
+                // Update existing entry
+                appData.checkins[existingEntryIndex] = {
+                    date,
+                    mood: parseInt(mood),
+                    challenges,
+                    note
+                };
+            } else {
+                // Add new entry
+                appData.checkins.push({
+                    date,
+                    mood: parseInt(mood),
+                    challenges,
+                    note
+                });
+            }
+            
+            // Save data and update UI
+            saveData();
+            renderDailyEntries();
+            updateProgressDisplay();
+            
+            // Show saved message
+            checkinSavedMessage.classList.remove('hidden');
+            setTimeout(() => {
+                checkinSavedMessage.classList.add('hidden');
+            }, 3000);
+            
+            // Reset form
+            document.querySelectorAll('.mood-emoji').forEach(emoji => emoji.classList.remove('selected'));
+            document.querySelectorAll('#challenge-checklist input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            document.getElementById('daily-note').value = '';
+        }
+        
+        // Share daily check-in report
+        function shareDaily() {
+            // Datum abrufen
+            const date = document.getElementById('checkin-date').value;
+            
+            // Stimmungs-Emoji ermitteln
+            const selectedMoodElement = document.querySelector('.mood-emoji.selected');
+            let moodEmoji = '😐';
+            let moodLevel = 3;
+            
+            if (selectedMoodElement) {
+                const moodId = selectedMoodElement.parentElement.id;
+                moodLevel = parseInt(moodId.replace('mood-', ''));
+                
+                switch(moodLevel) {
+                    case 1: moodEmoji = '😢'; break;
+                    case 2: moodEmoji = '😕'; break;
+                    case 3: moodEmoji = '😐'; break;
+                    case 4: moodEmoji = '🙂'; break;
+                    case 5: moodEmoji = '😄'; break;
+                }
+            }
+            
+            // Erledigte Challenges sammeln
+            let completedText = "";
+            document.querySelectorAll('#challenge-checklist input[type="checkbox"]').forEach(checkbox => {
+                if (checkbox.checked) {
+                    completedText += "✓ " + checkbox.nextElementSibling.innerText + "\n";
+                }
+            });
+            
+            if(!completedText) {
+                completedText = "Heute keine Challenges abgeschlossen";
+            }
+            
+            // Notiz abrufen
+            const note = document.getElementById('daily-note').value;
+            
+            // Zusammenfassung erstellen
+            const summary = `📊 MEIN 7-TAGE-CHALLENGE UPDATE
 
 📅 Tag: ${new Date(date).toLocaleDateString('de-DE')}
-
-${moodText} Stimmung: ${selectedMood}/5
+${moodEmoji} Stimmung: ${moodLevel}/5
 
 GESCHAFFTE CHALLENGES:
-
 ${completedText}
 
 ${note ? `💭 NOTIZ:\n${note}` : ''}`;
-
-
-// Text in Zwischenablage kopieren (für Mobilgeräte)
-
-if (navigator.clipboard && navigator.clipboard.writeText) {
-
-navigator.clipboard.writeText(summary)
-
-.then(() => {
-
-alert("Bericht wurde in die Zwischenablage kopiert! Du kannst ihn jetzt in WhatsApp einfügen.");
-
-
-// Auf Mobilgeräten WhatsApp öffnen, falls möglich
-
-if(/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-
-if (confirm("WhatsApp öffnen, um den Bericht zu teilen?")) {
-
-window.open("https://wa.me/?text=" + encodeURIComponent(summary));
-
-}
-
-}
-
-})
-
-.catch(err => {
-
-alert("Fehler beim Kopieren: " + err);
-
-});
-
-} else {
-
-// Fallback für ältere Browser
-
-const textarea = document.createElement('textarea');
-
-textarea.value = summary;
-
-document.body.appendChild(textarea);
-
-textarea.select();
-
-document.execCommand('copy');
-
-document.body.removeChild(textarea);
-
-alert("Bericht wurde in die Zwischenablage kopiert! Du kannst ihn jetzt in WhatsApp einfügen.");
-
-}
-
-}
-
-// Teilen-Button zum täglichen Check-in Tab hinzufügen
-
-document.addEventListener('DOMContentLoaded', function() {
-
-// Erstelle den Button
-
-const shareButton = document.createElement('button');
-
-shareButton.innerHTML = '📱 Bericht an Coach senden';
-
-shareButton.style.marginTop = '20px';
-
-shareButton.style.backgroundColor = '#4caf50';
-
-shareButton.onclick = shareDaily;
-
-
-// Füge den Button nach dem "Eintrag speichern" Button ein
-
-const saveButton = document.querySelector('#daily button');
-
-saveButton.parentNode.insertBefore(shareButton, saveButton.nextSibling);
-
-});
-
-</script>
+            
+            // Text in Zwischenablage kopieren (für Mobilgeräte)
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(summary)
+                    .then(() => {
+                        alert("Bericht wurde in die Zwischenablage kopiert! Du kannst ihn jetzt in WhatsApp einfügen.");
+                        
+                        // Auf Mobilgeräten WhatsApp öffnen, falls möglich
+                        if(/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                            if (confirm("WhatsApp öffnen, um den Bericht zu teilen?")) {
+                                window.open("https://wa.me/?text=" + encodeURIComponent(summary));
+                            }
+                        }
+                    })
+                    .catch(err => {
+                        alert("Fehler beim Kopieren: " + err);
+                    });
+            } else {
+                // Fallback für ältere Browser
+                const textarea = document.createElement('textarea');
+                textarea.value = summary;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert("Bericht wurde in die Zwischenablage kopiert! Du kannst ihn jetzt in WhatsApp einfügen.");
+            }
+        }
+        
+        // Save insights
+        function saveInsights() {
+            appData.insights = document.getElementById('insights').value;
+            
+            // Save data
+            saveData();
+            
+            // Show saved message
+            insightsSavedMessage.classList.remove('hidden');
+            setTimeout(() => {
+                insightsSavedMessage.classList.add('hidden');
+            }, 3000);
+        }
+        
+        // Navigation functions
+        function showSection(sectionId) {
+            // Hide all sections
+            Object.values(sections).forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            sections[sectionId].classList.add('active');
+            
+            // Update active tab
+            Object.values(tabs).forEach(tab => {
+                tab.classList.remove('border-white');
+                tab.classList.add('border-transparent');
+            });
+            
+            tabs[sectionId].classList.remove('border-transparent');
+            tabs[sectionId].classList.add('border-white');
+        }
+        
+        // Set today's date for the check-in date field
+        function setTodayDate() {
+            const today = new Date();
+            const year = today.getFullYear();
+            let month = today.getMonth() + 1;
+            let day = today.getDate();
+            
+            month = month < 10 ? '0' + month : month;
+            day = day < 10 ? '0' + day : day;
+            
+            const dateString = `${year}-${month}-${day}`;
+            document.getElementById('checkin-date').value = dateString;
+        }
+        
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            // Tab navigation
+            tabs.plan.addEventListener('click', () => showSection('plan'));
+            tabs.checkin.addEventListener('click', () => showSection('checkin'));
+            tabs.progress.addEventListener('click', () => showSection('progress'));
+            
+            // Challenge selection toggles
+            challengeSelectors.forEach(checkbox => {
+                checkbox.addEventListener('change', (e) => {
+                    const id = e.target.id.replace('-challenge', '');
+                    updateToggle(id);
+                });
+                
+                // Set initial toggle state
+                const id = checkbox.id.replace('-challenge', '');
+                updateToggle(id);
+            });
+            
+            // Radio button selection for challenges
+            document.querySelectorAll('.radio-label').forEach(label => {
+                label.addEventListener('click', () => {
+                    const name = label.getAttribute('for').split('-').slice(0, -1).join('-');
+                    
+                    // Deselect all options with the same name
+                    document.querySelectorAll(`label[for^="${name}"]`).forEach(l => {
+                        l.classList.remove('selected');
+                    });
+                    
+                    // Select clicked option
+                    label.classList.add('selected');
+                });
+            });
+            
+            // Mood selection
+            document.querySelectorAll('.mood-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    // Deselect all emojis
+                    document.querySelectorAll('.mood-emoji').forEach(emoji => {
+                        emoji.classList.remove('selected');
+                    });
+                    
+                    // Select clicked emoji
+                    option.querySelector('.mood-emoji').classList.add('selected');
+                });
+            });
+            
+            // Save and share buttons
+            savePlanButton.addEventListener('click', savePlan);
+            saveCheckinButton.addEventListener('click', saveCheckin);
+            shareCheckinButton.addEventListener('click', shareDaily);
+            saveInsightsButton.addEventListener('click', saveInsights);
+            
+            // Set today's date
+            setTodayDate();
+            
+            // Try to load data from localStorage
+            try {
+                loadData();
+            } catch (e) {
+                console.error('Error loading data:', e);
+            }
+            
+            // Render daily entries
+            renderDailyEntries();
+        });
+    </script>
 </body>
 </html>
