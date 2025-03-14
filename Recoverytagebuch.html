@@ -1,0 +1,2150 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recovery-Tagebuch</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/3.4.4/luxon.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5D5CDE',
+                        secondary: '#9797FF',
+                        accent: '#FFC107',
+                        light: {
+                            bg: '#FFFFFF',
+                            text: '#333333'
+                        },
+                        dark: {
+                            bg: '#181818',
+                            text: '#F5F5F5'
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-in': 'slideIn 0.5s ease-in-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideIn: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #5D5CDE;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4a49b8;
+        }
+        
+        .dark ::-webkit-scrollbar-track {
+            background: #2d2d2d;
+        }
+        
+        .color-picker div {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .color-picker div:hover {
+            transform: scale(1.1);
+        }
+        
+        .mood-input {
+            display: none;
+        }
+        
+        .mood-label {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .mood-label:hover {
+            transform: scale(1.1);
+        }
+        
+        .mood-input:checked + .mood-label {
+            transform: scale(1.2);
+            filter: drop-shadow(0 0 4px rgba(93, 92, 222, 0.5));
+        }
+        
+        .markdown-content h1 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .markdown-content h2 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-top: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .markdown-content p {
+            margin-bottom: 0.75rem;
+        }
+        
+        .markdown-content ul, .markdown-content ol {
+            margin-left: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .markdown-content ul {
+            list-style-type: disc;
+        }
+        
+        .markdown-content ol {
+            list-style-type: decimal;
+        }
+        
+        .dark .markdown-content {
+            color: #F5F5F5;
+        }
+        
+        .entry-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .entry-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .dark .entry-card:hover {
+            box-shadow: 0 10px 15px -3px rgba(255, 255, 255, 0.1), 0 4px 6px -2px rgba(255, 255, 255, 0.05);
+        }
+        
+        @media (max-width: 640px) {
+            .tab-menu {
+                overflow-x: auto;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+            
+            .tab-menu::-webkit-scrollbar {
+                display: none;
+            }
+        }
+        
+        .password-input-container {
+            position: relative;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+        
+        /* Lock screen animation */
+        .lock-animation {
+            animation: lockPulse 2s infinite;
+        }
+        
+        @keyframes lockPulse {
+            0% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.7; }
+        }
+    </style>
+</head>
+<body class="bg-light-bg dark:bg-dark-bg text-light-text dark:text-dark-text transition-colors duration-300">
+    <!-- Lock Screen -->
+    <div id="lockScreen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-light-bg dark:bg-dark-bg p-6">
+        <div class="text-center mb-8">
+            <div class="lock-animation mb-4 inline-block">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+            </div>
+            <h1 class="text-2xl md:text-3xl font-bold mb-2">Recovery-Tagebuch</h1>
+            <p class="text-gray-600 dark:text-gray-400" id="lockScreenMessage">
+                Bitte gib dein Passwort ein, um dein Tagebuch zu öffnen
+            </p>
+        </div>
+        
+        <div class="w-full max-w-sm">
+            <div id="passwordSetup" class="hidden">
+                <p class="text-center mb-4">Erstelle ein Passwort für dein Tagebuch</p>
+                <div class="mb-4 password-input-container">
+                    <input type="password" id="newPassword" placeholder="Neues Passwort" 
+                        class="w-full p-3 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base">
+                    <span class="password-toggle" data-for="newPassword">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                    </span>
+                </div>
+                <div class="mb-4 password-input-container">
+                    <input type="password" id="confirmPassword" placeholder="Passwort bestätigen" 
+                        class="w-full p-3 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base">
+                    <span class="password-toggle" data-for="confirmPassword">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                    </span>
+                </div>
+                <p id="passwordHint" class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                    Verwende mindestens 4 Zeichen für mehr Sicherheit
+                </p>
+                <div id="passwordSetupError" class="hidden text-red-500 text-center mb-4"></div>
+                <button id="createPasswordBtn" class="w-full bg-primary text-white py-3 px-4 rounded-md hover:bg-opacity-90 transition">
+                    Passwort erstellen
+                </button>
+                <div class="mt-4 text-center">
+                    <button id="skipPasswordBtn" class="text-gray-500 dark:text-gray-400 underline">
+                        Ohne Passwortschutz fortfahren
+                    </button>
+                </div>
+            </div>
+            
+            <div id="passwordLogin" class="hidden">
+                <div class="mb-4 password-input-container">
+                    <input type="password" id="enterPassword" placeholder="Passwort eingeben" 
+                        class="w-full p-3 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base">
+                    <span class="password-toggle" data-for="enterPassword">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                    </span>
+                </div>
+                <div id="passwordLoginError" class="hidden text-red-500 text-center mb-4"></div>
+                <button id="unlockBtn" class="w-full bg-primary text-white py-3 px-4 rounded-md hover:bg-opacity-90 transition">
+                    Entsperren
+                </button>
+                <div class="mt-4 text-center">
+                    <button id="resetPasswordBtn" class="text-gray-500 dark:text-gray-400 underline">
+                        Passwort zurücksetzen
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="app" class="min-h-screen flex flex-col hidden">
+        <!-- Header -->
+        <header class="bg-primary text-white p-4 shadow-md">
+            <div class="container mx-auto flex justify-between items-center">
+                <h1 class="text-xl md:text-2xl font-bold">Recovery-Tagebuch</h1>
+                <div class="flex items-center space-x-3">
+                    <button id="inspiringQuoteBtn" class="p-2 rounded-full hover:bg-opacity-80 transition" title="Inspirierendes Zitat">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                    </button>
+                    <button id="toggleDarkMode" class="p-2 rounded-full hover:bg-opacity-80 transition" title="Dunkelmodus umschalten">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                    </button>
+                    <button id="lockAppBtn" class="p-2 rounded-full hover:bg-opacity-80 transition" title="Tagebuch sperren">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-grow container mx-auto p-4 md:p-6">
+            <!-- Tab Navigation -->
+            <div class="tab-menu flex mb-6 border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
+                <button data-tab="daily" class="tab-btn py-2 px-4 font-medium text-primary border-b-2 border-primary">Tägliche Einträge</button>
+                <button data-tab="weekly" class="tab-btn py-2 px-4 font-medium text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary">Wöchentliche Reflexion</button>
+                <button data-tab="creative" class="tab-btn py-2 px-4 font-medium text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary">Kreative Seiten</button>
+                <button data-tab="history" class="tab-btn py-2 px-4 font-medium text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary">Tagebuchverlauf</button>
+            </div>
+
+            <!-- Tab Content -->
+            <div id="tabContent" class="mb-6">
+                <!-- Daily Journal Tab -->
+                <div id="daily" class="tab-content animate-fade-in">
+                    <div class="flex flex-col md:flex-row justify-between gap-6">
+                        <!-- Morning Reflection -->
+                        <div class="flex-1 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                            <h2 class="text-xl font-bold mb-4 text-primary">Morgenreflexion - <span id="currentDate"></span></h2>
+                            
+                            <div class="mb-6">
+                                <h3 class="font-medium mb-2 text-gray-700 dark:text-gray-300">Wie fühle ich mich heute?</h3>
+                                <div class="flex justify-between items-center mb-2">
+                                    <div class="flex space-x-4">
+                                        <div>
+                                            <input type="radio" id="mood1" name="morningMood" value="1" class="mood-input" checked>
+                                            <label for="mood1" class="mood-label">😞</label>
+                                        </div>
+                                        <div>
+                                            <input type="radio" id="mood2" name="morningMood" value="2" class="mood-input">
+                                            <label for="mood2" class="mood-label">😕</label>
+                                        </div>
+                                        <div>
+                                            <input type="radio" id="mood3" name="morningMood" value="3" class="mood-input">
+                                            <label for="mood3" class="mood-label">😐</label>
+                                        </div>
+                                        <div>
+                                            <input type="radio" id="mood4" name="morningMood" value="4" class="mood-input">
+                                            <label for="mood4" class="mood-label">🙂</label>
+                                        </div>
+                                        <div>
+                                            <input type="radio" id="mood5" name="morningMood" value="5" class="mood-input">
+                                            <label for="mood5" class="mood-label">😊</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="morningMotto" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Heutiges Motto:</label>
+                                <input type="text" id="morningMotto" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Ein Satz, der mich durch den Tag führen soll">
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="morningAnticipation" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Vorfreude auf heute:</label>
+                                <textarea id="morningAnticipation" rows="3" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Was erwartet mich heute Schönes?"></textarea>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="morningGoal" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Mein Ziel für heute:</label>
+                                <textarea id="morningGoal" rows="3" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Etwas, was ich heute erreichen möchte"></textarea>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="morningGratitude" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Dankbarkeit:</label>
+                                <textarea id="morningGratitude" rows="3" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Wofür bin ich heute besonders dankbar?"></textarea>
+                            </div>
+                            
+                            <button id="saveMorningBtn" class="bg-primary text-white py-2 px-4 rounded-md hover:bg-opacity-90 transition">Morgenreflexion speichern</button>
+                        </div>
+                        
+                        <!-- Evening Reflection -->
+                        <div class="flex-1 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                            <h2 class="text-xl font-bold mb-4 text-primary">Abendreflexion - <span id="currentDateEvening"></span></h2>
+                            
+                            <div class="mb-6">
+                                <h3 class="font-medium mb-2 text-gray-700 dark:text-gray-300">Wie fühle ich mich jetzt?</h3>
+                                <div class="flex justify-between items-center mb-2">
+                                    <div class="flex space-x-4">
+                                        <div>
+                                            <input type="radio" id="eveningMood1" name="eveningMood" value="1" class="mood-input" checked>
+                                            <label for="eveningMood1" class="mood-label">😞</label>
+                                        </div>
+                                        <div>
+                                            <input type="radio" id="eveningMood2" name="eveningMood" value="2" class="mood-input">
+                                            <label for="eveningMood2" class="mood-label">😕</label>
+                                        </div>
+                                        <div>
+                                            <input type="radio" id="eveningMood3" name="eveningMood" value="3" class="mood-input">
+                                            <label for="eveningMood3" class="mood-label">😐</label>
+                                        </div>
+                                        <div>
+                                            <input type="radio" id="eveningMood4" name="eveningMood" value="4" class="mood-input">
+                                            <label for="eveningMood4" class="mood-label">🙂</label>
+                                        </div>
+                                        <div>
+                                            <input type="radio" id="eveningMood5" name="eveningMood" value="5" class="mood-input">
+                                            <label for="eveningMood5" class="mood-label">😊</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="eveningSuccess" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Heutige Erfolge:</label>
+                                <textarea id="eveningSuccess" rows="3" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Was habe ich heute erreicht?"></textarea>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="eveningMoments" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Schöne Momente:</label>
+                                <textarea id="eveningMoments" rows="3" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Welche besonderen Momente habe ich heute erlebt?"></textarea>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="eveningLearning" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Lernmomente:</label>
+                                <textarea id="eveningLearning" rows="3" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Was habe ich heute gelernt oder überwunden?"></textarea>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="eveningSelfCare" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Selbstfürsorge:</label>
+                                <textarea id="eveningSelfCare" rows="3" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Wie habe ich heute für mich gesorgt?"></textarea>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="eveningThoughts" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Gedanken und Gefühle:</label>
+                                <textarea id="eveningThoughts" rows="3" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Freiraum für meine Gedanken und Gefühle am Abend"></textarea>
+                            </div>
+                            
+                            <button id="saveEveningBtn" class="bg-primary text-white py-2 px-4 rounded-md hover:bg-opacity-90 transition">Abendreflexion speichern</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Weekly Reflection Tab -->
+                <div id="weekly" class="tab-content hidden animate-fade-in">
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                        <h2 class="text-xl font-bold mb-4 text-primary">Wöchentliche Reflexion - <span id="currentWeek"></span></h2>
+                        
+                        <div class="mb-4">
+                            <label for="weeklyAccomplishments" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Diese Woche bin ich stolz auf:</label>
+                            <textarea id="weeklyAccomplishments" rows="3" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Meine Erfolge und Fortschritte"></textarea>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="weeklyChallenges" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Herausforderungen:</label>
+                            <textarea id="weeklyChallenges" rows="3" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Was war schwierig und wie habe ich es bewältigt?"></textarea>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="weeklyMood" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Stimmungsbild:</label>
+                            <textarea id="weeklyMood" rows="3" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Wie habe ich mich diese Woche gefühlt?"></textarea>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="weeklyFavMoment" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Mein Lieblingsmoment:</label>
+                            <textarea id="weeklyFavMoment" rows="3" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Der schönste Moment der Woche"></textarea>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="weeklyNextSteps" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Nächste Schritte:</label>
+                            <textarea id="weeklyNextSteps" rows="3" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Was möchte ich in der kommenden Woche erreichen?"></textarea>
+                        </div>
+                        
+                        <button id="saveWeeklyBtn" class="bg-primary text-white py-2 px-4 rounded-md hover:bg-opacity-90 transition">Wöchentliche Reflexion speichern</button>
+                    </div>
+                </div>
+
+                <!-- Creative Pages Tab -->
+                <div id="creative" class="tab-content hidden animate-fade-in">
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mb-6">
+                        <h2 class="text-xl font-bold mb-4 text-primary">Kreative Ausdrucksformen</h2>
+                        
+                        <div class="mb-6">
+                            <label class="block font-medium mb-2 text-gray-700 dark:text-gray-300">Wähle eine kreative Seite:</label>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                <button data-creative="journey-map" class="creative-btn p-4 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 text-left transition">
+                                    <h3 class="font-bold text-primary">Meine Recovery-Reise</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Eine metaphorische Karte mit Meilensteinen und Zielen</p>
+                                </button>
+                                <button data-creative="strength-cloud" class="creative-btn p-4 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 text-left transition">
+                                    <h3 class="font-bold text-primary">Meine Stärken-Wolke</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Eigene Stärken und positive Eigenschaften</p>
+                                </button>
+                                <button data-creative="success-barometer" class="creative-btn p-4 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 text-left transition">
+                                    <h3 class="font-bold text-primary">Mein Erfolgsbarometer</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Visualisierung täglicher Erfolge</p>
+                                </button>
+                                <button data-creative="comfort-island" class="creative-btn p-4 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 text-left transition">
+                                    <h3 class="font-bold text-primary">Meine Wohlfühl-Insel</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Ein sicherer, glücklicher Ort</p>
+                                </button>
+                                <button data-creative="thought-labyrinth" class="creative-btn p-4 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 text-left transition">
+                                    <h3 class="font-bold text-primary">Das Labyrinth der Gedanken</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Reflexion über Gedanken und Lösungswege</p>
+                                </button>
+                                <button data-creative="future-letter" class="creative-btn p-4 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 text-left transition">
+                                    <h3 class="font-bold text-primary">Brief an mein zukünftiges Ich</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Motivation für dein künftiges Selbst</p>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Creative Content Containers -->
+                    <div id="creative-content" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hidden">
+                        <!-- Journey Map -->
+                        <div id="journey-map-content" class="creative-content hidden">
+                            <h2 class="text-xl font-bold mb-4 text-primary">Meine Recovery-Reise</h2>
+                            <p class="mb-4 text-gray-700 dark:text-gray-300">Beschreibe deine bisherige Reise und markiere wichtige Meilensteine auf deinem Weg. Wo bist du gestartet, wo stehst du jetzt, und wohin möchtest du gehen?</p>
+                            
+                            <div class="mb-4">
+                                <label for="journeyStart" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Startpunkt:</label>
+                                <textarea id="journeyStart" rows="3" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Wo habe ich begonnen?"></textarea>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="journeyMilestones" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Wichtige Meilensteine:</label>
+                                <textarea id="journeyMilestones" rows="4" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Welche bedeutenden Momente habe ich erlebt?"></textarea>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="journeyCurrent" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Aktueller Standpunkt:</label>
+                                <textarea id="journeyCurrent" rows="3" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Wo stehe ich jetzt?"></textarea>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="journeyDestination" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Ziel:</label>
+                                <textarea id="journeyDestination" rows="3" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Wohin möchte ich gehen?"></textarea>
+                            </div>
+                            
+                            <button id="saveJourneyMapBtn" class="bg-primary text-white py-2 px-4 rounded-md hover:bg-opacity-90 transition">Meine Recovery-Reise speichern</button>
+                        </div>
+                        
+                        <!-- Strength Cloud -->
+                        <div id="strength-cloud-content" class="creative-content hidden">
+                            <h2 class="text-xl font-bold mb-4 text-primary">Meine Stärken-Wolke</h2>
+                            <p class="mb-4 text-gray-700 dark:text-gray-300">Füge Stärken und positive Eigenschaften hinzu, die dich auszeichnen. Du kannst die Größe der Stärken nach ihrer Bedeutung für dich anpassen.</p>
+                            
+                            <div class="mb-4">
+                                <label for="newStrength" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Neue Stärke hinzufügen:</label>
+                                <div class="flex items-center space-x-2">
+                                    <input type="text" id="newStrength" class="flex-grow p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Deine Stärke">
+                                    <select id="strengthSize" class="p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base">
+                                        <option value="text-sm">Klein</option>
+                                        <option value="text-base" selected>Mittel</option>
+                                        <option value="text-lg">Groß</option>
+                                        <option value="text-xl">Sehr groß</option>
+                                    </select>
+                                    <div class="color-picker flex space-x-2">
+                                        <div class="bg-primary" data-color="text-primary"></div>
+                                        <div class="bg-green-500" data-color="text-green-500"></div>
+                                        <div class="bg-blue-500" data-color="text-blue-500"></div>
+                                        <div class="bg-yellow-500" data-color="text-yellow-500"></div>
+                                        <div class="bg-red-500" data-color="text-red-500"></div>
+                                    </div>
+                                    <button id="addStrengthBtn" class="bg-primary text-white py-2 px-4 rounded-md hover:bg-opacity-90 transition">Hinzufügen</button>
+                                </div>
+                            </div>
+                            
+                            <div id="strengthCloud" class="p-6 min-h-[200px] border border-dashed border-gray-300 dark:border-gray-600 rounded-lg flex flex-wrap gap-2 items-center justify-center">
+                                <p class="text-gray-500 dark:text-gray-400">Füge Stärken hinzu, um deine Wolke zu erstellen</p>
+                            </div>
+                            
+                            <button id="saveStrengthCloudBtn" class="mt-4 bg-primary text-white py-2 px-4 rounded-md hover:bg-opacity-90 transition">Meine Stärken-Wolke speichern</button>
+                        </div>
+                        
+                        <!-- Success Barometer -->
+                        <div id="success-barometer-content" class="creative-content hidden">
+                            <h2 class="text-xl font-bold mb-4 text-primary">Mein Erfolgsbarometer</h2>
+                            <p class="mb-4 text-gray-700 dark:text-gray-300">Füge tägliche Erfolge hinzu und bewerte sie auf einer Skala von 1 bis 10. So kannst du deine Fortschritte visualisieren.</p>
+                            
+                            <div class="mb-4">
+                                <label for="successDate" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Datum:</label>
+                                <input type="date" id="successDate" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base">
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="successDescription" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Erfolg beschreiben:</label>
+                                <textarea id="successDescription" rows="3" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Beschreibe deinen Erfolg"></textarea>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="successRating" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Bewertung (1-10):</label>
+                                <input type="range" id="successRating" min="1" max="10" step="1" value="5" class="w-full">
+                                <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400">
+                                    <span>1</span>
+                                    <span>2</span>
+                                    <span>3</span>
+                                    <span>4</span>
+                                    <span>5</span>
+                                    <span>6</span>
+                                    <span>7</span>
+                                    <span>8</span>
+                                    <span>9</span>
+                                    <span>10</span>
+                                </div>
+                                <p class="text-center mt-2 font-medium text-primary">Aktuelle Bewertung: <span id="successRatingValue">5</span></p>
+                            </div>
+                            
+                            <button id="addSuccessBtn" class="bg-primary text-white py-2 px-4 rounded-md hover:bg-opacity-90 transition">Erfolg hinzufügen</button>
+                            
+                            <div id="successList" class="mt-6">
+                                <h3 class="font-medium mb-2 text-gray-700 dark:text-gray-300">Meine Erfolge:</h3>
+                                <div id="successItems" class="space-y-2"></div>
+                            </div>
+                            
+                            <button id="saveSuccessBarometerBtn" class="mt-4 bg-primary text-white py-2 px-4 rounded-md hover:bg-opacity-90 transition">Mein Erfolgsbarometer speichern</button>
+                        </div>
+                        
+                        <!-- Comfort Island -->
+                        <div id="comfort-island-content" class="creative-content hidden">
+                            <h2 class="text-xl font-bold mb-4 text-primary">Meine Wohlfühl-Insel</h2>
+                            <p class="mb-4 text-gray-700 dark:text-gray-300">Beschreibe einen sicheren, glücklichen Ort, an den du dich in Gedanken zurückziehen kannst, wenn du Trost und Ruhe brauchst.</p>
+                            
+                            <div class="mb-4">
+                                <label for="islandName" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Name deiner Insel:</label>
+                                <input type="text" id="islandName" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Gib deiner Insel einen Namen">
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="islandDescription" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Beschreibung:</label>
+                                <textarea id="islandDescription" rows="4" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Wie sieht deine Insel aus? Was gibt es dort zu sehen, zu hören, zu fühlen?"></textarea>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="islandActivities" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Aktivitäten:</label>
+                                <textarea id="islandActivities" rows="3" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Was machst du auf deiner Insel, um dich zu entspannen?"></textarea>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="islandCompanions" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Begleiter:</label>
+                                <textarea id="islandCompanions" rows="3" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Wer oder was begleitet dich auf deiner Insel? (Menschen, Tiere, imaginäre Wesen...)"></textarea>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="islandFeelings" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Gefühle:</label>
+                                <textarea id="islandFeelings" rows="3" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Wie fühlst du dich auf deiner Insel?"></textarea>
+                            </div>
+                            
+                            <button id="saveComfortIslandBtn" class="bg-primary text-white py-2 px-4 rounded-md hover:bg-opacity-90 transition">Meine Wohlfühl-Insel speichern</button>
+                        </div>
+                        
+                        <!-- Thought Labyrinth -->
+                        <div id="thought-labyrinth-content" class="creative-content hidden">
+                            <h2 class="text-xl font-bold mb-4 text-primary">Das Labyrinth der Gedanken</h2>
+                            <p class="mb-4 text-gray-700 dark:text-gray-300">Erkunde deine Gedanken und Gefühle, um Klarheit zu finden. Beginne mit einem herausfordernden Gedanken und folge ihm durch das Labyrinth.</p>
+                            
+                            <div class="mb-4">
+                                <label for="labyrinthStart" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Startpunkt: Herausfordernder Gedanke</label>
+                                <textarea id="labyrinthStart" rows="2" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Ein Gedanke, der dich beschäftigt oder belastet"></textarea>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="labyrinthPaths" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Wege durch das Labyrinth:</label>
+                                <div id="labyrinthPaths">
+                                    <div class="path-entry mb-3 p-3 border border-gray-200 dark:border-gray-700 rounded-lg">
+                                        <label class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Weg 1: Erste Gedankenzweigung</label>
+                                        <textarea class="path-text w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" rows="2" placeholder="Wohin führt dieser Gedanke?"></textarea>
+                                    </div>
+                                </div>
+                                <button id="addPathBtn" class="mt-2 text-primary underline">+ Weiteren Weg hinzufügen</button>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="labyrinthCenter" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Zentrum des Labyrinths: Die Erkenntnis</label>
+                                <textarea id="labyrinthCenter" rows="3" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Zu welcher Erkenntnis oder Einsicht führen deine Gedankenwege?"></textarea>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="labyrinthExit" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Ausgang: Lösungsansatz</label>
+                                <textarea id="labyrinthExit" rows="3" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Welche mögliche Lösung oder Handlung ergibt sich aus deiner Erkenntnis?"></textarea>
+                            </div>
+                            
+                            <button id="saveThoughtLabyrinthBtn" class="bg-primary text-white py-2 px-4 rounded-md hover:bg-opacity-90 transition">Mein Gedankenlabyrinth speichern</button>
+                        </div>
+                        
+                        <!-- Future Letter -->
+                        <div id="future-letter-content" class="creative-content hidden">
+                            <h2 class="text-xl font-bold mb-4 text-primary">Brief an mein zukünftiges Ich</h2>
+                            <p class="mb-4 text-gray-700 dark:text-gray-300">Schreibe einen Brief an dein zukünftiges Ich. Teile deine aktuellen Gedanken, Hoffnungen und Ratschläge mit.</p>
+                            
+                            <div class="mb-4">
+                                <label for="letterDate" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Heutiges Datum:</label>
+                                <input type="date" id="letterDate" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base">
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="letterFutureDate" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Lesen am:</label>
+                                <input type="date" id="letterFutureDate" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base">
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="letterSalutation" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Anrede:</label>
+                                <input type="text" id="letterSalutation" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Liebes zukünftiges Ich, ...">
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="letterContent" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Briefinhalt:</label>
+                                <textarea id="letterContent" rows="8" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Schreibe deinen Brief hier..."></textarea>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="letterClosing" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Schlussformel:</label>
+                                <input type="text" id="letterClosing" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Mit besten Wünschen, Dein heutiges Ich">
+                            </div>
+                            
+                            <button id="saveFutureLetterBtn" class="bg-primary text-white py-2 px-4 rounded-md hover:bg-opacity-90 transition">Meinen Brief speichern</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Journal History Tab -->
+                <div id="history" class="tab-content hidden animate-fade-in">
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                        <h2 class="text-xl font-bold mb-4 text-primary">Tagebuchverlauf</h2>
+                        
+                        <div class="mb-4">
+                            <label class="block font-medium mb-2 text-gray-700 dark:text-gray-300">Einträge filtern:</label>
+                            <div class="flex flex-wrap gap-2">
+                                <button id="filterDaily" class="bg-primary text-white py-1 px-3 rounded-md hover:bg-opacity-90 transition">Tägliche Einträge</button>
+                                <button id="filterWeekly" class="bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300 py-1 px-3 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition">Wöchentliche Reflexionen</button>
+                                <button id="filterCreative" class="bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300 py-1 px-3 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition">Kreative Seiten</button>
+                                <button id="filterAll" class="bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300 py-1 px-3 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition">Alle Einträge</button>
+                            </div>
+                        </div>
+                        
+                        <div id="historyList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <p id="noEntries" class="text-gray-500 dark:text-gray-400 col-span-full text-center py-8">Noch keine Einträge vorhanden. Beginne mit deinem ersten Eintrag!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-gray-100 dark:bg-gray-800 py-4 px-6 border-t border-gray-200 dark:border-gray-700">
+            <div class="container mx-auto text-center text-gray-600 dark:text-gray-400 text-sm">
+                <p>Recovery-Tagebuch © 2023 | Unterstützt dich auf deinem Weg zum Wohlbefinden</p>
+            </div>
+        </footer>
+        
+        <!-- Modals -->
+        <!-- Inspiring Quote Modal -->
+        <div id="quoteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 max-w-md w-full">
+                <div class="flex justify-between items-start mb-4">
+                    <h3 class="text-xl font-bold text-primary">Inspirierendes Zitat</h3>
+                    <button id="closeQuoteModal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div id="quoteContent" class="mb-4 text-center italic text-gray-700 dark:text-gray-300 py-6">
+                    "Der Weg mag steinig sein, aber jedes Mal, wenn ich stolpere, stehe ich höher auf als zuvor."
+                </div>
+                <div class="flex justify-center">
+                    <button id="newQuoteBtn" class="bg-primary text-white py-2 px-4 rounded-md hover:bg-opacity-90 transition">Neues Zitat</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Entry View Modal -->
+        <div id="entryViewModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="flex justify-between items-start mb-4">
+                    <h3 id="entryViewTitle" class="text-xl font-bold text-primary">Tagebucheintrag</h3>
+                    <button id="closeEntryViewModal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div id="entryViewContent" class="markdown-content">
+                    <!-- Content will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Settings Modal -->
+        <div id="settingsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 max-w-md w-full">
+                <div class="flex justify-between items-start mb-6">
+                    <h3 class="text-xl font-bold text-primary">Einstellungen</h3>
+                    <button id="closeSettingsModal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="mb-6">
+                    <h4 class="font-medium mb-3 text-gray-700 dark:text-gray-300">Passwort</h4>
+                    <button id="changePasswordBtn" class="bg-primary text-white py-2 px-4 rounded-md hover:bg-opacity-90 transition">
+                        Passwort ändern
+                    </button>
+                    <button id="removePasswordBtn" class="ml-2 bg-red-500 text-white py-2 px-4 rounded-md hover:bg-opacity-90 transition">
+                        Passwort entfernen
+                    </button>
+                </div>
+                
+                <div class="mb-6">
+                    <h4 class="font-medium mb-3 text-gray-700 dark:text-gray-300">Automatisches Sperren</h4>
+                    <div class="flex items-center">
+                        <input type="checkbox" id="autoLockToggle" class="rounded border-gray-300 dark:border-gray-600 text-primary focus:ring-primary">
+                        <label for="autoLockToggle" class="ml-2 text-gray-700 dark:text-gray-300">
+                            Automatisch sperren nach Inaktivität
+                        </label>
+                    </div>
+                    <div id="autoLockTimeContainer" class="mt-2 hidden">
+                        <label for="autoLockTime" class="block mb-1 text-gray-700 dark:text-gray-300">
+                            Inaktivitätszeit (Minuten):
+                        </label>
+                        <input type="number" id="autoLockTime" min="1" max="60" value="5" 
+                            class="w-20 p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base">
+                    </div>
+                </div>
+                
+                <div class="mb-6">
+                    <h4 class="font-medium mb-3 text-gray-700 dark:text-gray-300">Theme</h4>
+                    <div class="flex items-center space-x-4">
+                        <button id="setLightTheme" class="px-4 py-2 border rounded-md dark:border-gray-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                            <span class="block mt-1">Hell</span>
+                        </button>
+                        <button id="setDarkTheme" class="px-4 py-2 border rounded-md dark:border-gray-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                            </svg>
+                            <span class="block mt-1">Dunkel</span>
+                        </button>
+                        <button id="setSystemTheme" class="px-4 py-2 border rounded-md dark:border-gray-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            <span class="block mt-1">System</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Password Change Modal -->
+        <div id="passwordChangeModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 max-w-md w-full">
+                <div class="flex justify-between items-start mb-4">
+                    <h3 class="text-xl font-bold text-primary">Passwort ändern</h3>
+                    <button id="closePasswordChangeModal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="mb-4 password-input-container">
+                    <label for="currentPassword" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Aktuelles Passwort:</label>
+                    <input type="password" id="currentPassword" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Aktuelles Passwort">
+                    <span class="password-toggle" data-for="currentPassword">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                    </span>
+                </div>
+                
+                <div class="mb-4 password-input-container">
+                    <label for="newPasswordChange" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Neues Passwort:</label>
+                    <input type="password" id="newPasswordChange" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Neues Passwort">
+                    <span class="password-toggle" data-for="newPasswordChange">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                    </span>
+                </div>
+                
+                <div class="mb-4 password-input-container">
+                    <label for="confirmPasswordChange" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Passwort bestätigen:</label>
+                    <input type="password" id="confirmPasswordChange" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" placeholder="Passwort bestätigen">
+                    <span class="password-toggle" data-for="confirmPasswordChange">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                    </span>
+                </div>
+                
+                <div id="passwordChangeError" class="hidden text-red-500 text-center mb-4"></div>
+                
+                <button id="updatePasswordBtn" class="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-opacity-90 transition">
+                    Passwort aktualisieren
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check for dark mode preference
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.documentElement.classList.add('dark');
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+                if (event.matches) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            });
+            
+            // Element references
+            const app = {
+                appContainer: document.getElementById('app'),
+                tabButtons: document.querySelectorAll('.tab-btn'),
+                tabContents: document.querySelectorAll('.tab-content'),
+                toggleDarkMode: document.getElementById('toggleDarkMode'),
+                inspiringQuoteBtn: document.getElementById('inspiringQuoteBtn'),
+                quoteModal: document.getElementById('quoteModal'),
+                closeQuoteModal: document.getElementById('closeQuoteModal'),
+                newQuoteBtn: document.getElementById('newQuoteBtn'),
+                quoteContent: document.getElementById('quoteContent'),
+                currentDate: document.getElementById('currentDate'),
+                currentDateEvening: document.getElementById('currentDateEvening'),
+                currentWeek: document.getElementById('currentWeek'),
+                saveMorningBtn: document.getElementById('saveMorningBtn'),
+                saveEveningBtn: document.getElementById('saveEveningBtn'),
+                saveWeeklyBtn: document.getElementById('saveWeeklyBtn'),
+                successRating: document.getElementById('successRating'),
+                successRatingValue: document.getElementById('successRatingValue'),
+                addSuccessBtn: document.getElementById('addSuccessBtn'),
+                successItems: document.getElementById('successItems'),
+                addPathBtn: document.getElementById('addPathBtn'),
+                creativeButtons: document.querySelectorAll('.creative-btn'),
+                creativeContent: document.getElementById('creative-content'),
+                creativeContents: document.querySelectorAll('.creative-content'),
+                addStrengthBtn: document.getElementById('addStrengthBtn'),
+                strengthCloud: document.getElementById('strengthCloud'),
+                colorPicker: document.querySelector('.color-picker'),
+                historyList: document.getElementById('historyList'),
+                filterDaily: document.getElementById('filterDaily'),
+                filterWeekly: document.getElementById('filterWeekly'),
+                filterCreative: document.getElementById('filterCreative'),
+                filterAll: document.getElementById('filterAll'),
+                entryViewModal: document.getElementById('entryViewModal'),
+                closeEntryViewModal: document.getElementById('closeEntryViewModal'),
+                entryViewTitle: document.getElementById('entryViewTitle'),
+                entryViewContent: document.getElementById('entryViewContent'),
+                noEntries: document.getElementById('noEntries'),
+                
+                // Lock screen elements
+                lockScreen: document.getElementById('lockScreen'),
+                lockScreenMessage: document.getElementById('lockScreenMessage'),
+                passwordSetup: document.getElementById('passwordSetup'),
+                passwordLogin: document.getElementById('passwordLogin'),
+                newPassword: document.getElementById('newPassword'),
+                confirmPassword: document.getElementById('confirmPassword'),
+                enterPassword: document.getElementById('enterPassword'),
+                createPasswordBtn: document.getElementById('createPasswordBtn'),
+                unlockBtn: document.getElementById('unlockBtn'),
+                skipPasswordBtn: document.getElementById('skipPasswordBtn'),
+                resetPasswordBtn: document.getElementById('resetPasswordBtn'),
+                passwordSetupError: document.getElementById('passwordSetupError'),
+                passwordLoginError: document.getElementById('passwordLoginError'),
+                lockAppBtn: document.getElementById('lockAppBtn'),
+                
+                // Password toggle elements
+                passwordToggles: document.querySelectorAll('.password-toggle'),
+                
+                // Settings modal
+                settingsModal: document.getElementById('settingsModal'),
+                closeSettingsModal: document.getElementById('closeSettingsModal'),
+                autoLockToggle: document.getElementById('autoLockToggle'),
+                autoLockTimeContainer: document.getElementById('autoLockTimeContainer'),
+                autoLockTime: document.getElementById('autoLockTime'),
+                setLightTheme: document.getElementById('setLightTheme'),
+                setDarkTheme: document.getElementById('setDarkTheme'),
+                setSystemTheme: document.getElementById('setSystemTheme'),
+                
+                // Password change modal
+                passwordChangeModal: document.getElementById('passwordChangeModal'),
+                closePasswordChangeModal: document.getElementById('closePasswordChangeModal'),
+                currentPassword: document.getElementById('currentPassword'),
+                newPasswordChange: document.getElementById('newPasswordChange'),
+                confirmPasswordChange: document.getElementById('confirmPasswordChange'),
+                updatePasswordBtn: document.getElementById('updatePasswordBtn'),
+                passwordChangeError: document.getElementById('passwordChangeError'),
+                changePasswordBtn: document.getElementById('changePasswordBtn'),
+                removePasswordBtn: document.getElementById('removePasswordBtn')
+            };
+            
+            // Application state
+            const state = {
+                selectedColor: 'text-primary',
+                entries: [],
+                currentFilter: 'daily',
+                quotes: [
+                    "Der Weg mag steinig sein, aber jedes Mal, wenn ich stolpere, stehe ich höher auf als zuvor.",
+                    "In mir brennt ein Licht, das niemals erlischt.",
+                    "Schritte, egal wie klein, sind Fortschritte auf dem Weg zum Ziel.",
+                    "Heute ist ein neuer Tag, eine neue Chance, ein neuer Anfang.",
+                    "Genesung bedeutet nicht, dass wir uns nie wieder schwach fühlen, sondern dass wir die Kraft haben, wieder aufzustehen.",
+                    "Du bist stärker als du denkst, mutiger als du glaubst und geliebt mehr als du weißt.",
+                    "Finde Freude in den kleinen Dingen, denn eines Tages wirst du zurückblicken und erkennen, dass sie die großen Dinge waren.",
+                    "Heilung ist nicht linear. Sie ist ein Prozess aus guten und schlechten Tagen, und beide sind wichtig für den Fortschritt.",
+                    "Jeder Tag ist eine neue Gelegenheit, dich selbst ein bisschen mehr zu lieben.",
+                    "Die schwierigsten Berge zu erklimmen führt oft zur schönsten Aussicht."
+                ],
+                successItems: [],
+                password: null,
+                hasPassword: false,
+                autoLock: {
+                    enabled: false,
+                    timeoutMinutes: 5,
+                    timeoutId: null,
+                    lastActivity: Date.now()
+                },
+                themePreference: 'system' // 'light', 'dark', or 'system'
+            };
+            
+            // Format dates
+            const DateTime = luxon.DateTime;
+            const today = DateTime.now();
+            if (app.currentDate) app.currentDate.textContent = today.toFormat('dd.MM.yyyy');
+            if (app.currentDateEvening) app.currentDateEvening.textContent = today.toFormat('dd.MM.yyyy');
+            if (app.currentWeek) app.currentWeek.textContent = `${today.startOf('week').toFormat('dd.MM.')} - ${today.endOf('week').toFormat('dd.MM.yyyy')}`;
+            
+            if (document.getElementById('letterDate')) {
+                document.getElementById('letterDate').value = today.toISODate();
+                // Set future date to 6 months from now
+                document.getElementById('letterFutureDate').value = today.plus({ months: 6 }).toISODate();
+            }
+            
+            if (document.getElementById('successDate')) {
+                document.getElementById('successDate').value = today.toISODate();
+            }
+            
+            // Initialize password functionality
+            function initializePasswordSystem() {
+                // Show appropriate password screen
+                if (state.hasPassword) {
+                    app.passwordSetup.classList.add('hidden');
+                    app.passwordLogin.classList.remove('hidden');
+                    app.lockScreenMessage.textContent = 'Bitte gib dein Passwort ein, um dein Tagebuch zu öffnen';
+                } else {
+                    app.passwordSetup.classList.remove('hidden');
+                    app.passwordLogin.classList.add('hidden');
+                    app.lockScreenMessage.textContent = 'Schütze dein Tagebuch mit einem Passwort';
+                }
+                
+                app.lockScreen.classList.remove('hidden');
+                app.appContainer.classList.add('hidden');
+            }
+            
+            // Create password
+            app.createPasswordBtn.addEventListener('click', () => {
+                const newPass = app.newPassword.value;
+                const confirmPass = app.confirmPassword.value;
+                
+                // Reset error
+                app.passwordSetupError.classList.add('hidden');
+                
+                if (newPass.length < 4) {
+                    app.passwordSetupError.textContent = 'Dein Passwort sollte mindestens 4 Zeichen lang sein.';
+                    app.passwordSetupError.classList.remove('hidden');
+                    return;
+                }
+                
+                if (newPass !== confirmPass) {
+                    app.passwordSetupError.textContent = 'Die Passwörter stimmen nicht überein.';
+                    app.passwordSetupError.classList.remove('hidden');
+                    return;
+                }
+                
+                // Save password
+                state.password = newPass;
+                state.hasPassword = true;
+                
+                // Clear password fields
+                app.newPassword.value = '';
+                app.confirmPassword.value = '';
+                
+                // Show app
+                app.lockScreen.classList.add('hidden');
+                app.appContainer.classList.remove('hidden');
+                
+                showNotification('Passwort erfolgreich erstellt', 'success');
+            });
+            
+            // Skip password setup
+            app.skipPasswordBtn.addEventListener('click', () => {
+                state.hasPassword = false;
+                state.password = null;
+                
+                // Show app
+                app.lockScreen.classList.add('hidden');
+                app.appContainer.classList.remove('hidden');
+                
+                showNotification('App ohne Passwortschutz geöffnet', 'info');
+            });
+            
+            // Unlock app
+            app.unlockBtn.addEventListener('click', () => {
+                const enteredPassword = app.enterPassword.value;
+                
+                // Reset error
+                app.passwordLoginError.classList.add('hidden');
+                
+                if (enteredPassword !== state.password) {
+                    app.passwordLoginError.textContent = 'Falsches Passwort. Bitte versuche es erneut.';
+                    app.passwordLoginError.classList.remove('hidden');
+                    return;
+                }
+                
+                // Clear password field
+                app.enterPassword.value = '';
+                
+                // Show app
+                app.lockScreen.classList.add('hidden');
+                app.appContainer.classList.remove('hidden');
+                
+                showNotification('Tagebuch entsperrt', 'success');
+            });
+            
+            // Reset password
+            app.resetPasswordBtn.addEventListener('click', () => {
+                // Reset error
+                app.passwordLoginError.classList.add('hidden');
+                
+                // Show password setup
+                state.hasPassword = false;
+                app.passwordSetup.classList.remove('hidden');
+                app.passwordLogin.classList.add('hidden');
+                app.lockScreenMessage.textContent = 'Erstelle ein neues Passwort für dein Tagebuch';
+            });
+            
+            // Lock app button
+            app.lockAppBtn.addEventListener('click', () => {
+                lockApp();
+            });
+            
+            // Lock App Function
+            function lockApp() {
+                app.lockScreen.classList.remove('hidden');
+                app.appContainer.classList.add('hidden');
+                
+                if (state.hasPassword) {
+                    app.passwordSetup.classList.add('hidden');
+                    app.passwordLogin.classList.remove('hidden');
+                    app.lockScreenMessage.textContent = 'Bitte gib dein Passwort ein, um dein Tagebuch zu öffnen';
+                } else {
+                    app.passwordSetup.classList.remove('hidden');
+                    app.passwordLogin.classList.add('hidden');
+                    app.lockScreenMessage.textContent = 'Schütze dein Tagebuch mit einem Passwort';
+                }
+            }
+            
+            // Toggle password visibility
+            app.passwordToggles.forEach(toggle => {
+                toggle.addEventListener('click', () => {
+                    const targetId = toggle.getAttribute('data-for');
+                    const passwordInput = document.getElementById(targetId);
+                    
+                    if (passwordInput.type === 'password') {
+                        passwordInput.type = 'text';
+                        toggle.innerHTML = `
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                            </svg>
+                        `;
+                    } else {
+                        passwordInput.type = 'password';
+                        toggle.innerHTML = `
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                        `;
+                    }
+                });
+            });
+            
+            // Auto-lock functionality
+            function setupAutoLock() {
+                if (state.autoLock.enabled) {
+                    // Track user activity
+                    const trackActivity = () => {
+                        state.autoLock.lastActivity = Date.now();
+                        
+                        // Clear existing timeout and set a new one
+                        if (state.autoLock.timeoutId) {
+                            clearTimeout(state.autoLock.timeoutId);
+                        }
+                        
+                        state.autoLock.timeoutId = setTimeout(() => {
+                            const currentTime = Date.now();
+                            const timeSinceLastActivity = currentTime - state.autoLock.lastActivity;
+                            const timeoutMs = state.autoLock.timeoutMinutes * 60 * 1000;
+                            
+                            if (timeSinceLastActivity >= timeoutMs && state.hasPassword) {
+                                lockApp();
+                            }
+                        }, state.autoLock.timeoutMinutes * 60 * 1000);
+                    };
+                    
+                    // Track various user activities
+                    ['click', 'mousemove', 'keydown', 'touchstart', 'scroll'].forEach(eventType => {
+                        document.addEventListener(eventType, trackActivity);
+                    });
+                    
+                    // Initial activity tracking
+                    trackActivity();
+                }
+            }
+            
+            // Settings modal functionality
+            app.autoLockToggle.addEventListener('change', () => {
+                state.autoLock.enabled = app.autoLockToggle.checked;
+                
+                if (state.autoLock.enabled) {
+                    app.autoLockTimeContainer.classList.remove('hidden');
+                    setupAutoLock();
+                } else {
+                    app.autoLockTimeContainer.classList.add('hidden');
+                    if (state.autoLock.timeoutId) {
+                        clearTimeout(state.autoLock.timeoutId);
+                    }
+                }
+            });
+            
+            app.autoLockTime.addEventListener('change', () => {
+                state.autoLock.timeoutMinutes = parseInt(app.autoLockTime.value) || 5;
+                
+                // Reset auto-lock timeout with new time
+                if (state.autoLock.enabled) {
+                    if (state.autoLock.timeoutId) {
+                        clearTimeout(state.autoLock.timeoutId);
+                    }
+                    setupAutoLock();
+                }
+            });
+            
+            // Change password
+            app.changePasswordBtn.addEventListener('click', () => {
+                // Show password change modal
+                app.passwordChangeModal.classList.remove('hidden');
+                app.settingsModal.classList.add('hidden');
+            });
+            
+            app.closePasswordChangeModal.addEventListener('click', () => {
+                app.passwordChangeModal.classList.add('hidden');
+                app.settingsModal.classList.remove('hidden');
+                
+                // Clear fields and errors
+                app.currentPassword.value = '';
+                app.newPasswordChange.value = '';
+                app.confirmPasswordChange.value = '';
+                app.passwordChangeError.classList.add('hidden');
+            });
+            
+            app.updatePasswordBtn.addEventListener('click', () => {
+                const currentPass = app.currentPassword.value;
+                const newPass = app.newPasswordChange.value;
+                const confirmPass = app.confirmPasswordChange.value;
+                
+                // Reset error
+                app.passwordChangeError.classList.add('hidden');
+                
+                // Validate current password
+                if (currentPass !== state.password) {
+                    app.passwordChangeError.textContent = 'Aktuelles Passwort ist falsch.';
+                    app.passwordChangeError.classList.remove('hidden');
+                    return;
+                }
+                
+                // Validate new password
+                if (newPass.length < 4) {
+                    app.passwordChangeError.textContent = 'Dein neues Passwort sollte mindestens 4 Zeichen lang sein.';
+                    app.passwordChangeError.classList.remove('hidden');
+                    return;
+                }
+                
+                // Validate password confirmation
+                if (newPass !== confirmPass) {
+                    app.passwordChangeError.textContent = 'Die neuen Passwörter stimmen nicht überein.';
+                    app.passwordChangeError.classList.remove('hidden');
+                    return;
+                }
+                
+                // Update password
+                state.password = newPass;
+                
+                // Clear fields
+                app.currentPassword.value = '';
+                app.newPasswordChange.value = '';
+                app.confirmPasswordChange.value = '';
+                
+                // Close modal and show confirmation
+                app.passwordChangeModal.classList.add('hidden');
+                showNotification('Passwort erfolgreich geändert', 'success');
+            });
+            
+            // Remove password
+            app.removePasswordBtn.addEventListener('click', () => {
+                if (confirm('Bist du sicher, dass du den Passwortschutz entfernen möchtest?')) {
+                    state.hasPassword = false;
+                    state.password = null;
+                    app.settingsModal.classList.add('hidden');
+                    showNotification('Passwortschutz entfernt', 'info');
+                }
+            });
+            
+            // Theme settings
+            app.setLightTheme.addEventListener('click', () => {
+                document.documentElement.classList.remove('dark');
+                state.themePreference = 'light';
+            });
+            
+            app.setDarkTheme.addEventListener('click', () => {
+                document.documentElement.classList.add('dark');
+                state.themePreference = 'dark';
+            });
+            
+            app.setSystemTheme.addEventListener('click', () => {
+                const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                
+                if (prefersDark) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+                
+                state.themePreference = 'system';
+            });
+            
+            // Tab navigation
+            app.tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    app.tabButtons.forEach(btn => {
+                        btn.classList.remove('text-primary', 'border-primary');
+                        btn.classList.add('text-gray-500', 'dark:text-gray-400', 'hover:text-primary', 'dark:hover:text-primary');
+                    });
+                    
+                    // Hide all tab contents
+                    app.tabContents.forEach(content => {
+                        content.classList.add('hidden');
+                    });
+                    
+                    // Add active class to clicked button
+                    button.classList.add('text-primary', 'border-primary');
+                    button.classList.remove('text-gray-500', 'dark:text-gray-400', 'hover:text-primary', 'dark:hover:text-primary');
+                    
+                    // Show the corresponding tab content
+                    const tabId = button.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.remove('hidden');
+                    
+                    state.currentTab = tabId;
+                });
+            });
+            
+            // Toggle dark mode
+            app.toggleDarkMode.addEventListener('click', () => {
+                document.documentElement.classList.toggle('dark');
+                
+                // Update theme preference
+                if (document.documentElement.classList.contains('dark')) {
+                    state.themePreference = 'dark';
+                } else {
+                    state.themePreference = 'light';
+                }
+            });
+            
+            // Quote modal
+            app.inspiringQuoteBtn.addEventListener('click', () => {
+                app.quoteModal.classList.remove('hidden');
+            });
+            
+            app.closeQuoteModal.addEventListener('click', () => {
+                app.quoteModal.classList.add('hidden');
+            });
+            
+            app.newQuoteBtn.addEventListener('click', () => {
+                const randomQuote = state.quotes[Math.floor(Math.random() * state.quotes.length)];
+                app.quoteContent.textContent = `"${randomQuote}"`;
+            });
+            
+            // Close modals when clicking outside
+            window.addEventListener('click', (e) => {
+                if (e.target === app.quoteModal) {
+                    app.quoteModal.classList.add('hidden');
+                }
+                if (e.target === app.entryViewModal) {
+                    app.entryViewModal.classList.add('hidden');
+                }
+                if (e.target === app.settingsModal) {
+                    app.settingsModal.classList.add('hidden');
+                }
+                if (e.target === app.passwordChangeModal) {
+                    app.passwordChangeModal.classList.add('hidden');
+                }
+            });
+            
+            // Success barometer rating change
+            if (app.successRating) {
+                app.successRating.addEventListener('input', () => {
+                    app.successRatingValue.textContent = app.successRating.value;
+                });
+            }
+            
+            // Add success to barometer
+            if (app.addSuccessBtn) {
+                app.addSuccessBtn.addEventListener('click', () => {
+                    const date = document.getElementById('successDate').value;
+                    const description = document.getElementById('successDescription').value;
+                    const rating = app.successRating.value;
+                    
+                    if (description.trim() === '') {
+                        alert('Bitte beschreibe deinen Erfolg');
+                        return;
+                    }
+                    
+                    const success = {
+                        date,
+                        description,
+                        rating
+                    };
+                    
+                    state.successItems.push(success);
+                    updateSuccessBarometer();
+                    
+                    // Clear inputs
+                    document.getElementById('successDescription').value = '';
+                });
+            }
+            
+            // Update success barometer display
+            function updateSuccessBarometer() {
+                if (!app.successItems) return;
+                
+                app.successItems.innerHTML = '';
+                
+                if (state.successItems.length === 0) {
+                    app.successItems.innerHTML = '<p class="text-gray-500 dark:text-gray-400">Noch keine Erfolge hinzugefügt</p>';
+                    return;
+                }
+                
+                state.successItems.sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                state.successItems.forEach((item, index) => {
+                    const itemDate = DateTime.fromISO(item.date);
+                    const successElement = document.createElement('div');
+                    successElement.className = 'p-3 border border-gray-200 dark:border-gray-700 rounded-lg';
+                    
+                    const ratingPercentage = (item.rating / 10) * 100;
+                    
+                    successElement.innerHTML = `
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-medium">${itemDate.toFormat('dd.MM.yyyy')}</span>
+                            <span class="text-primary font-bold">${item.rating}/10</span>
+                        </div>
+                        <p class="text-gray-700 dark:text-gray-300 mb-2">${item.description}</p>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                            <div class="bg-primary h-2.5 rounded-full" style="width: ${ratingPercentage}%"></div>
+                        </div>
+                        <button class="remove-success-btn text-red-500 text-sm mt-2" data-index="${index}">Entfernen</button>
+                    `;
+                    
+                    app.successItems.appendChild(successElement);
+                });
+                
+                // Add event listeners to remove buttons
+                document.querySelectorAll('.remove-success-btn').forEach(button => {
+                    button.addEventListener('click', () => {
+                        const index = button.getAttribute('data-index');
+                        state.successItems.splice(index, 1);
+                        updateSuccessBarometer();
+                    });
+                });
+            }
+            
+            // Add thought labyrinth path
+            if (app.addPathBtn) {
+                app.addPathBtn.addEventListener('click', () => {
+                    const labyrinthPaths = document.getElementById('labyrinthPaths');
+                    const pathCount = labyrinthPaths.children.length + 1;
+                    
+                    const pathEntry = document.createElement('div');
+                    pathEntry.className = 'path-entry mb-3 p-3 border border-gray-200 dark:border-gray-700 rounded-lg';
+                    pathEntry.innerHTML = `
+                        <label class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Weg ${pathCount}: Gedankenzweigung</label>
+                        <textarea class="path-text w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" rows="2" placeholder="Wohin führt dieser Gedanke?"></textarea>
+                    `;
+                    
+                    labyrinthPaths.appendChild(pathEntry);
+                });
+            }
+            
+            // Show creative content sections
+            app.creativeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const contentId = button.getAttribute('data-creative');
+                    app.creativeContent.classList.remove('hidden');
+                    
+                    app.creativeContents.forEach(content => {
+                        content.classList.add('hidden');
+                    });
+                    
+                    document.getElementById(`${contentId}-content`).classList.remove('hidden');
+                });
+            });
+            
+            // Color picker for strength cloud
+            if (app.colorPicker) {
+                app.colorPicker.querySelectorAll('div').forEach(color => {
+                    color.addEventListener('click', () => {
+                        state.selectedColor = color.getAttribute('data-color');
+                        app.colorPicker.querySelectorAll('div').forEach(c => {
+                            c.classList.remove('ring-2', 'ring-offset-2', 'ring-primary');
+                        });
+                        color.classList.add('ring-2', 'ring-offset-2', 'ring-primary');
+                    });
+                });
+                
+                // Set initial selected color
+                app.colorPicker.querySelector('div').classList.add('ring-2', 'ring-offset-2', 'ring-primary');
+            }
+            
+            // Add strength to cloud
+            if (app.addStrengthBtn) {
+                app.addStrengthBtn.addEventListener('click', () => {
+                    const strengthInput = document.getElementById('newStrength');
+                    const strengthSize = document.getElementById('strengthSize');
+                    const strength = strengthInput.value.trim();
+                    
+                    if (strength === '') {
+                        showNotification('Bitte gib eine Stärke ein', 'error');
+                        return;
+                    }
+                    
+                    if (app.strengthCloud.querySelector('p.text-gray-500')) {
+                        app.strengthCloud.innerHTML = '';
+                    }
+                    
+                    const strengthElement = document.createElement('div');
+                    strengthElement.className = `${strengthSize.value} ${state.selectedColor} font-medium p-2 transform rotate-${Math.floor(Math.random() * 10) - 5}`;
+                    strengthElement.textContent = strength;
+                    
+                    app.strengthCloud.appendChild(strengthElement);
+                    strengthInput.value = '';
+                });
+            }
+            
+            // Save entries
+            app.saveMorningBtn.addEventListener('click', () => saveEntry('morning'));
+            app.saveEveningBtn.addEventListener('click', () => saveEntry('evening'));
+            if (app.saveWeeklyBtn) app.saveWeeklyBtn.addEventListener('click', () => saveEntry('weekly'));
+            
+            // Save creative entries
+            document.getElementById('saveJourneyMapBtn')?.addEventListener('click', () => saveCreativeEntry('journey-map'));
+            document.getElementById('saveStrengthCloudBtn')?.addEventListener('click', () => saveCreativeEntry('strength-cloud'));
+            document.getElementById('saveSuccessBarometerBtn')?.addEventListener('click', () => saveCreativeEntry('success-barometer'));
+            document.getElementById('saveComfortIslandBtn')?.addEventListener('click', () => saveCreativeEntry('comfort-island'));
+            document.getElementById('saveThoughtLabyrinthBtn')?.addEventListener('click', () => saveCreativeEntry('thought-labyrinth'));
+            document.getElementById('saveFutureLetterBtn')?.addEventListener('click', () => saveCreativeEntry('future-letter'));
+            
+            // Filter history
+            app.filterDaily.addEventListener('click', () => filterEntries('daily'));
+            app.filterWeekly.addEventListener('click', () => filterEntries('weekly'));
+            app.filterCreative.addEventListener('click', () => filterEntries('creative'));
+            app.filterAll.addEventListener('click', () => filterEntries('all'));
+            
+            // Close entry view modal
+            app.closeEntryViewModal.addEventListener('click', () => {
+                app.entryViewModal.classList.add('hidden');
+            });
+            
+            // Helper functions
+            function saveEntry(type) {
+                const now = DateTime.now();
+                let entry = {
+                    id: `entry-${Date.now()}`,
+                    type: type,
+                    date: now.toISO(),
+                    formattedDate: now.toFormat('dd.MM.yyyy')
+                };
+                
+                if (type === 'morning') {
+                    entry.title = `Morgenreflexion - ${entry.formattedDate}`;
+                    entry.mood = document.querySelector('input[name="morningMood"]:checked').value;
+                    entry.motto = document.getElementById('morningMotto').value;
+                    entry.anticipation = document.getElementById('morningAnticipation').value;
+                    entry.goal = document.getElementById('morningGoal').value;
+                    entry.gratitude = document.getElementById('morningGratitude').value;
+                    
+                    // Clear inputs
+                    document.getElementById('morningMotto').value = '';
+                    document.getElementById('morningAnticipation').value = '';
+                    document.getElementById('morningGoal').value = '';
+                    document.getElementById('morningGratitude').value = '';
+                } else if (type === 'evening') {
+                    entry.title = `Abendreflexion - ${entry.formattedDate}`;
+                    entry.mood = document.querySelector('input[name="eveningMood"]:checked').value;
+                    entry.success = document.getElementById('eveningSuccess').value;
+                    entry.moments = document.getElementById('eveningMoments').value;
+                    entry.learning = document.getElementById('eveningLearning').value;
+                    entry.selfCare = document.getElementById('eveningSelfCare').value;
+                    entry.thoughts = document.getElementById('eveningThoughts').value;
+                    
+                    // Clear inputs
+                    document.getElementById('eveningSuccess').value = '';
+                    document.getElementById('eveningMoments').value = '';
+                    document.getElementById('eveningLearning').value = '';
+                    document.getElementById('eveningSelfCare').value = '';
+                    document.getElementById('eveningThoughts').value = '';
+                } else if (type === 'weekly') {
+                    entry.title = `Wöchentliche Reflexion - ${app.currentWeek.textContent}`;
+                    entry.accomplishments = document.getElementById('weeklyAccomplishments').value;
+                    entry.challenges = document.getElementById('weeklyChallenges').value;
+                    entry.mood = document.getElementById('weeklyMood').value;
+                    entry.favMoment = document.getElementById('weeklyFavMoment').value;
+                    entry.nextSteps = document.getElementById('weeklyNextSteps').value;
+                    
+                    // Clear inputs
+                    document.getElementById('weeklyAccomplishments').value = '';
+                    document.getElementById('weeklyChallenges').value = '';
+                    document.getElementById('weeklyMood').value = '';
+                    document.getElementById('weeklyFavMoment').value = '';
+                    document.getElementById('weeklyNextSteps').value = '';
+                }
+                
+                state.entries.unshift(entry);
+                updateHistory();
+                showNotification(`${entry.title} gespeichert`, 'success');
+            }
+            
+            function saveCreativeEntry(type) {
+                const now = DateTime.now();
+                let entry = {
+                    id: `entry-${Date.now()}`,
+                    type: 'creative',
+                    creativeType: type,
+                    date: now.toISO(),
+                    formattedDate: now.toFormat('dd.MM.yyyy')
+                };
+                
+                if (type === 'journey-map') {
+                    entry.title = 'Meine Recovery-Reise';
+                    entry.start = document.getElementById('journeyStart').value;
+                    entry.milestones = document.getElementById('journeyMilestones').value;
+                    entry.current = document.getElementById('journeyCurrent').value;
+                    entry.destination = document.getElementById('journeyDestination').value;
+                    
+                    // Clear inputs
+                    document.getElementById('journeyStart').value = '';
+                    document.getElementById('journeyMilestones').value = '';
+                    document.getElementById('journeyCurrent').value = '';
+                    document.getElementById('journeyDestination').value = '';
+                } else if (type === 'strength-cloud') {
+                    entry.title = 'Meine Stärken-Wolke';
+                    entry.strengths = Array.from(app.strengthCloud.querySelectorAll('div')).map(div => {
+                        return {
+                            text: div.textContent,
+                            size: div.className.match(/text-\w+/)[0],
+                            color: div.className.match(/text-\w+-\d+/)?.[0] || 'text-primary'
+                        };
+                    });
+                    
+                    // Clear strength cloud
+                    app.strengthCloud.innerHTML = '<p class="text-gray-500 dark:text-gray-400">Füge Stärken hinzu, um deine Wolke zu erstellen</p>';
+                } else if (type === 'success-barometer') {
+                    entry.title = 'Mein Erfolgsbarometer';
+                    entry.successItems = [...state.successItems];
+                    
+                    // Clear success items
+                    state.successItems = [];
+                    updateSuccessBarometer();
+                } else if (type === 'comfort-island') {
+                    entry.title = 'Meine Wohlfühl-Insel';
+                    entry.name = document.getElementById('islandName').value;
+                    entry.description = document.getElementById('islandDescription').value;
+                    entry.activities = document.getElementById('islandActivities').value;
+                    entry.companions = document.getElementById('islandCompanions').value;
+                    entry.feelings = document.getElementById('islandFeelings').value;
+                    
+                    // Clear inputs
+                    document.getElementById('islandName').value = '';
+                    document.getElementById('islandDescription').value = '';
+                    document.getElementById('islandActivities').value = '';
+                    document.getElementById('islandCompanions').value = '';
+                    document.getElementById('islandFeelings').value = '';
+                } else if (type === 'thought-labyrinth') {
+                    entry.title = 'Das Labyrinth der Gedanken';
+                    entry.start = document.getElementById('labyrinthStart').value;
+                    entry.paths = Array.from(document.querySelectorAll('.path-text')).map(textarea => textarea.value);
+                    entry.center = document.getElementById('labyrinthCenter').value;
+                    entry.exit = document.getElementById('labyrinthExit').value;
+                    
+                    // Clear inputs
+                    document.getElementById('labyrinthStart').value = '';
+                    document.getElementById('labyrinthPaths').innerHTML = `
+                        <div class="path-entry mb-3 p-3 border border-gray-200 dark:border-gray-700 rounded-lg">
+                            <label class="block font-medium mb-1 text-gray-700 dark:text-gray-300">Weg 1: Erste Gedankenzweigung</label>
+                            <textarea class="path-text w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white text-base" rows="2" placeholder="Wohin führt dieser Gedanke?"></textarea>
+                        </div>
+                    `;
+                    document.getElementById('labyrinthCenter').value = '';
+                    document.getElementById('labyrinthExit').value = '';
+                } else if (type === 'future-letter') {
+                    entry.title = 'Brief an mein zukünftiges Ich';
+                    entry.letterDate = document.getElementById('letterDate').value;
+                    entry.futureDate = document.getElementById('letterFutureDate').value;
+                    entry.salutation = document.getElementById('letterSalutation').value;
+                    entry.content = document.getElementById('letterContent').value;
+                    entry.closing = document.getElementById('letterClosing').value;
+                    
+                    // Clear inputs
+                    document.getElementById('letterSalutation').value = '';
+                    document.getElementById('letterContent').value = '';
+                    document.getElementById('letterClosing').value = '';
+                }
+                
+                state.entries.unshift(entry);
+                updateHistory();
+                showNotification(`${entry.title} gespeichert`, 'success');
+                
+                // Close creative content
+                app.creativeContent.classList.add('hidden');
+            }
+            
+            function updateHistory() {
+                if (state.entries.length === 0) {
+                    app.noEntries.classList.remove('hidden');
+                    return;
+                }
+                
+                app.noEntries.classList.add('hidden');
+                app.historyList.innerHTML = '';
+                
+                const filteredEntries = state.currentFilter === 'all' 
+                    ? state.entries 
+                    : state.entries.filter(entry => {
+                        if (state.currentFilter === 'creative') return entry.type === 'creative';
+                        return entry.type === state.currentFilter;
+                    });
+                
+                if (filteredEntries.length === 0) {
+                    const noFilteredEntries = document.createElement('p');
+                    noFilteredEntries.className = 'text-gray-500 dark:text-gray-400 col-span-full text-center py-8';
+                    noFilteredEntries.textContent = 'Keine Einträge für diesen Filter vorhanden.';
+                    app.historyList.appendChild(noFilteredEntries);
+                    return;
+                }
+                
+                filteredEntries.forEach(entry => {
+                    const entryCard = document.createElement('div');
+                    entryCard.className = 'entry-card bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md border border-gray-200 dark:border-gray-700';
+                    
+                    // Create header with title and date
+                    const header = document.createElement('div');
+                    header.className = 'mb-2';
+                    
+                    const title = document.createElement('h3');
+                    title.className = 'font-bold text-primary';
+                    title.textContent = entry.title;
+                    header.appendChild(title);
+                    
+                    const date = document.createElement('p');
+                    date.className = 'text-sm text-gray-500 dark:text-gray-400';
+                    date.textContent = entry.formattedDate;
+                    header.appendChild(date);
+                    
+                    entryCard.appendChild(header);
+                    
+                    // Create preview content
+                    const preview = document.createElement('div');
+                    preview.className = 'mb-4 text-gray-700 dark:text-gray-300';
+                    
+                    let previewText = '';
+                    if (entry.type === 'morning') {
+                        previewText = entry.motto || entry.anticipation || entry.goal || entry.gratitude || 'Keine Inhalte eingetragen';
+                    } else if (entry.type === 'evening') {
+                        previewText = entry.success || entry.moments || entry.learning || entry.thoughts || 'Keine Inhalte eingetragen';
+                    } else if (entry.type === 'weekly') {
+                        previewText = entry.accomplishments || entry.challenges || entry.mood || 'Keine Inhalte eingetragen';
+                    } else if (entry.type === 'creative') {
+                        if (entry.creativeType === 'journey-map') {
+                            previewText = entry.current || entry.destination || 'Keine Inhalte eingetragen';
+                        } else if (entry.creativeType === 'strength-cloud') {
+                            previewText = entry.strengths?.length > 0 ? `${entry.strengths.length} Stärken eingetragen` : 'Keine Stärken eingetragen';
+                        } else if (entry.creativeType === 'success-barometer') {
+                            previewText = entry.successItems?.length > 0 ? `${entry.successItems.length} Erfolge eingetragen` : 'Keine Erfolge eingetragen';
+                        } else if (entry.creativeType === 'comfort-island') {
+                            previewText = entry.name || entry.description || 'Keine Inhalte eingetragen';
+                        } else if (entry.creativeType === 'thought-labyrinth') {
+                            previewText = entry.start || entry.center || 'Keine Inhalte eingetragen';
+                        } else if (entry.creativeType === 'future-letter') {
+                            previewText = entry.content ? `Brief vom ${formatDate(entry.letterDate)} an dein Ich am ${formatDate(entry.futureDate)}` : 'Keine Inhalte eingetragen';
+                        }
+                    }
+                    
+                    // Truncate preview text if needed
+                    if (previewText.length > 100) {
+                        previewText = previewText.substring(0, 100) + '...';
+                    }
+                    
+                    preview.textContent = previewText;
+                    entryCard.appendChild(preview);
+                    
+                    // Create view button
+                    const viewButton = document.createElement('button');
+                    viewButton.className = 'text-primary hover:underline';
+                    viewButton.textContent = 'Eintrag anzeigen';
+                    viewButton.addEventListener('click', () => {
+                        viewEntry(entry);
+                    });
+                    entryCard.appendChild(viewButton);
+                    
+                    app.historyList.appendChild(entryCard);
+                });
+            }
+            
+            function filterEntries(filter) {
+                state.currentFilter = filter;
+                
+                // Update button styles
+                const filterButtons = [app.filterDaily, app.filterWeekly, app.filterCreative, app.filterAll];
+                filterButtons.forEach(button => {
+                    button.classList.remove('bg-primary', 'text-white');
+                    button.classList.add('bg-gray-200', 'text-gray-700', 'dark:bg-gray-700', 'dark:text-gray-300');
+                });
+                
+                let activeButton;
+                switch (filter) {
+                    case 'daily':
+                        activeButton = app.filterDaily;
+                        break;
+                    case 'weekly':
+                        activeButton = app.filterWeekly;
+                        break;
+                    case 'creative':
+                        activeButton = app.filterCreative;
+                        break;
+                    case 'all':
+                        activeButton = app.filterAll;
+                        break;
+                }
+                
+                activeButton.classList.remove('bg-gray-200', 'text-gray-700', 'dark:bg-gray-700', 'dark:text-gray-300');
+                activeButton.classList.add('bg-primary', 'text-white');
+                
+                updateHistory();
+            }
+            
+            function viewEntry(entry) {
+                app.entryViewTitle.textContent = entry.title;
+                
+                let content = '';
+                
+                if (entry.type === 'morning') {
+                    const moodEmoji = getMoodEmoji(entry.mood);
+                    content = `
+                        <div class="mb-4">
+                            <h3 class="font-medium mb-1">Stimmung:</h3>
+                            <p class="text-2xl">${moodEmoji}</p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h3 class="font-medium mb-1">Heutiges Motto:</h3>
+                            <p>${entry.motto || 'Nicht eingetragen'}</p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h3 class="font-medium mb-1">Vorfreude auf heute:</h3>
+                            <p>${entry.anticipation || 'Nicht eingetragen'}</p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h3 class="font-medium mb-1">Mein Ziel für heute:</h3>
+                            <p>${entry.goal || 'Nicht eingetragen'}</p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h3 class="font-medium mb-1">Dankbarkeit:</h3>
+                            <p>${entry.gratitude || 'Nicht eingetragen'}</p>
+                        </div>
+                    `;
+                } else if (entry.type === 'evening') {
+                    const moodEmoji = getMoodEmoji(entry.mood);
+                    content = `
+                        <div class="mb-4">
+                            <h3 class="font-medium mb-1">Stimmung:</h3>
+                            <p class="text-2xl">${moodEmoji}</p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h3 class="font-medium mb-1">Heutige Erfolge:</h3>
+                            <p>${entry.success || 'Nicht eingetragen'}</p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h3 class="font-medium mb-1">Schöne Momente:</h3>
+                            <p>${entry.moments || 'Nicht eingetragen'}</p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h3 class="font-medium mb-1">Lernmomente:</h3>
+                            <p>${entry.learning || 'Nicht eingetragen'}</p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h3 class="font-medium mb-1">Selbstfürsorge:</h3>
+                            <p>${entry.selfCare || 'Nicht eingetragen'}</p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h3 class="font-medium mb-1">Gedanken und Gefühle:</h3>
+                            <p>${entry.thoughts || 'Nicht eingetragen'}</p>
+                        </div>
+                    `;
+                } else if (entry.type === 'weekly') {
+                    content = `
+                        <div class="mb-4">
+                            <h3 class="font-medium mb-1">Diese Woche bin ich stolz auf:</h3>
+                            <p>${entry.accomplishments || 'Nicht eingetragen'}</p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h3 class="font-medium mb-1">Herausforderungen:</h3>
+                            <p>${entry.challenges || 'Nicht eingetragen'}</p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h3 class="font-medium mb-1">Stimmungsbild:</h3>
+                            <p>${entry.mood || 'Nicht eingetragen'}</p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h3 class="font-medium mb-1">Mein Lieblingsmoment:</h3>
+                            <p>${entry.favMoment || 'Nicht eingetragen'}</p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h3 class="font-medium mb-1">Nächste Schritte:</h3>
+                            <p>${entry.nextSteps || 'Nicht eingetragen'}</p>
+                        </div>
+                    `;
+                } else if (entry.type === 'creative') {
+                    if (entry.creativeType === 'journey-map') {
+                        content = `
+                            <div class="mb-4">
+                                <h3 class="font-medium mb-1">Startpunkt:</h3>
+                                <p>${entry.start || 'Nicht eingetragen'}</p>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h3 class="font-medium mb-1">Wichtige Meilensteine:</h3>
+                                <p>${entry.milestones || 'Nicht eingetragen'}</p>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h3 class="font-medium mb-1">Aktueller Standpunkt:</h3>
+                                <p>${entry.current || 'Nicht eingetragen'}</p>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h3 class="font-medium mb-1">Ziel:</h3>
+                                <p>${entry.destination || 'Nicht eingetragen'}</p>
+                            </div>
+                        `;
+                    } else if (entry.creativeType === 'strength-cloud') {
+                        let strengthsHtml = '<div class="flex flex-wrap gap-2 items-center justify-center mt-4">';
+                        
+                        if (entry.strengths && entry.strengths.length > 0) {
+                            entry.strengths.forEach(strength => {
+                                strengthsHtml += `<div class="${strength.size} ${strength.color} font-medium p-2">${strength.text}</div>`;
+                            });
+                        } else {
+                            strengthsHtml += '<p class="text-gray-500 dark:text-gray-400">Keine Stärken eingetragen</p>';
+                        }
+                        
+                        strengthsHtml += '</div>';
+                        
+                        content = `
+                            <div class="mb-4">
+                                <h3 class="font-medium mb-1">Meine Stärken:</h3>
+                                ${strengthsHtml}
+                            </div>
+                        `;
+                    } else if (entry.creativeType === 'success-barometer') {
+                        let successItemsHtml = '<div class="space-y-2 mt-4">';
+                        
+                        if (entry.successItems && entry.successItems.length > 0) {
+                            entry.successItems.sort((a, b) => new Date(b.date) - new Date(a.date));
+                            
+                            entry.successItems.forEach(item => {
+                                const itemDate = DateTime.fromISO(item.date);
+                                const ratingPercentage = (item.rating / 10) * 100;
+                                
+                                successItemsHtml += `
+                                    <div class="p-3 border border-gray-200 dark:border-gray-700 rounded-lg">
+                                        <div class="flex justify-between items-center mb-2">
+                                            <span class="font-medium">${itemDate.toFormat('dd.MM.yyyy')}</span>
+                                            <span class="text-primary font-bold">${item.rating}/10</span>
+                                        </div>
+                                        <p class="text-gray-700 dark:text-gray-300 mb-2">${item.description}</p>
+                                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                                            <div class="bg-primary h-2.5 rounded-full" style="width: ${ratingPercentage}%"></div>
+                                        </div>
+                                    </div>
+                                `;
+                            });
+                        } else {
+                            successItemsHtml += '<p class="text-gray-500 dark:text-gray-400">Keine Erfolge eingetragen</p>';
+                        }
+                        
+                        successItemsHtml += '</div>';
+                        
+                        content = `
+                            <div class="mb-4">
+                                <h3 class="font-medium mb-1">Meine Erfolge:</h3>
+                                ${successItemsHtml}
+                            </div>
+                        `;
+                    } else if (entry.creativeType === 'comfort-island') {
+                        content = `
+                            <div class="mb-4">
+                                <h3 class="font-medium mb-1">Name deiner Insel:</h3>
+                                <p>${entry.name || 'Nicht eingetragen'}</p>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h3 class="font-medium mb-1">Beschreibung:</h3>
+                                <p>${entry.description || 'Nicht eingetragen'}</p>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h3 class="font-medium mb-1">Aktivitäten:</h3>
+                                <p>${entry.activities || 'Nicht eingetragen'}</p>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h3 class="font-medium mb-1">Begleiter:</h3>
+                                <p>${entry.companions || 'Nicht eingetragen'}</p>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h3 class="font-medium mb-1">Gefühle:</h3>
+                                <p>${entry.feelings || 'Nicht eingetragen'}</p>
+                            </div>
+                        `;
+                    } else if (entry.creativeType === 'thought-labyrinth') {
+                        let pathsHtml = '';
+                        
+                        if (entry.paths && entry.paths.length > 0) {
+                            entry.paths.forEach((path, index) => {
+                                pathsHtml += `
+                                    <div class="mb-3 p-3 border border-gray-200 dark:border-gray-700 rounded-lg">
+                                        <h4 class="font-medium mb-1">Weg ${index + 1}:</h4>
+                                        <p>${path || 'Nicht eingetragen'}</p>
+                                    </div>
+                                `;
+                            });
+                        } else {
+                            pathsHtml = '<p class="text-gray-500 dark:text-gray-400">Keine Wege eingetragen</p>';
+                        }
+                        
+                        content = `
+                            <div class="mb-4">
+                                <h3 class="font-medium mb-1">Startpunkt: Herausfordernder Gedanke</h3>
+                                <p>${entry.start || 'Nicht eingetragen'}</p>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h3 class="font-medium mb-1">Wege durch das Labyrinth:</h3>
+                                ${pathsHtml}
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h3 class="font-medium mb-1">Zentrum des Labyrinths: Die Erkenntnis</h3>
+                                <p>${entry.center || 'Nicht eingetragen'}</p>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h3 class="font-medium mb-1">Ausgang: Lösungsansatz</h3>
+                                <p>${entry.exit || 'Nicht eingetragen'}</p>
+                            </div>
+                        `;
+                    } else if (entry.creativeType === 'future-letter') {
+                        content = `
+                            <div class="mb-4 text-right text-gray-500 dark:text-gray-400">
+                                <p>Verfasst am: ${formatDate(entry.letterDate)}</p>
+                                <p>Zu lesen am: ${formatDate(entry.futureDate)}</p>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <p class="mb-4">${entry.salutation || 'Liebes zukünftiges Ich,'}</p>
+                                
+                                <div class="whitespace-pre-line mb-4">${entry.content || 'Keine Inhalte eingetragen'}</div>
+                                
+                                <p>${entry.closing || 'Mit besten Wünschen,'}</p>
+                            </div>
+                        `;
+                    }
+                }
+                
+                app.entryViewContent.innerHTML = content;
+                app.entryViewModal.classList.remove('hidden');
+            }
+            
+            function formatDate(dateString) {
+                if (!dateString) return 'Datum unbekannt';
+                return DateTime.fromISO(dateString).toFormat('dd.MM.yyyy');
+            }
+            
+            function getMoodEmoji(mood) {
+                const moodValue = parseInt(mood);
+                switch (moodValue) {
+                    case 1: return '😞';
+                    case 2: return '😕';
+                    case 3: return '😐';
+                    case 4: return '🙂';
+                    case 5: return '😊';
+                    default: return '😐';
+                }
+            }
+            
+            function showNotification(message, type = 'info') {
+                // Create notification element
+                const notification = document.createElement('div');
+                notification.className = `fixed bottom-4 right-4 py-2 px-4 rounded-md shadow-lg transform transition-all duration-500 translate-y-20 opacity-0 ${type === 'success' ? 'bg-green-500 text-white' : type === 'error' ? 'bg-red-500 text-white' : 'bg-blue-500 text-white'}`;
+                notification.textContent = message;
+                document.body.appendChild(notification);
+                
+                // Show notification
+                setTimeout(() => {
+                    notification.classList.remove('translate-y-20', 'opacity-0');
+                }, 100);
+                
+                // Hide and remove notification
+                setTimeout(() => {
+                    notification.classList.add('translate-y-20', 'opacity-0');
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 500);
+                }, 3000);
+            }
+            
+            // Initialize success barometer
+            if (app.successItems) {
+                updateSuccessBarometer();
+            }
+            
+            // Initialize history
+            updateHistory();
+            
+            // Initialize app and show password screen
+            initializePasswordSystem();
+        });
+    </script>
+</body>
+</html>
