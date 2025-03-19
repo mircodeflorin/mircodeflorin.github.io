@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erkenne deine Technopathie-Stufe | Digitale Genesis</title>
+    <style>
+        /* Globale Stile */
+        :root {
+            --dark-blue: #0a192f;
+            --medium-blue: #172a45;
+            --light-blue: #64ffda;
+            --cyan: #66fcf1;
+            --white: #e6f1ff;
+            --gray: #8892b0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark-blue);
+            color: var(--white);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-image: linear-gradient(rgba(10, 25, 47, 0.95), rgba(10, 25, 47, 0.95)), 
+                url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDAiIGhlaWdodD0iNTAwIj48ZmlsdGVyIGlkPSJuIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjciIG51bU9jdGF2ZXM9IjEwIiBzdGl0Y2hUaWxlcz0ic3RpdGNoIj48L2ZlVHVyYnVsZW5jZT48ZmVDb2xvck1hdHJpeCB0eXBlPSJtYXRyaXgiIHZhbHVlcz0iMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMC4xIDAiPjwvZmVDb2xvck1hdHJpeD48L2ZpbHRlcj48cmVjdCB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgZmlsbD0iIzBhMTkyZiI+PC9yZWN0PjxyZWN0IHdpZHRoPSI1MDAiIGhlaWdodD0iNTAwIiBmaWx0ZXI9InVybCgjbikiIG9wYWNpdHk9IjAuNCI+PC9yZWN0Pjwvc3ZnPg==');
+            background-size: cover;
+            background-attachment: fixed;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: rgba(23, 42, 69, 0.8);
+            box-shadow: 0 10px 30px -15px rgba(2, 12, 27, 0.7);
+            border-radius: 10px;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(100, 255, 218, 0.1);
+        }
+        
+        /* Header Stile */
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(100, 255, 218, 0.3);
+        }
+        
+        h1 {
+            color: var(--cyan);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 10px rgba(102, 252, 241, 0.3);
+        }
+        
+        h2 {
+            color: var(--light-blue);
+            font-size: 1.5rem;
+            margin-top: 0;
+            font-weight: 400;
+        }
+        
+        p {
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Intro Stile */
+        .intro {
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            padding: 1.5rem;
+            background-color: rgba(10, 25, 47, 0.7);
+            border-radius: 8px;
+            border-left: 4px solid var(--light-blue);
+        }
+        
+        /* Fragen Stile */
+        .question-container {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .question-active {
+            display: block;
+        }
+        
+        .question {
+            background-color: rgba(10, 25, 47, 0.7);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--light-blue);
+        }
+        
+        .question h3 {
+            color: var(--light-blue);
+            margin-top: 0;
+            font-size: 1.2rem;
+        }
+        
+        /* Antworten Stile */
+        .answers {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        
+        .answer-btn {
+            background-color: rgba(23, 42, 69, 0.8);
+            border: 1px solid rgba(100, 255, 218, 0.3);
+            border-radius: 5px;
+            padding: 1rem;
+            color: var(--white);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+        
+        .answer-btn:hover {
+            background-color: rgba(100, 255, 218, 0.1);
+            border-color: var(--light-blue);
+            transform: translateY(-2px);
+        }
+        
+        /* Navigation Stile */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+        
+        .nav-btn {
+            padding: 0.8rem 1.5rem;
+            background-color: transparent;
+            border: 1px solid var(--light-blue);
+            border-radius: 5px;
+            color: var(--light-blue);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover {
+            background-color: rgba(100, 255, 218, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* Ergebnis Stile */
+        .result-container {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .result-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .result-title {
+            font-size: 2.2rem;
+            color: var(--cyan);
+            margin-bottom: 0.5rem;
+        }
+        
+        .result-subtitle {
+            font-size: 1.3rem;
+            color: var(--light-blue);
+        }
+        
+        .result-description {
+            background-color: rgba(10, 25, 47, 0.7);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--light-blue);
+        }
+        
+        .book-quote {
+            font-style: italic;
+            padding: 1.5rem;
+            background-color: rgba(10, 25, 47, 0.7);
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--cyan);
+            position: relative;
+        }
+        
+        .book-quote::before {
+            content: """;
+            font-size: 4rem;
+            position: absolute;
+            left: 10px;
+            top: -5px;
+            color: rgba(100, 255, 218, 0.2);
+            font-family: Georgia, serif;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .cta-btn {
+            padding: 1rem;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+        }
+        
+        .primary-btn {
+            background-color: var(--light-blue);
+            color: var(--dark-blue);
+            border: none;
+        }
+        
+        .primary-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(100, 255, 218, 0.4);
+        }
+        
+        .secondary-btn {
+            background-color: transparent;
+            color: var(--light-blue);
+            border: 1px solid var(--light-blue);
+        }
+        
+        .secondary-btn:hover {
+            background-color: rgba(100, 255, 218, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        /* Fortschrittsanzeige */
+        .progress-container {
+            width: 100%;
+            height: 5px;
+            background-color: rgba(23, 42, 69, 0.8);
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background-color: var(--light-blue);
+            width: 0%;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px rgba(100, 255, 218, 0.5);
+        }
+        
+        /* Animationen */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Logo Stil */
+        .logo {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        .logo h3 {
+            font-size: 1.2rem;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin: 0;
+        }
+        
+        .logo span {
+            color: var(--cyan);
+        }
+        
+        /* Footer Stil */
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        /* Glitch Effekt */
+        .glitch-container {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .glitch-text {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .glitch-text::before,
+        .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .glitch-text::before {
+            left: 2px;
+            text-shadow: -2px 0 rgba(255, 0, 0, 0.7);
+            animation: glitch-animation-1 3s infinite linear alternate-reverse;
+            clip: rect(44px, 450px, 56px, 0);
+        }
+        
+        .glitch-text::after {
+            left: -2px;
+            text-shadow: 2px 0 rgba(0, 0, 255, 0.7);
+            animation: glitch-animation-2 2s infinite linear alternate-reverse;
+            clip: rect(44px, 450px, 56px, 0);
+        }
+        
+        @keyframes glitch-animation-1 {
+            0% {
+                clip: rect(22px, 450px, 56px, 0);
+            }
+            20% {
+                clip: rect(12px, 450px, 76px, 0);
+            }
+            40% {
+                clip: rect(32px, 450px, 26px, 0);
+            }
+            60% {
+                clip: rect(82px, 450px, 6px, 0);
+            }
+            80% {
+                clip: rect(52px, 450px, 86px, 0);
+            }
+            100% {
+                clip: rect(92px, 450px, 16px, 0);
+            }
+        }
+        
+        @keyframes glitch-animation-2 {
+            0% {
+                clip: rect(92px, 450px, 36px, 0);
+            }
+            20% {
+                clip: rect(22px, 450px, 96px, 0);
+            }
+            40% {
+                clip: rect(52px, 450px, 66px, 0);
+            }
+            60% {
+                clip: rect(12px, 450px, 46px, 0);
+            }
+            80% {
+                clip: rect(62px, 450px, 26px, 0);
+            }
+            100% {
+                clip: rect(32px, 450px, 76px, 0);
+            }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+                margin-top: 1rem;
+                margin-bottom: 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.2rem;
+            }
+            
+            .nav-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-btn {
+                width: 100%;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h3><span>Digitale</span> Genesis</h3>
+            </div>
+            <div class="glitch-container">
+                <h1 class="glitch-text" data-text="Technopathie-Test">Technopathie-Test</h1>
+            </div>
+            <h2>Erkenne deine Technopathie-Stufe</h2>
+        </header>
+        
+        <div class="intro">
+            <p>In <strong>DIGITALE GENESIS</strong> verfügt Dr. Sarah Chen über eine seltene Fähigkeit – sie kann Systeme intuitiv erfassen, mit ihnen auf neurologischer Ebene kommunizieren. Eine Art "Technopathie".</p>
+            <p>Aber ist diese Fähigkeit wirklich nur Fiktion? Die Forschung zeigt, dass Menschen unterschiedlich stark mit Technologie resonieren. Einige Menschen haben ein natürliches "Gespür" für Systeme – eine intuitive Verbindung zur digitalen Welt.</p>
+            <p>Entdecke DEINE Technopathie-Stufe mit diesem kurzen Test und erfahre, wie du in die Welt von DIGITALE GENESIS passen würdest!</p>
+            
+            <button id="start-btn" class="nav-btn" style="width: 100%;">Test starten</button>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        
+        <!-- Fragen -->
+        <div id="questions-container">
+            <div class="question-container" id="question-1">
+                <div class="question">
+                    <h3>1. Intuitive Verbindung</h3>
+                    <p>Wie oft hast du das Gefühl, Technologie zu "verstehen", ohne sie wirklich studiert zu haben?</p>
+                    <div class="answers">
+                        <button class="answer-btn" data-points="1">Selten oder nie</button>
+                        <button class="answer-btn" data-points="2">Manchmal bei vertrauten Geräten</button>
+                        <button class="answer-btn" data-points="3">Oft, auch bei neuen Systemen</button>
+                        <button class="answer-btn" data-points="4">Fast immer, als wäre es eine zweite Natur</button>
+                    </div>
+                </div>
+                
+                <div class="nav-buttons">
+                    <button class="nav-btn" id="prev-btn-1" disabled>Zurück</button>
+                    <button class="nav-btn" id="next-btn-1" disabled>Weiter</button>
+                </div>
+            </div>
+            
+            <div class="question-container" id="question-2">
+                <div class="question">
+                    <h3>2. Digitale Empathie</h3>
+                    <p>Merkst du, wenn ein Gerät "nicht richtig funktioniert", bevor die eigentlichen Probleme auftreten?</p>
+                    <div class="answers">
+                        <button class="answer-btn" data-points="1">Selten oder nie</button>
+                        <button class="answer-btn" data-points="2">Manchmal bei Geräten, die ich täglich nutze</button>
+                        <button class="answer-btn" data-points="3">Regelmäßig, ich spüre Probleme kommen</button>
+                        <button class="answer-btn" data-points="4">Fast immer, wie eine Art Vorahnung</button>
+                    </div>
+                </div>
+                
+                <div class="nav-buttons">
+                    <button class="nav-btn" id="prev-btn-2">Zurück</button>
+                    <button class="nav-btn" id="next-btn-2" disabled>Weiter</button>
+                </div>
+            </div>
+            
+            <div class="question-container" id="question-3">
+                <div class="question">
+                    <h3>3. Systemisches Denken</h3>
+                    <p>Wie leicht erkennst du Muster und Verbindungen in komplexen Systemen?</p>
+                    <div class="answers">
+                        <button class="answer-btn" data-points="1">Ich bevorzuge einfache, direkte Lösungen</button>
+                        <button class="answer-btn" data-points="2">Ich kann Muster erkennen, wenn sie mir gezeigt werden</button>
+                        <button class="answer-btn" data-points="3">Ich identifiziere oft Verbindungen, die andere übersehen</button>
+                        <button class="answer-btn" data-points="4">Ich sehe die Welt grundsätzlich als vernetztes System</button>
+                    </div>
+                </div>
+                
+                <div class="nav-buttons">
+                    <button class="nav-btn" id="prev-btn-3">Zurück</button>
+                    <button class="nav-btn" id="next-btn-3" disabled>Weiter</button>
+                </div>
+            </div>
+            
+            <div class="question-container" id="question-4">
+                <div class="question">
+                    <h3>4. Digitale Intuition</h3>
+                    <p>Wenn ein System nicht funktioniert, wie oft "weißt" du intuitiv, wo das Problem liegt?</p>
+                    <div class="answers">
+                        <button class="answer-btn" data-points="1">Selten oder nie</button>
+                        <button class="answer-btn" data-points="2">Manchmal bei einfachen Problemen</button>
+                        <button class="answer-btn" data-points="3">Oft, auch bei komplexeren Systemen</button>
+                        <button class="answer-btn" data-points="4">Fast immer, als könnte ich mit dem System kommunizieren</button>
+                    </div>
+                </div>
+                
+                <div class="nav-buttons">
+                    <button class="nav-btn" id="prev-btn-4">Zurück</button>
+                    <button class="nav-btn" id="next-btn-4" disabled>Weiter</button>
+                </div>
+            </div>
+            
+            <div class="question-container" id="question-5">
+                <div class="question">
+                    <h3>5. Technologische Resonanz</h3>
+                    <p>Wie stark fühlst du dich mit deinen digitalen Geräten verbunden?</p>
+                    <div class="answers">
+                        <button class="answer-btn" data-points="1">Sie sind nur Werkzeuge</button>
+                        <button class="answer-btn" data-points="2">Sie sind wichtige Hilfsmittel in meinem Alltag</button>
+                        <button class="answer-btn" data-points="3">Sie sind Teil meiner erweiterten Identität</button>
+                        <button class="answer-btn" data-points="4">Sie fühlen sich wie eine Erweiterung meines Bewusstseins an</button>
+                    </div>
+                </div>
+                
+                <div class="nav-buttons">
+                    <button class="nav-btn" id="prev-btn-5">Zurück</button>
+                    <button class="nav-btn" id="next-btn-5" disabled>Weiter</button>
+                </div>
+            </div>
+            
+            <div class="question-container" id="question-6">
+                <div class="question">
+                    <h3>6. Adaptive Intuition</h3>
+                    <p>Wie schnell passt du dich an neue Technologien und Schnittstellen an?</p>
+                    <div class="answers">
+                        <button class="answer-btn" data-points="1">Ich brauche Zeit und klare Anleitungen</button>
+                        <button class="answer-btn" data-points="2">Mit etwas Übung komme ich zurecht</button>
+                        <button class="answer-btn" data-points="3">Ich erfasse neue Systeme schnell und intuitiv</button>
+                        <button class="answer-btn" data-points="4">Ich navigiere neue Schnittstellen, als hätte ich sie schon immer benutzt</button>
+                    </div>
+                </div>
+                
+                <div class="nav-buttons">
+                    <button class="nav-btn" id="prev-btn-6">Zurück</button>
+                    <button class="nav-btn" id="next-btn-6" disabled>Weiter</button>
+                </div>
+            </div>
+            
+            <div class="question-container" id="question-7">
+                <div class="question">
+                    <h3>7. Digitale Träume</h3>
+                    <p>Wie oft denkst du in technologischen oder systemischen Metaphern oder träumst davon?</p>
+                    <div class="answers">
+                        <button class="answer-btn" data-points="1">Selten oder nie</button>
+                        <button class="answer-btn" data-points="2">Gelegentlich finde ich mich in technologischen Gedanken wieder</button>
+                        <button class="answer-btn" data-points="3">Regelmäßig, besonders wenn ich intensiv mit Systemen arbeite</button>
+                        <button class="answer-btn" data-points="4">Ständig, ich sehe die Welt oft in Datenstrukturen und Algorithmen</button>
+                    </div>
+                </div>
+                
+                <div class="nav-buttons">
+                    <button class="nav-btn" id="prev-btn-7">Zurück</button>
+                    <button class="nav-btn" id="next-btn-7" disabled>Weiter</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Ergebnisse -->
+        <div class="result-container" id="result-1">
+            <div class="result-header">
+                <div class="glitch-container">
+                    <h1 class="result-title glitch-text" data-text="Digitaler Beobachter">Digitaler Beobachter</h1>
+                </div>
+                <h2 class="result-subtitle">Technopathie-Stufe 1</h2>
+            </div>
+            
+            <div class="result-description">
+                <p>Du nutzt Technologie als Werkzeug – präzise, gezielt und mit gesunder Distanz. Für dich bleibt die Grenze zwischen Mensch und Maschine klar und unverrückbar.</p>
+                <p>In der Welt von <strong>DIGITALE GENESIS</strong> wärst du jemand wie Detective Rivera – ein scharfsinniger Beobachter, der Technologie nutzt, ohne von ihr vereinnahmt zu werden. Deine kritische Perspektive wäre unverzichtbar, um die ethischen Grenzen der Evolution zu definieren.</p>
+                <p>Deine besondere Stärke: Du siehst, was Technologie-Enthusiasten oft übersehen – die menschlichen Konsequenzen hinter den glänzenden Innovationen.</p>
+            </div>
+            
+            <div class="book-quote">
+                "Die alten Methoden haben ihren Wert. Technologie kann lügen, ein Blick in die Augen eines Menschen selten." - Detective Rivera, DIGITALE GENESIS
+            </div>
+            
+            <div class="cta-buttons">
+                <a href="#" class="cta-btn primary-btn">Vorbestellen: DIGITALE GENESIS</a>
+                <button id="share-btn-1" class="cta-btn secondary-btn">Ergebnis teilen</button>
+                <button id="restart-btn-1" class="cta-btn secondary-btn">Test wiederholen</button>
+            </div>
+        </div>
+        
+        <div class="result-container" id="result-2">
+            <div class="result-header">
+                <div class="glitch-container">
+                    <h1 class="result-title glitch-text" data-text="System-Navigator">System-Navigator</h1>
+                </div>
+                <h2 class="result-subtitle">Technopathie-Stufe 2</h2>
+            </div>
+            
+            <div class="result-description">
+                <p>Du besitzt ein natürliches Talent, digitale Systeme zu verstehen und zu navigieren. Technologie ist für dich ein vertrauter Begleiter, aber kein Teil deiner Identität.</p>
+                <p>In der Welt von <strong>DIGITALE GENESIS</strong> entsprichst du jemandem wie Dr. Wilson in seinen frühen Jahren – technisch versiert, neugierig und mit einem Gespür für die verborgenen Möglichkeiten digitaler Systeme.</p>
+                <p>Deine besondere Stärke: Du bewegst dich souverän zwischen der analogen und digitalen Welt, ohne in einer von beiden verloren zu gehen.</p>
+            </div>
+            
+            <div class="book-quote">
+                "Die wahre Kunst liegt nicht im Programmieren der Systeme, sondern im Verstehen ihrer emergenten Eigenschaften." - Dr. Wilson, DIGITALE GENESIS
+            </div>
+            
+            <div class="cta-buttons">
+                <a href="#" class="cta-btn primary-btn">Vorbestellen: DIGITALE GENESIS</a>
+                <button id="share-btn-2" class="cta-btn secondary-btn">Ergebnis teilen</button>
+                <button id="restart-btn-2" class="cta-btn secondary-btn">Test wiederholen</button>
+            </div>
+        </div>
+        
+        <div class="result-container" id="result-3">
+            <div class="result-header">
+                <div class="glitch-container">
+                    <h1 class="result-title glitch-text" data-text="Tech-Empath">Tech-Empath</h1>
+                </div>
+                <h2 class="result-subtitle">Technopathie-Stufe 3</h2>
+            </div>
+            
+            <div class="result-description">
+                <p>Deine Verbindung zur Technologie geht über bloßes Verständnis hinaus. Du spürst Systeme intuitiv, erkennst Muster, bevor sie offensichtlich werden, und hast eine fast empathische Beziehung zu digitalen Umgebungen.</p>
+                <p>In <strong>DIGITALE GENESIS</strong> wärst du wie Elena Foster – zwischen den Welten, mit einem tiefen Verständnis für beide Seiten und einem Gespür für die kommende Transformation.</p>
+                <p>Deine besondere Stärke: Du erkennst die subtilen Signale eines sich verändernden Systems lange vor den meisten anderen.</p>
+            </div>
+            
+            <div class="book-quote">
+                "Manchmal sieht man die Muster erst, wenn man aufhört, mit den Augen zu sehen und anfängt, mit dem System zu fühlen." - Elena Foster, DIGITALE GENESIS
+            </div>
+            
+            <div class="cta-buttons">
+                <a href="#" class="cta-btn primary-btn">Vorbestellen: DIGITALE GENESIS</a>
+                <button id="share-btn-3" class="cta-btn secondary-btn">Ergebnis teilen</button>
+                <button id="restart-btn-3" class="cta-btn secondary-btn">Test wiederholen</button>
+            </div>
+        </div>
+        
+        <div class="result-container" id="result-
