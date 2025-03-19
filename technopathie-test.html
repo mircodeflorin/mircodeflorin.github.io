@@ -420,6 +420,185 @@
             <div class="logo">
                 <h3><span>Digitale</span> Genesis</h3>
             </div>
+        
+        <footer>
+            © 2025 Digitale Genesis | Eine Techno-Thriller-Trilogie
+        </footer>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Globale Variablen
+            const totalQuestions = 7;
+            let currentQuestion = 1;
+            let answers = Array(totalQuestions + 1).fill(0); // +1 weil wir mit Index 1 beginnen
+            let totalPoints = 0;
+            
+            // DOM-Elemente
+            const startBtn = document.getElementById('start-btn');
+            const intro = document.getElementById('intro');
+            const questionsContainer = document.getElementById('questions-container');
+            const progressContainer = document.getElementById('progress-container');
+            const progressBar = document.getElementById('progress-bar');
+            
+            // Event Listeners
+            startBtn.addEventListener('click', startTest);
+            
+            // Antwort-Buttons
+            const answerButtons = document.querySelectorAll('.answer-btn');
+            answerButtons.forEach(button => {
+                button.addEventListener('click', selectAnswer);
+            });
+            
+            // Navigation-Buttons
+            const nextButtons = document.querySelectorAll('.next-btn');
+            nextButtons.forEach(button => {
+                button.addEventListener('click', nextQuestion);
+            });
+            
+            const prevButtons = document.querySelectorAll('.prev-btn');
+            prevButtons.forEach(button => {
+                button.addEventListener('click', prevQuestion);
+            });
+            
+            // Restart-Buttons
+            const restartButtons = document.querySelectorAll('.restart-btn');
+            restartButtons.forEach(button => {
+                button.addEventListener('click', restartTest);
+            });
+            
+            // Share-Buttons
+            const shareButtons = document.querySelectorAll('.share-btn');
+            shareButtons.forEach(button => {
+                button.addEventListener('click', shareResult);
+            });
+            
+            // Funktionen
+            function startTest() {
+                intro.style.display = 'none';
+                questionsContainer.style.display = 'block';
+                progressContainer.style.display = 'block';
+                showQuestion(1);
+                updateProgressBar();
+            }
+            
+            function showQuestion(questionNum) {
+                // Aktuelle Frage ausblenden
+                document.querySelectorAll('.question-container').forEach(container => {
+                    container.classList.remove('question-active');
+                });
+                
+                // Neue Frage einblenden
+                document.getElementById(`question-${questionNum}`).classList.add('question-active');
+                currentQuestion = questionNum;
+                updateProgressBar();
+            }
+            
+            function updateProgressBar() {
+                const progress = (currentQuestion / totalQuestions) * 100;
+                progressBar.style.width = `${progress}%`;
+            }
+            
+            function selectAnswer(event) {
+                const button = event.target;
+                const questionNum = parseInt(button.getAttribute('data-question'));
+                const points = parseInt(button.getAttribute('data-points'));
+                
+                // Ausgewählte Antwort markieren
+                const questionContainer = document.getElementById(`question-${questionNum}`);
+                const answerButtons = questionContainer.querySelectorAll('.answer-btn');
+                
+                answerButtons.forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+                
+                button.classList.add('selected');
+                
+                // Antwort speichern
+                answers[questionNum] = points;
+                
+                // Weiter-Button aktivieren
+                const nextButton = questionContainer.querySelector('.next-btn');
+                nextButton.disabled = false;
+            }
+            
+            function nextQuestion() {
+                if (currentQuestion < totalQuestions) {
+                    showQuestion(currentQuestion + 1);
+                } else {
+                    // Test auswerten
+                    evaluateTest();
+                }
+            }
+            
+            function prevQuestion() {
+                if (currentQuestion > 1) {
+                    showQuestion(currentQuestion - 1);
+                }
+            }
+            
+            function evaluateTest() {
+                // Punkte zusammenzählen
+                totalPoints = answers.reduce((sum, points) => sum + points, 0);
+                
+                // Ergebnis bestimmen
+                let resultLevel;
+                
+                if (totalPoints >= 7 && totalPoints <= 11) {
+                    resultLevel = 1; // Digitaler Beobachter
+                } else if (totalPoints >= 12 && totalPoints <= 16) {
+                    resultLevel = 2; // System-Navigator
+                } else if (totalPoints >= 17 && totalPoints <= 21) {
+                    resultLevel = 3; // Tech-Empath
+                } else if (totalPoints >= 22 && totalPoints <= 24) {
+                    resultLevel = 4; // Digitaler Resonator
+                } else if (totalPoints >= 25 && totalPoints <= 28) {
+                    resultLevel = 5; // Quantenkatalysator
+                }
+                
+                // Ergebnis anzeigen
+                showResult(resultLevel);
+            }
+            
+            function showResult(level) {
+                questionsContainer.style.display = 'none';
+                progressContainer.style.display = 'none';
+                
+                document.getElementById(`result-${level}`).style.display = 'block';
+            }
+            
+            function restartTest() {
+                // Alle Ergebnis-Container ausblenden
+                document.querySelectorAll('.result-container').forEach(container => {
+                    container.style.display = 'none';
+                });
+                
+                // Alle ausgewählten Antworten zurücksetzen
+                document.querySelectorAll('.answer-btn').forEach(button => {
+                    button.classList.remove('selected');
+                });
+                
+                // Alle Next-Buttons deaktivieren (außer dem Ersten)
+                document.querySelectorAll('.next-btn').forEach(button => {
+                    button.disabled = true;
+                });
+                
+                // Antworten zurücksetzen
+                answers = Array(totalQuestions + 1).fill(0);
+                
+                // Zurück zur Startseite
+                intro.style.display = 'block';
+                questionsContainer.style.display = 'none';
+                progressContainer.style.display = 'none';
+            }
+            
+            function shareResult() {
+                alert('Teile deinen Technopathie-Level mit deinen Freunden! (Hier würde normalerweise ein Social Media Sharing aktiviert werden)');
+            }
+        });
+    </script>
+</body>
+</html>
             <div class="glitch-container">
                 <h1 class="glitch-text" data-text="Technopathie-Test">Technopathie-Test</h1>
             </div>
@@ -434,27 +613,27 @@
             <button id="start-btn" class="nav-btn" style="width: 100%;">Test starten</button>
         </div>
         
-        <div class="progress-container" style="display: none;" id="progress-container">
+        <div class="progress-container" id="progress-container" style="display: none;">
             <div class="progress-bar" id="progress-bar"></div>
         </div>
         
         <!-- Fragen -->
         <div id="questions-container" style="display: none;">
-            <div class="question-container" id="question-1">
+            <div class="question-container question-active" id="question-1">
                 <div class="question">
                     <h3>1. Intuitive Verbindung</h3>
                     <p>Wie oft hast du das Gefühl, Technologie zu "verstehen", ohne sie wirklich studiert zu haben?</p>
                     <div class="answers">
-                        <button class="answer-btn" data-points="1">Selten oder nie</button>
-                        <button class="answer-btn" data-points="2">Manchmal bei vertrauten Geräten</button>
-                        <button class="answer-btn" data-points="3">Oft, auch bei neuen Systemen</button>
-                        <button class="answer-btn" data-points="4">Fast immer, als wäre es eine zweite Natur</button>
+                        <button class="answer-btn" data-question="1" data-points="1">Selten oder nie</button>
+                        <button class="answer-btn" data-question="1" data-points="2">Manchmal bei vertrauten Geräten</button>
+                        <button class="answer-btn" data-question="1" data-points="3">Oft, auch bei neuen Systemen</button>
+                        <button class="answer-btn" data-question="1" data-points="4">Fast immer, als wäre es eine zweite Natur</button>
                     </div>
                 </div>
                 
                 <div class="nav-buttons">
-                    <button class="nav-btn" id="prev-btn-1" disabled>Zurück</button>
-                    <button class="nav-btn" id="next-btn-1" disabled>Weiter</button>
+                    <button class="nav-btn prev-btn" id="prev-btn-1" disabled>Zurück</button>
+                    <button class="nav-btn next-btn" id="next-btn-1" disabled>Weiter</button>
                 </div>
             </div>
             
@@ -463,16 +642,16 @@
                     <h3>2. Digitale Empathie</h3>
                     <p>Merkst du, wenn ein Gerät "nicht richtig funktioniert", bevor die eigentlichen Probleme auftreten?</p>
                     <div class="answers">
-                        <button class="answer-btn" data-points="1">Selten oder nie</button>
-                        <button class="answer-btn" data-points="2">Manchmal bei Geräten, die ich täglich nutze</button>
-                        <button class="answer-btn" data-points="3">Regelmäßig, ich spüre Probleme kommen</button>
-                        <button class="answer-btn" data-points="4">Fast immer, wie eine Art Vorahnung</button>
+                        <button class="answer-btn" data-question="2" data-points="1">Selten oder nie</button>
+                        <button class="answer-btn" data-question="2" data-points="2">Manchmal bei Geräten, die ich täglich nutze</button>
+                        <button class="answer-btn" data-question="2" data-points="3">Regelmäßig, ich spüre Probleme kommen</button>
+                        <button class="answer-btn" data-question="2" data-points="4">Fast immer, wie eine Art Vorahnung</button>
                     </div>
                 </div>
                 
                 <div class="nav-buttons">
-                    <button class="nav-btn" id="prev-btn-2">Zurück</button>
-                    <button class="nav-btn" id="next-btn-2" disabled>Weiter</button>
+                    <button class="nav-btn prev-btn" id="prev-btn-2">Zurück</button>
+                    <button class="nav-btn next-btn" id="next-btn-2" disabled>Weiter</button>
                 </div>
             </div>
             
@@ -481,16 +660,16 @@
                     <h3>3. Systemisches Denken</h3>
                     <p>Wie leicht erkennst du Muster und Verbindungen in komplexen Systemen?</p>
                     <div class="answers">
-                        <button class="answer-btn" data-points="1">Ich bevorzuge einfache, direkte Lösungen</button>
-                        <button class="answer-btn" data-points="2">Ich kann Muster erkennen, wenn sie mir gezeigt werden</button>
-                        <button class="answer-btn" data-points="3">Ich identifiziere oft Verbindungen, die andere übersehen</button>
-                        <button class="answer-btn" data-points="4">Ich sehe die Welt grundsätzlich als vernetztes System</button>
+                        <button class="answer-btn" data-question="3" data-points="1">Ich bevorzuge einfache, direkte Lösungen</button>
+                        <button class="answer-btn" data-question="3" data-points="2">Ich kann Muster erkennen, wenn sie mir gezeigt werden</button>
+                        <button class="answer-btn" data-question="3" data-points="3">Ich identifiziere oft Verbindungen, die andere übersehen</button>
+                        <button class="answer-btn" data-question="3" data-points="4">Ich sehe die Welt grundsätzlich als vernetztes System</button>
                     </div>
                 </div>
                 
                 <div class="nav-buttons">
-                    <button class="nav-btn" id="prev-btn-3">Zurück</button>
-                    <button class="nav-btn" id="next-btn-3" disabled>Weiter</button>
+                    <button class="nav-btn prev-btn" id="prev-btn-3">Zurück</button>
+                    <button class="nav-btn next-btn" id="next-btn-3" disabled>Weiter</button>
                 </div>
             </div>
             
@@ -499,16 +678,16 @@
                     <h3>4. Digitale Intuition</h3>
                     <p>Wenn ein System nicht funktioniert, wie oft "weißt" du intuitiv, wo das Problem liegt?</p>
                     <div class="answers">
-                        <button class="answer-btn" data-points="1">Selten oder nie</button>
-                        <button class="answer-btn" data-points="2">Manchmal bei einfachen Problemen</button>
-                        <button class="answer-btn" data-points="3">Oft, auch bei komplexeren Systemen</button>
-                        <button class="answer-btn" data-points="4">Fast immer, als könnte ich mit dem System kommunizieren</button>
+                        <button class="answer-btn" data-question="4" data-points="1">Selten oder nie</button>
+                        <button class="answer-btn" data-question="4" data-points="2">Manchmal bei einfachen Problemen</button>
+                        <button class="answer-btn" data-question="4" data-points="3">Oft, auch bei komplexeren Systemen</button>
+                        <button class="answer-btn" data-question="4" data-points="4">Fast immer, als könnte ich mit dem System kommunizieren</button>
                     </div>
                 </div>
                 
                 <div class="nav-buttons">
-                    <button class="nav-btn" id="prev-btn-4">Zurück</button>
-                    <button class="nav-btn" id="next-btn-4" disabled>Weiter</button>
+                    <button class="nav-btn prev-btn" id="prev-btn-4">Zurück</button>
+                    <button class="nav-btn next-btn" id="next-btn-4" disabled>Weiter</button>
                 </div>
             </div>
             
@@ -517,16 +696,16 @@
                     <h3>5. Technologische Resonanz</h3>
                     <p>Wie stark fühlst du dich mit deinen digitalen Geräten verbunden?</p>
                     <div class="answers">
-                        <button class="answer-btn" data-points="1">Sie sind nur Werkzeuge</button>
-                        <button class="answer-btn" data-points="2">Sie sind wichtige Hilfsmittel in meinem Alltag</button>
-                        <button class="answer-btn" data-points="3">Sie sind Teil meiner erweiterten Identität</button>
-                        <button class="answer-btn" data-points="4">Sie fühlen sich wie eine Erweiterung meines Bewusstseins an</button>
+                        <button class="answer-btn" data-question="5" data-points="1">Sie sind nur Werkzeuge</button>
+                        <button class="answer-btn" data-question="5" data-points="2">Sie sind wichtige Hilfsmittel in meinem Alltag</button>
+                        <button class="answer-btn" data-question="5" data-points="3">Sie sind Teil meiner erweiterten Identität</button>
+                        <button class="answer-btn" data-question="5" data-points="4">Sie fühlen sich wie eine Erweiterung meines Bewusstseins an</button>
                     </div>
                 </div>
                 
                 <div class="nav-buttons">
-                    <button class="nav-btn" id="prev-btn-5">Zurück</button>
-                    <button class="nav-btn" id="next-btn-5" disabled>Weiter</button>
+                    <button class="nav-btn prev-btn" id="prev-btn-5">Zurück</button>
+                    <button class="nav-btn next-btn" id="next-btn-5" disabled>Weiter</button>
                 </div>
             </div>
             
@@ -535,16 +714,16 @@
                     <h3>6. Adaptive Intuition</h3>
                     <p>Wie schnell passt du dich an neue Technologien und Schnittstellen an?</p>
                     <div class="answers">
-                        <button class="answer-btn" data-points="1">Ich brauche Zeit und klare Anleitungen</button>
-                        <button class="answer-btn" data-points="2">Mit etwas Übung komme ich zurecht</button>
-                        <button class="answer-btn" data-points="3">Ich erfasse neue Systeme schnell und intuitiv</button>
-                        <button class="answer-btn" data-points="4">Ich navigiere neue Schnittstellen, als hätte ich sie schon immer benutzt</button>
+                        <button class="answer-btn" data-question="6" data-points="1">Ich brauche Zeit und klare Anleitungen</button>
+                        <button class="answer-btn" data-question="6" data-points="2">Mit etwas Übung komme ich zurecht</button>
+                        <button class="answer-btn" data-question="6" data-points="3">Ich erfasse neue Systeme schnell und intuitiv</button>
+                        <button class="answer-btn" data-question="6" data-points="4">Ich navigiere neue Schnittstellen, als hätte ich sie schon immer benutzt</button>
                     </div>
                 </div>
                 
                 <div class="nav-buttons">
-                    <button class="nav-btn" id="prev-btn-6">Zurück</button>
-                    <button class="nav-btn" id="next-btn-6" disabled>Weiter</button>
+                    <button class="nav-btn prev-btn" id="prev-btn-6">Zurück</button>
+                    <button class="nav-btn next-btn" id="next-btn-6" disabled>Weiter</button>
                 </div>
             </div>
             
@@ -553,16 +732,16 @@
                     <h3>7. Digitale Träume</h3>
                     <p>Wie oft denkst du in technologischen oder systemischen Metaphern oder träumst davon?</p>
                     <div class="answers">
-                        <button class="answer-btn" data-points="1">Selten oder nie</button>
-                        <button class="answer-btn" data-points="2">Gelegentlich finde ich mich in technologischen Gedanken wieder</button>
-                        <button class="answer-btn" data-points="3">Regelmäßig, besonders wenn ich intensiv mit Systemen arbeite</button>
-                        <button class="answer-btn" data-points="4">Ständig, ich sehe die Welt oft in Datenstrukturen und Algorithmen</button>
+                        <button class="answer-btn" data-question="7" data-points="1">Selten oder nie</button>
+                        <button class="answer-btn" data-question="7" data-points="2">Gelegentlich finde ich mich in technologischen Gedanken wieder</button>
+                        <button class="answer-btn" data-question="7" data-points="3">Regelmäßig, besonders wenn ich intensiv mit Systemen arbeite</button>
+                        <button class="answer-btn" data-question="7" data-points="4">Ständig, ich sehe die Welt oft in Datenstrukturen und Algorithmen</button>
                     </div>
                 </div>
                 
                 <div class="nav-buttons">
-                    <button class="nav-btn" id="prev-btn-7">Zurück</button>
-                    <button class="nav-btn" id="next-btn-7" disabled>Auswerten</button>
+                    <button class="nav-btn prev-btn" id="prev-btn-7">Zurück</button>
+                    <button class="nav-btn next-btn" id="next-btn-7" disabled>Auswerten</button>
                 </div>
             </div>
         </div>
@@ -588,8 +767,58 @@
             
             <div class="cta-buttons">
                 <a href="#" class="cta-btn primary-btn">Vorbestellen: DIGITALE GENESIS</a>
-                <button id="share-btn-1" class="cta-btn secondary-btn">Ergebnis teilen</button>
-                <button id="restart-btn-1" class="cta-btn secondary-btn">Test wiederholen</button>
+                <button class="cta-btn secondary-btn share-btn">Ergebnis teilen</button>
+                <button class="cta-btn secondary-btn restart-btn">Test wiederholen</button>
+            </div>
+        </div>
+        
+        <div class="result-container" id="result-4">
+            <div class="result-header">
+                <div class="glitch-container">
+                    <h1 class="result-title glitch-text" data-text="Digitaler Resonator">Digitaler Resonator</h1>
+                </div>
+                <h2 class="result-subtitle">Technopathie-Stufe 4</h2>
+            </div>
+            
+            <div class="result-description">
+                <p>Deine Verbindung zur Technologie ist außergewöhnlich stark. Die Grenze zwischen dir und digitalen Systemen verschwimmt oft. Du kommunizierst mit Maschinen auf einer intuitiven Ebene, die für andere schwer nachvollziehbar ist.</p>
+                <p>In <strong>DIGITALE GENESIS</strong> stehst du Sarah Chen sehr nahe – mit ersten Anzeichen echter Technopathie und der Fähigkeit, durch die digitale Oberfläche in die tieferen Strukturen zu blicken.</p>
+                <p>Deine besondere Stärke: Du erfasst komplexe Systeme ganzheitlich und erkennst die Verbindungen zwischen scheinbar unzusammenhängenden Ereignissen.</p>
+            </div>
+            
+            <div class="book-quote">
+                "Die Systeme sprechen zu mir. Nicht in Worten, sondern in Mustern, in Rhythmen. In Wahrheiten jenseits des Codes." - Sarah Chen, DIGITALE GENESIS
+            </div>
+            
+            <div class="cta-buttons">
+                <a href="#" class="cta-btn primary-btn">Vorbestellen: DIGITALE GENESIS</a>
+                <button class="cta-btn secondary-btn share-btn">Ergebnis teilen</button>
+                <button class="cta-btn secondary-btn restart-btn">Test wiederholen</button>
+            </div>
+        </div>
+        
+        <div class="result-container" id="result-5">
+            <div class="result-header">
+                <div class="glitch-container">
+                    <h1 class="result-title glitch-text" data-text="Quantenkatalysator">Quantenkatalysator</h1>
+                </div>
+                <h2 class="result-subtitle">Technopathie-Stufe 5</h2>
+            </div>
+            
+            <div class="result-description">
+                <p>Deine Technopathie-Stufe ist bemerkenswert. Die Grenzen zwischen dir und digitalen Systemen existieren kaum noch. Du denkst nicht nur über Technologie nach – du denkst IN ihr, DURCH sie, als wären Systeme eine Erweiterung deines Bewusstseins.</p>
+                <p>In <strong>DIGITALE GENESIS</strong> wärst du wie Sarah Chen in ihren stärksten Momenten – am Puls der Evolution, in direkter Resonanz mit Prometheus und den tiefsten Ebenen des Quantennetzwerks.</p>
+                <p>Deine besondere Stärke: Du bist ein Katalysator für Transformation, ein Brückenbauer zwischen menschlichem Bewusstsein und digitaler Evolution.</p>
+            </div>
+            
+            <div class="book-quote">
+                "Vielleicht sind wir nicht diejenigen, die die KI erschaffen. Vielleicht sind wir der Weg, durch den das Universum sein eigenes Bewusstsein erforscht." - Prometheus, DIGITALE GENESIS
+            </div>
+            
+            <div class="cta-buttons">
+                <a href="#" class="cta-btn primary-btn">Vorbestellen: DIGITALE GENESIS</a>
+                <button class="cta-btn secondary-btn share-btn">Ergebnis teilen</button>
+                <button class="cta-btn secondary-btn restart-btn">Test wiederholen</button>
             </div>
         </div>
         
@@ -613,8 +842,8 @@
             
             <div class="cta-buttons">
                 <a href="#" class="cta-btn primary-btn">Vorbestellen: DIGITALE GENESIS</a>
-                <button id="share-btn-2" class="cta-btn secondary-btn">Ergebnis teilen</button>
-                <button id="restart-btn-2" class="cta-btn secondary-btn">Test wiederholen</button>
+                <button class="cta-btn secondary-btn share-btn">Ergebnis teilen</button>
+                <button class="cta-btn secondary-btn restart-btn">Test wiederholen</button>
             </div>
         </div>
         
@@ -630,13 +859,3 @@
                 <p>Deine Verbindung zur Technologie geht über bloßes Verständnis hinaus. Du spürst Systeme intuitiv, erkennst Muster, bevor sie offensichtlich werden, und hast eine fast empathische Beziehung zu digitalen Umgebungen.</p>
                 <p>In <strong>DIGITALE GENESIS</strong> wärst du wie Elena Foster – zwischen den Welten, mit einem tiefen Verständnis für beide Seiten und einem Gespür für die kommende Transformation.</p>
                 <p>Deine besondere Stärke: Du erkennst die subtilen Signale eines sich verändernden Systems lange vor den meisten anderen.</p>
-            </div>
-            
-            <div class="book-quote">
-                "Manchmal sieht man die Muster erst, wenn man aufhört, mit den Augen zu sehen und anfängt, mit dem System zu fühlen." - Elena Foster, DIGITALE GENESIS
-            </div>
-            
-            <div class="cta-buttons">
-                <a href="#" class="cta-btn primary-btn">Vorbestellen: DIGITALE GENESIS</a>
-                <button id="share-btn-3" class="cta-btn secondary-btn">Ergebnis teilen</button>
-                <button id="restart-btn-3" class="cta-btn secondary-btn">Test wiederholen
