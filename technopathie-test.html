@@ -126,6 +126,12 @@
             transform: translateY(-2px);
         }
         
+        .answer-btn.selected {
+            background-color: rgba(100, 255, 218, 0.2);
+            border-color: var(--cyan);
+            box-shadow: 0 0 10px rgba(102, 252, 241, 0.3);
+        }
+        
         /* Navigation Stile */
         .nav-buttons {
             display: flex;
@@ -420,7 +426,7 @@
             <h2>Erkenne deine Technopathie-Stufe</h2>
         </header>
         
-        <div class="intro">
+        <div class="intro" id="intro">
             <p>In <strong>DIGITALE GENESIS</strong> verfügt Dr. Sarah Chen über eine seltene Fähigkeit – sie kann Systeme intuitiv erfassen, mit ihnen auf neurologischer Ebene kommunizieren. Eine Art "Technopathie".</p>
             <p>Aber ist diese Fähigkeit wirklich nur Fiktion? Die Forschung zeigt, dass Menschen unterschiedlich stark mit Technologie resonieren. Einige Menschen haben ein natürliches "Gespür" für Systeme – eine intuitive Verbindung zur digitalen Welt.</p>
             <p>Entdecke DEINE Technopathie-Stufe mit diesem kurzen Test und erfahre, wie du in die Welt von DIGITALE GENESIS passen würdest!</p>
@@ -428,12 +434,12 @@
             <button id="start-btn" class="nav-btn" style="width: 100%;">Test starten</button>
         </div>
         
-        <div class="progress-container">
+        <div class="progress-container" style="display: none;" id="progress-container">
             <div class="progress-bar" id="progress-bar"></div>
         </div>
         
         <!-- Fragen -->
-        <div id="questions-container">
+        <div id="questions-container" style="display: none;">
             <div class="question-container" id="question-1">
                 <div class="question">
                     <h3>1. Intuitive Verbindung</h3>
@@ -556,7 +562,7 @@
                 
                 <div class="nav-buttons">
                     <button class="nav-btn" id="prev-btn-7">Zurück</button>
-                    <button class="nav-btn" id="next-btn-7" disabled>Weiter</button>
+                    <button class="nav-btn" id="next-btn-7" disabled>Auswerten</button>
                 </div>
             </div>
         </div>
@@ -633,8 +639,4 @@
             <div class="cta-buttons">
                 <a href="#" class="cta-btn primary-btn">Vorbestellen: DIGITALE GENESIS</a>
                 <button id="share-btn-3" class="cta-btn secondary-btn">Ergebnis teilen</button>
-                <button id="restart-btn-3" class="cta-btn secondary-btn">Test wiederholen</button>
-            </div>
-        </div>
-        
-        <div class="result-container" id="result-
+                <button id="restart-btn-3" class="cta-btn secondary-btn">Test wiederholen
