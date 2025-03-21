@@ -461,10 +461,10 @@ button:hover {
 
 <section id="contact" class="contact">
   <h2>Kontakt</h2>
-  <form id="contact-form" onsubmit="sendEmail(event)">
-    <input type="text" id="name" placeholder="Ihr Name" required>
-    <input type="email" id="email" placeholder="Ihre E-Mail-Adresse" required>
-    <textarea id="message" placeholder="Ihre Nachricht" required></textarea>
+  <form id="contact-form" action="https://formspree.io/f/myzeejrw" method="POST">
+    <input type="text" id="name" name="name" placeholder="Ihr Name" required>
+    <input type="email" id="email" name="email" placeholder="Ihre E-Mail-Adresse" required>
+    <textarea id="message" name="message" placeholder="Ihre Nachricht" required></textarea>
     <button type="submit">Nachricht senden</button>
   </form>
   
@@ -479,20 +479,6 @@ button:hover {
 </footer>
 
 <script>
-function sendEmail(e) {
-    e.preventDefault();
-    
-    const name = encodeURIComponent(document.getElementById('name').value);
-    const email = encodeURIComponent(document.getElementById('email').value);
-    const message = encodeURIComponent(document.getElementById('message').value);
-    
-    const mailtoLink = `mailto:mirco.deflorin@gmx.ch?subject=Mail von der Autor-Webseite&body=Name: ${name}%0D%0AE-Mail: ${email}%0D%0A%0D%0ANachricht:%0D%0A${message}`;
-    
-    window.location.href = mailtoLink;
-    
-    document.getElementById('contact-form').reset();
-}
-
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
