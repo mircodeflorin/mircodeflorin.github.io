@@ -122,7 +122,7 @@
         .countdown {
             font-size: 2em;
             text-align: center;
-            margin: 40px 0;
+            margin: 40px 0 20px 0;
             color: #e74c3c;
         }
 
@@ -208,9 +208,10 @@
             width: 100%;
             padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
             margin: 20px 0;
-            background-color: rgba(0, 0, 0, 0.2);
-            border-radius: 5px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
             overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
         }
 
         .video-container video {
@@ -286,6 +287,32 @@
             margin-bottom: 10px;
         }
 
+        /* Neuer Style für den Vorbestellen-Button */
+        .preorder-button {
+            display: inline-block;
+            background-color: #e74c3c;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin: 20px 0;
+        }
+
+        .preorder-button:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .preorder-section {
+            text-align: center;
+            margin: 40px 0;
+        }
+
         @media (max-width: 768px) {
             .title {
                 font-size: 2em;
@@ -312,6 +339,11 @@
 
             .intro-content {
                 font-size: 1em;
+            }
+
+            .preorder-button {
+                padding: 12px 25px;
+                font-size: 1.1em;
             }
         }
     </style>
@@ -342,7 +374,7 @@
             <!-- Ihr persönliches Video über das Buch -->
             <div class="video-title">Ein Wort vom Autor</div>
             <div class="video-description">
-                Hier erzähle ich Ihnen mehr über die Entstehung des Buches und was Sie darin erwartet
+                Mit grosser Freude präsentiere ich Ihnen mein neues Buch "Alles ausser Kontrolle" – eine Geschichte, die Ihnen zeigt, dass selbst der gewöhnlichste Alltag aussergewöhnlich sein kann.
             </div>
             <div class="author-video-container">
                 <video controls preload="none" poster="author-video-thumbnail.jpg">
@@ -355,6 +387,11 @@
                 Erscheint in: <span id="timer">30 Tage</span>
             </div>
 
+            <!-- Neuer Vorbestellen-Button unter dem Countdown -->
+            <a href="https://mircodeflorin.github.io/preorder-page" class="preorder-button">
+                Jetzt vorbestellen
+            </a>
+
             <div class="quote">
                 "ERROR 404: Monday not found. Initiiere emergency coffee protocol..."
                 <div class="quote-author">- Betty, die rebellische KI-Kaffeemaschine</div>
@@ -362,15 +399,7 @@
         </div>
 
         <div class="intro-section">
-            <p class="intro-text">
-                Liebe Leserinnen und Leser,
-            </p>
-            <p class="intro-content">
-                mit großer Freude präsentiere ich Ihnen mein neues Buch "Alles ausser Kontrolle" – eine Geschichte, die Ihnen zeigt, dass selbst der gewöhnlichste Alltag außergewöhnlich sein kann.
-            </p>
-            
-            <div class="divider"></div>
-            
+                        
             <!-- Interaktives Element zwischen den Videos -->
             <div style="background-color: rgba(231, 76, 60, 0.1); padding: 20px; border-radius: 8px; margin: 30px 0; text-align: center;">
                 <h3 style="color: #e74c3c;">Tauchen Sie ein in die Welt von "Alles ausser Kontrolle"</h3>
@@ -395,9 +424,9 @@
                 </div>
             </div>
             
-            <!-- Original Video -->
-            <div class="video-title">Blick hinter die Kulissen</div>
-            <div class="video-container">
+            <!-- Zweites Video mit dem gleichen Stil wie das erste -->
+            <div class="video-title">Und was Thomas zu sagen hat</div>
+            <div class="author-video-container">
                 <video controls preload="none" poster="guru-betty-herbert.jpg">
                     <source src="Infinity_984c9.mp4" type="video/mp4">
                     Ihr Browser unterstützt das Video-Element nicht.
@@ -491,6 +520,13 @@
                 </div>
             </div>
         </section>
+
+        <!-- Zweiter Vorbestellen-Button am Ende der Seite -->
+        <div class="preorder-section">
+            <a href="https://mircodeflorin.github.io/preorder-page" class="preorder-button">
+                Jetzt vorbestellen
+            </a>
+        </div>
     </div>
 
     <script>
