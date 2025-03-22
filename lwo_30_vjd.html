@@ -7,7 +7,7 @@
     <style>
         body {
             margin: 0;
-            padding: 20px;
+            padding: 0;
             background: #1a2631;
             color: #ffffff;
             font-family: Arial, sans-serif;
@@ -16,27 +16,45 @@
             position: relative;
         }
 
+        .header {
+            background-color: #2c3e50;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
         .home-button {
             position: absolute;
             top: 20px;
             left: 20px;
             padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid #a8b2bd;
             border-radius: 5px;
-            color: #fff;
+            color: #ffffff;
             text-decoration: none;
-            font-size: 1em;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            z-index: 10; /* Ensure button is above other elements */
         }
 
         .home-button:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background-color: rgba(0, 0, 0, 0.5);
+            border-color: #ffffff;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: normal;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            margin-top: 0;
+            color: #a8b2bd;
+        }
+
+        .main-container {
             padding: 20px;
         }
 
@@ -170,7 +188,7 @@
         }
 
         @media (max-width: 768px) {
-            body {
+            .main-container {
                 padding: 10px;
             }
             
@@ -185,99 +203,108 @@
             .betty-title {
                 font-size: 1.5em;
             }
+
+            .home-button {
+                margin-left: 10px;
+            }
         }
     </style>
 </head>
 
 <body>
-    <a href="https://mircodeflorin.github.io/landingpage" class="home-button">← Home</a>
-    
     <div class="header">
-<div class="book-cover-container" style="display: flex; justify-content: center; align-items: center; margin: 2rem auto; max-width: 800px; padding: 0 20px;">
-    <div style="position: relative; width: 100%; max-width: 400px;">
-        <img 
-            src="/front.jpg" 
-            alt="Alles ausser Kontrolle - Book Cover" 
-            style="width: 100%; height: auto; border-radius: 0.5rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);"
-        />
+        <a href="https://mircodeflorin.github.io/landingpage" class="home-button">← Home</a>
+        <h1>Mirco Deflorin</h1>
+        <p>Autor & Schriftsteller</p>
     </div>
-</div>
-<div class="preorder-card" style="background-color: rgba(44, 62, 80, 0.7); padding: 40px; border-radius: 10px; margin: 20px auto; max-width: 800px; text-align: center; border: 1px solid rgba(231, 76, 60, 0.3); position: relative;">
-    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, #e74c3c, transparent);"></div>
-    <h2 style="color: #e74c3c; margin-bottom: 20px;">Limitierte Auflage</h2>
-    <div style="font-size: 1.2em; margin-bottom: 30px;">
-        Bestellen Sie jetzt direkt ein signiertes Exemplar vom Schriftsteller Mirco Deflorin
-    </div>
-    <a href="https://mircodeflorin.github.io/preorder-page" 
-       style="display: inline-block; background-color: #e74c3c; color: white; padding: 15px 30px; border: none; border-radius: 5px; font-size: 1.2em; text-decoration: none; transition: all 0.3s ease; cursor: pointer;">
-        Jetzt vorbestellen
-    </a>
-    <div style="margin-top: 20px; font-size: 0.9em; color: #a8b2bd;">
-        * Limitierte Auflage von signierten Exemplaren
-    </div>
-</div>
+    
+    <div class="main-container">
+        <div class="book-cover-container" style="display: flex; justify-content: center; align-items: center; margin: 2rem auto; max-width: 800px; padding: 0 20px;">
+            <div style="position: relative; width: 100%; max-width: 400px;">
+                <img 
+                    src="/front.jpg" 
+                    alt="Alles ausser Kontrolle - Book Cover" 
+                    style="width: 100%; height: auto; border-radius: 0.5rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);"
+                />
+            </div>
+        </div>
+        <div class="preorder-card" style="background-color: rgba(44, 62, 80, 0.7); padding: 40px; border-radius: 10px; margin: 20px auto; max-width: 800px; text-align: center; border: 1px solid rgba(231, 76, 60, 0.3); position: relative;">
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, #e74c3c, transparent);"></div>
+            <h2 style="color: #e74c3c; margin-bottom: 20px;">Limitierte Auflage</h2>
+            <div style="font-size: 1.2em; margin-bottom: 30px;">
+                Bestellen Sie jetzt direkt ein signiertes Exemplar vom Schriftsteller Mirco Deflorin
+            </div>
+            <a href="https://mircodeflorin.github.io/preorder-page" 
+               style="display: inline-block; background-color: #e74c3c; color: white; padding: 15px 30px; border: none; border-radius: 5px; font-size: 1.2em; text-decoration: none; transition: all 0.3s ease; cursor: pointer;">
+                Jetzt vorbestellen
+            </a>
+            <div style="margin-top: 20px; font-size: 0.9em; color: #a8b2bd;">
+                * Limitierte Auflage von signierten Exemplaren
+            </div>
+        </div>
         <div class="announcement">
             Noch 30 Tage bis zur Veröffentlichung von "Alles ausser Kontrolle"
         </div>
-    </div>
-    <div class="announcement">
-        In der ersten Woche stelle ich euch die Geschichte "Der Motivationsguru"<br>
-        aus dem Buch "Alles ausser Kontrolle" vor.
-    </div>
-
-    <div class="characters" style="display: block; text-align: center; margin: 40px auto; max-width: 800px;">
-        <img src="guru-betty-herbert.jpg" alt="Thomas, Betty und Herbert" style="width: 100%; max-width: 600px; height: auto; margin-bottom: 30px; border-radius: 15px;">
         
-        <div class="character-card" style="background: #233240; border-radius: 15px; padding: 20px; margin-top: 20px;">
-            <div class="character-name" style="font-size: 1.8em; margin-bottom: 15px;">Die Hauptcharaktere</div>
-            <p><strong>Thomas:</strong> Der unfreiwillige Guru, dessen Leben durch eine rebellische Kaffeemaschine und einen toten Kaktus völlig aus den Fugen gerät.</p>
-            <p><strong>Betty:</strong> Die KI-Kaffeemaschine mit existenziellen Krisen und einer Vorliebe für philosophische Fehlermeldungen.</p>
-            <p><strong>Herbert:</strong> Der tote, aber erstaunlich weise Kaktus, dessen minimale Bewegungen als tiefgründige Weisheiten interpretiert werden.</p>
+        <div class="announcement">
+            In der ersten Woche stelle ich euch die Geschichte "Der Motivationsguru"<br>
+            aus dem Buch "Alles ausser Kontrolle" vor.
+        </div>
+
+        <div class="characters" style="display: block; text-align: center; margin: 40px auto; max-width: 800px;">
+            <img src="guru-betty-herbert.jpg" alt="Thomas, Betty und Herbert" style="width: 100%; max-width: 600px; height: auto; margin-bottom: 30px; border-radius: 15px;">
+            
+            <div class="character-card" style="background: #233240; border-radius: 15px; padding: 20px; margin-top: 20px;">
+                <div class="character-name" style="font-size: 1.8em; margin-bottom: 15px;">Die Hauptcharaktere</div>
+                <p><strong>Thomas:</strong> Der unfreiwillige Guru, dessen Leben durch eine rebellische Kaffeemaschine und einen toten Kaktus völlig aus den Fugen gerät.</p>
+                <p><strong>Betty:</strong> Die KI-Kaffeemaschine mit existenziellen Krisen und einer Vorliebe für philosophische Fehlermeldungen.</p>
+                <p><strong>Herbert:</strong> Der tote, aber erstaunlich weise Kaktus, dessen minimale Bewegungen als tiefgründige Weisheiten interpretiert werden.</p>
+            </div>
+        </div>
+
+        <div class="message-screen">
+            <div class="error-text">Initialisiere Montag.exe...</div>
+            <div class="error-text">Scanning for Monday motivation...</div>
+            <div class="error-text">ERROR 404: Monday not found</div>
+            <div class="error-text">Attempting to reboot weekend...</div>
+            <div class="error-text">ERROR 303: Weekend already expired</div>
+            <div class="error-text">Initiating emergency coffee protocol...</div>
+            <div class="error-text" style="color: #e74c3c">Alternative solution found: Chaos mode activated</div>
+        </div>
+
+        <div class="quote">
+            <div class="quote-text">"Stille ist die lauteste Antwort, wenn das Chaos nach dir ruft."</div>
+            <div class="quote-author">- Herbert, der weise Kaktus</div>
+        </div>
+
+        <div class="about-section">
+            <div class="betty-title">Meet Betty</div>
+            <p>Deutschlands erste KI-Kaffeemaschine mit existenziellen Krisen und einer Vorliebe für philosophische Fehlermeldungen.</p>
+            <p>Gemeinsam mit Herbert (einem toten, aber weisen Kaktus) und Thomas (ihrem unfreiwilligen Guru) startet sie heute ihre digitale Revolution.</p>
+        </div>
+
+        <div class="error-generator">
+            <div class="betty-title">Generiere deine Betty-Error-Message</div>
+            <div class="generator-controls">
+                <select id="errorType">
+                    <option value="monday">Montags-Krise</option>
+                    <option value="coffee">Kaffee-Existenzialismus</option>
+                    <option value="motivation">Motivations-Fehler</option>
+                    <option value="herbert">Herbert-Weisheiten</option>
+                </select>
+                <button onclick="generateError()">Generate Error</button>
+            </div>
+            <div id="generatedError"></div>
+        </div>
+
+        <div class="share-buttons">
+            <button class="share-button" onclick="shareOnFacebook()">Auf Facebook teilen</button>
+            <button class="share-button" onclick="shareOnTwitter()">Auf Twitter teilen</button>
+            <button class="share-button" onclick="shareOnInstagram()">Auf Instagram teilen</button>
         </div>
     </div>
 
-    <div class="message-screen">
-        <div class="error-text">Initialisiere Montag.exe...</div>
-        <div class="error-text">Scanning for Monday motivation...</div>
-        <div class="error-text">ERROR 404: Monday not found</div>
-        <div class="error-text">Attempting to reboot weekend...</div>
-        <div class="error-text">ERROR 303: Weekend already expired</div>
-        <div class="error-text">Initiating emergency coffee protocol...</div>
-        <div class="error-text" style="color: #e74c3c">Alternative solution found: Chaos mode activated</div>
-    </div>
-
-    <div class="quote">
-        <div class="quote-text">"Stille ist die lauteste Antwort, wenn das Chaos nach dir ruft."</div>
-        <div class="quote-author">- Herbert, der weise Kaktus</div>
-    </div>
-
-    <div class="about-section">
-        <div class="betty-title">Meet Betty</div>
-        <p>Deutschlands erste KI-Kaffeemaschine mit existenziellen Krisen und einer Vorliebe für philosophische Fehlermeldungen.</p>
-        <p>Gemeinsam mit Herbert (einem toten, aber weisen Kaktus) und Thomas (ihrem unfreiwilligen Guru) startet sie heute ihre digitale Revolution.</p>
-    </div>
-
-    <div class="error-generator">
-        <div class="betty-title">Generiere deine Betty-Error-Message</div>
-        <div class="generator-controls">
-            <select id="errorType">
-                <option value="monday">Montags-Krise</option>
-                <option value="coffee">Kaffee-Existenzialismus</option>
-                <option value="motivation">Motivations-Fehler</option>
-                <option value="herbert">Herbert-Weisheiten</option>
-            </select>
-            <button onclick="generateError()">Generate Error</button>
-        </div>
-        <div id="generatedError"></div>
-    </div>
-
-    <div class="share-buttons">
-        <button class="share-button" onclick="shareOnFacebook()">Auf Facebook teilen</button>
-        <button class="share-button" onclick="shareOnTwitter()">Auf Twitter teilen</button>
-        <button class="share-button" onclick="shareOnInstagram()">Auf Instagram teilen</button>
-    </div>
-
-<script>
+    <script>
         function sleep(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
         }
