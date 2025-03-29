@@ -6,6 +6,51 @@
     <title>Alles ausser Kontrolle - Der neue Roman von Mirco Deflorin</title>
     <style>
         /* Bestehende Styles bleiben erhalten */
+        /* Styles für Countdown-Aktivitäten */
+        #countdown-activities {
+            background-color: rgba(52, 152, 219, 0.1);
+            border: 1px solid rgba(52, 152, 219, 0.3);
+        }
+        
+        #countdown-activities::before {
+            background: linear-gradient(90deg, #3498db, transparent);
+        }
+        
+        .activity-day {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .past-activities {
+            margin-top: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .past-activity-link {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 0.9em;
+        }
+        
+        .past-activity-link:hover {
+            background-color: rgba(52, 152, 219, 0.5);
+            transform: translateY(-2px);
+        }
         body {
             margin: 0;
             padding: 0;
@@ -578,6 +623,40 @@
                         <li>Herberts Weisheiten-Challenge</li>
                     </ul>
                 </div>
+            </div>
+        </section>
+
+        <!-- 30-Tage Countdown Aktivitäten & Gewinnspiele -->
+        <section class="section" id="countdown-activities">
+            <h2>30 Tage voller Überraschungen & Gewinnspiele</h2>
+            <p>Begleiten Sie uns auf dem Weg zur Buchveröffentlichung mit täglichen interaktiven Aktivitäten, Gewinnspielen und exklusiven Einblicken in die Welt von "Alles ausser Kontrolle"!</p>
+            
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h3>Tägliche Überraschungen</h3>
+                    <p>Jeden Tag neue Inhalte: Mini-Games, Persönlichkeitstests, Ausreden-Generatoren und vieles mehr!</p>
+                </div>
+                <div class="feature-item">
+                    <h3>Wöchentliche Gewinnspiele</h3>
+                    <p>Gewinnen Sie ein persönlich signiertes Exemplar von "Alles ausser Kontrolle" mit unseren wöchentlichen Kreativ-Challenges.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>Exklusive Previews</h3>
+                    <p>Erleben Sie als Erste(r) Ausschnitte aus dem Buch, Charakter-Interviews und versteckte Verbindungen zwischen den Geschichten.</p>
+                </div>
+            </div>
+
+            <div class="character-box" style="margin-top: 30px;">
+                <h3 class="character-title">Aktuelle Tages-Challenge</h3>
+                <p class="character-description">Tagesaktivität #30: "Herberts Weisheiten-Challenge" - Was würde ein weiser Kaktus zu alltäglichen Situationen sagen?</p>
+                <div style="margin: 25px 0;">
+                    <a href="https://mircodeflorin.github.io/lwo_30_vjd" class="preorder-button" style="background-color: #3498db;">
+                        Zur heutigen Aktivität
+                    </a>
+                </div>
+                <p style="font-size: 0.9em; margin-top: 20px; color: #a8b2bd;">
+                    Jeden Tag erscheint hier ein neuer Link zur aktuellen Tagesaktivität. Folgen Sie uns für 30 Tage voller Chaos und Kreativität!
+                </p>
             </div>
         </section>
 
