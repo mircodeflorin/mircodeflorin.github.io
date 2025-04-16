@@ -203,22 +203,12 @@
             flex: 1;
             min-width: 120px;
             padding: 15px;
-            background-color: rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(231, 76, 60, 0.2);
+            border: 1px solid #e74c3c;
             border-radius: 10px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
-        }
-
-        .payment-option:hover {
-            background-color: rgba(231, 76, 60, 0.2);
-            border-color: rgba(231, 76, 60, 0.3);
-        }
-
-        .payment-option.selected {
-            background-color: rgba(231, 76, 60, 0.2);
-            border-color: #e74c3c;
         }
 
         .payment-icon {
@@ -437,26 +427,22 @@
                         </div>
                     </div>
 
-                    <h4>Zahlungsmethode auswählen</h4>
+                    <h4>Zahlungsmethode</h4>
                     <div class="payment-options">
-                        <div class="payment-option" onclick="selectPayment('bank')">
-                            <div class="payment-icon">🏦</div>
-                            <div>Überweisung</div>
-                        </div>
-                        <div class="payment-option" onclick="selectPayment('paypal')">
+                        <div class="payment-option selected">
                             <div class="payment-icon">💸</div>
                             <div>PayPal</div>
                         </div>
                     </div>
                     
                     <!-- Verstecktes Feld für die Zahlungsmethode -->
-                    <input type="hidden" id="paymentMethod" name="paymentMethod" value="">
+                    <input type="hidden" id="paymentMethod" name="paymentMethod" value="paypal">
                     <input type="hidden" id="orderNumber" name="orderNumber" value="">
                     <input type="hidden" name="totalAmount" value="29.90">
 
                     <div class="navigation-buttons">
                         <button type="button" class="prev-button" onclick="prevStep(3)">Zurück</button>
-                        <button type="button" class="next-button" id="payment-button" onclick="submitOrder()" disabled>Zahlungspflichtig bestellen</button>
+                        <button type="button" class="next-button" id="payment-button" onclick="submitOrder()">Zahlungspflichtig bestellen</button>
                     </div>
                 </div>
             </form>
@@ -466,17 +452,7 @@
                 
                 <p>Ihre Vorbestellung für "Alles ausser Kontrolle" wurde erfolgreich aufgenommen. Eine Bestätigungs-E-Mail wurde an Ihre angegebene E-Mail-Adresse gesendet.</p>
 
-                <div class="payment-details" id="bank-details">
-                    <h3>Zahlungsinformationen</h3>
-                    <p>Bitte überweisen Sie den Gesamtbetrag von <strong>€ 29,90</strong> an folgendes Konto:</p>
-                    <div class="payment-info"><strong>Kontoinhaber:</strong> Mirco Deflorin</div>
-                    <div class="payment-info"><strong>IBAN:</strong> CH95 8080 8008 6702 2330 8</div>
-                    <div class="payment-info"><strong>BIC:</strong> RAIFCH22XXX</div>
-                    <div class="payment-info"><strong>Verwendungszweck:</strong> <span id="reference-number">AaK-[OrderNumber]</span></div>
-                    <p style="margin-top: 20px;">Nach Zahlungseingang wird Ihr Buch umgehend versendet.</p>
-                </div>
-
-                <div class="payment-details" id="paypal-details" style="display: none;">
+                <div class="payment-details" id="paypal-details">
                     <h3>PayPal-Zahlung</h3>
                     <p>Klicken Sie auf den Button unten, um direkt mit PayPal zu bezahlen:</p>
                     
@@ -499,7 +475,6 @@
 
     <script>
         let currentStep = 1;
-        let paymentMethod = '';
         let orderNumber = '';
 
         // Generiere Bestellnummer
@@ -567,31 +542,8 @@
             document.getElementById(`step${currentStep}`).classList.remove('completed');
         }
 
-        // Zahlungsmethode auswählen
-        function selectPayment(method) {
-            paymentMethod = method;
-            
-            // Formularwert aktualisieren
-            document.getElementById('paymentMethod').value = method;
-            
-            // Visuelle Markierung aktualisieren
-            document.querySelectorAll('.payment-option').forEach(option => {
-                option.classList.remove('selected');
-            });
-            
-            event.currentTarget.classList.add('selected');
-            
-            // Bestell-Button aktivieren
-            document.getElementById('payment-button').disabled = false;
-        }
-
         // Bestellung abschicken
         function submitOrder() {
-            if (!paymentMethod) {
-                alert('Bitte wählen Sie eine Zahlungsmethode.');
-                return;
-            }
-            
             // Bestell-Referenznummer generieren
             orderNumber = generateOrderNumber();
             document.getElementById('orderNumber').value = orderNumber;
@@ -608,7 +560,6 @@
             .then(response => {
                 if (response.ok) {
                     // Erfolgreich - zeige Bestätigungsseite
-                    document.getElementById('reference-number').textContent = 'AaK-' + orderNumber;
                     document.getElementById('paypal-reference').textContent = 'AaK-' + orderNumber;
                     
                     // Zum letzten Schritt wechseln
@@ -619,15 +570,6 @@
                     currentStep++;
                     document.getElementById(`step${currentStep}-content`).classList.add('active');
                     document.getElementById(`step${currentStep}`).classList.add('active');
-                    
-                    // Zeige die entsprechenden Zahlungsdetails
-                    if (paymentMethod === 'bank') {
-                        document.getElementById('bank-details').style.display = 'block';
-                        document.getElementById('paypal-details').style.display = 'none';
-                    } else if (paymentMethod === 'paypal') {
-                        document.getElementById('bank-details').style.display = 'none';
-                        document.getElementById('paypal-details').style.display = 'block';
-                    }
                 } else {
                     // Fehler - zeige Fehlermeldung
                     alert('Bei der Übermittlung Ihrer Bestellung ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.');
