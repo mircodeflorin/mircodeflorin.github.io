@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ensa × HFS Zizers - PPT-Generator</title>
+<style>
+ body{font-family:Arial,Helvetica,sans-serif;margin:0;padding:2rem;background:#f5f7fa;color:#333}
+ h1{font-size:1.5rem;text-align:center;margin:0 0 1.2rem}
+ button{display:block;margin:1.5rem auto;padding:.8rem 1.6rem;font-size:1rem;
+        background:#00A0E1;color:#fff;border:none;border-radius:4px;cursor:pointer}
+ button:hover{background:#0085b9}
+ #status{text-align:center;margin-top:1rem;color:#006699;font-size:.9rem}
+ @media(max-width:500px){body{padding:1rem}}
+</style>
+</head>
+<body>
+<h1>ensa × HFS Zizers – PowerPoint Generator</h1>
+<button id="genBtn">Präsentation erstellen</button>
+<div id="status">Klicke auf den Button, um die <em>.pptx</em> zu generieren.</div>
+
+<!-- Bibliotheken -->
+<script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.10.0/dist/pptxgen.min.js"></script>
+
+<script>
+document.getElementById('genBtn').addEventListener('click', generatePPT);
+
+function status(txt){ document.getElementById('status').innerText = txt; }
+
+async function generatePPT(){
+  status('Erstelle Präsentation … bitte warten ⏳');
+  const pptx = new PptxGenJS();
+  pptx.defineLayout({ name:'WIDE', width:13.33, height:7.5 });
+  pptx.layout = 'WIDE';
+
+  const title   = { fontSize:36, bold:true, color:'006699' };
+  const sub     = { fontSize:18, color:'404040' };
+  const body    = { fontSize:20, color:'404040', lineSpacing:20 };
+
+  // ----------------- Folien anlegen -----------------
+  let s = pptx.addSlide();
+  s.addText('Herzlich willkommen!', { ...title, x:0.5,y:0.6,w:12.33,align:'center' });
+  s.addText('Mirco & Sibylle Deflorin · ensa Kursleiter · HFS-Alumni',
+            { ...sub, x:0.5,y:1.4,w:12.33,align:'center' });
+  s.addText('RecoverMe      ensa      HFS', { ...sub, italic:true, x:0.5,y:6.8,w:12.33,align:'center' });
+
+  s = pptx.addSlide();
+  s.addText('60-Sekunden-Video', { ...title, x:0.5,y:0.3,w:12.33,align:'center'});
+  s.addText('Link einfügen: https://youtu.be/0Ec8thKwD94',
+            { ...sub, x:0.5,y:1.2,w:12.33,align:'center', color:'0000EE', underline:true });
+  s.addText('In PowerPoint als Online-Video einbetten.',
+            { ...body, x:1,y:3,w:11, align:'center' });
+
+  s = pptx.addSlide();
+  s.addText('Agenda in 60 Minuten', { ...title, x:0.5,y:0.4,w:12.33,align:'center'});
+  s.addText([
+      '1  Einstimmen (Video)',
+      '2  Zielbild & Agenda',
+      '3  Ice-Breaker',
+      '4  ensa-Essenz',
+      '5  Business Case HFS',
+      '6  Kurs Fokus Erwachsene',
+      '7  Co-Creation',
+      '8  Wrap-up & Next Steps'],
+      { ...body, x:1.5,y:1.6, bullet:true });
+
+  s = pptx.addSlide();
+  s.addText('Jede*r 2   –   9 von 10', { ...title, x:0.5,y:0.4,w:12.3,align:'center'});
+  s.addText('Jede zweite Person erlebt psychische Schwierigkeiten.\n'
+           +'9 von 10 kennen Betroffene und möchten helfen – wissen aber nicht wie.',
+           { ...body, x:1,y:2,w:11 });
+
+  s = pptx.addSlide();
+  s.addText('Was ist ensa?', { ...title, x:0.5,y:0.4,w:12.3,align:'center'});
+  s.addText([
+      'Australien 2001 → Schweiz 2019',
+      'Schweizer Adaption von MHFA',
+      '4 Sprachen: DE · FR · IT · EN',
+      '20 000+ geschulte Personen'],
+      { ...body, bullet:true, x:1,y:1.8,w:11 });
+
+  s = pptx.addSlide();
+  s.addText('Die 5 Schritte – ROGER', { ...title, x:0.5,y:0.4,w:12.3,align:'center'});
+  s.addText([
+      'R  Reagiere: ansprechen, einschätzen, beistehen',
+      'O  Offen zuhören & kommunizieren',
+      'G  Gib Unterstützung & Information',
+      'E  Ermutige zu professioneller Hilfe',
+      'R  Ressourcen reaktivieren'],
+      { ...body, bullet:true, x:1,y:1.4,w:11 });
+
+  s = pptx.addSlide();
+  s.addText('Warum passt ensa zur HFS Zizers?', { ...title, x:0.5,y:0.4,w:12.3,align:'center'});
+  s.addText([
+      'Ganzheitliches, christliches Leitbild – Sorge um Seele & Körper',
+      'Praxisnahe Ausbildung; Vorbildwirkung für Studierende',
+      'Sozialpädagogischer Alltag = hoher Stress & Verantwortung'],
+      { ...body, bullet:true, x:1,y:1.6,w:11 });
+
+  s = pptx.addSlide();
+  s.addText('Belastungen in Ihrem Alltag', { ...title, x:0.5,y:0.4,w:12.3,align:'center'});
+  s.addText('• Dozentin „Anna“ – 3 Klassen, Familie, Überstunden\n'
+           +'• Betreuer „Marco“ – Nachtdienste, Krisenintervention, wenig Erholung',
+           { ...body, x:1,y:1.6,w:11 });
+
+  s = pptx.addSlide();
+  s.addText('Key Facts (ensa Factsheet 2024)', { ...title, x:0.5,y:0.4,w:12.3,align:'center'});
+  s.addText([
+      '29.6 % der Erwerbstätigen fühlen sich sehr erschöpft',
+      '45.5 % fragliches Gleichgewicht Ressourcen/Belastungen',
+      '48 % weniger Absenzen mit ensa-Ersthelfern',
+      '7.6 Mrd CHF Produktivitätsverlust/Jahr in der Schweiz'],
+      { ...body, bullet:true, x:1,y:1.6,w:11 });
+
+  s = pptx.addSlide();
+  s.addText('Kosten-Nutzen auf einen Blick', { ...title, x:0.5,y:0.4,w:12.3,align:'center'});
+  s.addText(
+    'Investition pro Person: CHF 480.–\n'
+   +'Break-Even nach ca. 6 Monaten dank weniger Ausfalltage\n'
+   +'Langfristige Ersparnis > CHF 1 000/Jahr',
+    { ...body, x:1,y:1.6,w:11 });
+
+  s = pptx.addSlide();
+  s.addText('Kurs „Fokus Erwachsene“ – Überblick', { ...title, x:0.5,y:0.4,w:12.3,align:'center'});
+  const tbl = [
+    [{text:'',options:{fill:'FFFFFF'}},
+     {text:'Präsenz',options:{fill:'00A0E1',color:'FFFFFF'}},
+     {text:'Webinar',options:{fill:'1B708F',color:'FFFFFF'}}],
+    ['Dauer','12 h (4×3 h)','14 h (7×2 h)'],
+    ['Teilnehmende','12 – 20','12 – 20'],
+    ['Preis','CHF 480.–','CHF 480.–'],
+    ['Abschluss','Zertifikat (3 Jahre)','Zertifikat (3 Jahre)']
+  ];
+  s.addTable(tbl, { x:1,y:1.3,w:11,fontSize:18,border:{type:'none'} });
+
+  s = pptx.addSlide();
+  s.addText('Lernmethoden & Inhalte', { ...title, x:0.5,y:0.4,w:12.3,align:'center'});
+  s.addText([
+      '70 % Praxis: Rollenspiele, Gruppenarbeit',
+      'Grundlagen psychische Gesundheit Erwachsener',
+      'Krisen: Suizidgedanken, Panik, Sucht, Burnout',
+      'Überleitung zu professioneller Hilfe & Ressourcenaktivierung'],
+      { ...body, bullet:true, x:1,y:1.6,w:11 });
+
+  s = pptx.addSlide();
+  s.addText('Ihre Ideen – Canvas', { ...title, x:0.5,y:0.4,w:12.3,align:'center'});
+  s.addText('WER?\n\nWANN?\n\nSUPPORT?',
+            { ...body, x:5.2,y:2,w:2.6,h:4, align:'center', valign:'middle',
+              fill:'F2F2F2', border:{pt:'1',color:'CCCCCC'} });
+  s.addText('← Platz für Notizen während der Session',
+            { ...sub, italic:true, x:0.8,y:6,w:12,align:'left' });
+
+  s = pptx.addSlide();
+  s.addText('Vielen Dank!', { ...title, x:0.5,y:0.6,w:12.3,align:'center'});
+  s.addText([
+      'Relevanz erkannt',
+      'ensa-Kurs = praxistauglich',
+      'Nächster Schritt: Umsetzungsideen konkretisieren'],
+      { ...body, bullet:true, x:2,y:2,w:9 });
+  s.addText('Kontakt & Unterlagen – QR-Code hier einfügen',
+            { ...sub, x:0.5,y:5.6,w:12.3,align:'center' });
+
+  try{
+    await pptx.writeFile({ fileName:'ensa_HFS_Zizers.pptx' });
+    status('✅ Download gestartet. Viel Erfolg bei der Präsentation!');
+  }catch(e){
+    console.error(e);
+    status('❌ Fehler: '+e.message);
+  }
+}
+</script>
+</body>
+</html>
+
