@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ausredengenerator: Warum du "Alles ausser Kontrolle" nicht kaufen solltest</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1b2735;
+            color: #fff;
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        header {
+            background-color: #1b2735;
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            border-bottom: 1px solid #2e3e50;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        h2 {
+            color: #fff;
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+        
+        .subtitle {
+            font-style: italic;
+            margin-top: 0.5rem;
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            flex-grow: 1;
+        }
+        
+        .ausrede-box {
+            background-color: #2e3e50;
+            border-radius: 5px;
+            padding: 2rem;
+            margin: 2rem 0;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 1.4rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            border-left: 5px solid #e94e31;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ausrede-box:before {
+            content: """;
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            font-size: 6rem;
+            color: rgba(255, 255, 255, 0.05);
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+        
+        .ausrede-box:after {
+            content: """;
+            position: absolute;
+            bottom: -20px;
+            right: 15px;
+            font-size: 6rem;
+            color: rgba(255, 255, 255, 0.05);
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+        
+        .generator-btn {
+            background-color: #e94e31;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 1rem auto;
+            display: block;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            font-weight: bold;
+            width: 80%;
+            max-width: 400px;
+        }
+        
+        .generator-btn:hover {
+            background-color: #d13e23;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .generator-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .book-info {
+            margin-top: 3rem;
+            background-color: #2e3e50;
+            padding: 1.5rem;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            border-top: 3px solid #e94e31;
+        }
+        
+        .book-title {
+            color: #e94e31;
+            font-weight: bold;
+        }
+        
+        .buy-btn {
+            background-color: #e94e31;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-size: 1.1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 1rem auto;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            font-weight: bold;
+            text-decoration: none;
+        }
+        
+        .buy-btn:hover {
+            background-color: #d13e23;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .price-info {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background-color: rgba(233, 78, 49, 0.15);
+            border-left: 3px solid #e94e31;
+            border-radius: 3px;
+        }
+        
+        .offer-price {
+            font-weight: bold;
+            color: #e94e31;
+            font-size: 1.1em;
+        }
+        
+        .regular-price {
+            text-decoration: line-through;
+            opacity: 0.8;
+            margin-left: 0.5rem;
+        }
+        
+        footer {
+            background-color: #17212c;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: auto;
+            border-top: 1px solid #2e3e50;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .ausrede-box {
+                font-size: 1.2rem;
+                padding: 1.5rem;
+                min-height: 120px;
+            }
+            
+            .generator-btn {
+                font-size: 1rem;
+                padding: 0.8rem 1.5rem;
+            }
+        }
+        
+        .author {
+            font-style: italic;
+            text-align: right;
+            margin-top: 1rem;
+        }
+        
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fadeIn {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        .hidden {
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Ausredengenerator</h1>
+        <div class="subtitle">Warum du "Alles ausser Kontrolle" nicht kaufen solltest</div>
+    </header>
+    
+    <div class="container">
+        <div class="ausrede-box" id="ausredeBox">
+            Klicke auf den Button für deine kreative Ausrede!
+        </div>
+        
+        <button class="generator-btn" id="generatorBtn">Generiere Ausrede</button>
+        
+        <div class="book-info">
+            <h2>Über das Buch</h2>
+            <p>
+                <span class="book-title">"Alles ausser Kontrolle"</span> nimmt dich mit auf eine humorvolle Reise durch chaotische Welten, in denen nichts so ist, wie es scheint. Von motivationsgurumässigen Kaffeemaschinen über philosophierende Wellensittiche bis hin zu einer Firma, die sich auf kreative Ausreden spezialisiert hat - dieses Buch bringt dich garantiert zum Schmunzeln.
+            </p>
+            <p>
+                Entdecke die kunstvoll miteinander verwobenen Geschichten, interaktive Elemente und versteckte Easter Eggs. Tauche ein in die chaotische Welt von Mirco Deflorin und finde heraus, warum manchmal Chaos die beste Ordnung ist.
+            </p>
+            
+            <div class="price-info">
+                <p><strong>Trotz all dieser Ausreden...</strong></p>
+                <p>...kannst du dir hier und jetzt nach der Lesung dein Exemplar von "Alles ausser Kontrolle" sichern! Mit Signatur für nur <span class="offer-price">CHF 19.90</span> statt <span class="regular-price">CHF 24.90</span> - und ohne die zusätzlichen CHF 5.00 Versandkosten, die online anfallen würden.</p>
+                <p>Zahlung per Bar oder Twint direkt vor Ort – manchmal ist Chaos eben doch die beste Ordnung!</p>
+            </div>
+            
+            <p class="author">- Mirco Deflorin</p>
+        </div>
+    </div>
+    
+    <footer>
+        © 2025 Mirco Deflorin | "Alles ausser Kontrolle" - Band 1
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const ausredeBox = document.getElementById('ausredeBox');
+            const generatorBtn = document.getElementById('generatorBtn');
+            
+            // Ausreden-Sammlung
+            const ausreden = [
+                "Ich habe bereits zu viele Bücher über philosophierende Kaffeemaschinen. Mein Bücherregal hat eine strikte 'Ein Buch pro Haushaltsgerät'-Politik.",
+                "Mein Wellensittich hat mir verboten, Bücher zu kaufen, in denen andere Vögel klüger erscheinen als er.",
+                "Ich habe kürzlich eine Zeitschleife betreten und lese jetzt denselben Absatz seit drei Wochen. Kein Platz für neue Lektüre.",
+                "Madame Gestern hat mir prophezeit, dass ich das Buch gestern bereits gelesen haben werde. Warum also heute kaufen?",
+                "Mein Taschenrechner Herbert besteht darauf, dass es mathematisch unmöglich ist, noch ein weiteres Buch in meine Wohnung zu quetschen.",
+                "Dr. Brinkmann hat mir in seiner Rolle als französischer Literaturkritiker davon abgeraten – oder war das seine Identität als begeisterter Bibliothekar? Ich bin verwirrt.",
+                "Ich fürchte, mein Exemplar könnte ein Eigenleben entwickeln und beginnen, seine eigene Geschichte umzuschreiben.",
+                "Die ultimative Ausrede für alles hat mir geraten, stattdessen ein Buch über geordnete Kontrollsysteme zu kaufen. Sie war sehr überzeugend.",
+                "Ich habe eine Allergie gegen quantenverschränkte Schmetterlinge entwickelt, die durch unleere Seiten flattern.",
+                "Mein Sofa besteht darauf, dass es bereits zu viele Bücher beherbergt und droht mit einem aristokratischen Streik à la Herr Schnurr.",
+                "Ich warte auf die spezielle Edition, die von einer singenden Kaffeemaschine vorgelesen wird.",
+                "Meine Ausreden-AG hat mir strikt untersagt, Bücher zu kaufen, die ihre Geschäftsgeheimnisse verraten könnten.",
+                "Gertrud Eichinger hat mir einen Strickpullover für mein Exemplar versprochen, und bis der fertig ist, darf ich es nicht kaufen.",
+                "Mein Kaktus Herbert hat sich in einen Taschenrechner verwandelt und berechnet nun, dass ich 42 Jahre brauchen würde, um alle meine ungelesenen Bücher zu lesen.",
+                "Ich kann kein Buch kaufen, das mir meine eigenen chaotischen Tendenzen so deutlich vor Augen führt. Mein Ego ist zu zerbrechlich.",
+                "Der Realitätsfilter in meiner Wohnung lässt keine weitere Fiktion zu – alles Neue würde sofort in Wahrheit verwandelt werden.",
+                "Ich habe gehört, dass man beim Lesen spontan anfängt, Mozart erst nach 10 Uhr zu spielen. Das passt nicht in meinen Tagesplan.",
+                "Alle meine Bücher müssen nach der Fibonacci-Sequenz angeordnet sein, und 'Alles ausser Kontrolle' würde dieses System komplett durcheinanderbringen.",
+                "Ich habe eine strenge Politik gegen Bücher, deren Figuren klüger sind als ich. Besonders wenn sie gar keine Menschen sind.",
+                "Mein Therapeut hat mir Bücher verboten, die dazu führen könnten, dass ich mit meinem Espresso über postmoderne Literatur diskutiere.",
+                "Nach den letzten Renovierungsarbeiten existiert mein Wohnzimmer in drei verschiedenen Realitätsebenen gleichzeitig. Ich weiß nicht, in welcher ich das Buch aufbewahren sollte.",
+                "Ich fürchte, das Buch könnte meine Topfpflanzen dazu inspirieren, philosophische Debatten anzufangen. Mein Basilikum ist bereits jetzt zu selbstbewusst.",
+                "Mein Schluckauf hat eine Melodie entwickelt, und ich befürchte, dass 'Alles ausser Kontrolle' ihn in eine vollständige Symphonie verwandeln könnte.",
+                "Der Inspektor hat mir untersagt, weitere Realitätsverzerrungen in meinem Haushalt zuzulassen.",
+                "Ich habe einen strikten 'Keine Bücher mit sprechenden Tieren und singenden Küchengeräten'-Vorsatz für 2025 gefasst.",
+                "Zuerst müsste ich verstehen, was eine 'UNLEERE SEITE' ist, und ich befürchte, dass mein Gehirn dafür nicht bereit ist.",
+                "Meine Kaffeemaschine weigert sich bereits jetzt, vor 10 Uhr zu funktionieren. Ich kann nicht riskieren, dass sie auch noch anfängt, Arien zu singen.",
+                "Ich würde es kaufen, aber mein Buch-Organisationssystem erlaubt keine Werke, die die Gesetze der Physik herausfordern.",
+                "Ich brauche erst ein Zertifikat in multilinearer Realitätswahrnehmung, bevor ich dieses Buch sicher handhaben kann.",
+                "Die Ausreden-Datenbank in meinem Kopf ist bereits voll. Eine weitere kreative Entschuldigung könnte zum Systemabsturz führen.",
+                "Mein Arzt hat mir empfohlen, Bücher zu meiden, die meine Tendenz zu multiple Persönlichkeiten verstärken könnten.",
+                "Ich befürchte, dass mir Dr. Lohmann beim Lesen über die Schulter schauen und meine Lesegeschwindigkeit mathematisch analysieren würde.",
+                "Nach meinem letzten Buchkauf hat mein Wohnzimmer begonnen, zwischen verschiedenen Dimensionen zu wandern. Ich warte, bis es sich stabilisiert hat.",
+                "Eine zurückhaltende Prophezeiung hat angedeutet, dass ich gestern dieses Buch nicht gekauft haben werde.",
+                "Mein interdimensionaler Bücherregal-Organisator hat einen Streik angedroht, falls ich weitere chaotische Elemente einführe.",
+                "Meine Wohnung hat eine strenge 'Keine-weiteren-Ausreden'-Politik eingeführt, und dieses Buch würde definitiv dagegen verstoßen.",
+                "Der Hausmeister meines Realitätsgebäudes hat alle weiteren Installationen von Quantenparadoxa bis auf Weiteres untersagt.",
+                "Nach dem letzten Buch mit selbstbewussten Charakteren haben meine Möbel angefangen, Persönlichkeiten zu entwickeln. Mein Sofa identifiziert sich jetzt als Chaiselongue.",
+                "Ich muss erst herausfinden, ob meine Versicherung Schäden durch interdimensionale Schmetterlinge abdeckt.",
+                "Ich warte auf die spezielle Edition, bei der Dr. Brinkmann persönlich aus dem Buch steigt und es mir vorliest – in allen seinen Identitäten gleichzeitig.",
+                "Ich habe gehört, dass sich die Seitenzahlen je nach Mondphase ändern. Mein Leseplan ist nicht flexibel genug für solche Unregelmäßigkeiten.",
+                "Madame Rothmann hat vorhergesagt, dass ich das Buch in einer anderen Zeitlinie bereits besitze, und ich möchte keine temporalen Paradoxa verursachen.",
+                "Ich folge strikt dem Rat meines philosophischen Kaktus, und der rät mir, zunächst ein Buch über das Nichts zu lesen, bevor ich mich mit dem Chaos beschäftige.",
+                "Mein Exemplar von 'Zen und die Kunst der Motorradwartung' hat mir verboten, mit anderen Büchern über Philosophie zu sprechen.",
+                "Ich bin allergisch gegen Bücher, deren Charaktere klüger sind als ihre Autoren, und ich habe gehört, dieses Buch ist voll davon.",
+                "Ich habe mir für 2025 vorgenommen, nur Bücher zu lesen, in denen keine Gegenstände sprechen, singen oder philosophische Debatten führen.",
+                "Mein letztes Buch hat begonnen, sich selbst umzuschreiben, und ich muss erst dieses Problem lösen, bevor ich neue chaotische Elemente einführe.",
+                "Ich befürchte, dass meine Realität nicht stabil genug ist, um ein Buch zu beherbergen, das sie aktiv in Frage stellt.",
+                "Ich habe bereits viermal versucht, es zu kaufen, aber jedes Mal hat sich die Buchhandlung in ein Café verwandelt, in dem eine Kaffeemaschine Arien sang.",
+                "Betty, meine Kaffeemaschine, hat mir untersagt, Bücher zu kaufen, die ihre Position als intelligentestes Gerät in meinem Haushalt gefährden könnten.",
+                "Ich habe einen strikten 'Keine-Bücher-mit-mehr-als-drei-Realitätsebenen'-Vorsatz für dieses Jahr gefasst.",
+                "Nachdem ich den Klappentext gelesen habe, hat mein Schlüsselbund angefangen zu philosophieren. Ich bin nicht bereit für weitere erwachende Gegenstände.",
+                "Mein Therapeut hat mir geraten, zunächst mit einem weniger chaotischen Buch zu beginnen – vielleicht 'Ein bisschen außer Kontrolle' als Einstieg?",
+                "Ich warte auf die Genehmigung meines quantenphysikalischen Beraters, der aktuell in drei Paralleluniversen gleichzeitig Urlaub macht.",
+                "Nach meinem letzten experimentellen Roman hat mein Badezimmer zeitweise aufgehört zu existieren. Ich muss erst sicherstellen, dass meine Sanitäranlagen realitätsstabil sind.",
+                "Ich habe gehört, das Buch ändert seine Handlung, wenn man es nicht beobachtet. Ich habe nicht genug Überwachungskameras, um es im Auge zu behalten.",
+                "Mein Buchclub akzeptiert nur Bücher, die in höchstens zwei Dimensionen gleichzeitig spielen. Dieses würde ihre Kapazitäten sprengen.",
+                "Ich darf laut ärztlicher Anordnung keine Bücher lesen, die temporäre Realitätsverschiebungen verursachen können. Mein letzter Zeitschleifenvorfall war zu anstrengend.",
+                "Der Hausmeister meines Gebäudes hat alle Realitätsanker bereits überlastet. Ein weiteres chaotisches Element könnte zum Dimensionskollaps führen.",
+                "Meine Wohnung hat kürzlich eine Anti-Quantenschmetterlings-Politik eingeführt, nachdem mein letztes Buch einige freigesetzt hat.",
+                "Ich habe gehört, dass man nach der Lektüre anfängt, in verschiedenen Identitäten gleichzeitig zu leben. Mein Kleiderschrank ist für so viele Persönlichkeiten nicht ausgelegt.",
+                "Mein vorheriges Buch hat mir eine Existenzkrise beschert. Ich muss diese erst lösen, bevor ich mich in neue metaphysische Abenteuer stürze.",
+                "Ich bevorzuge Bücher, deren Seiten nur in einer Dimension gleichzeitig existieren.",
+                "Laut meinem persönlichen Realitätsberater befinde ich mich bereits in einer komplexen narrativen Struktur und sollte keine weiteren Handlungsstränge hinzufügen.",
+                "Ich kann kein Buch kaufen, das potenziell intelligenter ist als ich. Das verletzt mein fragiles Ego.",
+                "Mein letztes chaotisches Buch hat dazu geführt, dass meine Topfpflanzen angefangen haben, Theaterstücke aufzuführen. Die nächtlichen Proben stören meinen Schlaf.",
+                "Ich würde es ja kaufen, aber mein Taschenrechner behauptet, die Wahrscheinlichkeit, dass ich es tatsächlich zu Ende lese, liege bei nur 42,7%.",
+                "Meine Socken haben ein Veto eingelegt, nachdem sie erfahren haben, dass Haushaltsgegenstände in diesem Buch Persönlichkeiten entwickeln können.",
+                "Ich stehe unter strenger Anweisung meines dimensionalen Therapeuten, mich von Büchern fernzuhalten, die multiple Realitäten gleichzeitig adressieren.",
+                "Mein letztes Buch hat begonnen, mit meinem Kühlschrank zu kommunizieren. Ich bin nicht bereit für weitere haushaltstechnische Allianzen.",
+                "Ich habe gehört, dass sich die Kapitel manchmal selbstständig umordnen. Mein Lesezeichen hat für solche Nomaden-Seiten nicht die nötige Technologie.",
+                "Nach Gertruds Strickmuster-Prophezeiung sollte ich erst im nächsten Frühjahr Bücher mit sprechenden Tieren und singenden Maschinen lesen.",
+                "Ich habe einen Eimer Wasser neben meinem Bett stehen, und ich befürchte, dass Waldemar einziehen und "Liebe und Betrug" darin schauen könnte."
+            ];
+            
+            // Funktion zum Zufällig-Auswählen einer Ausrede
+            function generateAusrede() {
+                // Box ausblenden für Animation
+                ausredeBox.classList.add('hidden');
+                
+                setTimeout(() => {
+                    // Zufällige Ausrede auswählen
+                    const randomIndex = Math.floor(Math.random() * ausreden.length);
+                    const newAusrede = ausreden[randomIndex];
+                    
+                    // Ausrede einsetzen und Animation starten
+                    ausredeBox.textContent = newAusrede;
+                    ausredeBox.classList.remove('hidden');
+                    ausredeBox.classList.add('fadeIn');
+                    
+                    // Animation-Klasse nach Abschluss entfernen
+                    setTimeout(() => {
+                        ausredeBox.classList.remove('fadeIn');
+                    }, 500);
+                }, 300);
+            }
+            
+            // Event-Listener für den Button
+            generatorBtn.addEventListener('click', generateAusrede);
+            
+            // Initiale Ausrede generieren
+            setTimeout(generateAusrede, 1000);
+        });
+    </script>
+</body>
+</html>
