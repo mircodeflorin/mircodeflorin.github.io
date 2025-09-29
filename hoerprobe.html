@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hörprobe: Ich will leben - Psychologischer Thriller</title>
+    <meta name="description" content="Hörprobe zum psychologischen Thriller 'Ich will leben' - Eine authentische Geschichte über Depression, Hoffnung und Gemeinschaft">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        h1 {
+            font-size: 2.8em;
+            color: #ffffff;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            color: #a8b2d1;
+            margin-bottom: 30px;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .cover-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .book-cover {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
+        }
+        
+        .audio-section {
+            background: rgba(255,255,255,0.05);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        
+        h2 {
+            color: #64ffda;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+        
+        .chapter-info {
+            background: rgba(100,255,218,0.1);
+            padding: 15px;
+            border-left: 4px solid #64ffda;
+            margin-bottom: 25px;
+            border-radius: 5px;
+        }
+        
+        .chapter-info h3 {
+            color: #64ffda;
+            margin-bottom: 8px;
+        }
+        
+        audio {
+            width: 100%;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+        
+        .audio-info {
+            font-size: 0.9em;
+            color: #a8b2d1;
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        .description {
+            background: rgba(255,255,255,0.05);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .description p {
+            margin-bottom: 15px;
+            font-size: 1.05em;
+        }
+        
+        .availability-notice {
+            background: rgba(100,255,218,0.15);
+            border: 2px solid #64ffda;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .availability-notice h2 {
+            color: #64ffda;
+            margin-bottom: 15px;
+            font-size: 1.6em;
+        }
+        
+        .availability-notice p {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+        
+        .coming-soon {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #64ffda;
+            margin-top: 15px;
+        }
+        
+        .formats {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .format-card {
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            flex: 1;
+            min-width: 180px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .format-card h3 {
+            color: #64ffda;
+            margin-bottom: 10px;
+        }
+        
+        .format-card .status {
+            font-size: 0.9em;
+            color: #a8b2d1;
+            margin-top: 8px;
+        }
+        
+        .format-card.available {
+            border: 2px solid #64ffda;
+        }
+        
+        .format-card.coming {
+            border: 2px solid #a8b2d1;
+            opacity: 0.7;
+        }
+        
+        .social-follow {
+            background: rgba(255,255,255,0.05);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 40px 0;
+            backdrop-filter: blur(10px);
+        }
+        
+        .social-follow h2 {
+            margin-bottom: 15px;
+        }
+        
+        .social-follow p {
+            color: #a8b2d1;
+            margin-bottom: 25px;
+            font-size: 1.05em;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .social-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 30px;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid #64ffda;
+            border-radius: 8px;
+            color: #64ffda;
+            text-decoration: none;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .social-btn:hover {
+            background: rgba(100,255,218,0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(100,255,218,0.3);
+        }
+        
+        .social-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: #64ffda;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #a8b2d1;
+        }
+        
+        .author-info {
+            margin-top: 20px;
+            font-size: 0.95em;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Ich will leben</h1>
+            <p class="subtitle">Ein psychologischer Thriller über Depression, Hoffnung und die heilende Macht menschlicher Verbindungen</p>
+        </header>
+
+        <div class="content-grid">
+            <div class="cover-section">
+                <img src="cover-ich-will-leben.jpg" alt="Buchcover: Ich will leben" class="book-cover">
+            </div>
+
+            <div class="audio-section">
+                <h2>🎧 Kostenlose Hörprobe</h2>
+                <div class="chapter-info">
+                    <h3>Kapitel 1: Der Streit am Morgen</h3>
+                    <p>Erlebe den emotionalen Einstieg in Martinas Welt – authentisch eingesprochen und fesselnd erzählt.</p>
+                </div>
+                
+                <audio controls>
+                    <source src="hoerprobe-teaser.mp3" type="audio/mpeg">
+                    Dein Browser unterstützt das Audio-Element nicht.
+                </audio>
+                
+                <p class="audio-info">⏱️ Spieldauer: 8 Minuten 40 Sekunden</p>
+            </div>
+        </div>
+
+        <div class="description">
+            <h2>Über das Buch</h2>
+            <p><strong>Als Martinas Leben in Scherben liegt, entdeckt sie in einem Berliner Antiquitätenladen einen rätselhaften Spiegel – und mit ihm ihre dunkelsten Schatten.</strong></p>
+            
+            <p>Nach dem Verlust ihres Partners und im Kampf gegen ihre Depression übernimmt die Deutschlehrerin spontan einen verlassenen Laden. Doch zwischen den verstaubten Büchern wartet etwas auf sie: ein antiker Spiegel, der ihre Selbstzweifel zu tödlichen Gewissheiten verstärkt.</p>
+            
+            <p>Als auch ihr Schüler Tom in die Fänge des mysteriösen Schattenspiegels gerät, wird Martina klar: Sie kämpft nicht nur um ihr eigenes Leben, sondern um das ihrer Schutzbefohlenen. Gemeinsam mit der mutigen Lisa muss sie lernen, dass wahre Heilung nicht durch Perfektion entsteht – sondern durch die Kraft der Gemeinschaft.</p>
+            
+            <p><em>Ein bewegender psychologischer Thriller über Depression, Hoffnung und die heilende Macht menschlicher Verbindungen. "Ich will leben" zeigt einfühlsam und ohne Romantisierung, wie Dunkelheit durch Licht überwunden werden kann.</em></p>
+        </div>
+
+        <div class="availability-notice">
+            <h2>📅 Erscheint in Kürze</h2>
+            <p><strong>Print-Ausgabe:</strong> Verfügbar ab ca. <strong>7. Oktober 2025</strong></p>
+            <p><strong>E-Book:</strong> Erscheint einige Wochen später</p>
+            <p><strong>Hörbuch:</strong> In Arbeit – erscheint bald</p>
+            <p class="coming-soon">Sei einer der Ersten, die "Ich will leben" lesen!</p>
+        </div>
+
+        <div class="formats">
+            <div class="format-card available">
+                <h3>📖 Print</h3>
+                <p>Hochwertiges Taschenbuch</p>
+                <p class="status">✓ Ab 7. Oktober verfügbar</p>
+            </div>
+            <div class="format-card coming">
+                <h3>📱 E-Book</h3>
+                <p>Für alle Geräte</p>
+                <p class="status">○ Folgt später</p>
+            </div>
+            <div class="format-card coming">
+                <h3>🎧 Hörbuch</h3>
+                <p>Professionell eingesprochen</p>
+                <p class="status">○ In Arbeit</p>
+            </div>
+        </div>
+
+        <div class="social-follow">
+            <h2>📢 Bleib auf dem Laufenden</h2>
+            <p>Aktuelle Informationen zum Buch, Leseproben und Updates findest du auf meinen Social-Media-Kanälen:</p>
+            
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/mirco-deflorin-862a79318" target="_blank" class="social-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                    </svg>
+                    LinkedIn
+                </a>
+                
+                <a href="https://www.facebook.com/profile.php?id=61562148965784" target="_blank" class="social-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/>
+                    </svg>
+                    Facebook
+                </a>
+            </div>
+        </div>
+
+        <footer>
+            <div class="author-info">
+                <p><strong>Über den Autor:</strong></p>
+                <p><strong>Mirco Deflorin</strong> arbeitet als Peer/Genesungsbegleiter bei einer Sozialversicherung in der Schweiz. Mit 20 Jahren Depressionserfahrung und 8 Jahren Berufserfahrung in der Psychiatrie bringt er eine authentische Perspektive in seine Geschichten. Seit 2 Jahren begleitet er Menschen auf ihrem Weg der Genesung in einer Sozialversicherung.</p>
+                <p style="margin-top: 15px;"><em>"Ich will leben" ist ein psychologischer Thriller – geschrieben mit dem Wissen eines Fachmanns und dem Herzen eines Betroffenen.</em></p>
+            </div>
+            <p style="margin-top: 30px;">© 2025 Mirco Deflorin | Alle Rechte vorbehalten</p>
+        </footer>
+    </div>
+</body>
+</html>
