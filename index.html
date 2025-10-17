@@ -104,6 +104,37 @@ nav a:hover::after {
   background: linear-gradient(transparent, var(--light));
 }
 
+.highlight-banner {
+  background: linear-gradient(135deg, var(--accent), #c0392b);
+  color: white;
+  padding: 2rem;
+  text-align: center;
+  margin: 2rem auto;
+  border-radius: 8px;
+  max-width: 1200px;
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+}
+
+.highlight-banner h2 {
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+.highlight-banner p {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.highlight-banner button {
+  background: white;
+  color: var(--accent);
+}
+
+.highlight-banner button:hover {
+  background: var(--light);
+  transform: scale(1.05);
+}
+
 .books-section {
   padding: 2rem;
   max-width: 1200px;
@@ -193,7 +224,7 @@ button {
   border-radius: 4px;
   cursor: pointer;
   font-weight: bold;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, transform 0.3s ease;
   position: relative;
   overflow: hidden;
 }
@@ -218,6 +249,7 @@ button:hover::after {
 
 button:hover {
   background: #c0392b;
+  transform: translateY(-2px);
 }
 
 .contact {
@@ -310,58 +342,82 @@ button:hover {
   display: block;
 }
 </style>
-<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
 
 <header>
   <h1>Mirco Deflorin</h1>
-  <p>Autor &amp; Schriftsteller</p>
+  <p>Autor & Schriftsteller</p>
 </header>
 
 <nav>
   <ul>
-    <li><a href="#about">&#xdc;ber Mich</a></li>
-    <li><a href="#books">B&#xfc;cher</a></li>
+    <li><a href="#about">Über Mich</a></li>
+    <li><a href="#books">Bücher</a></li>
     <li><a href="#contact">Kontakt</a></li>
   </ul>
 </nav>
 
 <section class="hero">
   <h2>Willkommen in meiner Welt des Schreibens</h2>
-  <p>Entdecken Sie meine vielf&#xe4;ltige Bibliothek von christlichen B&#xfc;chern bis Horror-Romanen</p>
+  <p>Entdecken Sie meine vielfältige Bibliothek von christlichen Büchern bis Horror-Romanen</p>
 </section>
 
+<div class="highlight-banner">
+  <h2>🆕 Neu erschienen: Ich will leben</h2>
+  <p>Eine authentische Geschichte über Depression, Hoffnung und Heilung</p>
+  <a href="#books"><button>Jetzt entdecken</button></a>
+</div>
+
 <section id="about" class="thoughts-section">
-  <h2>&#xdc;ber Mich</h2>
+  <h2>Über Mich</h2>
   <div class="thoughts-post">
-    <img src="Bild &#xfc;ber uns.jpg" alt="Mirco Deflorin" class="author-image">
-    <p>Das Schreiben ist meine Leidenschaft - eine Reise durch verschiedene Welten und Genres, die mich immer wieder &#xfc;berrascht. Was als Thriller begann, entwickelte sich zu einer Entdeckungsreise durch die d&#xfc;steren Korridore des Horrors. So entstand die achtteilige &apos;Blackwood Manor&apos; Serie, die mich tief in die Abgr&#xfc;nde menschlicher &#xc4;ngste f&#xfc;hrte.</p>
+    <img src="Bild über uns.jpg" alt="Mirco Deflorin" class="author-image">
+    <p>Das Schreiben ist meine Leidenschaft - eine Reise durch verschiedene Welten und Genres, die mich immer wieder überrascht. Was als Thriller begann, entwickelte sich zu einer Entdeckungsreise durch die düsteren Korridore des Horrors. So entstand die achtteilige 'Blackwood Manor' Serie, die mich tief in die Abgründe menschlicher Ängste führte.</p>
 
-    <p>Als die Dunkelheit zu intensiv wurde, erschuf ich mit &apos;Emmagators&apos; eine heitere Gegenwelt - ein augenzwinkerndes Jugendbuch, das mir selbst ein L&#xe4;cheln entlockte. Meine Krimiromane wie &apos;Mord im Elfenbeinturm&apos; oder die &apos;Raben-Trilogie&apos; vereinen meine Vorliebe f&#xfc;r komplexe Charaktere mit fesselnden Mysterien.</p>
+    <p>Als die Dunkelheit zu intensiv wurde, erschuf ich mit 'Emmagators' eine heitere Gegenwelt - ein augenzwinkerndes Jugendbuch, das mir selbst ein Lächeln entlockte. Meine Krimiromane wie 'Mord im Elfenbeinturm' oder die 'Raben-Trilogie' vereinen meine Vorliebe für komplexe Charaktere mit fesselnden Mysterien.</p>
 
-    <p>Als Christ finde ich Inspiration auch in spirituellen Themen. Mit &apos;Die Spr&#xfc;che des Salomon - Neu strukturiert und erl&#xe4;utert&apos; wage ich mich an zeitgem&#xe4;&#xdf;e Interpretationen zeitloser Weisheiten.</p>
+    <p>Als Christ finde ich Inspiration auch in spirituellen Themen. Mit 'Die Sprüche des Salomon - Neu strukturiert und erläutert' wage ich mich an zeitgemäße Interpretationen zeitloser Weisheiten.</p>
 
-    <p>Mein Beruf als Peer und Genesungsbegleiter in der Psychiatrie sowie meine T&#xe4;tigkeit in einer Sozialversicherungsanstalt pr&#xe4;gen meine Perspektive auf das Leben. Diese Erfahrungen flossen in mein Fachbuch &apos;Salutogenese und Recovery&apos; ein, in dem ich neue Ans&#xe4;tze f&#xfc;r die Gesundheitsversorgung diskutiere.</p>
+    <p>Mein Beruf als Peer und Genesungsbegleiter in der Psychiatrie sowie meine Tätigkeit in einer Sozialversicherungsanstalt prägen meine Perspektive auf das Leben. Diese Erfahrungen flossen in mein Fachbuch 'Salutogenese und Recovery' ein, in dem ich neue Ansätze für die Gesundheitsversorgung diskutiere.</p>
 
-    <p>Die Kraft des Schreibens entdeckte ich mit Unterst&#xfc;tzung k&#xfc;nstlicher Intelligenz - ein faszinierendes Werkzeug, das meiner Kreativit&#xe4;t neue Dimensionen er&#xf6;ffnet. Bin ich dadurch weniger Schriftsteller? Im Gegenteil: Die Geschichten entstehen in meinem Kopf, nehmen durch meine Erfahrungen Form an und werden durch moderne Technologie bereichert.</p>
+    <p>Die Kraft des Schreibens entdeckte ich mit Unterstützung künstlicher Intelligenz - ein faszinierendes Werkzeug, das meiner Kreativität neue Dimensionen eröffnet. Bin ich dadurch weniger Schriftsteller? Im Gegenteil: Die Geschichten entstehen in meinem Kopf, nehmen durch meine Erfahrungen Form an und werden durch moderne Technologie bereichert.</p>
 
-    <p>Zuhause bin ich in der Schweiz, wo die majest&#xe4;tischen Berge und klaren Seen meine Inspiration n&#xe4;hren. Mit 48 Jahren und an der Seite meiner Frau genie&#xdf;e ich dieses Privileg, Geschichten zu erschaffen, die Menschen ber&#xfc;hren, unterhalten und zum Nachdenken anregen.</p>
+    <p>Zuhause bin ich in der Schweiz, wo die majestätischen Berge und klaren Seen meine Inspiration nähren. Mit 48 Jahren und an der Seite meiner Frau genieße ich dieses Privileg, Geschichten zu erschaffen, die Menschen berühren, unterhalten und zum Nachdenken anregen.</p>
 
-    <p>Meine B&#xfc;cher sind so vielf&#xe4;ltig wie das Leben selbst - manchmal d&#xfc;ster, manchmal heiter, aber immer authentisch. Ich schreibe, was mich bewegt, und folge dabei keinem vorgegebenen Pfad. Jede Geschichte hat ihre eigene Zeit, ihren eigenen Rhythmus, und ich freue mich darauf, Sie auf diesen literarischen Reisen zu begleiten.</p>
+    <p>Meine Bücher sind so vielfältig wie das Leben selbst - manchmal düster, manchmal heiter, aber immer authentisch. Ich schreibe, was mich bewegt, und folge dabei keinem vorgegebenen Pfad. Jede Geschichte hat ihre eigene Zeit, ihren eigenen Rhythmus, und ich freue mich darauf, Sie auf diesen literarischen Reisen zu begleiten.</p>
   </div>
 </section>
 
 <section id="books" class="books-section">
   
   <div class="genre-section">
-    <h2>Christliche B&#xfc;cher</h2>
+    <h2>🌟 Neu erschienen: Psychologische Novelle</h2>
+    <div class="book-grid">
+      <div class="book-card" style="background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%); border: 2px solid var(--accent);">
+        <img src="Ich_will_leben_Cover.webp" alt="Ich will leben Cover" style="box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+        <h3 style="color: var(--accent);">Ich will leben</h3>
+        <p><strong>Psychologische Novelle / Psychothriller</strong></p>
+        <p>Depression authentisch aus Betroffenenperspektive. Geschrieben von jemandem mit 20 Jahren Erfahrung als Peer/Genesungsbegleiter.</p>
+        <p><em>"Das Buch hat mich von der ersten Seite an gefesselt. Es beschreibt die Depression ganz genau."</em> – Beta-Leserin S.</p>
+        <p style="font-size: 0.9em; color: #666;"><strong>⚠️ Triggerwarnung:</strong> Behandelt Depression und Suizidgedanken sensibel</p>
+        <div class="button-group">
+          <a href="https://www.amazon.de/dp/3819267697/" target="_blank"><button>Bei Amazon kaufen</button></a>
+          <a href="https://mircodeflorin.github.io/hoerprobe" target="_blank"><button>Hörprobe anhören</button></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="genre-section">
+    <h2>Christliche Bücher</h2>
     <div class="book-grid">
       <div class="book-card">
-        <img src="Die_Spr&#xfc;che_des_Salomon.webp" alt="Die Spr&#xfc;che des Salomon Cover">
-        <h3>Die Spr&#xfc;che des Salomon</h3>
-        <p>Neu strukturiert und erl&#xe4;utert</p>
+        <img src="Die_Sprüche_des_Salomon.webp" alt="Die Sprüche des Salomon Cover">
+        <h3>Die Sprüche des Salomon</h3>
+        <p>Neu strukturiert und erläutert</p>
         <div class="button-group">
           <a href="https://buchshop.bod.de/die-sprueche-des-salomon-mirco-deflorin-9783759769374" target="_blank"><button>Mehr erfahren</button></a>
           <a href="https://www.bod.de/booksample?json=http%3A%2F%2Fwww.bod.ch%2Fgetjson.php%3Fobjk_id%3D5077742%26hash%3D9a3dacd46a9c41c8ac1c60db564df033" target="_blank"><button>Leseprobe</button></a>
@@ -370,7 +426,7 @@ button:hover {
       <div class="book-card">
         <img src="Digitaler_Dialog__Christentum_und_Islam.webp" alt="Digitaler Dialog Cover">
         <h3>Digitaler Dialog: Christentum und Islam</h3>
-        <p>Eine KI-gest&#xfc;tzte theologische Debatte &#xfc;ber Jesus</p>
+        <p>Eine KI-gestützte theologische Debatte über Jesus</p>
         <div class="button-group">
           <a href="https://buchshop.bod.de/digitaler-dialog-christentum-und-islam-mirco-deflorin-9783759768216" target="_blank"><button>Mehr erfahren</button></a>
           <a href="https://www.bod.de/booksample?json=http%3A%2F%2Fwww.bod.ch%2Fgetjson.php%3Fobjk_id%3D5078571%26hash%3Da80ae94b1b4bb5d6ab9c0847c46d97e9" target="_blank"><button>Leseprobe</button></a>
@@ -429,12 +485,12 @@ button:hover {
   </div>
 
   <div class="genre-section">
-    <h2>F&#xfc;r Jugendliche</h2>
+    <h2>Für Jugendliche</h2>
     <div class="book-grid">
       <div class="book-card">
         <img src="Emmagators.webp" alt="Emmagators Cover">
         <h3>Emmagators: Chaos mit Stil</h3>
-        <p>Ein unterhaltsames Buch f&#xfc;r Jugendliche und Junggebliebene</p>
+        <p>Ein unterhaltsames Buch für Jugendliche und Junggebliebene</p>
         <div class="button-group">
           <a href="https://buchshop.bod.de/emmagators-mirco-deflorin-9783759749987" target="_blank"><button>Mehr erfahren</button></a>
           <a href="https://www.bod.de/booksample?json=http%3A%2F%2Fwww.bod.ch%2Fgetjson.php%3Fobjk_id%3D5022852%26hash%3D9dda5d16ef60dd949b3ea2fb135f6ce2" target="_blank"><button>Leseprobe</button></a>
@@ -461,10 +517,10 @@ button:hover {
 
 <section id="contact" class="contact">
   <h2>Kontakt</h2>
-  <form id="contact-form" action="https://formspree.io/f/myzeejrw" method="POST">
-    <input type="text" id="name" name="name" placeholder="Ihr Name" required>
-    <input type="email" id="email" name="email" placeholder="Ihre E-Mail-Adresse" required>
-    <textarea id="message" name="message" placeholder="Ihre Nachricht" required></textarea>
+  <form id="contact-form" onsubmit="sendEmail(event)">
+    <input type="text" id="name" placeholder="Ihr Name" required>
+    <input type="email" id="email" placeholder="Ihre E-Mail-Adresse" required>
+    <textarea id="message" placeholder="Ihre Nachricht" required></textarea>
     <button type="submit">Nachricht senden</button>
   </form>
   
@@ -475,10 +531,24 @@ button:hover {
 </section>
 
 <footer class="footer">
-  <p>&#xa9; 2024 Mirco Deflorin. Alle Rechte vorbehalten.</p>
+  <p>&copy; 2024 Mirco Deflorin. Alle Rechte vorbehalten.</p>
 </footer>
 
 <script>
+function sendEmail(e) {
+    e.preventDefault();
+    
+    const name = encodeURIComponent(document.getElementById('name').value);
+    const email = encodeURIComponent(document.getElementById('email').value);
+    const message = encodeURIComponent(document.getElementById('message').value);
+    
+    const mailtoLink = `mailto:mirco.deflorin@gmx.ch?subject=Mail von der Autor-Webseite&body=Name: ${name}%0D%0AE-Mail: ${email}%0D%0A%0D%0ANachricht:%0D%0A${message}`;
+    
+    window.location.href = mailtoLink;
+    
+    document.getElementById('contact-form').reset();
+}
+
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
