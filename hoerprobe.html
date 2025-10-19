@@ -26,9 +26,43 @@
             padding: 40px 20px;
         }
         
+        /* Home Button */
+        .home-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(100,255,218,0.2);
+            border: 2px solid #64ffda;
+            padding: 12px 25px;
+            border-radius: 8px;
+            color: #64ffda;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .home-button:hover {
+            background: rgba(100,255,218,0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(100,255,218,0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .home-button {
+                position: static;
+                margin-bottom: 20px;
+                justify-content: center;
+            }
+        }
+        
         header {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
         }
         
         h1 {
@@ -42,6 +76,75 @@
             font-size: 1.2em;
             color: #a8b2d1;
             margin-bottom: 30px;
+        }
+        
+        /* Kauflinks prominent oben */
+        .buy-section {
+            background: linear-gradient(135deg, rgba(100,255,218,0.15) 0%, rgba(100,255,218,0.08) 100%);
+            border: 3px solid #64ffda;
+            padding: 35px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 50px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .buy-section h2 {
+            color: #64ffda;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+        
+        .buy-section .availability {
+            color: #64ffda;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+        
+        .buy-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+        
+        .buy-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 35px;
+            background: linear-gradient(135deg, #64ffda 0%, #4ecdc4 100%);
+            border: none;
+            border-radius: 10px;
+            color: #1a1a2e;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(100,255,218,0.4);
+        }
+        
+        .buy-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(100,255,218,0.6);
+        }
+        
+        .buy-btn.secondary {
+            background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.1) 100%);
+            color: #64ffda;
+            border: 2px solid #64ffda;
+        }
+        
+        .buy-btn.secondary:hover {
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.15) 100%);
+        }
+        
+        .price-tag {
+            font-size: 0.9em;
+            color: #a8b2d1;
+            margin-top: 8px;
         }
         
         .content-grid {
@@ -123,69 +226,49 @@
             font-size: 1.05em;
         }
         
-        .availability-notice {
-            background: rgba(100,255,218,0.15);
-            border: 2px solid #64ffda;
-            padding: 25px;
-            border-radius: 12px;
-            text-align: center;
-            margin: 40px 0;
-        }
-        
-        .availability-notice h2 {
-            color: #64ffda;
-            margin-bottom: 15px;
-            font-size: 1.6em;
-        }
-        
-        .availability-notice p {
-            font-size: 1.1em;
-            margin-bottom: 10px;
-        }
-        
-        .coming-soon {
-            font-size: 1.3em;
-            font-weight: bold;
-            color: #64ffda;
-            margin-top: 15px;
-        }
-        
         .formats {
             display: flex;
             gap: 20px;
             justify-content: center;
-            margin-top: 30px;
+            margin: 40px 0;
             flex-wrap: wrap;
         }
         
         .format-card {
             background: rgba(255,255,255,0.05);
-            padding: 20px;
+            padding: 25px;
             border-radius: 10px;
             text-align: center;
             flex: 1;
-            min-width: 180px;
+            min-width: 200px;
             backdrop-filter: blur(10px);
         }
         
         .format-card h3 {
             color: #64ffda;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            font-size: 1.4em;
         }
         
         .format-card .status {
-            font-size: 0.9em;
+            font-size: 1em;
             color: #a8b2d1;
-            margin-top: 8px;
+            margin-top: 12px;
+            font-weight: bold;
         }
         
         .format-card.available {
-            border: 2px solid #64ffda;
+            border: 3px solid #64ffda;
+            background: rgba(100,255,218,0.08);
+        }
+        
+        .format-card.available .status {
+            color: #64ffda;
         }
         
         .format-card.coming {
             border: 2px solid #a8b2d1;
-            opacity: 0.7;
+            opacity: 0.6;
         }
         
         .social-follow {
@@ -258,10 +341,33 @@
 </head>
 <body>
     <div class="container">
+        <!-- Home Button -->
+        <a href="https://mircodeflorin.github.io/" class="home-button">
+            <span>🏠</span> Zurück zur Hauptseite
+        </a>
+
         <header>
             <h1>Ich will leben</h1>
             <p class="subtitle">Ein psychologischer Thriller über Depression, Hoffnung und die heilende Macht menschlicher Verbindungen</p>
         </header>
+
+        <!-- Kauflinks prominent platziert -->
+        <div class="buy-section">
+            <h2>📖 Jetzt erhältlich!</h2>
+            <p class="availability">✅ Das Buch ist erschienen und sofort lieferbar</p>
+            
+            <div class="buy-buttons">
+                <a href="https://buchshop.bod.ch/ich-will-leben-mirco-deflorin-9783819267697" target="_blank" class="buy-btn">
+                    🇨🇭 Bei BoD kaufen (Schweiz)
+                </a>
+                
+                <a href="https://www.amazon.de/dp/3819267697" target="_blank" class="buy-btn secondary">
+                    📦 Bei Amazon kaufen (Deutschland)
+                </a>
+            </div>
+            
+            <p class="price-tag">Taschenbuch | ISBN: 978-3-8192-6769-7</p>
+        </div>
 
         <div class="content-grid">
             <div class="cover-section">
@@ -280,7 +386,7 @@
                     Dein Browser unterstützt das Audio-Element nicht.
                 </audio>
                 
-                <p class="audio-info">⏱️ Spieldauer: 8 Minuten 40 Sekunden</p>
+                <p class="audio-info">⏱️ Spieldauer: 7 Minuten 46 Sekunden</p>
             </div>
         </div>
 
@@ -295,29 +401,21 @@
             <p><em>Ein bewegender psychologischer Thriller über Depression, Hoffnung und die heilende Macht menschlicher Verbindungen. "Ich will leben" zeigt einfühlsam und ohne Romantisierung, wie Dunkelheit durch Licht überwunden werden kann.</em></p>
         </div>
 
-        <div class="availability-notice">
-            <h2>📅 Erscheint in Kürze</h2>
-            <p><strong>Print-Ausgabe:</strong> Verfügbar ab ca. <strong>7. Oktober 2025</strong></p>
-            <p><strong>E-Book:</strong> Erscheint einige Wochen später</p>
-            <p><strong>Hörbuch:</strong> In Arbeit – erscheint bald</p>
-            <p class="coming-soon">Sei einer der Ersten, die "Ich will leben" lesen!</p>
-        </div>
-
         <div class="formats">
             <div class="format-card available">
                 <h3>📖 Print</h3>
                 <p>Hochwertiges Taschenbuch</p>
-                <p class="status">✓ Ab 7. Oktober verfügbar</p>
+                <p class="status">✅ JETZT VERFÜGBAR</p>
             </div>
             <div class="format-card coming">
                 <h3>📱 E-Book</h3>
                 <p>Für alle Geräte</p>
-                <p class="status">○ Folgt später</p>
+                <p class="status">⏳ In Kürze</p>
             </div>
             <div class="format-card coming">
                 <h3>🎧 Hörbuch</h3>
                 <p>Professionell eingesprochen</p>
-                <p class="status">○ In Arbeit</p>
+                <p class="status">⏳ In Arbeit</p>
             </div>
         </div>
 
@@ -345,7 +443,7 @@
         <footer>
             <div class="author-info">
                 <p><strong>Über den Autor:</strong></p>
-                <p><strong>Mirco Deflorin</strong> arbeitet als Peer/Genesungsbegleiter bei einer Sozialversicherung in der Schweiz. Mit 20 Jahren Depressionserfahrung und 8 Jahren Berufserfahrung in der Psychiatrie bringt er eine authentische Perspektive in seine Geschichten. Seit 2 Jahren begleitet er Menschen auf ihrem Weg der Genesung in einer Sozialversicherung.</p>
+                <p><strong>Mirco Deflorin</strong> arbeitet als Peer/Genesungsbegleiter bei der Invalidenversicherung in der Schweiz. Mit 20 Jahren Depressionserfahrung und langjähriger Berufserfahrung in der Psychiatrie bringt er eine authentische Perspektive in seine Geschichten.</p>
                 <p style="margin-top: 15px;"><em>"Ich will leben" ist ein psychologischer Thriller – geschrieben mit dem Wissen eines Fachmanns und dem Herzen eines Betroffenen.</em></p>
             </div>
             <p style="margin-top: 30px;">© 2025 Mirco Deflorin | Alle Rechte vorbehalten</p>
