@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schwester Magdalena - Chatbot | Das Tonum</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Crimson Text', serif;
+            background: linear-gradient(180deg, #0d1b25 0%, #1a2f3d 50%, #253847 100%);
+            color: #e8f0f2;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .chatbot-container {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(19, 35, 47, 0.95);
+            border: 2px solid #d4a574;
+            border-radius: 15px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+        
+        .chatbot-header {
+            background: linear-gradient(135deg, #1a2f3d 0%, #0d1b25 100%);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid #d4a574;
+        }
+        
+        .chatbot-header h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8em;
+            color: #d4a574;
+            margin-bottom: 5px;
+            text-shadow: 0 0 20px rgba(212, 165, 116, 0.3);
+        }
+        
+        .chatbot-header p {
+            font-size: 0.95em;
+            color: #a8bac7;
+            font-style: italic;
+        }
+        
+        .chat-messages {
+            height: 450px;
+            overflow-y: auto;
+            padding: 20px;
+            background: rgba(13, 27, 37, 0.5);
+        }
+        
+        .chat-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .chat-messages::-webkit-scrollbar-track {
+            background: rgba(13, 27, 37, 0.3);
+        }
+        
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #d4a574;
+            border-radius: 4px;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .message.bot {
+            text-align: left;
+        }
+        
+        .message.user {
+            text-align: right;
+        }
+        
+        .message-bubble {
+            display: inline-block;
+            padding: 12px 18px;
+            border-radius: 15px;
+            max-width: 80%;
+            line-height: 1.6;
+        }
+        
+        .message.bot .message-bubble {
+            background: linear-gradient(135deg, #2d4555 0%, #1f3544 100%);
+            border: 1px solid #d4a574;
+            color: #e8f0f2;
+        }
+        
+        .message.user .message-bubble {
+            background: linear-gradient(135deg, #3d5a73 0%, #2d4555 100%);
+            border: 1px solid #6b8ba3;
+            color: #e8f0f2;
+        }
+        
+        .message-sender {
+            font-size: 0.85em;
+            margin-bottom: 5px;
+            color: #d4a574;
+            font-weight: 600;
+        }
+        
+        .typing-indicator {
+            display: none;
+            padding: 15px;
+            text-align: left;
+        }
+        
+        .typing-indicator.active {
+            display: block;
+        }
+        
+        .typing-dots {
+            display: inline-block;
+            background: linear-gradient(135deg, #2d4555 0%, #1f3544 100%);
+            border: 1px solid #d4a574;
+            padding: 12px 20px;
+            border-radius: 15px;
+        }
+        
+        .typing-dots span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #d4a574;
+            border-radius: 50%;
+            margin: 0 3px;
+            animation: typing 1.4s infinite;
+        }
+        
+        .typing-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.5;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+        
+        .chat-options {
+            padding: 20px;
+            background: rgba(19, 35, 47, 0.8);
+            border-top: 2px solid #d4a574;
+        }
+        
+        .option-button {
+            display: block;
+            width: 100%;
+            padding: 12px 20px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #2d4555 0%, #1f3544 100%);
+            border: 1px solid #d4a574;
+            color: #e8f0f2;
+            font-family: 'Crimson Text', serif;
+            font-size: 1em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+        
+        .option-button:hover {
+            background: linear-gradient(135deg, #3d5a73 0%, #2d4555 100%);
+            border-color: #e8c792;
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(212, 165, 116, 0.3);
+        }
+        
+        .option-button:last-child {
+            margin-bottom: 0;
+        }
+        
+        .candle-icon {
+            margin-right: 10px;
+            filter: drop-shadow(0 0 5px rgba(212, 165, 116, 0.5));
+        }
+        
+        .back-link {
+            text-align: center;
+            padding: 15px;
+            background: rgba(13, 27, 37, 0.5);
+            border-top: 1px solid #2d4555;
+        }
+        
+        .back-link a {
+            color: #d4a574;
+            text-decoration: none;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+        }
+        
+        .back-link a:hover {
+            color: #e8c792;
+            text-shadow: 0 0 10px rgba(212, 165, 116, 0.5);
+        }
+        
+        @media (max-width: 600px) {
+            .chatbot-header h1 {
+                font-size: 1.4em;
+            }
+            
+            .chat-messages {
+                height: 400px;
+            }
+            
+            .option-button {
+                font-size: 0.95em;
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chatbot-container">
+        <div class="chatbot-header">
+            <h1>🕯️ Schwester Magdalena 🕯️</h1>
+            <p>Bibliothekarin des Klosters Säben</p>
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+            <!-- Messages will appear here -->
+        </div>
+        
+        <div class="typing-indicator" id="typingIndicator">
+            <div class="typing-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="chat-options" id="chatOptions">
+            <!-- Options will appear here -->
+        </div>
+        
+        <div class="back-link">
+            <a href="https://mircodeflorin.github.io/das-tonum.html">← Zurück zur Hauptseite</a>
+        </div>
+    </div>
+
+    <script>
+        // Chatbot Logic
+        const chatMessages = document.getElementById('chatMessages');
+        const chatOptions = document.getElementById('chatOptions');
+        const typingIndicator = document.getElementById('typingIndicator');
+        
+        // Conversation database - Enhanced with authentic book content
+        const conversations = {
+            welcome: {
+                message: "Gelobt sei Jesus Christus...\n\nIch bin Schwester Magdalena, 76 Jahre alt und Bibliothekarin dieses Klosters seit... ach, so vielen Jahren.\n\nIhr seid hier, weil Ihr Fragen habt. Das spüre ich. Die Geschehnisse hier oben lassen niemandem Ruhe.\n\nAber wisst: Manche Fenster sollten besser verschlossen bleiben, Kind. 🕯️\n\nWas möchtet Ihr wissen?",
+                options: [
+                    { text: "1️⃣ Was ist das Tonum?", action: "tonum" },
+                    { text: "2️⃣ Erzählt von der Bibliothek", action: "bibliothek" },
+                    { text: "3️⃣ Was geschah mit Marie?", action: "marie" },
+                    { text: "4️⃣ Über Hannah Kronauer", action: "hannah" },
+                    { text: "5️⃣ Die alten Gesänge", action: "gesaenge" }
+                ]
+            },
+            tonum: {
+                message: "Das Tonum...\n\n*ihre zittrigen Finger greifen nach einem alten Buch*\n\nDer Gesang der Berge. Die ersten Mönche hörten ihn, als sie diesen Ort fanden. Anno Domini 996.\n\nSie bauten das Kloster nicht zur Ehre Gottes - oder zumindest nicht nur dafür. Sie bauten es als Schutz. Als Gefängnis.\n\nEs ist der Klang zwischen den Klängen. Nicht für menschliche Kehlen gedacht. Manche Melodien... sie sollten nie gesungen werden. 🕯️\n\nDas Tonum ist geduldig, Kind. Es wartet. Immer.",
+                options: [
+                    { text: "❓ Warum ist es gefährlich?", action: "tonum_gefahr" },
+                    { text: "📚 Die alten Aufzeichnungen", action: "gesaenge" },
+                    { text: "↩️ Zurück zum Menü", action: "welcome" }
+                ]
+            },
+            tonum_gefahr: {
+                message: "Warum es gefährlich ist?\n\n*sie nimmt ihre Brille ab, putzt sie mit zitternden Fingern*\n\nDas Tonum ist wie ein intelligentes Wesen. Es lernt, passt sich an. Findet die Schwächen in unserer Verteidigung.\n\nEs nutzt Dein Blut. Deine Essenz. Es sucht sich einen Weg hinein.\n\nMarie... sie hatte die Gabe. Konnte Muster erkennen, wo andere nur Noten sahen. Die gleiche Gabe wie Hannah damals.\n\nUnd das machte sie zur perfekten... Vermittlerin. 🕯️\n\nManche Türen, wenn sie einmal geöffnet sind, lassen sich nicht mehr schliessen.",
+                options: [
+                    { text: "❓ Was geschah mit Marie?", action: "marie" },
+                    { text: "↩️ Zurück zum Menü", action: "welcome" }
+                ]
+            },
+            bibliothek: {
+                message: "Meine Bibliothek...\n\n*ein schwaches Lächeln huscht über ihr faltiges Gesicht*\n\nBücher sind wie Fenster in andere Welten, Kind. Aber manche Fenster sollten besser verschlossen bleiben.\n\nHier bewahren wir die alten Chroniken. Handgeschriebene Bände voller seltsamer Symbole und geometrischer Zeichnungen. Die wahren Gesänge. Nicht die, die in den offiziellen Büchern stehen.\n\nDie ersten Mönche entwickelten sie. Jede Note, jede Pause ist präzise berechnet, um mit den Klangwellen des Tonums zu interferieren. 🕯️\n\nDr. Thaler... er hat die Äbtissin überzeugt, ihm Zugang zu gewähren. Das war... ein Fehler.",
+                options: [
+                    { text: "❓ Wer ist Dr. Thaler?", action: "thaler" },
+                    { text: "📖 Die wahren Gesänge?", action: "gesaenge" },
+                    { text: "↩️ Zurück zum Menü", action: "welcome" }
+                ]
+            },
+            thaler: {
+                message: "Dr. Marcus Thaler...\n\n*ihre Stimme wird leiser, als fürchte sie unerwünschte Zuhörer*\n\nEin Wissenschaftler. Die Äbtissin unterstützt seine Forschungen. Er hat... Modernisierungen vorgenommen.\n\nÜberwachungskameras, Bewegungssensoren, eine Glasfaserleitung durchs ganze Kloster. Alles, was die moderne Technik hergibt.\n\nEr sagt, er erforscht gregorianische Musik. Die harmonischen Strukturen, die mathematischen Muster.\n\nAber ich sehe es in seinen Augen... die gleiche brennende Neugierde. Der gleiche Hunger nach Verständnis.\n\nZu viel wie Hannahs Vater. 🕯️",
+                options: [
+                    { text: "❓ Was ist mit Hannahs Vater?", action: "hannah_vater" },
+                    { text: "↩️ Zurück zum Menü", action: "welcome" }
+                ]
+            },
+            hannah: {
+                message: "Hannah...\n\n*sie schliesst kurz die Augen*\n\nSie war dreizehn, als ihre Mutter sie zu uns brachte. 'Hier wird sie sicher sein', sagte sie mit brüchiger Stimme.\n\nAber Hannah hatte die gleiche Sensitivität wie ihr Vater. Die gleiche Faszination für die Zwischentöne. Es liegt im Blut, versteht Ihr? Wird weitergegeben, von Generation zu Generation.\n\nIch wurde ihre Führerin. Lehrte sie die schützenden Harmonien. Die wahren Gesänge.\n\nAber sie war zu neugierig. Zu viel wie ihr Vater. 🕯️\n\nNach zwanzig Jahren kehrt sie zurück. Die Dinge hier... sie sind anders geworden. Das Kloster ist nicht mehr der Ort, den sie kannte.",
+                options: [
+                    { text: "❓ Was ist mit ihrem Vater?", action: "hannah_vater" },
+                    { text: "❓ Warum kommt sie zurück?", action: "marie" },
+                    { text: "↩️ Zurück zum Menü", action: "welcome" }
+                ]
+            },
+            hannah_vater: {
+                message: "Hannahs Vater...\n\n*ihre Hände zittern stärker*\n\nEr hatte die Gabe. Konnte die Zwischenräume hören. Die Lücken zwischen den Tönen, zwischen den Welten.\n\nBis er versuchte, sie zu imitieren. Das ist die Gefahr, versteht Ihr?\n\nDas Tonum lockt uns, verspricht Erkenntnis, Transzendenz. Aber der menschliche Geist ist nicht dafür geschaffen, diese Frequenzen zu reproduzieren.\n\nEr versuchte, eine Brücke zu bauen - und wurde selbst zur Tür.\n\nDie Narbe in Hannahs Handfläche... ein Echo vergangener Ereignisse. Sie wird nie vergessen. 🕯️",
+                options: [
+                    { text: "↩️ Zurück zum Menü", action: "welcome" }
+                ]
+            },
+            marie: {
+                message: "Marie...\n\n*ihre Hand zittert leicht, die Sorgenfalten vertiefen sich*\n\nDie arme Schwester Marie. Sie war wie immer eine der Letzten beim Üben. Ihr Gesangsbuch liegt noch genau so, wie sie es zurückgelassen hat.\n\nSie hatte eine Gabe. Verbrachte viel Zeit hier in der Bibliothek. Studierte die ursprünglichen Aufzeichnungen.\n\nUnd dann... sie begann Fragen zu stellen. Über die Geschichte des Klosters. Über Dr. Thalers wahre Absichten.\n\nAm 15. November verschwand sie nach der Abendandacht.\n\nIhre Zelle: leer. Ihr Rosenkranz: auf dem Boden. 🕯️\n\nIch habe sie gewarnt. Aber manche hören nicht, bis es zu spät ist.",
+                options: [
+                    { text: "❓ Was fand sie in den Aufzeichnungen?", action: "marie_fund" },
+                    { text: "🔍 Hannahs Ermittlung", action: "ermittlung" },
+                    { text: "↩️ Zurück zum Menü", action: "welcome" }
+                ]
+            },
+            marie_fund: {
+                message: "Was sie fand...\n\n*sie schlägt ein altes Buch auf, vergilbte Seiten rascheln*\n\nSeltsame Symbole. Keine gewöhnlichen Noten. Geometrische Formen, mathematische Formeln.\n\nIn ihrem Tagebuch schrieb sie:\n'Die Frequenzen werden stärker. Ich höre sie überall. Ein konstanter Unterton unter der Stille. Manchmal kann ich sie fast sehen, wie schimmernde Schwingungsmuster...'.\n\n'Es fühlt sich gierig an. Schwester Magdalena warnt mich, aber sie versteht nicht, wie tief es schon geht.'\n\nSie verstand zu viel. Und zu wenig. 🕯️",
+                options: [
+                    { text: "↩️ Zurück zum Menü", action: "welcome" },
+                    { text: "📖 Mehr über das Buch", action: "buch" }
+                ]
+            },
+            gesaenge: {
+                message: "Die alten Gesänge...\n\nDas sind keine gewöhnlichen Choräle. Sie wurden nicht komponiert, um Gott zu preisen, sondern um etwas Anderes fernzuhalten.\n\nJede Note, jede Pause ist präzise berechnet. Sie interferieren mit den Klangwellen des Tonums.\n\nDie ersten Mönche entwickelten sie. Die wahren Gesänge. Unser Schutz, unsere Verteidigung gegen das, was durch die Frequenzen zu uns durchdringen will.\n\nAber die Symbole... sie sind keine toten Zeichen. Sie sind aktiv, lebendig. Jedes Mal, wenn man sie reproduziert, öffnet man eine winzige Tür.\n\nUnd das Tonum... es braucht nur einen Spalt. 🕯️",
+                options: [
+                    { text: "❓ Über das Tonum", action: "tonum" },
+                    { text: "↩️ Zurück zum Menü", action: "welcome" }
+                ]
+            },
+            ermittlung: {
+                message: "Hannah ist zurückgekehrt...\n\nNach zwanzig Jahren. Ich rief sie an, in jener Nacht. 'Gott sei Dank erreiche ich Sie. Marie ist verschwunden.'\n\nSie kam sofort. Drei Stunden durchs Schneegestöber.\n\nIch führte sie zum Chorraum. Die Kratzspuren am Boden... sie führten zur Seitentür. Zum alten Kellergewölbe.\n\n'Das wird seit Jahren nicht mehr benutzt', sagte ich. Aber Hannah... sie erkennt die Zeichen. Immer noch.\n\nDie Narbe in ihrer Hand pochte im Rhythmus eines unhörbaren Pulses. Das Kloster erinnert sich an sie. 🕯️",
+                options: [
+                    { text: "📖 Das Buch lesen", action: "buch" },
+                    { text: "↩️ Zurück zum Menü", action: "welcome" }
+                ]
+            },
+            buch: {
+                message: "Ihr wollt die ganze Geschichte wissen...\n\nDas Tonum erscheint am 20. Dezember 2025.\n\nEin Mystery-Thriller von Mirco Deflorin. Die Wahrheit über das Kloster, über Marie, über Hannah, über den Klang.\n\nAber seid gewarnt, Kind:\n\nManche Geheimnisse sollten begraben bleiben.\nManche Türen, wenn sie einmal geöffnet sind, lassen sich nicht mehr schliessen.\n\nWisst Ihr sicher, dass Ihr bereit seid? 🕯️\n\nMöge der Herr euch beschützen.",
+                options: [
+                    { text: "🛒 Jetzt vorbestellen", action: "shop_bod" },
+                    { text: "↩️ Zurück zum Menü", action: "welcome" }
+                ]
+            },
+            shop_bod: {
+                message: "Ihr werdet zur Hauptseite weitergeleitet...\n\nDort könnt Ihr das Buch vorbestellen und die ganze Geschichte erfahren.\n\nAber denkt daran:\n\nWissen ist wie ein zweischneidiges Schwert. Je mehr Ihr versteht, desto grösser wird die Versuchung sein, tiefer zu gehen.\n\nGeht mit Gott... und hört nicht auf die Stimmen in den Mauern. 🕯️\n\nBis bald, Kind.",
+                options: [
+                    { text: "🔗 Zur Hauptseite", action: "redirect" },
+                    { text: "↩️ Zurück zum Menü", action: "welcome" }
+                ]
+            }
+        };
+        
+        // Initialize chat
+        function initChat() {
+            showMessage('bot', conversations.welcome.message);
+            showOptions(conversations.welcome.options);
+        }
+        
+        // Show message
+        function showMessage(sender, text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            const senderName = sender === 'bot' ? 'Schwester Magdalena' : 'Du';
+            
+            messageDiv.innerHTML = `
+                <div class="message-sender">${senderName}</div>
+                <div class="message-bubble">${text.replace(/\n/g, '<br>')}</div>
+            `;
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // Show options
+        function showOptions(options) {
+            chatOptions.innerHTML = '';
+            
+            options.forEach(option => {
+                const button = document.createElement('button');
+                button.className = 'option-button';
+                button.innerHTML = `<span class="candle-icon">🕯️</span>${option.text}`;
+                button.onclick = () => handleOption(option.text, option.action);
+                chatOptions.appendChild(button);
+            });
+        }
+        
+        // Handle option selection
+        function handleOption(text, action) {
+            // Show user's choice
+            showMessage('user', text);
+            
+            // Clear options temporarily
+            chatOptions.innerHTML = '';
+            
+            // Show typing indicator
+            typingIndicator.classList.add('active');
+            
+            // Simulate thinking delay
+            setTimeout(() => {
+                typingIndicator.classList.remove('active');
+                
+                // Handle special actions
+                if (action === 'redirect') {
+                    window.location.href = 'https://mircodeflorin.github.io/das-tonum.html';
+                    return;
+                }
+                
+                // Show conversation
+                const conversation = conversations[action];
+                if (conversation) {
+                    showMessage('bot', conversation.message);
+                    showOptions(conversation.options);
+                }
+            }, 1500); // 1.5 second delay for realism
+        }
+        
+        // Start the chat
+        initChat();
+    </script>
+</body>
+</html>
