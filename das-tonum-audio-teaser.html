@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Das Tonum - Audio Teaser | Mirco Deflorin</title>
+    <meta name="description" content="Höre den mysteriösen Audio-Teaser zu 'Das Tonum' - Ein Gesang aus der Tiefe, der nicht von dieser Welt stammt.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #e8e8e8;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(26, 26, 46, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #e8e8e8 0%, #a8d5e2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #a8d5e2;
+            font-size: 1.1em;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .teaser-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-left: 4px solid #a8d5e2;
+        }
+
+        .teaser-title {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            color: #a8d5e2;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .teaser-description {
+            color: #d0d0d0;
+            margin-bottom: 25px;
+            font-size: 1.05em;
+            line-height: 1.8;
+        }
+
+        .audio-player {
+            width: 100%;
+            margin: 20px 0;
+            border-radius: 10px;
+            outline: none;
+        }
+
+        audio::-webkit-media-controls-panel {
+            background: linear-gradient(135deg, #1e3a5f 0%, #16213e 100%);
+        }
+
+        audio::-webkit-media-controls-play-button,
+        audio::-webkit-media-controls-pause-button {
+            background-color: #a8d5e2;
+            border-radius: 50%;
+        }
+
+        .warning {
+            background: rgba(255, 107, 107, 0.1);
+            border-left: 4px solid #ff6b6b;
+            padding: 15px 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .warning-icon {
+            font-size: 1.5em;
+        }
+
+        .quote {
+            font-style: italic;
+            text-align: center;
+            font-size: 1.2em;
+            color: #a8d5e2;
+            margin: 30px 0;
+            padding: 20px;
+            border-top: 1px solid rgba(168, 213, 226, 0.2);
+            border-bottom: 1px solid rgba(168, 213, 226, 0.2);
+            line-height: 1.8;
+        }
+
+        .quote-author {
+            display: block;
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #d0d0d0;
+        }
+
+        .cta {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .cta-text {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            color: #e8e8e8;
+        }
+
+        .cta-date {
+            font-size: 1.5em;
+            color: #a8d5e2;
+            font-weight: bold;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #888;
+            font-size: 0.9em;
+        }
+
+        .footer a {
+            color: #a8d5e2;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .teaser-title {
+                font-size: 1.5em;
+            }
+
+            .quote {
+                font-size: 1.1em;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .container {
+            animation: fadeIn 0.8s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>𝐃𝐀𝐒 𝐓𝐎𝐍𝐔𝐌</h1>
+        <p class="subtitle">Audio Teaser</p>
+
+        <div class="teaser-section">
+            <h2 class="teaser-title">🔊 𝐇ÖR𝐄 𝐇𝐈𝐍</h2>
+            <p class="teaser-description">
+                Ein Gesang.<br>
+                Tief unter dem Stein.<br>
+                Nicht menschlich.
+            </p>
+
+            <audio class="audio-player" controls preload="auto">
+                <source src="05-12-25-AUDIO-TEASER.mp3" type="audio/mpeg">
+                Dein Browser unterstützt das Audio-Element nicht.
+            </audio>
+
+            <p class="teaser-description" style="margin-top: 25px;">
+                Im Kloster Säben, tief unter den heiligen Mauern, wartet etwas.
+                Etwas, das seit Jahrhunderten schweigen sollte.
+            </p>
+
+            <div class="warning">
+                <span class="warning-icon">⚠️</span>
+                <span><strong>Kopfhörer empfohlen</strong> für das beste Hörerlebnis.</span>
+            </div>
+        </div>
+
+        <div class="quote">
+            "Das Tonum singt."
+            <span class="quote-author">— Schwester Magdalena</span>
+        </div>
+
+        <div class="cta">
+            <p class="cta-text">Die vollständige Geschichte erscheint am:</p>
+            <p class="cta-date">20. Dezember 2025</p>
+        </div>
+
+        <div class="footer">
+            <p>© 2025 Mirco Deflorin | <a href="https://mircodeflorin.github.io/das-tonum-podcast.html" target="_blank">Podcast-Episoden anhören</a></p>
+        </div>
+    </div>
+</body>
+</html>
