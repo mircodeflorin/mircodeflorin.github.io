@@ -141,6 +141,15 @@
             background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.15) 100%);
         }
         
+        .buy-btn.ebook {
+            background: linear-gradient(135deg, #ff9f43 0%, #ee5a24 100%);
+            box-shadow: 0 5px 20px rgba(255,159,67,0.4);
+        }
+        
+        .buy-btn.ebook:hover {
+            box-shadow: 0 8px 30px rgba(255,159,67,0.6);
+        }
+        
         .price-tag {
             font-size: 0.9em;
             color: #a8b2d1;
@@ -354,19 +363,23 @@
         <!-- Kauflinks prominent platziert -->
         <div class="buy-section">
             <h2>📖 Jetzt erhältlich!</h2>
-            <p class="availability">✅ Das Buch ist erschienen und sofort lieferbar</p>
+            <p class="availability">✅ Print & E-Book sind erschienen und sofort verfügbar</p>
             
             <div class="buy-buttons">
                 <a href="https://buchshop.bod.ch/ich-will-leben-mirco-deflorin-9783819267697" target="_blank" class="buy-btn">
-                    🇨🇭 Bei BoD kaufen (Schweiz)
+                    🇨🇭 Print bei BoD (Schweiz)
                 </a>
                 
                 <a href="https://www.amazon.de/dp/3819267697" target="_blank" class="buy-btn secondary">
-                    📦 Bei Amazon kaufen (Deutschland)
+                    📦 Print bei Amazon
+                </a>
+                
+                <a href="https://www.amazon.de/dp/B0G6KZF7NV" target="_blank" class="buy-btn ebook">
+                    📱 E-Book bei Amazon
                 </a>
             </div>
             
-            <p class="price-tag">Taschenbuch | ISBN: 978-3-8192-6769-7</p>
+            <p class="price-tag">Taschenbuch ISBN: 978-3-8192-6769-7 | E-Book ASIN: B0G6KZF7NV</p>
         </div>
 
         <div class="content-grid">
@@ -407,10 +420,10 @@
                 <p>Hochwertiges Taschenbuch</p>
                 <p class="status">✅ JETZT VERFÜGBAR</p>
             </div>
-            <div class="format-card coming">
+            <div class="format-card available">
                 <h3>📱 E-Book</h3>
-                <p>Für alle Geräte</p>
-                <p class="status">⏳ In Kürze</p>
+                <p>Für alle Kindle-Geräte & Apps</p>
+                <p class="status">✅ JETZT VERFÜGBAR</p>
             </div>
             <div class="format-card coming">
                 <h3>🎧 Hörbuch</h3>
