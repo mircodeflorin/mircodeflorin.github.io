@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEMIKOLON – Ein psychologischer Thriller von Mirco Deflorin</title>
+    <meta name="description" content="Der Autor hätte einen Punkt setzen können, aber er entschied sich weiterzuschreiben. Du bist der Autor. SEMIKOLON - Ein Mystery-Thriller im Odenwald. Release: 11.04.2026">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #000000;
+            --dark-forest: #0a1408;
+            --deep-forest: #0f1f0d;
+            --forest-green: #1a3d1a;
+            --moss-green: #2d5a2d;
+            --glow-green: #7dff7d;
+            --light-green: #a8ff84;
+            --white: #ffffff;
+            --gray: #88aa88;
+            --light-gray: #c0e0c0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Crimson Text', serif;
+            background: linear-gradient(180deg, var(--black) 0%, var(--dark-forest) 50%, var(--deep-forest) 100%);
+            color: var(--white);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        /* Firefly Background Animation */
+        .fireflies {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .firefly {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--glow-green);
+            border-radius: 50%;
+            opacity: 0;
+            animation: glow 8s infinite;
+            box-shadow: 0 0 10px var(--glow-green), 0 0 20px var(--glow-green), 0 0 30px var(--glow-green);
+        }
+
+        @keyframes glow {
+            0%, 100% { opacity: 0; transform: translateY(0) translateX(0); }
+            10% { opacity: 0.8; }
+            50% { opacity: 1; }
+            90% { opacity: 0.8; }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, transparent 100%);
+        }
+
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: var(--glow-green);
+            text-shadow: 0 0 20px var(--glow-green);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            color: var(--light-gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--glow-green);
+            text-shadow: 0 0 10px var(--glow-green);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 5% 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1400px;
+            align-items: center;
+        }
+
+        .hero-text {
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(3rem, 10vw, 8rem);
+            font-weight: 700;
+            letter-spacing: 8px;
+            line-height: 0.95;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(180deg, var(--white) 0%, var(--glow-green) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 30px rgba(125, 255, 125, 0.3));
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: clamp(2.5rem, 12vw, 4rem);
+                letter-spacing: 4px;
+            }
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 0.5rem;
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--light-gray);
+            margin: 2rem 0;
+            max-width: 500px;
+            font-style: italic;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            .tagline {
+                font-size: 1.1rem;
+                line-height: 1.5;
+            }
+        }
+
+        .semicolon-symbol {
+            font-size: 4rem;
+            color: var(--glow-green);
+            text-shadow: 0 0 30px var(--glow-green);
+            margin: 1rem 0;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            font-size: 1rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--glow-green) 0%, var(--moss-green) 100%);
+            color: var(--black);
+            box-shadow: 0 5px 20px rgba(125, 255, 125, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(125, 255, 125, 0.6);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--light-green);
+            border: 2px solid var(--moss-green);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(45, 90, 45, 0.2);
+            border-color: var(--glow-green);
+        }
+
+        .hero-image {
+            position: relative;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .book-cover {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 
+                        0 0 40px rgba(125, 255, 125, 0.3);
+            transition: transform 0.5s ease;
+        }
+
+        .book-cover:hover {
+            transform: translateY(-10px) scale(1.02);
+        }
+
+        /* Countdown */
+        .countdown {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .countdown-item {
+            background: rgba(45, 90, 45, 0.2);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid var(--moss-green);
+        }
+
+        .countdown-number {
+            font-size: 3rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: var(--glow-green);
+            text-shadow: 0 0 20px var(--glow-green);
+        }
+
+        .countdown-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 0.5rem;
+        }
+
+        /* Section Styling */
+        section {
+            padding: 5rem 5%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--glow-green);
+            text-shadow: 0 0 30px rgba(125, 255, 125, 0.3);
+        }
+
+        /* Story Section */
+        .story {
+            background: linear-gradient(180deg, transparent 0%, rgba(15, 31, 13, 0.8) 100%);
+        }
+
+        .story-content {
+            max-width: 900px;
+            margin: 0 auto;
+            font-size: 1.2rem;
+            line-height: 1.9;
+        }
+
+        .story-content p {
+            margin-bottom: 1.5rem;
+            color: var(--light-gray);
+        }
+
+        .story-content strong {
+            color: var(--glow-green);
+            font-weight: 600;
+        }
+
+        .story-highlight {
+            background: rgba(45, 90, 45, 0.2);
+            padding: 2rem;
+            border-left: 4px solid var(--glow-green);
+            border-radius: 8px;
+            margin: 2rem 0;
+            font-style: italic;
+        }
+
+        /* Campaign Section */
+        .campaign {
+            background: var(--deep-forest);
+        }
+
+        .campaign-intro {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            font-size: 1.2rem;
+            color: var(--light-gray);
+        }
+
+        .audio-samples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .audio-card {
+            background: rgba(45, 90, 45, 0.15);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 2px solid var(--moss-green);
+            transition: all 0.3s ease;
+        }
+
+        .audio-card:hover {
+            border-color: var(--glow-green);
+            box-shadow: 0 10px 30px rgba(125, 255, 125, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .audio-card-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .audio-day {
+            display: inline-block;
+            background: var(--glow-green);
+            color: var(--black);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .audio-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            color: var(--glow-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .audio-description {
+            color: var(--gray);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .audio-player {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .play-button {
+            width: 50px;
+            height: 50px;
+            background: var(--glow-green);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .play-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px var(--glow-green);
+        }
+
+        .play-button svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--black);
+        }
+
+        .waveform {
+            flex: 1;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .wave-bar {
+            flex: 1;
+            background: var(--moss-green);
+            border-radius: 2px;
+            animation: wave 1.5s ease-in-out infinite;
+        }
+
+        @keyframes wave {
+            0%, 100% { height: 8px; }
+            50% { height: 30px; }
+        }
+
+        .audio-time {
+            color: var(--gray);
+            font-size: 0.9rem;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .coming-soon {
+            text-align: center;
+            color: var(--gray);
+            font-style: italic;
+            padding: 2rem;
+        }
+
+        /* Author Section */
+        .author {
+            background: linear-gradient(180deg, rgba(15, 31, 13, 0.8) 0%, transparent 100%);
+        }
+
+        .author-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: start;
+        }
+
+        .author-image {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            border: 3px solid var(--moss-green);
+        }
+
+        .author-bio {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .author-bio p {
+            margin-bottom: 1.5rem;
+            color: var(--light-gray);
+        }
+
+        .author-bio strong {
+            color: var(--glow-green);
+        }
+
+        .author-quote {
+            background: rgba(45, 90, 45, 0.2);
+            padding: 2rem;
+            border-left: 4px solid var(--glow-green);
+            border-radius: 8px;
+            margin: 2rem 0;
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--light-green);
+        }
+
+        /* Giveaway Section */
+        .giveaway {
+            background: var(--deep-forest);
+        }
+
+        .giveaway-box {
+            max-width: 900px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, rgba(125, 255, 125, 0.15) 0%, rgba(45, 90, 45, 0.1) 100%);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 3px solid var(--glow-green);
+            box-shadow: 0 0 40px rgba(125, 255, 125, 0.2);
+        }
+
+        .giveaway-badge {
+            display: inline-block;
+            background: var(--glow-green);
+            color: var(--black);
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+        }
+
+        .giveaway-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--glow-green);
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(125, 255, 125, 0.3);
+        }
+
+        .giveaway-prize {
+            font-size: 1.3rem;
+            color: var(--light-gray);
+            margin-bottom: 2rem;
+        }
+
+        .giveaway-steps {
+            margin: 2rem 0;
+        }
+
+        .giveaway-step {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border-left: 4px solid var(--glow-green);
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--glow-green);
+            color: var(--black);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .giveaway-note {
+            text-align: center;
+            color: var(--gray);
+            margin: 2rem 0 1rem;
+            font-size: 1.1rem;
+        }
+
+        .giveaway-social-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .giveaway-social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            padding: 1rem 1.5rem;
+            background: rgba(45, 90, 45, 0.3);
+            border: 2px solid var(--moss-green);
+            border-radius: 10px;
+            color: var(--light-green);
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .giveaway-social-btn:hover {
+            background: rgba(125, 255, 125, 0.2);
+            border-color: var(--glow-green);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(125, 255, 125, 0.3);
+        }
+
+        .giveaway-social-btn svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--black);
+            padding: 3rem 5%;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-link {
+            color: var(--moss-green);
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: var(--glow-green);
+            transform: translateY(-3px);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--glow-green);
+        }
+
+        .copyright {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .hero {
+                padding: 6rem 5% 3rem;
+            }
+            
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2rem;
+            }
+
+            .hero-text {
+                order: 2;
+            }
+
+            .hero-image {
+                order: 1;
+            }
+            
+            .book-cover {
+                max-width: 350px;
+                margin: 0 auto;
+            }
+
+            .tagline {
+                margin: 1.5rem auto;
+                font-size: 1.1rem;
+            }
+            
+            .semicolon-symbol {
+                font-size: 3rem;
+            }
+
+            .cta-buttons {
+                justify-content: center;
+            }
+
+            .countdown {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+            
+            .countdown-number {
+                font-size: 2.5rem;
+            }
+
+            .author-content {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+            
+            section {
+                padding: 3rem 5%;
+            }
+            
+            .section-title {
+                font-size: clamp(2rem, 6vw, 3rem);
+                margin-bottom: 2rem;
+            }
+            
+            .story-content {
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .hero {
+                padding: 5rem 4% 2rem;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+                letter-spacing: 3px;
+            }
+            
+            .hero-subtitle {
+                font-size: 0.85rem;
+            }
+            
+            .tagline {
+                font-size: 1rem;
+                line-height: 1.4;
+                padding: 0 1rem;
+            }
+            
+            .semicolon-symbol {
+                font-size: 2.5rem;
+            }
+            
+            .countdown {
+                grid-template-columns: 1fr;
+                gap: 0.8rem;
+            }
+
+            .countdown-number {
+                font-size: 2rem;
+            }
+            
+            .countdown-label {
+                font-size: 0.8rem;
+            }
+
+            .giveaway-box {
+                padding: 2rem 1.5rem;
+            }
+
+            .giveaway-social-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn {
+                padding: 0.9rem 2rem;
+                font-size: 0.9rem;
+            }
+            
+            section {
+                padding: 2.5rem 4%;
+            }
+            
+            .audio-samples {
+                gap: 1.5rem;
+            }
+            
+            .book-cover {
+                max-width: 280px;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .tagline {
+                font-size: 0.95rem;
+            }
+            
+            .logo {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Firefly Background -->
+    <div class="fireflies" id="fireflies"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">SEMIKOLON</div>
+        <div class="nav-links">
+            <a href="#story">Story</a>
+            <a href="#campaign">Hörproben</a>
+            <a href="#author">Autor</a>
+            <a href="#giveaway">Gewinnspiel</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="hero-subtitle">Mystery-Thriller im Odenwald</div>
+                <h1 class="hero-title">SEMIKOLON</h1>
+                <div class="semicolon-symbol">;</div>
+                <p class="tagline">Der Autor hätte einen Punkt setzen können, aber er entschied sich weiterzuschreiben. Du bist der Autor.</p>
+                
+                <div class="countdown">
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="days">00</div>
+                        <div class="countdown-label">Tage</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="hours">00</div>
+                        <div class="countdown-label">Stunden</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="minutes">00</div>
+                        <div class="countdown-label">Minuten</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="seconds">00</div>
+                        <div class="countdown-label">Sekunden</div>
+                    </div>
+                </div>
+
+                <div class="cta-buttons">
+                    <a href="#campaign" class="btn btn-primary">Hörproben entdecken</a>
+                    <a href="#giveaway" class="btn btn-secondary">Gewinnspiel</a>
+                </div>
+            </div>
+
+            <div class="hero-image">
+                <img src="cover-3D.png" alt="SEMIKOLON Buchcover" class="book-cover">
+            </div>
+        </div>
+    </section>
+
+    <!-- Story Section -->
+    <section id="story" class="story">
+        <h2 class="section-title">Die Geschichte</h2>
+        <div class="story-content">
+            <p><strong>Ein Wald. Eine Gruppe. Ein tödliches Geheimnis.</strong></p>
+            
+            <p>Jonas ist ein Schriftsteller mit einer Schreibblockade, der sich der <strong>SHG Semikolon</strong> anschließt – einer Selbsthilfegruppe für Menschen mit psychischen Herausforderungen. Als die Gruppe zu einem Camping-Trip in den mystischen <strong>Odenwald</strong> aufbricht, um eine sagenumwobene Heilquelle zu finden, ahnt niemand, dass diese Reise tödlich enden wird.</p>
+
+            <div class="story-highlight">
+                „Das Semikolon bedeutet: Der Autor hätte einen Punkt setzen können, aber er entschied sich weiterzuschreiben. Du bist der Autor deines Lebens."
+            </div>
+
+            <p>Zwischen jahrhundertealten Sagen von <strong>Wildweibchenstein</strong>, dem <strong>Lindelbrunnen</strong> und der <strong>Burg Rodenstein</strong> entspinnt sich ein dichtes Netz aus Misstrauen, Schuld und Hoffnung. Als Clara tot aufgefunden wird, stellt sich die Frage: War es Mord – oder die Konsequenz unterdrückter Traumata?</p>
+
+            <p><strong>Thomas</strong>, ein Gruppenmitglied, offenbart ein erschütterndes Geheimnis: Er trägt die Schuld am Tod eines Menschen aus seiner Vergangenheit. Aus Angst vor der heilenden Kraft der Quelle, die seine verdrängten Erinnerungen ans Licht bringen könnte, hat er die Gruppe sabotiert. Doch nun läuft die Zeit ab – die <strong>Neumondnacht</strong> ist angebrochen, und das magische Zeitfenster zur Heilung schließt sich unaufhaltsam.</p>
+
+            <p>Eine Geschichte über <strong>mentale Gesundheit, Schuld und die Kraft der zweiten Chance</strong> – atmosphärisch dicht, psychologisch komplex und tief verwurzelt in der authentischen Landschaft des Odenwalds.</p>
+        </div>
+    </section>
+
+    <!-- Campaign Section -->
+    <section id="campaign" class="campaign">
+        <h2 class="section-title">30-Tage-Kampagne: Hörproben</h2>
+        
+        <div class="campaign-intro">
+            <p>Erlebe exklusive Hörproben aus SEMIKOLON! Jeden Donnerstag im März veröffentlichen wir ein neues Kapitel. Tauche ein in die mystische Atmosphäre des Odenwalds und begleite die Gruppe auf ihrer gefährlichen Reise.</p>
+        </div>
+
+        <div class="audio-samples">
+            <!-- Sample 1 -->
+            <div class="audio-card">
+                <div class="audio-card-header">
+                    <div class="audio-day">TAG 1 • 10.03.2026</div>
+                    <h3 class="audio-title">Kapitel 1: Die Einladung</h3>
+                    <p class="audio-description">Jonas lernt die SHG Semikolon kennen und erfährt von der geheimnisvollen Heilquelle im Odenwald.</p>
+                </div>
+                <div class="coming-soon">
+                    📅 Veröffentlichung am 10. März 2026
+                </div>
+            </div>
+
+            <!-- Sample 2 -->
+            <div class="audio-card">
+                <div class="audio-card-header">
+                    <div class="audio-day">TAG 8 • 17.03.2026</div>
+                    <h3 class="audio-title">Kapitel 8: Wildweibchenstein</h3>
+                    <p class="audio-description">Die Gruppe erreicht den mystischen Ort, wo die Sagen lebendig werden und erste Spannungen aufkommen.</p>
+                </div>
+                <div class="coming-soon">
+                    📅 Veröffentlichung am 17. März 2026
+                </div>
+            </div>
+
+            <!-- Sample 3 -->
+            <div class="audio-card">
+                <div class="audio-card-header">
+                    <div class="audio-day">TAG 15 • 24.03.2026</div>
+                    <h3 class="audio-title">Kapitel 15: Die Entdeckung</h3>
+                    <p class="audio-description">Clara wird tot aufgefunden. War es ein Unfall – oder steckt mehr dahinter?</p>
+                </div>
+                <div class="coming-soon">
+                    📅 Veröffentlichung am 24. März 2026
+                </div>
+            </div>
+
+            <!-- Sample 4 -->
+            <div class="audio-card">
+                <div class="audio-card-header">
+                    <div class="audio-day">TAG 22 • 31.03.2026</div>
+                    <h3 class="audio-title">Kapitel 22: Die Wahrheit</h3>
+                    <p class="audio-description">Thomas' dunkles Geheimnis kommt ans Licht, während die Neumondnacht beginnt.</p>
+                </div>
+                <div class="coming-soon">
+                    📅 Veröffentlichung am 31. März 2026
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Author Section -->
+    <section id="author" class="author">
+        <h2 class="section-title">Der Autor</h2>
+        
+        <div class="author-content">
+            <img src="Autorenphoto_Mirco-Deflorin.jpeg" alt="Mirco Deflorin" class="author-image">
+            <div class="author-bio">
+                <p><strong>Mirco Deflorin</strong> lebt und arbeitet in den Schweizer Alpen. Als Schriftsteller und Peer-/Genesungsbegleiter bei der Invalidenversicherung IV verbindet er in seinen Werken authentische Einblicke in psychische Gesundheit mit fesselnder Spannung.</p>
+                
+                <p>SEMIKOLON ist eine Hommage an seinen Freund <strong>Holger Leitermann</strong> und die echte Selbsthilfegruppe <strong>SHG Semikolon</strong>. Die Geschichte spielt im <strong>Odenwald</strong> – einer Region voller mystischer Sagen, versteckter Quellen und jahrhundertealter Geheimnisse.</p>
+                
+                <blockquote class="author-quote">
+                    „Das Semikolon ist mehr als ein Satzzeichen. Es ist ein Statement: Ich hätte aufhören können, aber ich habe mich entschieden weiterzumachen."
+                </blockquote>
+                
+                <p>Als Peer-Berater weiß Mirco: Mental Health ist kein Zeichen von Schwäche. Die Charaktere in SEMIKOLON zeigen, dass Verletzlichkeit Stärke bedeutet und dass echter Heilung manchmal durch die dunkelsten Wälder führt.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Giveaway Section -->
+    <section id="giveaway" class="giveaway">
+        <div class="giveaway-box">
+            <div class="giveaway-badge">🎁 Gewinnspiel</div>
+            <h2 class="giveaway-title">3 Signierte Exemplare gewinnen!</h2>
+            <p class="giveaway-prize">Start: 10.03.2026 | Teilnahmeschluss: 09.04.2026, 23:59 Uhr</p>
+            
+            <div class="giveaway-steps">
+                <div class="giveaway-step">
+                    <span class="step-number">1</span>
+                    <span>Folge uns auf Instagram, Facebook, LinkedIn oder TikTok</span>
+                </div>
+                <div class="giveaway-step">
+                    <span class="step-number">2</span>
+                    <span>Like den Gewinnspiel-Post</span>
+                </div>
+                <div class="giveaway-step">
+                    <span class="step-number">3</span>
+                    <span>Kommentiere: „Warum bedeutet das Semikolon für dich Hoffnung?"</span>
+                </div>
+            </div>
+
+            <p class="giveaway-note">Gewinnspiel startet am 10.03.2026 auf allen Plattformen:</p>
+
+            <div class="giveaway-social-buttons">
+                <a href="https://www.instagram.com/mircodeflorinautor/" class="giveaway-social-btn" target="_blank">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                    Instagram
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=61573549633041" class="giveaway-social-btn" target="_blank">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/>
+                    </svg>
+                    Facebook
+                </a>
+                <a href="https://www.linkedin.com/in/mirco-deflorin-862a79318/" class="giveaway-social-btn" target="_blank">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"/>
+                    </svg>
+                    LinkedIn
+                </a>
+                <a href="#" class="giveaway-social-btn" onclick="alert('TikTok-Link wird am 10.03.2026 hinzugefügt'); return false;">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                    </svg>
+                    TikTok
+                </a>
+            </div>
+
+            <p style="color: var(--gray); font-size: 0.9rem; margin-top: 1.5rem;">Gewinner werden am 10.04.2026 bekanntgegeben</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="social-links">
+            <a href="https://www.instagram.com/mircodeflorinautor/" class="social-link" title="Instagram" target="_blank">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+            </a>
+            <a href="https://www.facebook.com/profile.php?id=61573549633041" class="social-link" title="Facebook" target="_blank">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/>
+                </svg>
+            </a>
+            <a href="https://www.linkedin.com/in/mirco-deflorin-862a79318/" class="social-link" title="LinkedIn" target="_blank">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"/>
+                </svg>
+            </a>
+        </div>
+
+        <div class="footer-links">
+            <a href="#">Impressum</a>
+            <a href="#">Datenschutz</a>
+            <a href="#">Kontakt</a>
+        </div>
+
+        <p class="copyright">© 2026 Mirco Deflorin. Alle Rechte vorbehalten.</p>
+    </footer>
+
+    <script>
+        // Firefly Animation
+        function createFireflies() {
+            const container = document.getElementById('fireflies');
+            for (let i = 0; i < 30; i++) {
+                const firefly = document.createElement('div');
+                firefly.className = 'firefly';
+                firefly.style.left = Math.random() * 100 + '%';
+                firefly.style.top = Math.random() * 100 + '%';
+                firefly.style.animationDelay = Math.random() * 8 + 's';
+                firefly.style.animationDuration = (6 + Math.random() * 4) + 's';
+                
+                // Random movement
+                const moveX = (Math.random() - 0.5) * 200;
+                const moveY = (Math.random() - 0.5) * 200;
+                firefly.style.setProperty('--moveX', moveX + 'px');
+                firefly.style.setProperty('--moveY', moveY + 'px');
+                
+                container.appendChild(firefly);
+            }
+        }
+        createFireflies();
+
+        // Update glow animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes glow {
+                0%, 100% { 
+                    opacity: 0; 
+                    transform: translate(0, 0); 
+                }
+                10% { opacity: 0.8; }
+                50% { 
+                    opacity: 1; 
+                    transform: translate(var(--moveX, 0), var(--moveY, 0)); 
+                }
+                90% { opacity: 0.8; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Countdown Timer
+        function updateCountdown() {
+            const releaseDate = new Date('2026-04-11T00:00:00').getTime();
+            const now = new Date().getTime();
+            const diff = releaseDate - now;
+
+            if (diff > 0) {
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('days').textContent = days.toString().padStart(2, '0');
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            } else {
+                document.getElementById('days').textContent = '00';
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
+            }
+        }
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // Waveform Animation for audio cards
+        function createWaveform(container) {
+            if (!container) return;
+            for (let i = 0; i < 30; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'wave-bar';
+                const height = (5 + Math.random() * 25);
+                bar.style.height = height + 'px';
+                bar.style.animationDelay = (Math.random() * 1.5) + 's';
+                bar.style.animationDuration = (1 + Math.random()) + 's';
+                container.appendChild(bar);
+            }
+        }
+
+        // Initialize waveforms when audio samples are available
+        document.addEventListener('DOMContentLoaded', function() {
+            const waveforms = document.querySelectorAll('.waveform');
+            waveforms.forEach(waveform => createWaveform(waveform));
+        });
+    </script>
+</body>
+</html>
