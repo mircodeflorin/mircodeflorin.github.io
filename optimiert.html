@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPTIMIERT – Ein Thriller von Mirco Deflorin</title>
+    <meta name="description" content="Was wäre, wenn perfekte Heilung deine Seele kostet? OPTIMIERT - Ein Mystery-Thriller von Mirco Deflorin. Release: 02.02.2026">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #000000;
+            --dark-blue: #0a1628;
+            --deep-blue: #0d1f3c;
+            --cyan-glow: #00d4ff;
+            --cyan-dark: #0099cc;
+            --blue: #0066cc;
+            --white: #ffffff;
+            --gray: #8899aa;
+            --light-gray: #c0d0e0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Source Sans 3', sans-serif;
+            background: linear-gradient(180deg, var(--black) 0%, var(--dark-blue) 50%, var(--deep-blue) 100%);
+            color: var(--white);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        /* Particle Background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--cyan-glow);
+            border-radius: 50%;
+            opacity: 0;
+            animation: float 15s infinite;
+            box-shadow: 0 0 10px var(--cyan-glow), 0 0 20px var(--cyan-glow);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-100vh) scale(1); opacity: 0; }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, transparent 100%);
+        }
+
+        .logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            letter-spacing: 4px;
+            color: var(--cyan-glow);
+            text-shadow: 0 0 20px var(--cyan-glow);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            color: var(--light-gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--cyan-glow);
+            text-shadow: 0 0 10px var(--cyan-glow);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 5% 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1400px;
+            align-items: center;
+        }
+
+        .hero-text {
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(4rem, 10vw, 8rem);
+            letter-spacing: 8px;
+            line-height: 0.95;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(180deg, var(--white) 0%, var(--cyan-glow) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
+            filter: drop-shadow(0 0 30px rgba(0, 212, 255, 0.3));
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 0.5rem;
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: var(--light-gray);
+            margin: 2rem 0;
+            max-width: 500px;
+            font-style: italic;
+        }
+
+        .tagline span {
+            color: var(--cyan-glow);
+            font-weight: 600;
+        }
+
+        /* Countdown */
+        .countdown-container {
+            margin: 2.5rem 0;
+            padding: 1.5rem 2rem;
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .countdown-label {
+            font-size: 0.85rem;
+            color: var(--cyan-glow);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+
+        .countdown {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .countdown-unit {
+            text-align: center;
+        }
+
+        .countdown-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            color: var(--cyan-glow);
+            text-shadow: 0 0 20px var(--cyan-glow);
+            line-height: 1;
+        }
+
+        .countdown-text {
+            font-size: 0.75rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* CTA Buttons */
+        .cta-group {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--cyan-glow);
+            color: var(--black);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+        }
+
+        .btn-primary:hover {
+            background: var(--white);
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.7);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--cyan-glow);
+            border: 2px solid var(--cyan-glow);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 212, 255, 0.1);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-disabled {
+            background: var(--gray);
+            color: var(--dark-blue);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .btn-disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Hero Image */
+        .hero-image {
+            animation: fadeIn 1.5s ease-out;
+            position: relative;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .book-cover {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            filter: drop-shadow(0 20px 60px rgba(0, 212, 255, 0.3));
+            transition: transform 0.3s ease;
+        }
+
+        .book-cover:hover {
+            transform: scale(1.05) rotate(-2deg);
+        }
+
+        /* About Section */
+        .about {
+            padding: 6rem 5%;
+            background: rgba(10, 22, 40, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            letter-spacing: 4px;
+            text-align: center;
+            margin-bottom: 1rem;
+            background: linear-gradient(180deg, var(--white) 0%, var(--cyan-glow) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--gray);
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            font-size: 1.1rem;
+        }
+
+        .about-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .about-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--light-gray);
+            margin-bottom: 2rem;
+        }
+
+        .highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .highlight-card {
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .highlight-card:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: var(--cyan-glow);
+            transform: translateY(-5px);
+        }
+
+        .highlight-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .highlight-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            color: var(--cyan-glow);
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight-desc {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        /* Audio Section */
+        .audio-section {
+            padding: 6rem 5%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .audio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .audio-card {
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 8px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .audio-card:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: var(--cyan-glow);
+            transform: translateY(-5px);
+        }
+
+        .audio-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            color: rgba(0, 212, 255, 0.3);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .audio-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            color: var(--cyan-glow);
+            margin-bottom: 0.5rem;
+        }
+
+        .audio-desc {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .audio-release {
+            color: var(--cyan-glow);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .audio-player {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+        }
+
+        .play-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--cyan-glow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .play-btn:hover {
+            background: var(--white);
+            box-shadow: 0 0 20px var(--cyan-glow);
+            transform: scale(1.1);
+        }
+
+        .play-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--black);
+        }
+
+        .waveform {
+            flex: 1;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .wave-bar {
+            flex: 1;
+            background: var(--cyan-glow);
+            border-radius: 2px;
+            opacity: 0.6;
+            transition: all 0.3s ease;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        .audio-card:hover .wave-bar {
+            opacity: 1;
+        }
+
+        /* Book Cover in Audio Section */
+        .audio-book-cover {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 3rem;
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 8px;
+        }
+
+        .audio-book-cover img {
+            max-width: 300px;
+            height: auto;
+            filter: drop-shadow(0 10px 30px rgba(0, 212, 255, 0.3));
+            transition: transform 0.3s ease;
+        }
+
+        .audio-book-cover img:hover {
+            transform: scale(1.05);
+        }
+
+        .audio-book-cover p {
+            margin-top: 1.5rem;
+            color: var(--gray);
+            font-style: italic;
+        }
+
+        /* Author Section */
+        .author {
+            padding: 6rem 5%;
+            background: rgba(10, 22, 40, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+
+        .author-content {
+            max-width: 1000px;
+            margin: 3rem auto 0;
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .author-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+            border: 3px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .author-bio {
+            color: var(--light-gray);
+        }
+
+        .author-bio p {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .author-quote {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            color: var(--cyan-glow);
+            margin: 2rem 0;
+            padding: 2rem;
+            border-left: 4px solid var(--cyan-glow);
+            background: rgba(0, 212, 255, 0.05);
+            font-style: normal;
+        }
+
+        /* Giveaway Section */
+        .giveaway {
+            padding: 6rem 5%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .giveaway-box {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(0, 212, 255, 0.1);
+            border: 2px solid var(--cyan-glow);
+            border-radius: 12px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.3);
+        }
+
+        .giveaway-badge {
+            display: inline-block;
+            background: var(--cyan-glow);
+            color: var(--black);
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .giveaway-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            letter-spacing: 3px;
+            color: var(--white);
+            margin-bottom: 1rem;
+        }
+
+        .giveaway-prize {
+            color: var(--cyan-glow);
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .giveaway-steps {
+            text-align: left;
+            max-width: 500px;
+            margin: 2rem auto;
+        }
+
+        .giveaway-step {
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-number {
+            background: var(--cyan-glow);
+            color: var(--black);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .giveaway-social-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .giveaway-social-btn {
+            padding: 0.8rem 1.5rem;
+            background: rgba(0, 212, 255, 0.1);
+            border: 2px solid var(--cyan-glow);
+            color: var(--cyan-glow);
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .giveaway-social-btn:hover {
+            background: rgba(0, 212, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .giveaway-social-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .giveaway-note {
+            color: var(--gray);
+            font-size: 0.9rem;
+            font-style: italic;
+            margin-top: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            padding: 4rem 5% 2rem;
+            background: rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-link {
+            color: var(--gray);
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: var(--cyan-glow);
+            transform: translateY(-3px);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--cyan-glow);
+        }
+
+        .copyright {
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text {
+                order: 2;
+            }
+
+            .hero-image {
+                order: 1;
+            }
+
+            .cta-group {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .author-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .author-image {
+                margin: 0 auto;
+            }
+
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.8rem;
+            }
+
+            .countdown {
+                gap: 1rem;
+            }
+
+            .countdown-number {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">OPTIMIERT</div>
+        <div class="nav-links">
+            <a href="#about">Story</a>
+            <a href="#audio">Hörproben</a>
+            <a href="#author">Autor</a>
+            <a href="#giveaway">Gewinnspiel</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="hero-subtitle">Ein Thriller von Mirco Deflorin</div>
+                <h1 class="hero-title">OPTIMIERT</h1>
+                <p class="tagline">Was wäre, wenn perfekte Heilung <span>deine Seele</span> kostet?</p>
+                
+                <div class="countdown-container">
+                    <div class="countdown-label">Release in:</div>
+                    <div class="countdown">
+                        <div class="countdown-unit">
+                            <div class="countdown-number" id="days">00</div>
+                            <div class="countdown-text">Tage</div>
+                        </div>
+                        <div class="countdown-unit">
+                            <div class="countdown-number" id="hours">00</div>
+                            <div class="countdown-text">Stunden</div>
+                        </div>
+                        <div class="countdown-unit">
+                            <div class="countdown-number" id="minutes">00</div>
+                            <div class="countdown-text">Minuten</div>
+                        </div>
+                        <div class="countdown-unit">
+                            <div class="countdown-number" id="seconds">00</div>
+                            <div class="countdown-text">Sekunden</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cta-group">
+                    <a href="#" class="btn btn-disabled" title="Ab 02.02.2026 verfügbar">Bei BoD vorbestellen</a>
+                    <a href="#audio" class="btn btn-secondary">Hörproben anhören</a>
+                </div>
+            </div>
+
+            <div class="hero-image">
+                <img src="Cover-3D.png" alt="OPTIMIERT Buchcover" class="book-cover">
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <h2 class="section-title">Die Story</h2>
+        <p class="section-subtitle">In den Bergen Graubündens liegt eine Klinik, die Heilung verspricht. Aber manche Patienten verschwinden einfach...</p>
+        
+        <div class="about-content">
+            <p class="about-text">
+                <strong>David Kramer</strong>, ein junger Psychiatrie-Pfleger in der abgelegenen Klinik Albula in Bergün, bemerkt ein beunruhigendes Muster: Patienten verschwinden spurlos aus ihren Zimmern. Keine Einträge im System. Keine Kameras. Nur eine Stimme, die sie in die Tiefen der alten Bergwerksstollen unter der Klinik lockt.
+            </p>
+            <p class="about-text">
+                Als David gemeinsam mit seiner Kollegin Anna Caduff und seinem besten Freund Thomas zu recherchieren beginnt, entdecken sie die Wahrheit: Ein uraltes biolumineszierendes Myzel-Kollektiv lebt in den Stollen. Es verspricht echte Heilung – aber zu einem erschreckenden Preis.
+            </p>
+            <p class="about-text">
+                Doch nicht nur das Myzel ist gefährlich. Dr. Sabine Fontana und Oberst Weber betreiben ein lukratives Geschäft mit kontrollierten Myzel-Therapien. Als David selbst die Sporen zu spüren beginnt, steht er vor einer unmöglichen Entscheidung...
+            </p>
+
+            <div class="highlights">
+                <div class="highlight-card">
+                    <div class="highlight-icon">⚡</div>
+                    <div class="highlight-title">Mystery-Thriller</div>
+                    <div class="highlight-desc">Spannungsgeladener Plot mit übernatürlichen Elementen</div>
+                </div>
+                <div class="highlight-card">
+                    <div class="highlight-icon">🧠</div>
+                    <div class="highlight-title">Mental Health</div>
+                    <div class="highlight-desc">Authentische Perspektive auf psychische Gesundheit</div>
+                </div>
+                <div class="highlight-card">
+                    <div class="highlight-icon">🏔️</div>
+                    <div class="highlight-title">Schweizer Alpen</div>
+                    <div class="highlight-desc">Atmosphärisches Setting in Bergün, Graubünden</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Audio Samples Section -->
+    <section id="audio" class="audio-section">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <h2 class="section-title">Hörproben</h2>
+            <p class="section-subtitle">Tauche ein in die mysteriöse Welt von OPTIMIERT – vier exklusive Kapitelausschnitte zum Reinhören.</p>
+            
+            <div class="audio-grid">
+                <div class="audio-card">
+                    <div class="audio-number">01</div>
+                    <div class="audio-title">Die Nachtschicht</div>
+                    <div class="audio-desc">Kapitel 1 – David entdeckt das erste Verschwinden. Atmosphärisch, führt Protagonisten ein, weckt Neugier.</div>
+                    <div class="audio-release">📅 Verfügbar ab 15.01.2026</div>
+                    <div class="audio-player">
+                        <div class="play-btn">
+                            <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+                        </div>
+                        <div class="waveform" id="waveform1"></div>
+                        <span style="color: var(--gray); font-size: 0.8rem;">3:42</span>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="audio-number">02</div>
+                    <div class="audio-title">Der Abstieg</div>
+                    <div class="audio-desc">Kapitel 5 – David betritt die Stollen zum ersten Mal. Spannungsvoll, Myzel-Atmosphäre, Wendepunkt.</div>
+                    <div class="audio-release">📅 Verfügbar ab 22.01.2026</div>
+                    <div class="audio-player">
+                        <div class="play-btn">
+                            <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+                        </div>
+                        <div class="waveform" id="waveform2"></div>
+                        <span style="color: var(--gray); font-size: 0.8rem;">4:15</span>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="audio-number">03</div>
+                    <div class="audio-title">Das Myzel erwacht</div>
+                    <div class="audio-desc">Kapitel 9 – Die Wahrheit unter dem Berg enthüllt sich. Höhepunkt des Mysteriums, emotional packend.</div>
+                    <div class="audio-release">📅 Verfügbar ab 26.01.2026</div>
+                    <div class="audio-player">
+                        <div class="play-btn">
+                            <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+                        </div>
+                        <div class="waveform" id="waveform3"></div>
+                        <span style="color: var(--gray); font-size: 0.8rem;">3:58</span>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="audio-number">04</div>
+                    <div class="audio-title">Die Verwandlung</div>
+                    <div class="audio-desc">Kapitel 10 – Ein "Geheilter" kehrt zurück. Sophie erkennt ihren Vater nicht mehr. Emotional, verstörend.</div>
+                    <div class="audio-release">📅 Verfügbar ab 29.01.2026</div>
+                    <div class="audio-player">
+                        <div class="play-btn">
+                            <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+                        </div>
+                        <div class="waveform" id="waveform4"></div>
+                        <span style="color: var(--gray); font-size: 0.8rem;">4:30</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="audio-book-cover">
+                <img src="Cover-3D.png" alt="OPTIMIERT Buchcover">
+                <p>Erlebe die volle Geschichte ab 02.02.2026</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Author Section -->
+    <section id="author" class="author">
+        <h2 class="section-title">Der Autor</h2>
+        
+        <div class="author-content">
+            <img src="Autorenphoto_Mirco-Deflorin.jpeg" alt="Mirco Deflorin" class="author-image">
+            <div class="author-bio">
+                <p><strong>Mirco Deflorin</strong> lebt und arbeitet in den Schweizer Alpen. Als Schriftsteller und Peerberater bei einer Sozialversicherung verbindet er in seinen Werken psychologische Einsichten mit fesselnder Spannung.</p>
+                <p>OPTIMIERT spielt in seiner Heimatregion Graubünden – eine Region der Kontraste: majestätische Berglandschaften, die zum Träumen einladen, aber auch abgelegene Täler, in denen sich Geheimnisse verbergen können.</p>
+                
+                <blockquote class="author-quote">
+                    „Mental Health ist keine Schwäche – Schweigen darüber schon."
+                </blockquote>
+                
+                <p>Als Peerberater weiss Mirco: Die Geschichte von David zeigt, dass unsere Verletzlichkeit uns menschlich macht. Die „Optimierung" im Roman ist das Gegenteil von echter Therapie – sie nimmt den Menschen ihre Individualität.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Giveaway Section -->
+    <section id="giveaway" class="giveaway">
+        <div class="giveaway-box">
+            <div class="giveaway-badge">🎁 Gewinnspiel</div>
+            <h2 class="giveaway-title">3 Signierte Exemplare gewinnen!</h2>
+            <p class="giveaway-prize">Start: 23.01.2026 | Teilnahmeschluss: 30.01.2026, 23:59 Uhr</p>
+            
+            <div class="giveaway-steps">
+                <div class="giveaway-step">
+                    <span class="step-number">1</span>
+                    <span>Folge uns auf Instagram, Facebook, LinkedIn oder TikTok</span>
+                </div>
+                <div class="giveaway-step">
+                    <span class="step-number">2</span>
+                    <span>Like den Gewinnspiel-Post</span>
+                </div>
+                <div class="giveaway-step">
+                    <span class="step-number">3</span>
+                    <span>Kommentiere: „Was würdest du für perfekte Heilung opfern?"</span>
+                </div>
+            </div>
+
+            <p class="giveaway-note">Gewinnspiel startet am 23.01.2026 auf allen Plattformen:</p>
+
+            <div class="giveaway-social-buttons">
+                <a href="https://www.instagram.com/mircodeflorinautor/" class="giveaway-social-btn" target="_blank">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                    Instagram
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=61573549633041" class="giveaway-social-btn" target="_blank">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/>
+                    </svg>
+                    Facebook
+                </a>
+                <a href="https://www.linkedin.com/in/mirco-deflorin-862a79318/" class="giveaway-social-btn" target="_blank">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"/>
+                    </svg>
+                    LinkedIn
+                </a>
+                <a href="#" class="giveaway-social-btn" onclick="alert('TikTok-Link wird am 23.01.2026 hinzugefügt'); return false;">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                    </svg>
+                    TikTok
+                </a>
+            </div>
+
+            <p style="color: var(--gray); font-size: 0.9rem; margin-top: 1.5rem;">Gewinner werden am 31.01.2026 bekanntgegeben</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="social-links">
+            <a href="https://www.instagram.com/mircodeflorinautor/" class="social-link" title="Instagram" target="_blank">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+            </a>
+            <a href="https://www.facebook.com/profile.php?id=61573549633041" class="social-link" title="Facebook" target="_blank">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/>
+                </svg>
+            </a>
+            <a href="https://www.linkedin.com/in/mirco-deflorin-862a79318/" class="social-link" title="LinkedIn" target="_blank">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"/>
+                </svg>
+            </a>
+        </div>
+
+        <div class="footer-links">
+            <a href="#">Impressum</a>
+            <a href="#">Datenschutz</a>
+            <a href="#">Kontakt</a>
+        </div>
+
+        <p class="copyright">© 2026 Mirco Deflorin. Alle Rechte vorbehalten.</p>
+    </footer>
+
+    <script>
+        // Particle Animation
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (10 + Math.random() * 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+        createParticles();
+
+        // Countdown Timer
+        function updateCountdown() {
+            const releaseDate = new Date('2026-02-02T00:00:00').getTime();
+            const now = new Date().getTime();
+            const diff = releaseDate - now;
+
+            if (diff > 0) {
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('days').textContent = days.toString().padStart(2, '0');
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            }
+        }
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // Waveform Animation
+        function createWaveform(containerId) {
+            const container = document.getElementById(containerId);
+            for (let i = 0; i < 40; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'wave-bar';
+                bar.style.height = (5 + Math.random() * 20) + 'px';
+                bar.style.animationDelay = (Math.random() * 0.5) + 's';
+                container.appendChild(bar);
+            }
+        }
+        createWaveform('waveform1');
+        createWaveform('waveform2');
+        createWaveform('waveform3');
+        createWaveform('waveform4');
+    </script>
+</body>
+</html>
