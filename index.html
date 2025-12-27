@@ -8,6 +8,22 @@
   --accent: #e74c3c;
   --text: #333;
   --light: #ecf0f1;
+  --bg-color: #ecf0f1;
+  --card-bg: white;
+  --header-bg-1: #2c3e50;
+  --header-bg-2: #34495e;
+}
+
+[data-theme="dark"] {
+  --primary: #ecf0f1;
+  --secondary: #bdc3c7;
+  --accent: #e74c3c;
+  --text: #ecf0f1;
+  --light: #2c3e50;
+  --bg-color: #1a1a1a;
+  --card-bg: #2c3e50;
+  --header-bg-1: #1a1a1a;
+  --header-bg-2: #2c3e50;
 }
 
 * {
@@ -20,11 +36,12 @@ body {
   font-family: 'Merriweather', serif;
   line-height: 1.6;
   color: var(--text);
-  background: var(--light);
+  background: var(--bg-color);
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 header {
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  background: linear-gradient(135deg, var(--header-bg-1), var(--header-bg-2));
   padding: 3rem 0;
   position: relative;
   overflow: hidden;
@@ -41,6 +58,26 @@ header h1 {
   to { text-shadow: 0 0 20px rgba(255,255,255,0.8); }
 }
 
+.dark-mode-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: 0.8rem;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  transition: transform 0.3s ease;
+}
+
+.dark-mode-toggle:hover {
+  transform: scale(1.1);
+}
+
 nav {
   position: sticky;
   top: 0;
@@ -55,6 +92,7 @@ nav ul {
   display: flex;
   justify-content: center;
   gap: 2rem;
+  flex-wrap: wrap;
 }
 
 nav a {
@@ -101,38 +139,7 @@ nav a:hover::after {
   left: 0;
   right: 0;
   height: 100px;
-  background: linear-gradient(transparent, var(--light));
-}
-
-.highlight-banner {
-  background: linear-gradient(135deg, var(--accent), #c0392b);
-  color: white;
-  padding: 2rem;
-  text-align: center;
-  margin: 2rem auto;
-  border-radius: 8px;
-  max-width: 1200px;
-  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
-}
-
-.highlight-banner h2 {
-  color: white;
-  margin-bottom: 0.5rem;
-}
-
-.highlight-banner p {
-  margin-bottom: 1rem;
-  font-size: 1.1rem;
-}
-
-.highlight-banner button {
-  background: white;
-  color: var(--accent);
-}
-
-.highlight-banner button:hover {
-  background: var(--light);
-  transform: scale(1.05);
+  background: linear-gradient(transparent, var(--bg-color));
 }
 
 .books-section {
@@ -171,7 +178,7 @@ nav a:hover::after {
 }
 
 .book-card {
-  background: white;
+  background: var(--card-bg);
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -229,22 +236,22 @@ button {
   overflow: hidden;
 }
 
-button::after {
+button::before {
   content: '';
   position: absolute;
   top: 50%;
   left: 50%;
   width: 0;
   height: 0;
-  background: rgba(255,255,255,0.2);
   border-radius: 50%;
+  background: rgba(255,255,255,0.3);
   transform: translate(-50%, -50%);
-  transition: width 0.6s ease, height 0.6s ease;
+  transition: width 0.6s, height 0.6s;
 }
 
-button:hover::after {
-  width: 300%;
-  height: 300%;
+button:hover::before {
+  width: 300px;
+  height: 300px;
 }
 
 button:hover {
@@ -254,74 +261,144 @@ button:hover {
 
 .contact {
   padding: 3rem 2rem;
-  max-width: 800px;
+  max-width: 600px;
   margin: 0 auto;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  text-align: center;
 }
 
-.contact.visible {
-  opacity: 1;
-  transform: translateY(0);
+.contact h2 {
+  color: var(--primary);
+  margin-bottom: 2rem;
 }
 
-.contact form {
+form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  max-width: 500px;
-  margin: 0 auto;
 }
 
-.contact input,
-.contact textarea {
-  padding: 0.8rem;
-  border: 1px solid #ddd;
+input, textarea {
+  padding: 1rem;
+  border: 2px solid var(--primary);
   border-radius: 4px;
+  font-family: inherit;
+  background: var(--card-bg);
+  color: var(--text);
 }
 
-.contact textarea {
+textarea {
   min-height: 150px;
+  resize: vertical;
 }
 
 .social-links {
+  margin-top: 2rem;
   display: flex;
   justify-content: center;
   gap: 2rem;
-  margin-top: 2rem;
 }
 
 .social-links a {
   color: var(--primary);
-  font-size: 1.5rem;
-  transition: color 0.3s ease;
+  font-size: 2rem;
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .social-links a:hover {
   color: var(--accent);
+  transform: scale(1.2);
 }
 
 .footer {
-  background: var(--primary);
+  background: var(--header-bg-1);
   color: white;
   text-align: center;
-  padding: 1rem;
-  margin-top: 2rem;
+  padding: 2rem;
+}
+
+@media (max-width: 768px) {
+  nav ul {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .book-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.agenda-section {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%);
+  padding: 2rem;
+  border-radius: 8px;
+  margin-bottom: 3rem;
+}
+
+[data-theme="dark"] .agenda-section {
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+}
+
+.agenda-section h2 {
+  text-align: center;
+  color: var(--primary);
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+
+.upcoming-book {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid var(--accent);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.upcoming-book:hover {
+  transform: translateX(10px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.upcoming-book h3 {
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.upcoming-book .release-date {
+  background: var(--accent);
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.upcoming-book p {
+  color: var(--text);
+  line-height: 1.6;
+  margin-top: 0.5rem;
 }
 
 .thoughts-section {
   padding: 3rem 2rem;
   max-width: 1200px;
   margin: 0 auto;
-  opacity: 1;
-  transform: translateY(0);
+  opacity: 0;
+  transform: translateY(20px);
   transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-.thoughts-post {
+.thoughts-section.visible {
   opacity: 1;
-  transform: none;
+  transform: translateY(0);
+}
+
+.thoughts-post {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
@@ -331,6 +408,7 @@ button:hover {
 
 .thoughts-post p {
   margin-bottom: 1.5rem;
+  color: var(--text);
 }
 
 .author-image {
@@ -341,11 +419,82 @@ button:hover {
   margin: 0 auto 2rem;
   display: block;
 }
+
+.events-section {
+  background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+  padding: 2rem;
+  border-radius: 8px;
+  margin-bottom: 3rem;
+}
+
+[data-theme="dark"] .events-section {
+  background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+}
+
+.events-section h2 {
+  text-align: center;
+  color: var(--primary);
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+
+.event-card {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid #ff9800;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.event-card:hover {
+  transform: translateX(10px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.event-card h3 {
+  color: #ff9800;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.event-card .event-date {
+  background: #ff9800;
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.event-card p {
+  color: var(--text);
+  line-height: 1.6;
+  margin-top: 0.5rem;
+}
+
+.event-location {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  color: var(--text);
+  font-style: italic;
+}
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
+
 <body>
+
+<button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Dark Mode umschalten">
+  <i class="fas fa-moon"></i>
+</button>
 
 <header>
   <h1>Mirco Deflorin</h1>
@@ -356,23 +505,21 @@ button:hover {
   <ul>
     <li><a href="#about">Über Mich</a></li>
     <li><a href="#books">Bücher</a></li>
+    <li><a href="#upcoming">Kommende Bücher</a></li>
+    <li><a href="#events">Veranstaltungen</a></li>
     <li><a href="#contact">Kontakt</a></li>
   </ul>
 </nav>
 
 <section class="hero">
-  <h2>Willkommen in meiner Welt des Schreibens</h2>
-  <p>Entdecken Sie meine vielfältige Bibliothek von christlichen Büchern bis Horror-Romanen</p>
+  <div style="z-index: 1; position: relative;">
+    <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Willkommen in meiner Welt der Geschichten</h2>
+    <p style="font-size: 1.2rem; max-width: 800px; margin: 0 auto;">Geschichten, die bewegen. Von Mystery-Thriller bis hin zu tiefgreifenden psychologischen Werken.</p>
+  </div>
 </section>
 
-<div class="highlight-banner">
-  <h2>🔥 HEUTE ERSCHIENEN: DAS TONUM - Frequenz des Abgrunds</h2>
-  <p>Ein geheimnisvoller Ton. Eine Stadt in Angst. Eine Wahrheit, die niemand hören will.</p>
-  <a href="#books"><button>Jetzt entdecken</button></a>
-</div>
-
 <section id="about" class="thoughts-section">
-  <h2>Über Mich</h2>
+  <h2 style="color: var(--primary); text-align: center; margin-bottom: 2rem;">Über Mich</h2>
   <div class="thoughts-post">
     <img src="Bild über uns.jpg" alt="Mirco Deflorin" class="author-image">
     <p>Das Schreiben ist meine Leidenschaft - eine Reise durch verschiedene Welten und Genres. Nach Jahren des Experimentierens, in denen ich mich durch Horror, Krimis und Jugendliteratur schrieb, habe ich meinen literarischen Fokus gefunden: Mystery-Thriller mit psychologischen Elementen. Geschichten, die nicht nur spannen, sondern auch in die Abgründe und Höhen der menschlichen Psyche eintauchen.</p>
@@ -390,19 +537,21 @@ button:hover {
 </section>
 
 <section id="books" class="books-section">
-  
   <div class="genre-section">
-    <h2>🔥 HEUTE ERSCHIENEN: DAS TONUM - Frequenz des Abgrunds</h2>
+    <h2>🔥 Mystery-Thriller</h2>
     <div class="book-grid">
-      <div class="book-card" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d1a1a 100%); border: 3px solid #ff0000; box-shadow: 0 8px 30px rgba(255,0,0,0.4);">
-        <img src="CoverbildimBuch.png" alt="Das Tonum Cover" style="box-shadow: 0 6px 20px rgba(255,0,0,0.5);">
-        <h3 style="color: #ff3333; text-shadow: 0 0 10px rgba(255,0,0,0.5);">DAS TONUM - Frequenz des Abgrunds</h3>
+      <div class="book-card" style="background: linear-gradient(135deg, #2c3e50 0%, #1a1a2e 100%);">
+        <a href="https://mircodeflorin.github.io/das-tonum" target="_blank" style="text-decoration: none;">
+          <img src="CoverbildimBuch.png" alt="Das Tonum Cover" style="box-shadow: 0 6px 20px rgba(231, 76, 60, 0.5);">
+        </a>
+        <h3 style="color: var(--accent);">DAS TONUM - Frequenz des Abgrunds</h3>
         <p style="color: #ffffff;"><strong>Mystery-Thriller</strong></p>
         <p style="color: #e0e0e0;">Ein geheimnisvoller Ton. Eine Stadt in Angst. Eine Wahrheit, die niemand hören will.</p>
         <p style="color: #ffcccc; font-weight: bold;">📅 Erschienen: 20. Dezember 2024</p>
         <div class="button-group">
-          <a href="https://buchshop.bod.ch/das-tonum-mirco-deflorin-9783695190973" target="_blank"><button style="background: #ff3333;">🇨🇭 Schweiz kaufen</button></a>
-          <a href="https://buchshop.bod.de/das-tonum-mirco-deflorin-9783695190973" target="_blank"><button style="background: #ff3333;">🇩🇪 Deutschland kaufen</button></a>
+          <a href="https://buchshop.bod.ch/das-tonum-mirco-deflorin-9783695190973" target="_blank"><button>🇨🇭 Schweiz kaufen</button></a>
+          <a href="https://buchshop.bod.de/das-tonum-mirco-deflorin-9783695190973" target="_blank"><button>🇩🇪 Deutschland kaufen</button></a>
+          <a href="https://www.amazon.de/Das-Tonum-Frequenz-Mirco-Deflorin/dp/3695190973/ref=sr_1_1?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=36UWBQFFQG85E&dib=eyJ2IjoiMSJ9.l_jvkSZbbScp_6mZUzRrGoZwCUWO0ECZNFq06IwE7Mdabs7mtVQLjuL1y9GekD5m1v21Pb4DLErzaCEulKtvrTx08johPBmoL1SihXfhZX49YNV325o1LlziV6v5PvTKBw5LdkZ0CXj2K9p5fJRw6H49Gw09yqCpCrdacpuh8EAqfgte2c20KtSngs5HKkX95oHLOMsJ9RzjCv2FEQxcfxAxqm5wrjlDFt8Nv69eAL8.jn9z0SJWlbKE5aQqpAwosuSvXccs_0YMqeH2TpDB-DY&dib_tag=se&keywords=das+tonum&qid=1766847266&sprefix=das+tonum%2Caps%2C145&sr=8-1&asin=3695190973&revisionId=&format=4&depth=1" target="_blank"><button>🔊 Leseprobe</button></a>
         </div>
       </div>
     </div>
@@ -547,6 +696,96 @@ button:hover {
   </div>
 </section>
 
+<section id="upcoming" class="books-section">
+  <div class="agenda-section">
+    <h2>📅 Kommende Bücher 2026</h2>
+    
+    <div class="upcoming-book">
+      <h3>
+        <span class="release-date">Februar 2026</span>
+        OPTIMIERT
+      </h3>
+      <p><strong>Genre:</strong> Mystery-Thriller aus den Schweizer Alpen</p>
+      <p>In den nebelverhangenen Bergen Graubündens verschwindet die Hoffnung spurlos. Die Klinik Albula verspricht Heilung für seelische Not – doch als drei Patienten auf mysteriöse Weise verschwinden, entdeckt Psychiatriepfleger David Kramer ein dunkles Geheimnis in den alten Bergwerksstollen. Eine uralte Macht wartet auf hungrige Seelen. Was, wenn die perfekte Heilung der Tod der Seele bedeutet?</p>
+    </div>
+
+    <div class="upcoming-book">
+      <h3>
+        <span class="release-date">April 2026</span>
+        ELIA
+      </h3>
+      <p><strong>Genre:</strong> Biblische Erzählung mit psychologischer Tiefe</p>
+      <p>Nach seinem größten Triumph verfällt der Prophet Elijah in tiefste Verzweiflung und Todessehnsucht – bis Gott ihm in der Höhle zeigt, dass Erneuerung nicht durch spektakuläre Wunder, sondern durch sanfte Begegnung geschieht. Eine Geschichte über Erschöpfung, Einsamkeit und die stille Stimme Gottes.</p>
+    </div>
+
+    <div class="upcoming-book">
+      <h3>
+        <span class="release-date">April 2026</span>
+        SEMIKOLON
+      </h3>
+      <p><strong>Genre:</strong> Mystery-Thriller / Magischer Realismus</p>
+      <p>Eine Selbsthilfegruppe macht eine Camping-Wanderung im sagenumwobenen Odenwald. Als eine Teilnehmerin nachts einer mystischen Spinne begegnet, die ihr den Weg zu einer heilenden, versunkenen Stadt zeigt, wird am nächsten Morgen jemand tot aufgefunden. Offiziell Suizid – aber die Gruppe ahnt: Jemand von ihnen will verhindern, dass sie geheilt werden. Ein Wettlauf gegen die Zeit beginnt.</p>
+    </div>
+
+    <div class="upcoming-book">
+      <h3>
+        <span class="release-date">Juni 2026</span>
+        BASEMENT 17
+      </h3>
+      <p><strong>Genre:</strong> Thriller</p>
+      <p>Sie nehmen dir nicht dein Leben. Sie nehmen dir, wer du bist. Als Marcus Dreher erfährt, dass sein bester Freund Evan in den Fängen von Unterwelt Inc. ist, bleibt ihm keine Wahl. Er muss in das System zurückkehren, das er selbst miterschaffen hat – eine unterirdische Anlage, in der Menschen zu leeren Hüllen werden. Ihre Erinnerungen? Verkauft an die Meistbietenden. 48 Stunden. 540.127 Opfer. Eine Chance.</p>
+    </div>
+
+    <div class="upcoming-book">
+      <h3>
+        <span class="release-date">September 2026</span>
+        DAS ORAKEL DES UHRMACHERS
+      </h3>
+      <p><strong>Genre:</strong> Mystery-Thriller</p>
+      <p>Andreas, ein frustrierter Historiker, erbt die Werkstatt seines rätselhaften Vorfahren Wilhelm Steiner und entdeckt eine jahrhundertealte Maschine, die Zeit und Schicksal berechnen könnte. Zusammen mit der Uhrmacherin Clara muss er Wilhelms Module zusammentragen, während das Prometheus-Konsortium alles daran setzt, sie zu stoppen. Eine Geschichte über Opferbereitschaft, die Macht des Individuums und den ewigen Kampf zwischen Korruption und Hoffnung.</p>
+    </div>
+
+    <div class="upcoming-book">
+      <h3>
+        <span class="release-date">Dezember 2026</span>
+        DER ZEITZEUGE
+      </h3>
+      <p><strong>Genre:</strong> Mystery-Thriller / Übernatürlicher Krimi</p>
+      <p>Hauptkommissar Jorik Brenner kann durch Berühren von Gegenständen deren letzten 24 Stunden sehen – aber nur bei Objekten von Tatorten. Als er einen Serienmörder jagt, zeigen ihm die Gegenstände verschiedene Versionen derselben Morde. Jemand experimentiert mit Zeit und Tod – und Brenner wird selbst zur Zielscheibe.</p>
+    </div>
+  </div>
+</section>
+
+<section id="events" class="books-section">
+  <div class="events-section">
+    <h2>🎭 Veranstaltungen 2026</h2>
+    
+    <div class="event-card">
+      <h3>
+        <span class="event-date">April 2026</span>
+        Lesung: "Ich will leben"
+      </h3>
+      <div class="event-location">
+        <i class="fas fa-map-marker-alt"></i>
+        <span>Michelstadt, Odenwald</span>
+      </div>
+      <p>Eine intime Lesung aus meiner psychologischen Novelle "Ich will leben". Erleben Sie eine authentische Darstellung von Depression aus Betroffenenperspektive, gefolgt von einer Diskussionsrunde über psychische Gesundheit und Genesung.</p>
+    </div>
+
+    <div class="event-card">
+      <h3>
+        <span class="event-date">05. September 2026</span>
+        Vorarlberger Buchmesse 2026
+      </h3>
+      <div class="event-location">
+        <i class="fas fa-map-marker-alt"></i>
+        <span>Vorarlberg, Österreich</span>
+      </div>
+      <p>Besuchen Sie mich auf der Vorarlberger Buchmesse! Ich freue mich auf persönliche Gespräche, Buchsignierungen und den Austausch mit Lesern über meine Werke – von Mystery-Thriller bis zu christlichen Büchern.</p>
+    </div>
+  </div>
+</section>
+
 <section id="contact" class="contact">
   <h2>Kontakt</h2>
   <form id="contact-form" onsubmit="sendEmail(event)">
@@ -557,16 +796,40 @@ button:hover {
   </form>
   
   <div class="social-links">
-    <a href="https://www.facebook.com/profile.php?id=61562148965784" target="_blank"><i class="fab fa-facebook"></i></a>
-    <a href="https://www.linkedin.com/in/mirco-deflorin-862a79318" target="_blank"><i class="fab fa-linkedin"></i></a>
+    <a href="https://www.facebook.com/profile.php?id=61562148965784" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
+    <a href="https://www.instagram.com/mircodeflorinautor/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.tiktok.com/@mircodeflorinautor" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
+    <a href="https://www.linkedin.com/in/mirco-deflorin-862a79318" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
   </div>
 </section>
 
 <footer class="footer">
-  <p>&copy; 2024 Mirco Deflorin. Alle Rechte vorbehalten.</p>
+  <p>&copy; 2026 Mirco Deflorin. Alle Rechte vorbehalten.</p>
 </footer>
 
 <script>
+function toggleDarkMode() {
+  const html = document.documentElement;
+  const icon = document.querySelector('.dark-mode-toggle i');
+  
+  if (html.getAttribute('data-theme') === 'dark') {
+    html.removeAttribute('data-theme');
+    icon.className = 'fas fa-moon';
+    localStorage.setItem('theme', 'light');
+  } else {
+    html.setAttribute('data-theme', 'dark');
+    icon.className = 'fas fa-sun';
+    localStorage.setItem('theme', 'dark');
+  }
+}
+
+// Check for saved theme preference
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme === 'dark') {
+  document.documentElement.setAttribute('data-theme', 'dark');
+  document.querySelector('.dark-mode-toggle i').className = 'fas fa-sun';
+}
+
 function sendEmail(e) {
     e.preventDefault();
     
