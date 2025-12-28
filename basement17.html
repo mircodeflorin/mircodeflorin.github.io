@@ -1013,7 +1013,7 @@
         <div class="footer-links">
             <a href="#" onclick="openModal('impressum'); return false;">Impressum</a>
             <a href="#" onclick="openModal('datenschutz'); return false;">Datenschutz</a>
-            <a href="/cdn-cgi/l/email-protection#a3cecad1c0cc8dc7c6c5cfccd1cacde3c4cedb8dc0cb">Kontakt</a>
+            <a href="mailto:mirco.deflorin@gmx.ch">Kontakt</a>
         </div>
 
         <p class="copyright">© 2026 Mirco Deflorin. Alle Rechte vorbehalten.</p>
@@ -1035,7 +1035,7 @@
             
             <h3>Kontakt</h3>
             <p>
-                E-Mail: <a href="/cdn-cgi/l/email-protection#4e23273c2d21602a2b2822213c27200e292336602d26"><span class="__cf_email__" data-cfemail="ff92968d9c90d19b9a9993908d9691bf989287d19c97">[email&#160;protected]</span></a>
+                E-Mail: <a href="mailto:mirco.deflorin@gmx.ch">mirco.deflorin@gmx.ch</a>
             </p>
             
             <h3>Verantwortlich für den Inhalt</h3>
@@ -1120,7 +1120,7 @@
                 • Widerspruch gegen die Verarbeitung
             </p>
             <p>
-                Für alle Anfragen kontaktieren Sie mich bitte unter: <a href="/cdn-cgi/l/email-protection#2d40445f4e420349484b41425f44436d4a4055034e45"><span class="__cf_email__" data-cfemail="99f4f0ebfaf6b7fdfcfff5f6ebf0f7d9fef4e1b7faf1">[email&#160;protected]</span></a>
+                Für alle Anfragen kontaktieren Sie mich bitte unter: <a href="mailto:mirco.deflorin@gmx.ch">mirco.deflorin@gmx.ch</a>
             </p>
             
             <h3>Änderungen</h3>
@@ -1134,7 +1134,8 @@
         </div>
     </div>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+
+    <script>
         // Particle Animation
         function createParticles() {
             const container = document.getElementById('particles');
@@ -1220,4 +1221,17 @@
                 bar.className = 'wave-bar';
                 const height = (5 + Math.random() * 35);
                 bar.style.height = height + 'px';
-                b
+                bar.style.animationDelay = (Math.random() * 1.5) + 's';
+                bar.style.animationDuration = (1 + Math.random() * 1) + 's';
+                container.appendChild(bar);
+            }
+        }
+
+        // Create waveforms for all audio cards
+        createWaveform('waveform-1');
+        createWaveform('waveform-2');
+        createWaveform('waveform-3');
+        createWaveform('waveform-4');
+    </script>
+</body>
+</html>
