@@ -292,8 +292,7 @@
             color: var(--glow-gray);
             text-transform: uppercase;
             letter-spacing: 2px;
-            margin-bottom: 0.8rem;
-            display: block;
+            margin-bottom: 0.5rem;
         }
 
         .countdown {
@@ -311,15 +310,13 @@
             color: var(--glow-gray);
             text-shadow: 0 0 20px rgba(176, 176, 176, 0.3);
             line-height: 1;
-            display: block;
         }
 
         .countdown-text {
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             color: var(--steel-gray);
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-top: 0.3rem;
         }
 
         /* CTA Buttons */
@@ -814,23 +811,23 @@
                 </div>
 
                 <div class="countdown-container">
-                    <span class="countdown-label">Release Countdown</span>
+                    <div class="countdown-label">Release Countdown</div>
                     <div class="countdown">
                         <div class="countdown-unit">
-                            <span class="countdown-number" id="days">00</span>
-                            <span class="countdown-text">Tage</span>
+                            <div class="countdown-number" id="days">00</div>
+                            <div class="countdown-text">Tage</div>
                         </div>
                         <div class="countdown-unit">
-                            <span class="countdown-number" id="hours">00</span>
-                            <span class="countdown-text">Std</span>
+                            <div class="countdown-number" id="hours">00</div>
+                            <div class="countdown-text">Std</div>
                         </div>
                         <div class="countdown-unit">
-                            <span class="countdown-number" id="minutes">00</span>
-                            <span class="countdown-text">Min</span>
+                            <div class="countdown-number" id="minutes">00</div>
+                            <div class="countdown-text">Min</div>
                         </div>
                         <div class="countdown-unit">
-                            <span class="countdown-number" id="seconds">00</span>
-                            <span class="countdown-text">Sek</span>
+                            <div class="countdown-number" id="seconds">00</div>
+                            <div class="countdown-text">Sek</div>
                         </div>
                     </div>
                 </div>
@@ -1154,8 +1151,7 @@
 
         // Countdown Timer
         function updateCountdown() {
-            // Explizites Datum: 1. Juni 2026, 00:00:00 Uhr (Schweizer Zeit / MEZ)
-            const releaseDate = new Date(2026, 5, 1, 0, 0, 0).getTime(); // Monat ist 0-basiert, daher 5 für Juni
+            const releaseDate = new Date('2026-06-01T00:00:00').getTime();
             const now = new Date().getTime();
             const diff = releaseDate - now;
 
@@ -1169,18 +1165,9 @@
                 document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
                 document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
                 document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
-            } else {
-                // Wenn das Release-Datum erreicht wurde
-                document.getElementById('days').textContent = '00';
-                document.getElementById('hours').textContent = '00';
-                document.getElementById('minutes').textContent = '00';
-                document.getElementById('seconds').textContent = '00';
             }
         }
-        
-        // Sofortiger Start beim Laden der Seite
         updateCountdown();
-        // Update jede Sekunde
         setInterval(updateCountdown, 1000);
 
         // Modal Functions
