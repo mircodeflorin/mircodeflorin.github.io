@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BASEMENT 17 – Die Gedächtnisbank | Mystery-Thriller von Mirco Deflorin</title>
+    <meta name="description" content="Wer deine Erinnerung kauft, besitzt deine Seele. BASEMENT 17 - Ein dystopischer Thriller von Mirco Deflorin. Release: 01.06.2026">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #000000;
+            --dark-concrete: #1a1a1a;
+            --deep-gray: #2a2a2a;
+            --concrete-gray: #3a3a3a;
+            --steel-gray: #5a5a5a;
+            --glow-gray: #b0b0b0;
+            --light-gray: #d0d0d0;
+            --white: #ffffff;
+            --blood-red: #8b0000;
+            --warning-red: #ff3333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(180deg, var(--black) 0%, var(--dark-concrete) 50%, var(--deep-gray) 100%);
+            color: var(--white);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        /* Concrete Particles Background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--glow-gray);
+            border-radius: 50%;
+            opacity: 0;
+            animation: float 20s infinite;
+            box-shadow: 0 0 5px var(--glow-gray);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) translateX(0) scale(0); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-100vh) translateX(50px) scale(1); opacity: 0; }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: linear-gradient(180deg, rgba(0,0,0,0.95) 0%, transparent 100%);
+            border-bottom: 1px solid rgba(176, 176, 176, 0.1);
+        }
+
+        .logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            letter-spacing: 4px;
+            color: var(--glow-gray);
+            text-shadow: 0 0 20px rgba(176, 176, 176, 0.5);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            color: var(--light-gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            font-weight: 300;
+        }
+
+        .nav-links a:hover {
+            color: var(--glow-gray);
+            text-shadow: 0 0 10px rgba(176, 176, 176, 0.5);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .mobile-menu-btn span {
+            width: 25px;
+            height: 2px;
+            background: var(--glow-gray);
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 70%;
+                background: rgba(26, 26, 26, 0.98);
+                flex-direction: column;
+                padding: 5rem 2rem;
+                gap: 2rem;
+                transition: right 0.3s ease;
+                border-left: 1px solid rgba(176, 176, 176, 0.2);
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 5% 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1400px;
+            align-items: center;
+        }
+
+        @media (max-width: 968px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+        }
+
+        .hero-text {
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-subtitle {
+            font-size: 0.95rem;
+            color: var(--steel-gray);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+            font-weight: 400;
+        }
+
+        .hero-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3rem, 10vw, 7rem);
+            letter-spacing: 6px;
+            line-height: 0.95;
+            margin-bottom: 1rem;
+            background: linear-gradient(180deg, var(--white) 0%, var(--glow-gray) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 30px rgba(176, 176, 176, 0.2));
+        }
+
+        .hero-subtitle-2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            letter-spacing: 3px;
+            color: var(--steel-gray);
+            margin-bottom: 2rem;
+        }
+
+        .tagline {
+            font-size: 1.4rem;
+            font-weight: 300;
+            color: var(--light-gray);
+            margin: 2rem 0;
+            max-width: 550px;
+            font-style: italic;
+            line-height: 1.6;
+            border-left: 3px solid var(--blood-red);
+            padding-left: 1.5rem;
+        }
+
+        .tagline span {
+            color: var(--warning-red);
+            font-weight: 400;
+        }
+
+        @media (max-width: 768px) {
+            .tagline {
+                font-size: 1.1rem;
+            }
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 2.5rem 0;
+        }
+
+        .stat-item {
+            background: rgba(176, 176, 176, 0.05);
+            padding: 1.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(176, 176, 176, 0.1);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            color: var(--warning-red);
+            text-shadow: 0 0 15px rgba(255, 51, 51, 0.3);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--steel-gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .stats {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+
+        /* Countdown */
+        .countdown-container {
+            margin: 2.5rem 0;
+            padding: 1.5rem 2rem;
+            background: rgba(176, 176, 176, 0.03);
+            border: 1px solid rgba(176, 176, 176, 0.2);
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .countdown-label {
+            font-size: 0.85rem;
+            color: var(--glow-gray);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.8rem;
+            display: block;
+        }
+
+        .countdown {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .countdown-unit {
+            text-align: center;
+        }
+
+        .countdown-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            color: var(--glow-gray);
+            text-shadow: 0 0 20px rgba(176, 176, 176, 0.3);
+            line-height: 1;
+            display: block;
+        }
+
+        .countdown-text {
+            font-size: 0.7rem;
+            color: var(--steel-gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.3rem;
+        }
+
+        /* CTA Buttons */
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--glow-gray);
+            color: var(--black);
+        }
+
+        .btn-primary:hover {
+            background: var(--white);
+            box-shadow: 0 0 30px rgba(176, 176, 176, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--glow-gray);
+            border: 2px solid var(--glow-gray);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(176, 176, 176, 0.1);
+            box-shadow: 0 0 20px rgba(176, 176, 176, 0.2);
+        }
+
+        /* Book Cover */
+        .hero-visual {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .book-cover {
+            width: 100%;
+            max-width: 450px;
+            border-radius: 8px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7),
+                        0 0 40px rgba(176, 176, 176, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .book-cover:hover {
+            transform: translateY(-10px) scale(1.02);
+        }
+
+        /* Story Section */
+        .story-section {
+            padding: 6rem 5%;
+            background: linear-gradient(180deg, var(--deep-gray) 0%, var(--black) 100%);
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            letter-spacing: 4px;
+            text-align: center;
+            margin-bottom: 1rem;
+            background: linear-gradient(180deg, var(--white) 0%, var(--glow-gray) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--steel-gray);
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            font-style: italic;
+        }
+
+        .story-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .story-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--light-gray);
+            margin-bottom: 1.5rem;
+        }
+
+        .highlight {
+            color: var(--warning-red);
+            font-weight: 600;
+        }
+
+        /* Audio Samples Section */
+        .audio-section {
+            padding: 6rem 5%;
+            background: var(--dark-concrete);
+            position: relative;
+            z-index: 1;
+        }
+
+        .audio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 3rem auto 0;
+        }
+
+        .audio-card {
+            background: rgba(176, 176, 176, 0.05);
+            border: 1px solid rgba(176, 176, 176, 0.15);
+            border-radius: 8px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .audio-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--glow-gray), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .audio-card:hover {
+            background: rgba(176, 176, 176, 0.08);
+            border-color: rgba(176, 176, 176, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .audio-card:hover::before {
+            opacity: 1;
+        }
+
+        .audio-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            color: var(--glow-gray);
+            margin-bottom: 0.5rem;
+        }
+
+        .audio-date {
+            color: var(--steel-gray);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .waveform {
+            display: flex;
+            gap: 3px;
+            height: 60px;
+            align-items: center;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+
+        .wave-bar {
+            width: 4px;
+            background: var(--glow-gray);
+            border-radius: 2px;
+            animation: wave 1.5s ease-in-out infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes wave {
+            0%, 100% { height: 10px; }
+            50% { height: 40px; }
+        }
+
+        .coming-soon {
+            text-align: center;
+            color: var(--warning-red);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        /* Contest Section */
+        .contest-section {
+            padding: 6rem 5%;
+            background: linear-gradient(180deg, var(--black) 0%, var(--deep-gray) 100%);
+            position: relative;
+            z-index: 1;
+        }
+
+        .contest-content {
+            max-width: 800px;
+            margin: 3rem auto 0;
+            text-align: center;
+        }
+
+        .contest-box {
+            background: rgba(139, 0, 0, 0.1);
+            border: 2px solid var(--blood-red);
+            border-radius: 8px;
+            padding: 3rem 2rem;
+            margin: 2rem 0;
+        }
+
+        .contest-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            letter-spacing: 3px;
+            color: var(--warning-red);
+            margin-bottom: 1rem;
+        }
+
+        .contest-text {
+            font-size: 1.1rem;
+            color: var(--light-gray);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .contest-period {
+            color: var(--steel-gray);
+            font-size: 0.9rem;
+            margin-top: 2rem;
+        }
+
+        .social-links-contest {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            color: var(--glow-gray);
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: var(--white);
+            transform: scale(1.1);
+        }
+
+        /* Author Section */
+        .author-section {
+            padding: 6rem 5%;
+            background: var(--dark-concrete);
+            position: relative;
+            z-index: 1;
+        }
+
+        .author-content {
+            max-width: 1000px;
+            margin: 3rem auto 0;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        @media (max-width: 768px) {
+            .author-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+
+        .author-image {
+            width: 100%;
+            border-radius: 8px;
+            border: 3px solid rgba(176, 176, 176, 0.2);
+        }
+
+        .author-bio {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--light-gray);
+        }
+
+        .author-bio p {
+            margin-bottom: 1.2rem;
+        }
+
+        .author-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            letter-spacing: 3px;
+            color: var(--glow-gray);
+            margin-bottom: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 5% 2rem;
+            background: var(--black);
+            text-align: center;
+            border-top: 1px solid rgba(176, 176, 176, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--steel-gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--glow-gray);
+        }
+
+        .copyright {
+            color: var(--steel-gray);
+            font-size: 0.85rem;
+            margin-top: 2rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--dark-concrete);
+            border: 1px solid rgba(176, 176, 176, 0.2);
+            border-radius: 8px;
+            max-width: 800px;
+            width: 100%;
+            padding: 3rem;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--glow-gray);
+            font-size: 2rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: var(--white);
+            transform: rotate(90deg);
+        }
+
+        .modal-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            letter-spacing: 3px;
+            color: var(--glow-gray);
+            margin-bottom: 2rem;
+        }
+
+        .modal-content h3 {
+            color: var(--glow-gray);
+            font-size: 1.3rem;
+            margin: 2rem 0 1rem;
+        }
+
+        .modal-content p {
+            color: var(--light-gray);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .modal-content a {
+            color: var(--glow-gray);
+            text-decoration: none;
+        }
+
+        .modal-content a:hover {
+            color: var(--white);
+        }
+    </style>
+</head>
+<body>
+    <!-- Particle Background -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">BASEMENT 17</div>
+        <div class="mobile-menu-btn" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#story">Story</a>
+            <a href="#audio">Hörproben</a>
+            <a href="#contest">Gewinnspiel</a>
+            <a href="#author">Autor</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="hero-subtitle">Ein Mystery-Thriller von Mirco Deflorin</div>
+                <h1 class="hero-title">BASEMENT<br>17</h1>
+                <div class="hero-subtitle-2">Die Gedächtnisbank</div>
+                
+                <div class="tagline">
+                    »<span>Wer deine Erinnerung kauft,<br>besitzt deine Seele.</span>«
+                </div>
+
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-number">48</div>
+                        <div class="stat-label">Stunden Zeit</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">540.127</div>
+                        <div class="stat-label">Opfer weltweit</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">1</div>
+                        <div class="stat-label">Chance</div>
+                    </div>
+                </div>
+
+                <div class="countdown-container">
+                    <span class="countdown-label">Release Countdown</span>
+                    <div class="countdown">
+                        <div class="countdown-unit">
+                            <span class="countdown-number" id="days">00</span>
+                            <span class="countdown-text">Tage</span>
+                        </div>
+                        <div class="countdown-unit">
+                            <span class="countdown-number" id="hours">00</span>
+                            <span class="countdown-text">Std</span>
+                        </div>
+                        <div class="countdown-unit">
+                            <span class="countdown-number" id="minutes">00</span>
+                            <span class="countdown-text">Min</span>
+                        </div>
+                        <div class="countdown-unit">
+                            <span class="countdown-number" id="seconds">00</span>
+                            <span class="countdown-text">Sek</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cta-buttons">
+                    <a href="#story" class="btn btn-primary">Zur Story</a>
+                    <a href="#contest" class="btn btn-secondary">Gewinnspiel</a>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <img src="cover-3D_Basement17.png" alt="Basement 17 Cover" class="book-cover">
+            </div>
+        </div>
+    </section>
+
+    <!-- Story Section -->
+    <section class="story-section" id="story">
+        <h2 class="section-title">Die Geschichte</h2>
+        <p class="section-subtitle">2041 – Sie nehmen dir nicht dein Leben. Sie nehmen dir, wer du bist.</p>
+        
+        <div class="story-content">
+            <p class="story-text">
+                Als Marcus Dreher erfährt, dass sein bester Freund Evan in den Fängen von <span class="highlight">Unterwelt Inc.</span> ist, bleibt ihm keine Wahl. Er muss in das System zurückkehren, das er selbst miterschaffen hat – eine unterirdische Anlage, in der Menschen zu leeren Hüllen werden.
+            </p>
+            
+            <p class="story-text">
+                <span class="highlight">Ihre Erinnerungen?</span> Verkauft an die Meistbietenden. Die erste Liebe. Die Geburt eines Kindes. Der größte Triumph. Alles wird extrahiert, aufbereitet und als <span class="highlight">Immersive Memory Experience</span> an die Elite verkauft – Menschen, die das echte Leben anderer erleben wollen, ohne die Konsequenzen.
+            </p>
+
+            <p class="story-text">
+                <span class="highlight">48 Stunden.</span> 540.127 Opfer weltweit. Eine Chance.
+            </p>
+
+            <p class="story-text">
+                Marcus kennt die Anlage. Er kennt die Technik. Aber er kennt auch die <span class="highlight">Grauen Wächter</span> – jene, die bereits alles verloren haben und nun das System mit leeren Augen bewachen.
+            </p>
+
+            <p class="story-text">
+                Marcus kann nicht alle retten. Aber er muss es versuchen.
+            </p>
+
+            <p class="story-text" style="text-align: center; font-style: italic; margin-top: 3rem; font-size: 1.2rem;">
+                Ein Thriller über Identität, Schuld und die Frage:<br>
+                <span class="highlight">Was bleibt von uns, wenn unsere Erinnerungen verschwinden?</span>
+            </p>
+        </div>
+    </section>
+
+    <!-- Audio Samples Section -->
+    <section class="audio-section" id="audio">
+        <h2 class="section-title">Hörproben</h2>
+        <p class="section-subtitle">Tauche ein in die Atmosphäre von Basement 17</p>
+        
+        <div class="audio-grid">
+            <div class="audio-card">
+                <div class="audio-title">Kapitel 1</div>
+                <div class="audio-date">Release: 15. März 2026</div>
+                <div class="waveform" id="waveform-1"></div>
+                <div class="coming-soon">Demnächst verfügbar</div>
+            </div>
+
+            <div class="audio-card">
+                <div class="audio-title">Kapitel 5</div>
+                <div class="audio-date">Release: 1. April 2026</div>
+                <div class="waveform" id="waveform-2"></div>
+                <div class="coming-soon">Demnächst verfügbar</div>
+            </div>
+
+            <div class="audio-card">
+                <div class="audio-title">Kapitel 12</div>
+                <div class="audio-date">Release: 15. April 2026</div>
+                <div class="waveform" id="waveform-3"></div>
+                <div class="coming-soon">Demnächst verfügbar</div>
+            </div>
+
+            <div class="audio-card">
+                <div class="audio-title">Finale</div>
+                <div class="audio-date">Release: 1. Mai 2026</div>
+                <div class="waveform" id="waveform-4"></div>
+                <div class="coming-soon">Demnächst verfügbar</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contest Section -->
+    <section class="contest-section" id="contest">
+        <h2 class="section-title">Gewinnspiel</h2>
+        <p class="section-subtitle">Gewinne ein signiertes Exemplar & exklusive Extras</p>
+        
+        <div class="contest-content">
+            <div class="contest-box">
+                <div class="contest-title">Der große Launch-Contest</div>
+                <p class="contest-text">
+                    Sichere dir die Chance auf ein <strong>signiertes Hardcover-Exemplar</strong> von BASEMENT 17, 
+                    ein exklusives <strong>Character-Art-Poster</strong> und einen <strong>Gutscheincode</strong> 
+                    für die Hörbuch-Version!
+                </p>
+                <p class="contest-text">
+                    Um teilzunehmen, folge mir auf Social Media und teile deine Lieblingserinnerung 
+                    mit dem Hashtag <strong>#Basement17Erinnerung</strong>
+                </p>
+                <div class="social-links-contest">
+                    <a href="https://www.instagram.com/mirco.deflorin.author/" class="social-link" target="_blank" title="Instagram">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                        </svg>
+                    </a>
+                    <a href="https://www.facebook.com/profile.php?id=61567818193294" class="social-link" target="_blank" title="Facebook">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                    </a>
+                    <a href="https://www.linkedin.com/in/mirco-deflorin-862a79318/" class="social-link" target="_blank" title="LinkedIn">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"/>
+                        </svg>
+                    </a>
+                </div>
+                <p class="contest-period">
+                    Teilnahmezeitraum: 15. März 2026 bis 31. Mai 2026<br>
+                    Gewinner werden am 5. Juni 2026 bekannt gegeben
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Author Section -->
+    <section class="author-section" id="author">
+        <h2 class="section-title">Über den Autor</h2>
+        <p class="section-subtitle">Mirco Deflorin – Schweizer Autor und Peer/Genesungsbegleiter</p>
+        
+        <div class="author-content">
+            <div>
+                <img src="Autorenphoto_Mirco-Deflorin.jpeg" alt="Mirco Deflorin" class="author-image">
+            </div>
+            <div class="author-bio">
+                <div class="author-name">Mirco Deflorin</div>
+                <p>
+                    Mirco Deflorin lebt in der Schweiz und begleitet hauptberuflich Menschen durch Identitätskrisen 
+                    bei der Invalidenversicherung IV. Diese Arbeit prägt seine literarischen Themen: 
+                    Identität, Erinnerung und die Frage, was von uns bleibt, wenn alles andere verschwindet.
+                </p>
+                <p>
+                    <strong>BASEMENT 17</strong> entstand aus einem Traum, der ihn am 17. Oktober 2025 nicht mehr 
+                    losließ. Er sah sich selbst als Marcus durch die unterirdischen Gänge navigieren – 
+                    und wusste: Diese Geschichte muss erzählt werden.
+                </p>
+                <p>
+                    Mit über einem Dutzend veröffentlichten Büchern, darunter die <em>Blackwood Manor</em>-Horror-Serie 
+                    und die <em>Raven</em>-Crime-Trilogie, hat sich Mirco als vielseitiger Thriller-Autor etabliert. 
+                    Sein Buch <em>»Ich will leben«</em> erhielt 4,5 Sterne und wurde als 
+                    "ein Buch, das einen nicht mehr loslässt" gefeiert.
+                </p>
+                <p>
+                    <strong>BASEMENT 17</strong> ist sein bisher ambitioniertestes Projekt – 
+                    ein dystopischer Thriller, der psychologische Tiefe mit rasantem Tempo verbindet.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="social-links">
+            <a href="https://www.instagram.com/mirco.deflorin.author/" class="social-link" title="Instagram" target="_blank">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+            </a>
+            <a href="https://www.facebook.com/profile.php?id=61567818193294" class="social-link" title="Facebook" target="_blank">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+            </a>
+            <a href="https://www.linkedin.com/in/mirco-deflorin-862a79318/" class="social-link" title="LinkedIn" target="_blank">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"/>
+                </svg>
+            </a>
+        </div>
+
+        <div class="footer-links">
+            <a href="#" onclick="openModal('impressum'); return false;">Impressum</a>
+            <a href="#" onclick="openModal('datenschutz'); return false;">Datenschutz</a>
+            <a href="mailto:mirco.deflorin@gmx.ch">Kontakt</a>
+        </div>
+
+        <p class="copyright">© 2026 Mirco Deflorin. Alle Rechte vorbehalten.</p>
+    </footer>
+
+    <!-- Impressum Modal -->
+    <div id="impressum-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('impressum')">×</button>
+            <h2 class="modal-title">Impressum</h2>
+            
+            <h3>Angaben gemäss § 5 TMG</h3>
+            <p>
+                <strong>Mirco Deflorin</strong><br>
+                Neue Wangserstrasse 9<br>
+                7320 Sargans<br>
+                Schweiz
+            </p>
+            
+            <h3>Kontakt</h3>
+            <p>
+                E-Mail: <a href="mailto:mirco.deflorin@gmx.ch">mirco.deflorin@gmx.ch</a>
+            </p>
+            
+            <h3>Verantwortlich für den Inhalt</h3>
+            <p>
+                Mirco Deflorin<br>
+                Neue Wangserstrasse 9<br>
+                7320 Sargans
+            </p>
+            
+            <h3>Haftungsausschluss</h3>
+            <p>
+                <strong>Haftung für Inhalte:</strong><br>
+                Die Inhalte dieser Seiten wurden mit grösster Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte kann ich jedoch keine Gewähr übernehmen.
+            </p>
+            <p>
+                <strong>Haftung für Links:</strong><br>
+                Mein Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte ich keinen Einfluss habe. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.
+            </p>
+            
+            <h3>Urheberrecht</h3>
+            <p>
+                Die durch mich erstellten Inhalte und Werke auf diesen Seiten unterliegen dem Schweizer Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung ausserhalb der Grenzen des Urheberrechtes bedürfen meiner schriftlichen Zustimmung.
+            </p>
+        </div>
+    </div>
+
+    <!-- Datenschutz Modal -->
+    <div id="datenschutz-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('datenschutz')">×</button>
+            <h2 class="modal-title">Datenschutzerklärung</h2>
+            
+            <h3>Grundsatz</h3>
+            <p>
+                Der Schutz Ihrer persönlichen Daten ist mir wichtig. Ich erhebe und verarbeite Ihre personenbezogenen Daten ausschliesslich im Rahmen der gesetzlichen Bestimmungen.
+            </p>
+            
+            <h3>Datenerhebung</h3>
+            <p>
+                Diese Website erhebt grundsätzlich <strong>keine personenbezogenen Daten</strong> von Besuchern. Es werden keine Cookies gesetzt, keine Tracking-Tools verwendet und keine Analyse-Software eingesetzt.
+            </p>
+            
+            <h3>Gewinnspiele</h3>
+            <p>
+                Bei der Teilnahme an Gewinnspielen auf Social-Media-Plattformen (Instagram, Facebook, LinkedIn) werden folgende Daten erfasst:
+            </p>
+            <p>
+                • Name/Username<br>
+                • E-Mail-Adresse oder Postadresse (nur bei Gewinnern)<br>
+                • Kommentar zum Gewinnspiel
+            </p>
+            <p>
+                <strong>Verwendung:</strong> Diese Daten werden ausschliesslich zur Durchführung des Gewinnspiels und zur Kontaktaufnahme mit den Gewinnern verwendet.
+            </p>
+            <p>
+                <strong>Löschung:</strong> Alle erhobenen Daten werden unmittelbar nach Abschluss des Gewinnspiels und Versand der Gewinne vollständig gelöscht.
+            </p>
+            <p>
+                <strong>Weitergabe:</strong> Ihre Daten werden nicht an Dritte weitergegeben.
+            </p>
+            
+            <h3>E-Mail-Kontakt</h3>
+            <p>
+                Bei Kontaktaufnahme per E-Mail werden Ihre übermittelten Daten (E-Mail-Adresse, Name, Nachricht) ausschliesslich zur Bearbeitung Ihrer Anfrage gespeichert. Diese Daten werden nicht weitergegeben und nach Abschluss der Kommunikation gelöscht.
+            </p>
+            
+            <h3>Social Media</h3>
+            <p>
+                Auf dieser Website befinden sich Links zu Social-Media-Plattformen (Instagram, Facebook, LinkedIn). Beim Klick auf diese Links verlassen Sie diese Website. Es gelten dann die Datenschutzbestimmungen der jeweiligen Plattform.
+            </p>
+            
+            <h3>Ihre Rechte</h3>
+            <p>
+                Sie haben jederzeit das Recht auf:
+            </p>
+            <p>
+                • Auskunft über Ihre gespeicherten Daten<br>
+                • Berichtigung unrichtiger Daten<br>
+                • Löschung Ihrer Daten<br>
+                • Einschränkung der Datenverarbeitung<br>
+                • Datenübertragbarkeit<br>
+                • Widerspruch gegen die Verarbeitung
+            </p>
+            <p>
+                Für alle Anfragen kontaktieren Sie mich bitte unter: <a href="mailto:mirco.deflorin@gmx.ch">mirco.deflorin@gmx.ch</a>
+            </p>
+            
+            <h3>Änderungen</h3>
+            <p>
+                Ich behalte mir vor, diese Datenschutzerklärung anzupassen, um sie an geänderte Rechtslagen oder bei Änderungen des Dienstes sowie der Datenverarbeitung anzupassen.
+            </p>
+            
+            <p style="margin-top: 2rem; font-size: 0.9rem; color: var(--steel-gray);">
+                Stand: Dezember 2025
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Particle Animation
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 60; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+        createParticles();
+
+        // Countdown Timer
+        function updateCountdown() {
+            const releaseDate = new Date('2026-06-01T00:00:00').getTime();
+            const now = new Date().getTime();
+            const diff = releaseDate - now;
+
+            if (diff > 0) {
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('days').textContent = days.toString().padStart(2, '0');
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            } else {
+                document.getElementById('days').textContent = '00';
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
+            }
+        }
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // Modal Functions
+        function openModal(type) {
+            const modal = document.getElementById(type + '-modal');
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(type) {
+            const modal = document.getElementById(type + '-modal');
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Close modal on outside click
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal(this.id.replace('-modal', ''));
+                }
+            });
+        });
+
+        // Close modal with ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal.active').forEach(modal => {
+                    closeModal(modal.id.replace('-modal', ''));
+                });
+            }
+        });
+
+        // Mobile Menu Toggle
+        function toggleMenu() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        }
+
+        // Waveform Animation
+        function createWaveform(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            for (let i = 0; i < 30; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'wave-bar';
+                const height = (5 + Math.random() * 35);
+                bar.style.height = height + 'px';
+                bar.style.animationDelay = (Math.random() * 1.5) + 's';
+                bar.style.animationDuration = (1 + Math.random() * 1) + 's';
+                container.appendChild(bar);
+            }
+        }
+
+        // Create waveforms for all audio cards
+        createWaveform('waveform-1');
+        createWaveform('waveform-2');
+        createWaveform('waveform-3');
+        createWaveform('waveform-4');
+    </script>
+</body>
+</html>
