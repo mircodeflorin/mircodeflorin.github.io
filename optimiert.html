@@ -778,6 +778,102 @@
                 font-size: 2rem;
             }
         }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: linear-gradient(180deg, var(--deep-blue) 0%, var(--dark-blue) 100%);
+            border: 2px solid var(--cyan-dark);
+            border-radius: 15px;
+            padding: 3rem;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s ease;
+            margin: 2rem;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            color: var(--light-gray);
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            color: var(--cyan-glow);
+            transform: rotate(90deg);
+        }
+
+        .modal-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--cyan-glow);
+            margin-bottom: 2rem;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+            letter-spacing: 2px;
+        }
+
+        .modal-content h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            color: var(--cyan-glow);
+            margin: 2rem 0 1rem;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+        }
+
+        .modal-content p {
+            color: var(--light-gray);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .modal-content strong {
+            color: var(--cyan-glow);
+        }
+
+        .modal-content a {
+            color: var(--cyan-glow);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .modal-content a:hover {
+            color: var(--white);
+        }
     </style>
 </head>
 <body>
@@ -1038,13 +1134,128 @@
         </div>
 
         <div class="footer-links">
-            <a href="#">Impressum</a>
-            <a href="#">Datenschutz</a>
-            <a href="#">Kontakt</a>
+            <a href="#" onclick="openModal('impressum'); return false;">Impressum</a>
+            <a href="#" onclick="openModal('datenschutz'); return false;">Datenschutz</a>
+            <a href="mailto:mirco.deflorin@gmx.ch">Kontakt</a>
         </div>
 
         <p class="copyright">© 2026 Mirco Deflorin. Alle Rechte vorbehalten.</p>
     </footer>
+
+    <!-- Impressum Modal -->
+    <div id="impressum-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('impressum')">×</button>
+            <h2 class="modal-title">Impressum</h2>
+            
+            <h3>Angaben gemäss § 5 TMG</h3>
+            <p>
+                <strong>Mirco Deflorin</strong><br>
+                Neue Wangserstrasse 9<br>
+                7320 Sargans<br>
+                Schweiz
+            </p>
+            
+            <h3>Kontakt</h3>
+            <p>
+                E-Mail: <a href="mailto:mirco.deflorin@gmx.ch">mirco.deflorin@gmx.ch</a>
+            </p>
+            
+            <h3>Verantwortlich für den Inhalt</h3>
+            <p>
+                Mirco Deflorin<br>
+                Neue Wangserstrasse 9<br>
+                7320 Sargans
+            </p>
+            
+            <h3>Haftungsausschluss</h3>
+            <p>
+                <strong>Haftung für Inhalte:</strong><br>
+                Die Inhalte dieser Seiten wurden mit grösster Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte kann ich jedoch keine Gewähr übernehmen.
+            </p>
+            <p>
+                <strong>Haftung für Links:</strong><br>
+                Mein Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte ich keinen Einfluss habe. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.
+            </p>
+            
+            <h3>Urheberrecht</h3>
+            <p>
+                Die durch mich erstellten Inhalte und Werke auf diesen Seiten unterliegen dem Schweizer Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung ausserhalb der Grenzen des Urheberrechtes bedürfen meiner schriftlichen Zustimmung.
+            </p>
+        </div>
+    </div>
+
+    <!-- Datenschutz Modal -->
+    <div id="datenschutz-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('datenschutz')">×</button>
+            <h2 class="modal-title">Datenschutzerklärung</h2>
+            
+            <h3>Grundsatz</h3>
+            <p>
+                Der Schutz Ihrer persönlichen Daten ist mir wichtig. Ich erhebe und verarbeite Ihre personenbezogenen Daten ausschliesslich im Rahmen der gesetzlichen Bestimmungen.
+            </p>
+            
+            <h3>Datenerhebung</h3>
+            <p>
+                Diese Website erhebt grundsätzlich <strong>keine personenbezogenen Daten</strong> von Besuchern. Es werden keine Cookies gesetzt, keine Tracking-Tools verwendet und keine Analyse-Software eingesetzt.
+            </p>
+            
+            <h3>Gewinnspiele</h3>
+            <p>
+                Bei der Teilnahme an Gewinnspielen auf Social-Media-Plattformen (Instagram, Facebook, LinkedIn, TikTok) werden folgende Daten erfasst:
+            </p>
+            <p>
+                • Name/Username<br>
+                • E-Mail-Adresse oder Postadresse (nur bei Gewinnern)<br>
+                • Kommentar zum Gewinnspiel
+            </p>
+            <p>
+                <strong>Verwendung:</strong> Diese Daten werden ausschliesslich zur Durchführung des Gewinnspiels und zur Kontaktaufnahme mit den Gewinnern verwendet.
+            </p>
+            <p>
+                <strong>Löschung:</strong> Alle erhobenen Daten werden unmittelbar nach Abschluss des Gewinnspiels und Versand der Gewinne vollständig gelöscht.
+            </p>
+            <p>
+                <strong>Weitergabe:</strong> Ihre Daten werden nicht an Dritte weitergegeben.
+            </p>
+            
+            <h3>E-Mail-Kontakt</h3>
+            <p>
+                Bei Kontaktaufnahme per E-Mail werden Ihre übermittelten Daten (E-Mail-Adresse, Name, Nachricht) ausschliesslich zur Bearbeitung Ihrer Anfrage gespeichert. Diese Daten werden nicht weitergegeben und nach Abschluss der Kommunikation gelöscht.
+            </p>
+            
+            <h3>Social Media</h3>
+            <p>
+                Auf dieser Website befinden sich Links zu Social-Media-Plattformen (Instagram, Facebook, LinkedIn, TikTok). Beim Klick auf diese Links verlassen Sie diese Website. Es gelten dann die Datenschutzbestimmungen der jeweiligen Plattform.
+            </p>
+            
+            <h3>Ihre Rechte</h3>
+            <p>
+                Sie haben jederzeit das Recht auf:
+            </p>
+            <p>
+                • Auskunft über Ihre gespeicherten Daten<br>
+                • Berichtigung unrichtiger Daten<br>
+                • Löschung Ihrer Daten<br>
+                • Einschränkung der Datenverarbeitung<br>
+                • Datenübertragbarkeit<br>
+                • Widerspruch gegen die Verarbeitung
+            </p>
+            <p>
+                Für alle Anfragen kontaktieren Sie mich bitte unter: <a href="mailto:mirco.deflorin@gmx.ch">mirco.deflorin@gmx.ch</a>
+            </p>
+            
+            <h3>Änderungen</h3>
+            <p>
+                Ich behalte mir vor, diese Datenschutzerklärung anzupassen, um sie an geänderte Rechtslagen oder bei Änderungen des Dienstes sowie der Datenverarbeitung anzupassen.
+            </p>
+            
+            <p style="margin-top: 2rem; font-size: 0.9rem; color: var(--gray);">
+                Stand: Dezember 2025
+            </p>
+        </div>
+    </div>
 
     <script>
         // Particle Animation
@@ -1081,6 +1292,41 @@
         }
         updateCountdown();
         setInterval(updateCountdown, 1000);
+
+        // Modal Functions
+        function openModal(type) {
+            const modal = document.getElementById(type + '-modal');
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(type) {
+            const modal = document.getElementById(type + '-modal');
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Schließen beim Klick außerhalb des Modal-Contents
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal(this.id.replace('-modal', ''));
+                }
+            });
+        });
+
+        // Schließen mit ESC-Taste
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal.active').forEach(modal => {
+                    closeModal(modal.id.replace('-modal', ''));
+                });
+            }
+        });
 
         // Waveform Animation
         function createWaveform(containerId) {
