@@ -419,10 +419,11 @@ section {
 
 .book-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 350px));
     gap: 2.5rem;
     max-width: 1400px;
     margin: 0 auto;
+    justify-content: center;
 }
 
 .book-card {
@@ -434,6 +435,7 @@ section {
     transition: all 0.5s ease;
     position: relative;
     overflow: hidden;
+    max-width: 350px;
 }
 
 .book-card::before {
@@ -466,7 +468,8 @@ section {
 
 .book-card img {
     width: 100%;
-    height: auto;
+    max-height: 450px;
+    object-fit: cover;
     border-radius: 10px;
     margin-bottom: 1.5rem;
     transition: transform 0.5s ease;
