@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELIA – Das sanfte Säuseln | Ein biblischer Roman von Mirco Deflorin</title>
+    <meta name="description" content="Nach dem größten Triumph die tiefste Verzweiflung. Elia entdeckt: Gott kommt nicht im Sturm, sondern im sanften Säuseln. Ein biblischer Roman über Hoffnung nach dem Fall. Release: April 2026">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #000000;
+            --dark-cave: #1a0f08;
+            --deep-cave: #2a1810;
+            --warm-stone: #3d2818;
+            --desert-sand: #8b6f47;
+            --warm-sand: #c9a882;
+            --light-sand: #d4b896;
+            --golden-glow: #f4d19b;
+            --bright-gold: #ffd89b;
+            --sky-blue: #a8b5c7;
+            --light-sky: #c0cdd8;
+            --white: #ffffff;
+            --gray: #9a8a7a;
+            --light-gray: #d0c4b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Crimson Text', serif;
+            background: linear-gradient(180deg, var(--black) 0%, var(--dark-cave) 30%, var(--deep-cave) 70%, var(--warm-stone) 100%);
+            color: var(--white);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        /* Dust Particles Background Animation */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--golden-glow);
+            border-radius: 50%;
+            opacity: 0;
+            animation: float 12s infinite;
+            box-shadow: 0 0 8px var(--golden-glow), 0 0 15px rgba(244, 209, 155, 0.4);
+        }
+
+        @keyframes float {
+            0%, 100% { opacity: 0; transform: translateY(0) translateX(0); }
+            10% { opacity: 0.6; }
+            50% { opacity: 0.9; transform: translateY(-50vh) translateX(var(--moveX, 0)); }
+            90% { opacity: 0.6; }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: linear-gradient(180deg, rgba(0,0,0,0.95) 0%, transparent 100%);
+        }
+
+        .logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 6px;
+            color: var(--golden-glow);
+            text-shadow: 0 0 20px rgba(244, 209, 155, 0.6);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            color: var(--light-gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--golden-glow);
+            text-shadow: 0 0 10px rgba(244, 209, 155, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 5% 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1400px;
+            align-items: center;
+        }
+
+        .hero-text {
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(3.5rem, 10vw, 8rem);
+            font-weight: 700;
+            letter-spacing: 12px;
+            line-height: 0.95;
+            margin-bottom: 1rem;
+            background: linear-gradient(180deg, var(--white) 0%, var(--golden-glow) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 30px rgba(244, 209, 155, 0.3));
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: clamp(2.5rem, 12vw, 4rem);
+                letter-spacing: 6px;
+            }
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            font-family: 'Cinzel', serif;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 0.8rem;
+        }
+
+        .tagline {
+            font-size: 1.6rem;
+            font-weight: 400;
+            color: var(--light-gray);
+            margin: 2rem 0;
+            max-width: 550px;
+            font-style: italic;
+            line-height: 1.7;
+        }
+        
+        @media (max-width: 768px) {
+            .tagline {
+                font-size: 1.2rem;
+                line-height: 1.6;
+            }
+        }
+
+        .whisper-symbol {
+            font-size: 4rem;
+            color: var(--golden-glow);
+            text-shadow: 0 0 30px rgba(244, 209, 155, 0.5);
+            margin: 1.5rem 0;
+            animation: breathe 3s infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+
+        /* Countdown */
+        .countdown-container {
+            margin: 2.5rem 0;
+            padding: 1.5rem 2rem;
+            background: rgba(244, 209, 155, 0.08);
+            border: 1px solid rgba(244, 209, 155, 0.3);
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .countdown-label {
+            font-size: 0.9rem;
+            color: var(--golden-glow);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 0.8rem;
+            font-family: 'Cinzel', serif;
+        }
+
+        .countdown {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .countdown-unit {
+            text-align: center;
+        }
+
+        .countdown-number {
+            font-family: 'Cinzel', serif;
+            font-size: 3rem;
+            color: var(--golden-glow);
+            text-shadow: 0 0 20px rgba(244, 209, 155, 0.5);
+            line-height: 1;
+            font-weight: 600;
+        }
+
+        .countdown-text {
+            font-size: 0.75rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* CTA Buttons */
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-block;
+            font-family: 'Cinzel', serif;
+        }
+
+        .btn-primary {
+            background: var(--golden-glow);
+            color: var(--black);
+            box-shadow: 0 0 30px rgba(244, 209, 155, 0.4);
+        }
+
+        .btn-primary:hover {
+            background: var(--bright-gold);
+            box-shadow: 0 0 40px rgba(244, 209, 155, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--golden-glow);
+            border: 2px solid var(--golden-glow);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(244, 209, 155, 0.15);
+            box-shadow: 0 0 20px rgba(244, 209, 155, 0.3);
+        }
+
+        /* Hero Image */
+        .hero-image {
+            animation: fadeIn 1.5s ease-out;
+            position: relative;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .book-cover {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            border-radius: 8px;
+            filter: drop-shadow(0 20px 60px rgba(244, 209, 155, 0.4));
+            transition: transform 0.3s ease;
+        }
+
+        .book-cover:hover {
+            transform: scale(1.03) rotate(-1deg);
+        }
+
+        /* Story Section */
+        .story {
+            padding: 6rem 5%;
+            background: rgba(26, 15, 8, 0.6);
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            letter-spacing: 6px;
+            text-align: center;
+            margin-bottom: 1rem;
+            background: linear-gradient(180deg, var(--white) 0%, var(--golden-glow) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--gray);
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            font-size: 1.2rem;
+            font-style: italic;
+        }
+
+        .story-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .story-text {
+            font-size: 1.2rem;
+            line-height: 2;
+            color: var(--light-gray);
+            margin-bottom: 2rem;
+            text-align: justify;
+        }
+
+        .story-highlight {
+            background: rgba(244, 209, 155, 0.08);
+            border-left: 4px solid var(--golden-glow);
+            padding: 2rem;
+            margin: 3rem 0;
+            border-radius: 4px;
+        }
+
+        .story-highlight p {
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--light-sand);
+            line-height: 1.9;
+        }
+
+        /* Themes Section */
+        .themes {
+            padding: 6rem 5%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .themes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .theme-card {
+            background: rgba(244, 209, 155, 0.06);
+            border: 1px solid rgba(244, 209, 155, 0.2);
+            border-radius: 8px;
+            padding: 2.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .theme-card:hover {
+            background: rgba(244, 209, 155, 0.12);
+            border-color: var(--golden-glow);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(244, 209, 155, 0.2);
+        }
+
+        .theme-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .theme-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.6rem;
+            letter-spacing: 2px;
+            color: var(--golden-glow);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .theme-desc {
+            color: var(--gray);
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        /* Gewinnspiel Section */
+        .gewinnspiel {
+            padding: 6rem 5%;
+            background: rgba(26, 15, 8, 0.8);
+            position: relative;
+            z-index: 1;
+        }
+
+        .gewinnspiel-content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .gewinnspiel-box {
+            background: rgba(244, 209, 155, 0.08);
+            border: 2px solid var(--golden-glow);
+            border-radius: 12px;
+            padding: 3rem;
+            margin-top: 2rem;
+            box-shadow: 0 0 40px rgba(244, 209, 155, 0.2);
+        }
+
+        .gewinnspiel-title-main {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            color: var(--golden-glow);
+            margin-bottom: 1.5rem;
+            letter-spacing: 4px;
+            text-shadow: 0 0 20px rgba(244, 209, 155, 0.4);
+        }
+
+        .gewinnspiel-prize {
+            font-size: 1.8rem;
+            color: var(--light-sand);
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+
+        .gewinnspiel-details {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .gewinnspiel-details p {
+            font-size: 1.1rem;
+            color: var(--light-gray);
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        .gewinnspiel-period {
+            font-size: 1.3rem;
+            color: var(--golden-glow);
+            margin-top: 2rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        /* Autor Section */
+        .autor {
+            padding: 6rem 5%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .autor-content {
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+        }
+
+        .autor-text {
+            font-size: 1.15rem;
+            line-height: 1.9;
+            color: var(--light-gray);
+        }
+
+        .autor-text p {
+            margin-bottom: 1.5rem;
+        }
+
+        .autor-quote {
+            background: rgba(244, 209, 155, 0.08);
+            border-left: 4px solid var(--golden-glow);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 4px;
+            font-style: italic;
+            font-size: 1.2rem;
+            color: var(--light-sand);
+        }
+
+        /* Social Media */
+        .social-section {
+            padding: 4rem 5%;
+            background: rgba(26, 15, 8, 0.6);
+            position: relative;
+            z-index: 1;
+        }
+
+        .social-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(244, 209, 155, 0.1);
+            border: 2px solid var(--golden-glow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--golden-glow);
+            font-size: 1.8rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-link:hover {
+            background: var(--golden-glow);
+            color: var(--black);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(244, 209, 155, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 5%;
+            background: var(--black);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 1px;
+        }
+
+        .footer-links a:hover {
+            color: var(--golden-glow);
+        }
+
+        .copyright {
+            color: var(--gray);
+            font-size: 0.85rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: linear-gradient(180deg, var(--dark-cave) 0%, var(--deep-cave) 100%);
+            border: 2px solid var(--golden-glow);
+            border-radius: 12px;
+            padding: 3rem;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 0 50px rgba(244, 209, 155, 0.3);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: transparent;
+            border: none;
+            color: var(--golden-glow);
+            font-size: 2.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 300;
+        }
+
+        .modal-close:hover {
+            color: var(--bright-gold);
+            transform: rotate(90deg);
+        }
+
+        .modal-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            color: var(--golden-glow);
+            margin-bottom: 2rem;
+            letter-spacing: 3px;
+        }
+
+        .modal-content h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--light-sand);
+            margin: 2rem 0 1rem;
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+        }
+
+        .modal-content p {
+            color: var(--light-gray);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .modal-content a {
+            color: var(--golden-glow);
+            text-decoration: underline;
+        }
+
+        .modal-content a:hover {
+            color: var(--bright-gold);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .countdown {
+                gap: 1rem;
+            }
+
+            .countdown-number {
+                font-size: 2rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            .social-links {
+                gap: 1.5rem;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        /* Scroll Animations */
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+        }
+
+        .animate-on-scroll.animated {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+    <!-- Particle Background -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">ELIA</div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#story">Geschichte</a>
+            <a href="#gewinnspiel">Gewinnspiel</a>
+            <a href="#autor">Autor</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="hero-subtitle">Ein biblischer Roman</div>
+                <h1 class="hero-title">ELIA</h1>
+                <div class="whisper-symbol">~</div>
+                <p class="tagline">
+                    Nach dem größten Triumph die tiefste Verzweiflung.<br>
+                    Bis Gott ihm zeigt: Ich komme im sanften Säuseln.
+                </p>
+
+                <!-- Countdown -->
+                <div class="countdown-container">
+                    <div class="countdown-label">Release in:</div>
+                    <div class="countdown">
+                        <div class="countdown-unit">
+                            <div class="countdown-number" id="days">00</div>
+                            <div class="countdown-text">Tage</div>
+                        </div>
+                        <div class="countdown-unit">
+                            <div class="countdown-number" id="hours">00</div>
+                            <div class="countdown-text">Stunden</div>
+                        </div>
+                        <div class="countdown-unit">
+                            <div class="countdown-number" id="minutes">00</div>
+                            <div class="countdown-text">Minuten</div>
+                        </div>
+                        <div class="countdown-unit">
+                            <div class="countdown-number" id="seconds">00</div>
+                            <div class="countdown-text">Sekunden</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTA Buttons -->
+                <div class="cta-buttons">
+                    <a href="#gewinnspiel" class="btn btn-primary">Zum Gewinnspiel</a>
+                    <a href="#story" class="btn btn-secondary">Die Geschichte</a>
+                </div>
+            </div>
+
+            <div class="hero-image">
+                <img src="Front_Cover_Elia-2079x3189" alt="ELIA - Das sanfte Säuseln Buchcover" class="book-cover">
+            </div>
+        </div>
+    </section>
+
+    <!-- Story Section -->
+    <section class="story" id="story">
+        <h2 class="section-title">Die Geschichte</h2>
+        <p class="section-subtitle">Hoffnung nach dem Fall – Eine biblische Reise durch Verzweiflung zur Erneuerung</p>
+        
+        <div class="story-content">
+            <p class="story-text">
+                Berg Karmel, 9. Jahrhundert v. Chr. Der Prophet Elia hat soeben das Unmögliche vollbracht: 
+                Vor versammeltem Volk Israel besiegte er die 450 Baal-Propheten. Feuer vom Himmel, 
+                Regen nach drei Jahren Dürre – Gottes Macht war unübersehbar. Das Volk jubelt, 
+                die Baal-Priester sind tot, König Ahab ist gedemütigt.
+            </p>
+
+            <p class="story-text">
+                Doch dann kommt Königin Isebels Todesschwur. In einem Moment verwandelt sich 
+                der siegreiche Prophet in einen verängstigten, erschöpften Mann. Die Adrenalin-Euphorie 
+                weicht schlagartig panischer Angst.
+            </p>
+
+            <div class="story-highlight">
+                <p>
+                    "Es ist genug, Herr. Nimm mein Leben."<br>
+                    Der Mann, der eben noch Feuer vom Himmel holte, will sterben.<br>
+                    Verzweiflung nach dem Höhenflug – ein Muster, das bis heute gilt.
+                </p>
+            </div>
+
+            <p class="story-text">
+                40 Tage in der Einsamkeit. Gott schickt einen Engel mit Essen, aber Elia kann nicht verstehen: 
+                Warum muss er weiterleben? War sein ganzer Dienst umsonst?
+            </p>
+
+            <p class="story-text">
+                Die Wanderung zum Berg Horeb wird zur inneren Reise. Elia kämpft mit Erschöpfung, 
+                Hoffnungslosigkeit, dem Gefühl völliger Sinnlosigkeit. Moderne Parallelen werden deutlich: 
+                Wie viele Menschen erleben nach großen Erfolgen den totalen Zusammenbruch?
+            </p>
+
+            <div class="story-highlight">
+                <p>
+                    In der Höhle am Horeb ereignet sich das Gegenteil von Karmel.<br>
+                    Nicht Sturm, Erdbeben oder Feuer – sondern ein sanftes Säuseln.<br>
+                    Gott kommt nicht als spektakulärer Showmaster,<br>
+                    sondern als liebender Vater.
+                </p>
+            </div>
+
+            <p class="story-text">
+                "Was tust du hier, Elia?" – nicht als Vorwurf, sondern als Einladung zum Gespräch. 
+                Gott hört zu, argumentiert nicht gegen Elias Verzweiflung, sondern gibt ihm neue Perspektive: 
+                Du bist nicht allein. 7000 haben ihre Knie nicht vor Baal gebeugt.
+            </p>
+
+            <p class="story-text">
+                Erneuerung geschieht schrittweise: Neuer Auftrag, neue Gemeinschaft, neue Hoffnung. 
+                Elia lernt: Gottes Handeln ist ein Prozess, kein Ereignis. Spektakuläre Wunder beeindrucken, 
+                aber stille Treue verändert.
+            </p>
+        </div>
+    </section>
+
+    <!-- Themes Section -->
+    <section class="themes">
+        <h2 class="section-title">Zentrale Themen</h2>
+        <p class="section-subtitle">Was diese Geschichte uns heute zu sagen hat</p>
+        
+        <div class="themes-grid">
+            <div class="theme-card">
+                <div class="theme-icon">⛰️</div>
+                <h3 class="theme-title">Nach dem Sieg kommt manchmal die Niedergeschlagenheit</h3>
+                <p class="theme-desc">
+                    Wie viele kennen das Muster: Großer Erfolg, dann tiefer Fall. 
+                    Elia zeigt: Das ist menschlich, nicht Versagen.
+                </p>
+            </div>
+
+            <div class="theme-card">
+                <div class="theme-icon">🌾</div>
+                <h3 class="theme-title">Du bist nicht allein</h3>
+                <p class="theme-desc">
+                    Elia dachte, er sei der einzige Treue. Gott zeigte ihm: 
+                    7000 andere kämpfen denselben Kampf – still, verborgen, treu.
+                </p>
+            </div>
+
+            <div class="theme-card">
+                <div class="theme-icon">💨</div>
+                <h3 class="theme-title">Gott kommt im sanften Säuseln</h3>
+                <p class="theme-desc">
+                    Nicht im Spektakel, sondern in der Stille. Nicht in Macht, 
+                    sondern in Liebe. Eine Revolution des Gottesbildes.
+                </p>
+            </div>
+
+            <div class="theme-card">
+                <div class="theme-icon">🕊️</div>
+                <h3 class="theme-title">Schwäche ist kein Versagen</h3>
+                <p class="theme-desc">
+                    Elia's Zusammenbruch macht ihn nicht zum schlechten Propheten – 
+                    sondern zum nahbaren Menschen, den Gott sanft heilt.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gewinnspiel Section -->
+    <section class="gewinnspiel" id="gewinnspiel">
+        <h2 class="section-title">Gewinnspiel</h2>
+        <div class="gewinnspiel-content">
+            <div class="gewinnspiel-box">
+                <div class="gewinnspiel-title-main">✨ Gewinne 1 von 3 signierten Exemplaren ✨</div>
+                <div class="gewinnspiel-prize">3 signierte Bücher "ELIA – Das sanfte Säuseln"</div>
+                
+                <div class="gewinnspiel-details">
+                    <p>
+                        <strong>So nimmst du teil:</strong><br>
+                        Die Teilnahmebedingungen werden in Kürze bekanntgegeben. 
+                        Das Gewinnspiel richtet sich an ausgewählte Teilnehmer aus meiner Gemeinde 
+                        und meinem persönlichen Netzwerk.
+                    </p>
+                    <p>
+                        <strong>Was du gewinnen kannst:</strong><br>
+                        Ein signiertes Exemplar von "ELIA – Das sanfte Säuseln" 
+                        mit persönlicher Widmung des Autors.
+                    </p>
+                    <p>
+                        <strong>Der Rechtsweg ist ausgeschlossen.</strong><br>
+                        Keine Barauszahlung möglich. Die Gewinner werden per E-Mail oder direkt benachrichtigt.
+                    </p>
+                </div>
+
+                <div class="gewinnspiel-period">
+                    Gewinnspiel-Zeitraum: Wird noch bekanntgegeben
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Autor Section -->
+    <section class="autor" id="autor">
+        <h2 class="section-title">Über den Autor</h2>
+        <p class="section-subtitle">Mirco Deflorin – Autor zwischen Thriller und biblischer Erzählung</p>
+        
+        <div class="autor-content">
+            <div class="autor-text">
+                <p>
+                    Mirco Deflorin ist ein vielseitiger Schweizer Autor, der sowohl im Genre des 
+                    Mystery-Thrillers als auch in der christlichen Belletristik zu Hause ist. 
+                    Als Peer- und Genesungsbegleiter bei der Invalidenversicherung IV in der Schweiz 
+                    kennt er die dunklen Täler des Lebens aus erster Hand – und die Wege hinaus.
+                </p>
+
+                <div class="autor-quote">
+                    "Dieses Buch zu schreiben hat mir geholfen, selbst im Glauben zu Gott hin zu wachsen 
+                    und ihn besser zu verstehen. In Elias Kämpfen erkannte ich meine eigenen. 
+                    In Gottes sanftem Säuseln fand ich die Antwort, die mein Herz brauchte: 
+                    Er bietet dir keine Erklärungen, sondern seine Liebe."
+                </div>
+
+                <p>
+                    Als Autor hat Mirco bereits Werke wie "Die Sprüche des Salomon: Neu strukturiert 
+                    und erläutert" und "Digitaler Dialog: Christentum und Islam" veröffentlicht. 
+                    Seine Vision ist es, die Bibel als lebendige Geschichte zu erzählen – 
+                    greifbar, fassbar und relevant für Menschen von heute.
+                </p>
+
+                <p>
+                    Wenn er nicht schreibt, findet man ihn in der Natur oder beim Arbeiten mit Menschen, 
+                    die ihre eigenen dunklen Täler durchqueren – immer mit dem Wissen, dass auch in der 
+                    tiefsten Höhle das sanfte Säuseln der Liebe wartet.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Media Section -->
+    <section class="social-section">
+        <div class="social-content">
+            <h2 class="section-title">Folge mir</h2>
+            <p class="section-subtitle">Bleib auf dem Laufenden über neue Projekte und Veröffentlichungen</p>
+            
+            <div class="social-links">
+                <a href="https://www.instagram.com/mirco.deflorin" target="_blank" class="social-link" aria-label="Instagram">📷</a>
+                <a href="https://www.facebook.com/mirco.deflorin.autor" target="_blank" class="social-link" aria-label="Facebook">📘</a>
+                <a href="https://www.linkedin.com/in/mirco-deflorin" target="_blank" class="social-link" aria-label="LinkedIn">💼</a>
+                <a href="https://www.tiktok.com/@mirco.deflorin" target="_blank" class="social-link" aria-label="TikTok">🎵</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#" onclick="openModal('impressum'); return false;">Impressum</a>
+                <a href="#" onclick="openModal('datenschutz'); return false;">Datenschutz</a>
+            </div>
+            <div class="copyright">
+                © 2026 Mirco Deflorin. Alle Rechte vorbehalten.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Impressum Modal -->
+    <div id="impressum-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('impressum')">×</button>
+            <h2 class="modal-title">Impressum</h2>
+            
+            <h3>Angaben gemäss Schweizer Recht</h3>
+            <p>
+                Diese Website wird betrieben von Mirco Deflorin als Privatperson. 
+                Die Inhalte dienen ausschliesslich der Information über literarische Werke.
+            </p>
+            
+            <h3>Verantwortlich für den Inhalt</h3>
+            <p>
+                Mirco Deflorin<br>
+                Neue Wangserstrasse 9<br>
+                7320 Sargans<br>
+                Schweiz
+            </p>
+            
+            <h3>Kontakt</h3>
+            <p>
+                E-Mail: <a href="mailto:mirco@deflorin.ch">mirco@deflorin.ch</a>
+            </p>
+            
+            <h3>Haftungsausschluss</h3>
+            <p>
+                <strong>Haftung für Inhalte:</strong><br>
+                Die Inhalte dieser Seiten wurden mit grösster Sorgfalt erstellt. Für die Richtigkeit, 
+                Vollständigkeit und Aktualität der Inhalte kann ich jedoch keine Gewähr übernehmen.
+            </p>
+            <p>
+                <strong>Haftung für Links:</strong><br>
+                Mein Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte ich keinen 
+                Einfluss habe. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter 
+                oder Betreiber der Seiten verantwortlich.
+            </p>
+            
+            <h3>Urheberrecht</h3>
+            <p>
+                Die durch mich erstellten Inhalte und Werke auf diesen Seiten unterliegen dem 
+                Schweizer Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art 
+                der Verwertung ausserhalb der Grenzen des Urheberrechtes bedürfen meiner schriftlichen Zustimmung.
+            </p>
+        </div>
+    </div>
+
+    <!-- Datenschutz Modal -->
+    <div id="datenschutz-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('datenschutz')">×</button>
+            <h2 class="modal-title">Datenschutzerklärung</h2>
+            
+            <h3>Grundsatz</h3>
+            <p>
+                Der Schutz Ihrer persönlichen Daten ist mir wichtig. Ich erhebe und verarbeite Ihre 
+                personenbezogenen Daten ausschliesslich im Rahmen der gesetzlichen Bestimmungen.
+            </p>
+            
+            <h3>Datenerhebung</h3>
+            <p>
+                Diese Website erhebt grundsätzlich <strong>keine personenbezogenen Daten</strong> 
+                von Besuchern. Es werden keine Cookies gesetzt, keine Tracking-Tools verwendet und 
+                keine Analyse-Software eingesetzt.
+            </p>
+            
+            <h3>Gewinnspiele</h3>
+            <p>
+                Bei der Teilnahme an Gewinnspielen werden folgende Daten erfasst:
+            </p>
+            <p>
+                • Name/Username<br>
+                • E-Mail-Adresse oder Postadresse (nur bei Gewinnern)<br>
+                • Kommentar zum Gewinnspiel (falls zutreffend)
+            </p>
+            <p>
+                <strong>Verwendung:</strong> Diese Daten werden ausschliesslich zur Durchführung 
+                des Gewinnspiels und zur Kontaktaufnahme mit den Gewinnern verwendet.
+            </p>
+            <p>
+                <strong>Löschung:</strong> Alle erhobenen Daten werden unmittelbar nach Abschluss 
+                des Gewinnspiels und Versand der Gewinne vollständig gelöscht.
+            </p>
+            <p>
+                <strong>Weitergabe:</strong> Ihre Daten werden nicht an Dritte weitergegeben.
+            </p>
+            
+            <h3>E-Mail-Kontakt</h3>
+            <p>
+                Bei Kontaktaufnahme per E-Mail werden Ihre übermittelten Daten (E-Mail-Adresse, Name, Nachricht) 
+                ausschliesslich zur Bearbeitung Ihrer Anfrage gespeichert. Diese Daten werden nicht weitergegeben 
+                und nach Abschluss der Kommunikation gelöscht.
+            </p>
+            
+            <h3>Social Media</h3>
+            <p>
+                Auf dieser Website befinden sich Links zu Social-Media-Plattformen (Instagram, Facebook, 
+                LinkedIn, TikTok). Beim Klick auf diese Links verlassen Sie diese Website. Es gelten dann 
+                die Datenschutzbestimmungen der jeweiligen Plattform.
+            </p>
+            
+            <h3>Ihre Rechte</h3>
+            <p>
+                Sie haben jederzeit das Recht auf:
+            </p>
+            <p>
+                • Auskunft über Ihre gespeicherten Daten<br>
+                • Berichtigung unrichtiger Daten<br>
+                • Löschung Ihrer Daten<br>
+                • Einschränkung der Datenverarbeitung<br>
+                • Datenübertragbarkeit<br>
+                • Widerspruch gegen die Verarbeitung
+            </p>
+            <p>
+                Für alle Anfragen kontaktieren Sie mich bitte unter: <a href="mailto:mirco@deflorin.ch">mirco@deflorin.ch</a>
+            </p>
+            
+            <h3>Änderungen</h3>
+            <p>
+                Ich behalte mir vor, diese Datenschutzerklärung anzupassen, um sie an geänderte Rechtslagen 
+                oder bei Änderungen des Dienstes sowie der Datenverarbeitung anzupassen.
+            </p>
+            
+            <p style="margin-top: 2rem; font-size: 0.9rem; color: var(--gray);">
+                Stand: Dezember 2025
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Particle Animation
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 40; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 12 + 's';
+                particle.style.animationDuration = (8 + Math.random() * 6) + 's';
+                
+                const moveX = (Math.random() - 0.5) * 100;
+                particle.style.setProperty('--moveX', moveX + 'px');
+                
+                container.appendChild(particle);
+            }
+        }
+        createParticles();
+
+        // Countdown Timer
+        function updateCountdown() {
+            const releaseDate = new Date('2026-04-15T00:00:00').getTime(); // Anpassen auf genaues Datum
+            const now = new Date().getTime();
+            const diff = releaseDate - now;
+
+            if (diff > 0) {
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('days').textContent = days.toString().padStart(2, '0');
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            } else {
+                document.getElementById('days').textContent = '00';
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
+            }
+        }
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // Modal Functions
+        function openModal(type) {
+            const modal = document.getElementById(type + '-modal');
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(type) {
+            const modal = document.getElementById(type + '-modal');
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Close modal on outside click
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal(this.id.replace('-modal', ''));
+                }
+            });
+        });
+
+        // Close modal with ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal.active').forEach(modal => {
+                    closeModal(modal.id.replace('-modal', ''));
+                });
+            }
+        });
+
+        // Smooth Scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Scroll Animation Observer
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animated');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections
+        document.querySelectorAll('section').forEach(section => {
+            section.classList.add('animate-on-scroll');
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
