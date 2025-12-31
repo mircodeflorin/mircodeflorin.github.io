@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAS ORAKEL DES UHRMACHERS – Ein Mystery-Thriller von Mirco Deflorin</title>
+    <meta name="description" content="Ein mystischer Automat. Ein Kristall, der die Zeit beherrscht. Eine Jagd durch Europas Uhrmacher-Metropolen. Das Orakel des Uhrmachers - Ein Mystery-Thriller von Mirco Deflorin.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #000000;
+            --dark-teal: #0a1a1a;
+            --deep-teal: #0d2626;
+            --teal: #20B2AA;
+            --teal-glow: #00CED1;
+            --gold: #D4AF37;
+            --gold-dark: #B8860B;
+            --bronze: #CD7F32;
+            --white: #ffffff;
+            --gray: #9BA8A8;
+            --light-gray: #C8D6D6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background: linear-gradient(180deg, var(--black) 0%, var(--dark-teal) 50%, var(--deep-teal) 100%);
+            color: var(--white);
+            line-height: 1.7;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Clockwork Particle Background */
+        .clockwork-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .gear {
+            position: absolute;
+            opacity: 0;
+            animation: gearFloat 20s infinite;
+        }
+
+        .gear svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 8px var(--teal-glow));
+        }
+
+        @keyframes gearFloat {
+            0% { 
+                transform: translateY(100vh) rotate(0deg) scale(0.5); 
+                opacity: 0; 
+            }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { 
+                transform: translateY(-100vh) rotate(360deg) scale(1); 
+                opacity: 0; 
+            }
+        }
+
+        /* Crystal Particles */
+        .crystal-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .crystal {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--teal-glow);
+            border-radius: 50%;
+            opacity: 0;
+            animation: crystalGlow 8s infinite;
+            box-shadow: 0 0 10px var(--teal-glow), 0 0 20px var(--teal-glow);
+        }
+
+        @keyframes crystalGlow {
+            0%, 100% { opacity: 0; transform: translateY(0) translateX(0); }
+            10% { opacity: 0.6; }
+            50% { opacity: 1; }
+            90% { opacity: 0.6; }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: linear-gradient(180deg, rgba(0,0,0,0.95) 0%, transparent 100%);
+        }
+
+        .logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: var(--gold);
+            text-shadow: 0 0 20px var(--gold);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            color: var(--light-gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            font-weight: 300;
+        }
+
+        .nav-links a:hover {
+            color: var(--teal-glow);
+            text-shadow: 0 0 10px var(--teal-glow);
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 2px;
+            background: var(--gold);
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 70%;
+                background: rgba(0,0,0,0.98);
+                flex-direction: column;
+                padding: 6rem 2rem;
+                gap: 2rem;
+                transition: right 0.3s ease;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links a {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 5% 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1400px;
+            align-items: center;
+        }
+
+        @media (max-width: 968px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+                text-align: center;
+            }
+        }
+
+        .hero-text {
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-subtitle {
+            font-size: 1rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+
+        .hero-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2.5rem, 8vw, 6rem);
+            font-weight: 700;
+            letter-spacing: 4px;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--teal-glow) 50%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.3));
+            background-size: 200% auto;
+            animation: shimmer 3s linear infinite;
+        }
+
+        @keyframes shimmer {
+            to {
+                background-position: 200% center;
+            }
+        }
+
+        .tagline {
+            font-size: 1.3rem;
+            font-weight: 300;
+            color: var(--light-gray);
+            margin: 2rem 0;
+            font-style: italic;
+            line-height: 1.6;
+        }
+
+        .tagline .highlight {
+            color: var(--teal-glow);
+            font-weight: 400;
+        }
+
+        /* Countdown */
+        .countdown-container {
+            margin: 2.5rem 0;
+            padding: 1.5rem 2rem;
+            background: rgba(32, 178, 170, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        @media (max-width: 968px) {
+            .countdown-container {
+                display: block;
+            }
+        }
+
+        .countdown-label {
+            font-size: 0.85rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .countdown {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+
+        .countdown-unit {
+            text-align: center;
+        }
+
+        .countdown-number {
+            font-family: 'Cinzel', serif;
+            font-size: 3rem;
+            color: var(--teal-glow);
+            text-shadow: 0 0 20px var(--teal-glow);
+            line-height: 1;
+        }
+
+        .countdown-text {
+            font-size: 0.75rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.5rem;
+        }
+
+        /* CTA Buttons */
+        .cta-group {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 968px) {
+            .cta-group {
+                justify-content: center;
+            }
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-block;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            color: var(--black);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold) 100%);
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.7);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--teal-glow);
+            border: 2px solid var(--teal-glow);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(32, 178, 170, 0.1);
+            box-shadow: 0 0 20px rgba(32, 178, 170, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Image */
+        .hero-image {
+            animation: fadeIn 1.5s ease-out;
+            position: relative;
+            text-align: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .book-cover {
+            width: 100%;
+            max-width: 450px;
+            height: auto;
+            filter: drop-shadow(0 20px 60px rgba(212, 175, 55, 0.4));
+            transition: transform 0.3s ease;
+            border-radius: 8px;
+        }
+
+        .book-cover:hover {
+            transform: scale(1.05) rotate(-2deg);
+        }
+
+        /* Story Section */
+        .story {
+            padding: 6rem 5%;
+            background: rgba(13, 38, 38, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            letter-spacing: 4px;
+            text-align: center;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--teal-glow) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--gray);
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        .story-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .story-text {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: var(--light-gray);
+            margin-bottom: 2rem;
+            text-align: justify;
+        }
+
+        .story-text:first-letter {
+            font-family: 'Cinzel', serif;
+            font-size: 4rem;
+            line-height: 1;
+            float: left;
+            margin: 0.1rem 0.5rem 0 0;
+            color: var(--gold);
+        }
+
+        /* Highlights */
+        .highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .highlight-card {
+            background: rgba(32, 178, 170, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .highlight-card:hover {
+            background: rgba(32, 178, 170, 0.1);
+            border-color: var(--gold);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+        }
+
+        .highlight-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .highlight-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight-desc {
+            color: var(--gray);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Audio Section */
+        .audio-section {
+            padding: 6rem 5%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .audio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .audio-card {
+            background: rgba(32, 178, 170, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 8px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .audio-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold) 0%, var(--teal-glow) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .audio-card:hover::before {
+            opacity: 1;
+        }
+
+        .audio-card:hover {
+            background: rgba(32, 178, 170, 0.1);
+            border-color: var(--teal-glow);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(32, 178, 170, 0.2);
+        }
+
+        .audio-number {
+            font-family: 'Cinzel', serif;
+            font-size: 3rem;
+            color: rgba(212, 175, 55, 0.3);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .audio-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+            color: var(--teal-glow);
+            margin-bottom: 0.5rem;
+        }
+
+        .audio-desc {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .audio-release {
+            color: var(--gold);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .audio-player {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .play-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            border: none;
+        }
+
+        .play-btn:hover {
+            background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold) 100%);
+            box-shadow: 0 0 20px var(--gold);
+            transform: scale(1.1);
+        }
+
+        .play-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--black);
+        }
+
+        .waveform {
+            flex: 1;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .wave-bar {
+            flex: 1;
+            background: var(--teal-glow);
+            border-radius: 2px;
+            opacity: 0.4;
+            transition: all 0.3s ease;
+            animation: wavePulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes wavePulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.7; }
+        }
+
+        .audio-card:hover .wave-bar {
+            opacity: 1;
+        }
+
+        /* Contest Section */
+        .contest {
+            padding: 6rem 5%;
+            background: rgba(13, 38, 38, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+
+        .contest-content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contest-prize {
+            font-size: 2.5rem;
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            margin: 2rem 0;
+            text-shadow: 0 0 20px var(--gold);
+        }
+
+        .contest-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--light-gray);
+            margin-bottom: 2rem;
+        }
+
+        .contest-duration {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+
+        .contest-duration-label {
+            font-size: 0.85rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+
+        .contest-dates {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: var(--gold);
+        }
+
+        .social-platforms {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem 2rem;
+            background: rgba(32, 178, 170, 0.1);
+            border: 1px solid var(--teal-glow);
+            border-radius: 8px;
+            color: var(--teal-glow);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .social-btn:hover {
+            background: rgba(32, 178, 170, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(32, 178, 170, 0.3);
+        }
+
+        .social-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--teal-glow);
+        }
+
+        /* Author Section */
+        .author {
+            padding: 6rem 5%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .author-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        @media (max-width: 968px) {
+            .author-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2rem;
+            }
+        }
+
+        .author-image-container {
+            position: relative;
+        }
+
+        .author-image {
+            width: 100%;
+            border-radius: 8px;
+            border: 3px solid var(--gold);
+            filter: grayscale(20%);
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 968px) {
+            .author-image {
+                max-width: 300px;
+                margin: 0 auto;
+                display: block;
+            }
+        }
+
+        .author-image:hover {
+            filter: grayscale(0%);
+            transform: scale(1.05);
+        }
+
+        .author-text h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+        }
+
+        .author-bio {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--light-gray);
+            margin-bottom: 1.5rem;
+        }
+
+        .author-quote {
+            font-style: italic;
+            font-size: 1.1rem;
+            color: var(--teal-glow);
+            padding-left: 2rem;
+            border-left: 3px solid var(--gold);
+            margin: 2rem 0;
+        }
+
+        @media (max-width: 968px) {
+            .author-quote {
+                padding-left: 1rem;
+                border-left-width: 2px;
+            }
+        }
+
+        /* Footer */
+        footer {
+            padding: 4rem 5%;
+            background: rgba(0, 0, 0, 0.8);
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+
+        .footer-section h4 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: var(--gray);
+            font-size: 0.95rem;
+            line-height: 1.8;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--teal-glow);
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .footer-social a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(32, 178, 170, 0.1);
+            border: 1px solid var(--teal-glow);
+            transition: all 0.3s ease;
+        }
+
+        .footer-social a:hover {
+            background: rgba(32, 178, 170, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .footer-social svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--teal-glow);
+        }
+
+        .footer-bottom {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            text-align: center;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .footer-legal {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .footer-legal a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .footer-legal a:hover {
+            color: var(--gold);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, var(--dark-teal) 0%, var(--deep-teal) 100%);
+            border: 2px solid var(--gold);
+            border-radius: 8px;
+            padding: 3rem;
+            max-width: 800px;
+            width: 100%;
+            position: relative;
+            box-shadow: 0 0 50px rgba(212, 175, 55, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                padding: 2rem;
+                max-width: 95%;
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: transparent;
+            border: none;
+            color: var(--gold);
+            font-size: 2rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: var(--teal-glow);
+            transform: rotate(90deg);
+        }
+
+        .modal-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 2rem;
+            letter-spacing: 2px;
+        }
+
+        .modal-content h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: var(--teal-glow);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-content p {
+            color: var(--light-gray);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .modal-content a {
+            color: var(--teal-glow);
+            text-decoration: none;
+        }
+
+        .modal-content a:hover {
+            color: var(--gold);
+        }
+
+        /* Scroll to Top Button */
+        .scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            border: none;
+            border-radius: 50%;
+            color: var(--black);
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px var(--gold);
+        }
+    </style>
+</head>
+<body>
+    <!-- Clockwork Particles Background -->
+    <div class="clockwork-particles" id="clockwork"></div>
+    
+    <!-- Crystal Particles Background -->
+    <div class="crystal-particles" id="crystals"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">DAS ORAKEL</div>
+        <div class="menu-toggle" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="nav-links" id="navLinks">
+            <a href="#story">Die Story</a>
+            <a href="#audio">Hörproben</a>
+            <a href="#gewinnspiel">Gewinnspiel</a>
+            <a href="#autor">Über den Autor</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="hero-subtitle">Ein Mystery-Thriller von Mirco Deflorin</div>
+                <h1 class="hero-title">DAS ORAKEL<br>DES UHRMACHERS</h1>
+                <p class="tagline">
+                    Ein mystischer Automat. Ein <span class="highlight">Kristall</span>, der die Zeit beherrscht. 
+                    Eine Jagd durch Europas <span class="highlight">Uhrmacher-Metropolen</span>.
+                </p>
+                
+                <!-- Countdown -->
+                <div class="countdown-container">
+                    <div class="countdown-label">Release Countdown</div>
+                    <div class="countdown">
+                        <div class="countdown-unit">
+                            <div class="countdown-number" id="days">00</div>
+                            <div class="countdown-text">Tage</div>
+                        </div>
+                        <div class="countdown-unit">
+                            <div class="countdown-number" id="hours">00</div>
+                            <div class="countdown-text">Stunden</div>
+                        </div>
+                        <div class="countdown-unit">
+                            <div class="countdown-number" id="minutes">00</div>
+                            <div class="countdown-text">Minuten</div>
+                        </div>
+                        <div class="countdown-unit">
+                            <div class="countdown-number" id="seconds">00</div>
+                            <div class="countdown-text">Sekunden</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTA Buttons -->
+                <div class="cta-group">
+                    <a href="#gewinnspiel" class="btn btn-primary">Jetzt am Gewinnspiel teilnehmen</a>
+                    <a href="#audio" class="btn btn-secondary">Hörproben entdecken</a>
+                </div>
+            </div>
+
+            <div class="hero-image">
+                <img src="cover-3D-das-orakel.png" alt="Das Orakel des Uhrmachers - Buchcover" class="book-cover">
+            </div>
+        </div>
+    </section>
+
+    <!-- Story Section -->
+    <section class="story" id="story">
+        <h2 class="section-title">Die Geschichte</h2>
+        <p class="section-subtitle">Eine Reise zwischen Zeit, Schicksal und der Macht der Vorhersehung</p>
+        
+        <div class="story-content">
+            <p class="story-text">
+                Dr. Andreas Steiner, ein frustrierter Historiker in Zürich, erbt die Werkstatt seines mysteriösen Vorfahren Wilhelm – 
+                eines legendären Uhrmachers aus dem 18. Jahrhundert. In den staubigen Gemäuern entdeckt er einen außergewöhnlichen 
+                Automaten, dessen Herzstück ein leuchtender Chronos-Kristall ist.
+            </p>
+            <p class="story-text">
+                Doch der Automat ist mehr als eine mechanische Meisterleistung: Er enthält Wilhelms Bewusstsein und kann die Zukunft 
+                vorhersagen. Als Andreas die erschreckende Macht des Orakels erkennt, wird er zum Gejagten. Viktor Röthlisberger, 
+                skrupelloser Anführer des Prometheus-Konsortiums, will den Kristall um jeden Preis – für eine Welt, in der er das 
+                Schicksal kontrolliert.
+            </p>
+            <p class="story-text">
+                Gemeinsam mit der brillanten Uhrmacherin Clara Widmer beginnt eine atemlose Jagd durch Zürich, Rapperswil, Prag, 
+                Genf und Straßburg. Ein 48-Stunden-Countdown. Ein Geheimnis, das Jahrhunderte überdauerte. Eine Entscheidung, 
+                die die Zukunft der Menschheit bestimmt.
+            </p>
+
+            <!-- Highlights -->
+            <div class="highlights">
+                <div class="highlight-card">
+                    <div class="highlight-icon">⚙️</div>
+                    <div class="highlight-title">Mystik & Mechanik</div>
+                    <div class="highlight-desc">Historische Uhrmacherkunst trifft auf übernatürliche Kräfte</div>
+                </div>
+                <div class="highlight-card">
+                    <div class="highlight-icon">🔮</div>
+                    <div class="highlight-title">Zeitreise-Mystery</div>
+                    <div class="highlight-desc">Verbindung zwischen dem 18. Jahrhundert und der Gegenwart</div>
+                </div>
+                <div class="highlight-card">
+                    <div class="highlight-icon">🌍</div>
+                    <div class="highlight-title">Europäische Schauplätze</div>
+                    <div class="highlight-desc">Von Zürich bis Prag – authentische Locations</div>
+                </div>
+                <div class="highlight-card">
+                    <div class="highlight-icon">⚡</div>
+                    <div class="highlight-title">48-Stunden-Thriller</div>
+                    <div class="highlight-desc">Non-Stop Action im Dan-Brown-Stil</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Audio Section -->
+    <section class="audio-section" id="audio">
+        <h2 class="section-title">Hörproben</h2>
+        <p class="section-subtitle">Tauche ein in die mystische Welt des Orakels</p>
+        
+        <div class="audio-grid">
+            <div class="audio-card">
+                <div class="audio-number">01</div>
+                <div class="audio-title">Die Entdeckung</div>
+                <p class="audio-desc">
+                    Andreas betritt zum ersten Mal Wilhelms Werkstatt und entdeckt den geheimnisvollen Automaten...
+                </p>
+                <div class="audio-release">📅 Release: 01. August 2026</div>
+                <div class="audio-player">
+                    <button class="play-btn" aria-label="Play">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                    </button>
+                    <div class="waveform" id="waveform1"></div>
+                </div>
+            </div>
+
+            <div class="audio-card">
+                <div class="audio-number">02</div>
+                <div class="audio-title">Der Chronos-Kristall</div>
+                <p class="audio-desc">
+                    Clara enthüllt die mystischen Eigenschaften des leuchtenden Kristalls im Herzen des Automaten...
+                </p>
+                <div class="audio-release">📅 Release: 08. August 2026</div>
+                <div class="audio-player">
+                    <button class="play-btn" aria-label="Play">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                    </button>
+                    <div class="waveform" id="waveform2"></div>
+                </div>
+            </div>
+
+            <div class="audio-card">
+                <div class="audio-number">03</div>
+                <div class="audio-title">Die Jagd beginnt</div>
+                <p class="audio-desc">
+                    Röthlisbergers Männer stürmen die Werkstatt – Andreas und Clara müssen fliehen...
+                </p>
+                <div class="audio-release">📅 Release: 15. August 2026</div>
+                <div class="audio-player">
+                    <button class="play-btn" aria-label="Play">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                    </button>
+                    <div class="waveform" id="waveform3"></div>
+                </div>
+            </div>
+
+            <div class="audio-card">
+                <div class="audio-number">04</div>
+                <div class="audio-title">Prager Rätsel</div>
+                <p class="audio-desc">
+                    In den Katakomben unter der Prager astronomischen Uhr enthüllt sich ein jahrhundertealtes Geheimnis...
+                </p>
+                <div class="audio-release">📅 Release: 22. August 2026</div>
+                <div class="audio-player">
+                    <button class="play-btn" aria-label="Play">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                    </button>
+                    <div class="waveform" id="waveform4"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contest Section -->
+    <section class="contest" id="gewinnspiel">
+        <h2 class="section-title">Gewinnspiel</h2>
+        <p class="section-subtitle">Sichere dir ein signiertes Exemplar</p>
+        
+        <div class="contest-content">
+            <div class="contest-prize">🎁 3x signierte Erstausgabe</div>
+            <p class="contest-text">
+                Gewinne eines von drei signierten Exemplaren von "Das Orakel des Uhrmachers"! 
+                Folge mir auf Social Media, kommentiere den Gewinnspiel-Post und teile, was dich an der Story fasziniert.
+            </p>
+            
+            <div class="contest-duration">
+                <div class="contest-duration-label">Teilnahmezeitraum</div>
+                <div class="contest-dates">01.08.2026 - 31.08.2026</div>
+            </div>
+
+            <p class="contest-text">
+                Die Gewinner werden am 05. September 2026 bekannt gegeben. Viel Glück! 🍀
+            </p>
+
+            <!-- Social Media Buttons -->
+            <div class="social-platforms">
+                <a href="https://instagram.com/mirco.deflorin" class="social-btn" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                    Instagram
+                </a>
+                <a href="https://facebook.com/mirco.deflorin" class="social-btn" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    </svg>
+                    Facebook
+                </a>
+                <a href="https://linkedin.com/in/mirco-deflorin" class="social-btn" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                    LinkedIn
+                </a>
+                <a href="https://tiktok.com/@mirco.deflorin" class="social-btn" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+                    </svg>
+                    TikTok
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Author Section -->
+    <section class="author" id="autor">
+        <h2 class="section-title">Über den Autor</h2>
+        <p class="section-subtitle">Mirco Deflorin – Geschichtenerzähler zwischen Fakten und Fantasie</p>
+        
+        <div class="author-content">
+            <div class="author-image-container">
+                <img src="Autorenphoto_Mirco-Deflorin.jpeg" alt="Mirco Deflorin" class="author-image">
+            </div>
+            <div class="author-text">
+                <h3>Mirco Deflorin</h3>
+                <p class="author-bio">
+                    Mirco Deflorin, hauptberuflich Peer/Genesungsbegleiter bei der Schweizer Invalidenversicherung (IV), 
+                    hat seine Leidenschaft für das Geschichtenerzählen in packende Mystery-Thriller verwandelt. In seiner 
+                    Heimat im Kanton St. Gallen entwickelt er Geschichten, die historische Fakten mit übernatürlichen 
+                    Elementen verbinden.
+                </p>
+                <p class="author-bio">
+                    "Das Orakel des Uhrmachers" ist sein neuestes Werk – ein Thriller, der die Präzision Schweizer 
+                    Uhrmacherkunst mit mystischen Zeitphänomenen vereint. Inspiriert von Dan Browns Mystery-Stil und 
+                    authentischen europäischen Schauplätzen, erschafft Deflorin Welten, die Leser von der ersten Seite 
+                    an fesseln.
+                </p>
+                <div class="author-quote">
+                    "Ich schreibe die Geschichten, die ich selbst lesen möchte – voller Rätsel, Spannung und jener Momente, 
+                    in denen Geschichte und Gegenwart verschmelzen."
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Das Orakel des Uhrmachers</h4>
+                <p>
+                    Ein Mystery-Thriller von Mirco Deflorin<br>
+                    © 2026 Alle Rechte vorbehalten
+                </p>
+            </div>
+            <div class="footer-section">
+                <h4>Navigation</h4>
+                <div class="footer-links">
+                    <a href="#story">Die Story</a>
+                    <a href="#audio">Hörproben</a>
+                    <a href="#gewinnspiel">Gewinnspiel</a>
+                    <a href="#autor">Über den Autor</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Folge mir</h4>
+                <div class="footer-social">
+                    <a href="https://instagram.com/mirco.deflorin" target="_blank" rel="noopener" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                        </svg>
+                    </a>
+                    <a href="https://facebook.com/mirco.deflorin" target="_blank" rel="noopener" aria-label="Facebook">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                    </a>
+                    <a href="https://linkedin.com/in/mirco-deflorin" target="_blank" rel="noopener" aria-label="LinkedIn">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                        </svg>
+                    </a>
+                    <a href="https://tiktok.com/@mirco.deflorin" target="_blank" rel="noopener" aria-label="TikTok">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Kontakt</h4>
+                <p>
+                    E-Mail: <a href="mailto:info@mirco-deflorin.ch">info@mirco-deflorin.ch</a><br>
+                    Website: <a href="https://mirco-deflorin.ch" target="_blank">mirco-deflorin.ch</a>
+                </p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Mirco Deflorin. Alle Rechte vorbehalten.</p>
+            <div class="footer-legal">
+                <a onclick="openModal('impressum')">Impressum</a>
+                <a onclick="openModal('datenschutz')">Datenschutz</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Impressum Modal -->
+    <div id="impressum-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('impressum')">×</button>
+            <h2 class="modal-title">Impressum</h2>
+            
+            <h3>Angaben gemäss Art. 8 DSG</h3>
+            <p>
+                Diese Website wird betrieben von:<br>
+                Mirco Deflorin<br>
+                Neue Wangserstrasse 9<br>
+                7320 Sargans<br>
+                Schweiz
+            </p>
+            <p>
+                E-Mail: <a href="mailto:info@mirco-deflorin.ch">info@mirco-deflorin.ch</a>
+            </p>
+            
+            <h3>Verantwortlich für den Inhalt</h3>
+            <p>
+                Mirco Deflorin<br>
+                Neue Wangserstrasse 9<br>
+                7320 Sargans
+            </p>
+            
+            <h3>Haftungsausschluss</h3>
+            <p>
+                <strong>Haftung für Inhalte:</strong><br>
+                Die Inhalte dieser Seiten wurden mit grösster Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte kann ich jedoch keine Gewähr übernehmen.
+            </p>
+            <p>
+                <strong>Haftung für Links:</strong><br>
+                Mein Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte ich keinen Einfluss habe. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.
+            </p>
+            
+            <h3>Urheberrecht</h3>
+            <p>
+                Die durch mich erstellten Inhalte und Werke auf diesen Seiten unterliegen dem Schweizer Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung ausserhalb der Grenzen des Urheberrechtes bedürfen meiner schriftlichen Zustimmung.
+            </p>
+        </div>
+    </div>
+
+    <!-- Datenschutz Modal -->
+    <div id="datenschutz-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('datenschutz')">×</button>
+            <h2 class="modal-title">Datenschutzerklärung</h2>
+            
+            <h3>Grundsatz</h3>
+            <p>
+                Der Schutz Ihrer persönlichen Daten ist mir wichtig. Ich erhebe und verarbeite Ihre personenbezogenen Daten ausschliesslich im Rahmen der gesetzlichen Bestimmungen.
+            </p>
+            
+            <h3>Datenerhebung</h3>
+            <p>
+                Diese Website erhebt grundsätzlich <strong>keine personenbezogenen Daten</strong> von Besuchern. Es werden keine Cookies gesetzt, keine Tracking-Tools verwendet und keine Analyse-Software eingesetzt.
+            </p>
+            
+            <h3>Gewinnspiele</h3>
+            <p>
+                Bei der Teilnahme an Gewinnspielen auf Social-Media-Plattformen (Instagram, Facebook, LinkedIn, TikTok) werden folgende Daten erfasst:
+            </p>
+            <p>
+                • Name/Username<br>
+                • E-Mail-Adresse oder Postadresse (nur bei Gewinnern)<br>
+                • Kommentar zum Gewinnspiel
+            </p>
+            <p>
+                <strong>Verwendung:</strong> Diese Daten werden ausschliesslich zur Durchführung des Gewinnspiels und zur Kontaktaufnahme mit den Gewinnern verwendet.
+            </p>
+            <p>
+                <strong>Löschung:</strong> Alle erhobenen Daten werden unmittelbar nach Abschluss des Gewinnspiels und Versand der Gewinne vollständig gelöscht.
+            </p>
+            <p>
+                <strong>Weitergabe:</strong> Ihre Daten werden nicht an Dritte weitergegeben.
+            </p>
+            
+            <h3>E-Mail-Kontakt</h3>
+            <p>
+                Bei Kontaktaufnahme per E-Mail werden Ihre übermittelten Daten (E-Mail-Adresse, Name, Nachricht) ausschliesslich zur Bearbeitung Ihrer Anfrage gespeichert. Diese Daten werden nicht weitergegeben und nach Abschluss der Kommunikation gelöscht.
+            </p>
+            
+            <h3>Social Media</h3>
+            <p>
+                Auf dieser Website befinden sich Links zu Social-Media-Plattformen (Instagram, Facebook, LinkedIn, TikTok). Beim Klick auf diese Links verlassen Sie diese Website. Es gelten dann die Datenschutzbestimmungen der jeweiligen Plattform.
+            </p>
+            
+            <h3>Ihre Rechte</h3>
+            <p>
+                Sie haben jederzeit das Recht auf:
+            </p>
+            <p>
+                • Auskunft über Ihre gespeicherten Daten<br>
+                • Berichtigung unrichtiger Daten<br>
+                • Löschung Ihrer Daten<br>
+                • Einschränkung der Datenverarbeitung<br>
+                • Datenübertragbarkeit<br>
+                • Widerspruch gegen die Verarbeitung
+            </p>
+            <p>
+                Für alle Anfragen kontaktieren Sie mich bitte unter: <a href="mailto:info@mirco-deflorin.ch">info@mirco-deflorin.ch</a>
+            </p>
+            
+            <h3>Änderungen</h3>
+            <p>
+                Ich behalte mir vor, diese Datenschutzerklärung anzupassen, um sie an geänderte Rechtslagen oder bei Änderungen des Dienstes sowie der Datenverarbeitung anzupassen.
+            </p>
+            
+            <p style="margin-top: 2rem; font-size: 0.9rem; color: var(--gray);">
+                Stand: Dezember 2025
+            </p>
+        </div>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top" id="scrollTop" onclick="scrollToTop()">↑</button>
+
+    <script>
+        // Clockwork Gear Animation
+        function createClockworkGears() {
+            const container = document.getElementById('clockwork');
+            const gearSVG = `
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="30" fill="none" stroke="currentColor" stroke-width="2" opacity="0.3"/>
+                    <circle cx="50" cy="50" r="5" fill="currentColor" opacity="0.5"/>
+                    <line x1="50" y1="20" x2="50" y2="35" stroke="currentColor" stroke-width="3" opacity="0.4"/>
+                    <line x1="50" y1="65" x2="50" y2="80" stroke="currentColor" stroke-width="3" opacity="0.4"/>
+                    <line x1="20" y1="50" x2="35" y2="50" stroke="currentColor" stroke-width="3" opacity="0.4"/>
+                    <line x1="65" y1="50" x2="80" y2="50" stroke="currentColor" stroke-width="3" opacity="0.4"/>
+                </svg>
+            `;
+            
+            for (let i = 0; i < 8; i++) {
+                const gear = document.createElement('div');
+                gear.className = 'gear';
+                gear.style.left = Math.random() * 100 + '%';
+                gear.style.width = (30 + Math.random() * 40) + 'px';
+                gear.style.height = gear.style.width;
+                gear.style.animationDelay = Math.random() * 20 + 's';
+                gear.style.animationDuration = (15 + Math.random() * 10) + 's';
+                gear.style.color = Math.random() > 0.5 ? 'var(--teal-glow)' : 'var(--gold)';
+                gear.innerHTML = gearSVG;
+                container.appendChild(gear);
+            }
+        }
+        createClockworkGears();
+
+        // Crystal Particles
+        function createCrystalParticles() {
+            const container = document.getElementById('crystals');
+            for (let i = 0; i < 40; i++) {
+                const crystal = document.createElement('div');
+                crystal.className = 'crystal';
+                crystal.style.left = Math.random() * 100 + '%';
+                crystal.style.top = Math.random() * 100 + '%';
+                crystal.style.animationDelay = Math.random() * 8 + 's';
+                crystal.style.animationDuration = (6 + Math.random() * 4) + 's';
+                
+                const moveX = (Math.random() - 0.5) * 200;
+                const moveY = (Math.random() - 0.5) * 200;
+                crystal.style.setProperty('--moveX', moveX + 'px');
+                crystal.style.setProperty('--moveY', moveY + 'px');
+                
+                container.appendChild(crystal);
+            }
+        }
+        createCrystalParticles();
+
+        // Update crystal animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes crystalGlow {
+                0%, 100% { 
+                    opacity: 0; 
+                    transform: translate(0, 0); 
+                }
+                10% { opacity: 0.6; }
+                50% { 
+                    opacity: 1; 
+                    transform: translate(var(--moveX, 0), var(--moveY, 0)); 
+                }
+                90% { opacity: 0.6; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Countdown Timer
+        function updateCountdown() {
+            const releaseDate = new Date('2026-09-01T00:00:00').getTime();
+            const now = new Date().getTime();
+            const diff = releaseDate - now;
+
+            if (diff > 0) {
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('days').textContent = days.toString().padStart(2, '0');
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            } else {
+                document.getElementById('days').textContent = '00';
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
+            }
+        }
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // Waveform Animation
+        function createWaveform(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            for (let i = 0; i < 30; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'wave-bar';
+                const height = (5 + Math.random() * 25);
+                bar.style.height = height + 'px';
+                bar.style.animationDelay = (Math.random() * 1.5) + 's';
+                container.appendChild(bar);
+            }
+        }
+
+        // Create waveforms for all audio cards
+        createWaveform('waveform1');
+        createWaveform('waveform2');
+        createWaveform('waveform3');
+        createWaveform('waveform4');
+
+        // Mobile Menu Toggle
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        // Close menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('navLinks').classList.remove('active');
+            });
+        });
+
+        // Modal Functions
+        function openModal(type) {
+            const modal = document.getElementById(type + '-modal');
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(type) {
+            const modal = document.getElementById(type + '-modal');
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Close modal when clicking outside
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal(this.id.replace('-modal', ''));
+                }
+            });
+        });
+
+        // Close modal with ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal.active').forEach(modal => {
+                    closeModal(modal.id.replace('-modal', ''));
+                });
+            }
+        });
+
+        // Scroll to Top Button
+        const scrollTopBtn = document.getElementById('scrollTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href === '#') return;
+                
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
