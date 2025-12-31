@@ -150,28 +150,6 @@ nav.scrolled {
     width: 100%;
 }
 
-.dark-mode-toggle {
-    background: rgba(0, 212, 255, 0.2);
-    border: 2px solid var(--accent-cyan);
-    color: var(--accent-cyan);
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    font-size: 1.2rem;
-}
-
-.dark-mode-toggle:hover {
-    background: var(--accent-cyan);
-    color: var(--deep-blue);
-    transform: rotate(180deg) scale(1.1);
-    box-shadow: 0 0 20px rgba(0, 212, 255, 0.6);
-}
-
 /* Hero Section */
 .hero {
     position: relative;
@@ -582,6 +560,28 @@ section {
     margin-top: 0.5rem;
 }
 
+.event-logo {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.event-logo a {
+    display: inline-block;
+    transition: all 0.3s ease;
+    filter: brightness(0.9);
+}
+
+.event-logo a:hover {
+    filter: brightness(1.1);
+    transform: scale(1.05);
+}
+
+.event-logo img {
+    max-width: 200px;
+    height: auto;
+    border-radius: 8px;
+}
+
 /* Footer */
 footer {
     background: rgba(13, 2, 33, 0.95);
@@ -802,9 +802,6 @@ footer {
             <li><a href="#upcoming">Kommende Werke</a></li>
             <li><a href="#events">Events</a></li>
         </ul>
-        <button class="dark-mode-toggle" onclick="toggleLightMode()" title="Light Mode">
-            <i class="fas fa-sun"></i>
-        </button>
     </div>
 </nav>
 
@@ -1126,6 +1123,28 @@ footer {
                 <span>Vorarlberg, Österreich</span>
             </div>
             <p>Besuchen Sie mich auf der Vorarlberger Buchmesse! Ich freue mich auf persönliche Gespräche, Buchsignierungen und den Austausch mit Lesern über meine Werke – von Mystery-Thriller bis zu christlichen Büchern.</p>
+            <div class="event-logo">
+                <a href="https://www.vorarlberger-buchmesse.at/" target="_blank" rel="noopener noreferrer">
+                    <img src="VorarlbergerBuchmesse_72dpi.png" alt="Vorarlberger Buchmesse Logo">
+                </a>
+            </div>
+        </div>
+
+        <div class="event-card">
+            <h3>
+                <span class="event-date">15. November 2026</span>
+                Fantastica Buchmesse St. Gallen
+            </h3>
+            <div class="event-location">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>St. Gallen, Schweiz</span>
+            </div>
+            <p>Entdecken Sie meine Mystery-Thriller auf der Fantastica Buchmesse in St. Gallen! Eine einzigartige Gelegenheit, mich persönlich kennenzulernen, Bücher signieren zu lassen und in die Welt psychologischer Spannung einzutauchen.</p>
+            <div class="event-logo">
+                <a href="https://fantastica-stgallen.ch/" target="_blank" rel="noopener noreferrer">
+                    <img src="Logo_Fantastica.jpeg" alt="Fantastica St. Gallen Logo">
+                </a>
+            </div>
         </div>
     </div>
 </section>
@@ -1150,7 +1169,7 @@ footer {
     <div class="footer-links">
         <a href="#" onclick="openModal('impressum'); return false;">Impressum</a>
         <a href="#" onclick="openModal('datenschutz'); return false;">Datenschutz</a>
-        <a href="mailto:mirco.deflorin@gmx.ch">Kontakt</a>
+        <a href="/cdn-cgi/l/email-protection#1e73776c7d71307a7b7872716c77705e797366307d76">Kontakt</a>
     </div>
     
     <p class="copyright">© 2026 Mirco Deflorin. Alle Rechte vorbehalten.</p>
@@ -1172,7 +1191,7 @@ footer {
         
         <h3>Kontakt</h3>
         <p>
-            E-Mail: <a href="mailto:mirco.deflorin@gmx.ch">mirco.deflorin@gmx.ch</a>
+            E-Mail: <a href="/cdn-cgi/l/email-protection#6f02061d0c00410b0a0903001d06012f080217410c07"><span class="__cf_email__" data-cfemail="80ede9f2e3efaee4e5e6eceff2e9eec0e7edf8aee3e8">[email&#160;protected]</span></a>
         </p>
         
         <h3>Verantwortlich für den Inhalt</h3>
@@ -1257,7 +1276,7 @@ footer {
             • Widerspruch gegen die Verarbeitung
         </p>
         <p>
-            Für alle Anfragen kontaktieren Sie mich bitte unter: <a href="mailto:mirco.deflorin@gmx.ch">mirco.deflorin@gmx.ch</a>
+            Für alle Anfragen kontaktieren Sie mich bitte unter: <a href="/cdn-cgi/l/email-protection#1d70746f7e723379787b71726f74735d7a7065337e75"><span class="__cf_email__" data-cfemail="375a5e455458195352515b58455e5977505a4f19545f">[email&#160;protected]</span></a>
         </p>
         
         <h3>Änderungen</h3>
@@ -1271,7 +1290,7 @@ footer {
     </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // Particle Animation
 function createParticles() {
     const container = document.getElementById('particles');
@@ -1356,18 +1375,4 @@ document.querySelectorAll('.modal').forEach(modal => {
 // Close modal with ESC key
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
-        document.querySelectorAll('.modal.active').forEach(modal => {
-            closeModal(modal.id.replace('-modal', ''));
-        });
-    }
-});
-
-// Light Mode Toggle (currently disabled but ready for future use)
-function toggleLightMode() {
-    // Placeholder for future light mode implementation
-    alert('Light Mode ist in dieser spektakulären Dark Theme Version nicht verfügbar. Die Dunkelheit verstärkt die Mystery! 🌙');
-}
-</script>
-
-</body>
-</html>
+        document.querySelectorAll('
