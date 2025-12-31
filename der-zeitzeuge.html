@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DER ZEITZEUGE – Ein Mystery-Thriller von Mirco Deflorin</title>
+    <meta name="description" content="Zeit ist keine Konstante. Sie ist formbar, beeinflussbar – und tödlich. DER ZEITZEUGE - Ein Mystery-Thriller aus Hamburg. Release: 2026">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel:wght@400;600;700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #000000;
+            --dark-gray: #0a0a0a;
+            --deep-gray: #121212;
+            --charcoal: #1a1a1a;
+            --gold: #d4af37;
+            --gold-dark: #b8962e;
+            --gold-glow: #ffd700;
+            --white: #ffffff;
+            --gray: #8a8a8a;
+            --light-gray: #b8b8b8;
+            --red-accent: #8b0000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Source Sans 3', sans-serif;
+            background: linear-gradient(180deg, var(--black) 0%, var(--dark-gray) 50%, var(--deep-gray) 100%);
+            color: var(--white);
+            line-height: 1.7;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Particle Background - Clock-themed */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--gold);
+            border-radius: 50%;
+            opacity: 0;
+            animation: float 20s infinite;
+            box-shadow: 0 0 8px var(--gold-glow), 0 0 15px var(--gold-glow);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            100% { transform: translateY(-100vh) scale(1); opacity: 0; }
+        }
+
+        /* Clock particle variation */
+        .clock-particle {
+            position: absolute;
+            font-size: 20px;
+            color: var(--gold);
+            opacity: 0;
+            animation: clockFloat 25s infinite;
+            text-shadow: 0 0 10px var(--gold-glow);
+        }
+
+        @keyframes clockFloat {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: linear-gradient(180deg, rgba(0,0,0,0.95) 0%, transparent 100%);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: var(--gold);
+            text-shadow: 0 0 20px var(--gold-glow);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            color: var(--light-gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+            text-shadow: 0 0 10px var(--gold-glow);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 5% 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1400px;
+            align-items: center;
+        }
+
+        .hero-text {
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(4rem, 10vw, 7rem);
+            font-weight: 700;
+            letter-spacing: 8px;
+            line-height: 0.95;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(180deg, var(--white) 0%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.4));
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: var(--light-gray);
+            margin: 2rem 0;
+            max-width: 500px;
+            font-style: italic;
+            line-height: 1.6;
+        }
+
+        .tagline span {
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        /* Time symbol */
+        .time-symbol {
+            font-size: 5rem;
+            color: var(--gold);
+            text-shadow: 0 0 30px var(--gold-glow);
+            margin: 1rem 0;
+            animation: clockPulse 3s infinite;
+        }
+
+        @keyframes clockPulse {
+            0%, 100% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+
+        /* Countdown */
+        .countdown-container {
+            margin: 2.5rem 0;
+            padding: 2rem 2.5rem;
+            background: rgba(212, 175, 55, 0.08);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            display: inline-block;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+        }
+
+        .countdown-label {
+            font-size: 0.85rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.8rem;
+        }
+
+        .countdown {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .countdown-unit {
+            text-align: center;
+        }
+
+        .countdown-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.5rem;
+            color: var(--gold);
+            text-shadow: 0 0 25px var(--gold-glow);
+            line-height: 1;
+        }
+
+        .countdown-text {
+            font-size: 0.75rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.3rem;
+        }
+
+        /* Book Cover */
+        .book-cover-container {
+            perspective: 1000px;
+            animation: fadeInRight 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .book-cover {
+            width: 100%;
+            max-width: 450px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 
+                        0 0 40px rgba(212, 175, 55, 0.2);
+            transition: transform 0.5s ease;
+        }
+
+        .book-cover:hover {
+            transform: rotateY(5deg) rotateX(-5deg) translateZ(20px);
+        }
+
+        /* Section styling */
+        section {
+            padding: 6rem 5%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+            background: linear-gradient(180deg, var(--white) 0%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 4px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--gray);
+            font-size: 1.1rem;
+            margin-bottom: 4rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Story Section */
+        .story-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem;
+            background: rgba(26, 26, 26, 0.6);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .story-content p {
+            font-size: 1.2rem;
+            line-height: 1.9;
+            color: var(--light-gray);
+            margin-bottom: 1.5rem;
+        }
+
+        .story-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .story-highlight {
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        /* Audio samples */
+        .audio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .audio-card {
+            background: rgba(26, 26, 26, 0.7);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            border-radius: 12px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .audio-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--gold);
+            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .audio-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            color: var(--gold);
+            text-shadow: 0 0 20px var(--gold-glow);
+            margin-bottom: 0.5rem;
+        }
+
+        .audio-date {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .audio-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 1rem;
+        }
+
+        .waveform {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            height: 60px;
+            margin: 1.5rem 0;
+        }
+
+        .wave-bar {
+            width: 4px;
+            background: linear-gradient(180deg, var(--gold) 0%, var(--gold-dark) 100%);
+            border-radius: 2px;
+            animation: wave 1.5s ease-in-out infinite;
+        }
+
+        @keyframes wave {
+            0%, 100% { height: 10px; opacity: 0.4; }
+            50% { height: 40px; opacity: 1; }
+        }
+
+        .coming-soon {
+            font-size: 0.85rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        /* Giveaway Section */
+        .giveaway {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(139, 0, 0, 0.1) 100%);
+            border-top: 2px solid rgba(212, 175, 55, 0.3);
+            border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .giveaway-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .giveaway-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .giveaway-content h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 20px var(--gold-glow);
+        }
+
+        .giveaway-content p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--light-gray);
+            margin-bottom: 2rem;
+        }
+
+        .giveaway-period {
+            font-size: 1rem;
+            color: var(--gray);
+            margin-top: 2rem;
+            font-style: italic;
+        }
+
+        /* Button styles */
+        .btn {
+            padding: 1rem 2.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            color: var(--black);
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 30px rgba(212, 175, 55, 0.6);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--gold);
+            color: var(--gold);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        /* Author Section */
+        .author-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .author-image {
+            width: 100%;
+            border-radius: 8px;
+            border: 2px solid var(--gold);
+            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .author-bio {
+            color: var(--light-gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .author-bio p {
+            margin-bottom: 1.5rem;
+        }
+
+        .author-name {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--black);
+            padding: 3rem 5%;
+            text-align: center;
+            border-top: 2px solid var(--gold);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .social-link {
+            color: var(--gray);
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: var(--gold);
+            transform: translateY(-3px);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--gold);
+        }
+
+        .copyright {
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--charcoal);
+            padding: 3rem;
+            border-radius: 12px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            border: 2px solid var(--gold);
+            box-shadow: 0 0 50px rgba(212, 175, 55, 0.3);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--gold);
+            font-size: 2rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .modal-close:hover {
+            transform: rotate(90deg);
+        }
+
+        .modal-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 2rem;
+        }
+
+        .modal-content h3 {
+            color: var(--gold);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-content p {
+            color: var(--light-gray);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .modal-content a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        .modal-content a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .book-cover-container {
+                order: -1;
+                max-width: 350px;
+                margin: 0 auto;
+            }
+
+            .countdown-container {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .author-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: clamp(2.5rem, 12vw, 4rem);
+                letter-spacing: 4px;
+            }
+
+            .tagline {
+                font-size: 1.1rem;
+            }
+
+            .countdown {
+                gap: 1rem;
+            }
+
+            .countdown-number {
+                font-size: 2.5rem;
+            }
+
+            section {
+                padding: 4rem 5%;
+            }
+
+            .audio-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading animation */
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        .loading {
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(212, 175, 55, 0.2) 50%, 
+                transparent 100%);
+            background-size: 1000px 100%;
+            animation: shimmer 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Particle Background -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">DER ZEITZEUGE</div>
+        <div class="nav-links">
+            <a href="#story">Story</a>
+            <a href="#hoerproben">Hörproben</a>
+            <a href="#gewinnspiel">Gewinnspiel</a>
+            <a href="#autor">Autor</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="hero-subtitle">Mystery-Thriller</div>
+                <h1 class="hero-title">DER<br>ZEITZEUGE</h1>
+                <div class="time-symbol">🕐</div>
+                <p class="tagline">
+                    Zeit ist keine Konstante. Sie ist <span>formbar, beeinflussbar</span> – und tödlich.
+                </p>
+                
+                <div class="countdown-container">
+                    <div class="countdown-label">Release in:</div>
+                    <div class="countdown">
+                        <div class="countdown-unit">
+                            <div class="countdown-number" id="days">00</div>
+                            <div class="countdown-text">Tage</div>
+                        </div>
+                        <div class="countdown-unit">
+                            <div class="countdown-number" id="hours">00</div>
+                            <div class="countdown-text">Stunden</div>
+                        </div>
+                        <div class="countdown-unit">
+                            <div class="countdown-number" id="minutes">00</div>
+                            <div class="countdown-text">Minuten</div>
+                        </div>
+                        <div class="countdown-unit">
+                            <div class="countdown-number" id="seconds">00</div>
+                            <div class="countdown-text">Sekunden</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="book-cover-container">
+                <img src="cover-3D-der-Zeitzeuge.png" alt="Der Zeitzeuge Buchcover" class="book-cover">
+            </div>
+        </div>
+    </section>
+
+    <!-- Story Section -->
+    <section id="story">
+        <h2 class="section-title">Die Geschichte</h2>
+        <p class="section-subtitle">Hamburg. Nebel. Mord. Und eine Fähigkeit, die alles verändert.</p>
+        
+        <div class="story-content">
+            <p>
+                <span class="story-highlight">Hauptkommissar Jorik Brenner</span> kann durch Berühren von Gegenständen deren letzten 24 Stunden sehen – aber nur bei Objekten von Tatorten. Eine Gabe, die zur Last wird, als er einen Serienmörder jagt, der die Regeln der Zeit selbst bricht.
+            </p>
+            <p>
+                Die Gegenstände zeigen ihm <span class="story-highlight">verschiedene Versionen derselben Morde</span>. Unmöglich. Und doch real. Jemand experimentiert mit Zeit und Tod – und Brenner wird selbst zur Zielscheibe.
+            </p>
+            <p>
+                Im herbstlichen Hamburg, wo Nebel von der Elbe aufsteigt und die Speicherstadt ihre Geheimnisse bewahrt, beginnt eine Jagd gegen die Zeit. Denn der Täter kennt Brenners Fähigkeit. Und er will ihn als <span class="story-highlight">Zeugen seiner Perfektion</span>.
+            </p>
+            <p>
+                Ein Mystery-Thriller über Zeitmanipulation, übernatürliche Ermittlungen und die Frage: <span class="story-highlight">Was würdest du tun, wenn du die Zeit kontrollieren könntest?</span>
+            </p>
+        </div>
+    </section>
+
+    <!-- Audio Samples Section -->
+    <section id="hoerproben">
+        <h2 class="section-title">Hörproben</h2>
+        <p class="section-subtitle">Tauche ein in die düstere Atmosphäre von Hamburg</p>
+        
+        <div class="audio-grid">
+            <div class="audio-card">
+                <div class="audio-number">01</div>
+                <div class="audio-date">Erscheint: 15. Januar 2026</div>
+                <h3 class="audio-title">Der erste Blick</h3>
+                <div class="waveform" id="waveform-1">
+                    <!-- Waveform bars will be generated by JavaScript -->
+                </div>
+                <div class="coming-soon">Demnächst verfügbar</div>
+            </div>
+
+            <div class="audio-card">
+                <div class="audio-number">02</div>
+                <div class="audio-date">Erscheint: 22. Januar 2026</div>
+                <h3 class="audio-title">Zweifel</h3>
+                <div class="waveform" id="waveform-2">
+                    <!-- Waveform bars will be generated by JavaScript -->
+                </div>
+                <div class="coming-soon">Demnächst verfügbar</div>
+            </div>
+
+            <div class="audio-card">
+                <div class="audio-number">03</div>
+                <div class="audio-date">Erscheint: 29. Januar 2026</div>
+                <h3 class="audio-title">Zeitschleifen</h3>
+                <div class="waveform" id="waveform-3">
+                    <!-- Waveform bars will be generated by JavaScript -->
+                </div>
+                <div class="coming-soon">Demnächst verfügbar</div>
+            </div>
+
+            <div class="audio-card">
+                <div class="audio-number">04</div>
+                <div class="audio-date">Erscheint: 05. Februar 2026</div>
+                <h3 class="audio-title">Die Konfrontation</h3>
+                <div class="waveform" id="waveform-4">
+                    <!-- Waveform bars will be generated by JavaScript -->
+                </div>
+                <div class="coming-soon">Demnächst verfügbar</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Giveaway Section -->
+    <section id="gewinnspiel" class="giveaway">
+        <div class="giveaway-content">
+            <div class="giveaway-icon">🎁</div>
+            <h3>Grosses Gewinnspiel</h3>
+            <p>
+                Gewinne ein <strong>signiertes Exemplar</strong> von "Der Zeitzeuge" zusammen mit exklusivem Merchandise!
+            </p>
+            <p>
+                Folge mir auf Social Media und halte Ausschau nach dem Gewinnspiel-Post. 
+                Die Teilnahme ist ganz einfach und kostenlos.
+            </p>
+            <a href="#footer" class="btn btn-primary">Zu den Social Media Links</a>
+            <p class="giveaway-period">Gewinnspiel-Zeitraum: 01.01.2026 - 28.02.2026</p>
+        </div>
+    </section>
+
+    <!-- Author Section -->
+    <section id="autor">
+        <h2 class="section-title">Über den Autor</h2>
+        <p class="section-subtitle">Mirco Deflorin – Zwischen Realität und Fantasie</p>
+        
+        <div class="author-content">
+            <img src="https://via.placeholder.com/300x400/1a1a1a/d4af37?text=Mirco+Deflorin" alt="Mirco Deflorin" class="author-image">
+            <div class="author-bio">
+                <h3 class="author-name">Mirco Deflorin</h3>
+                <p>
+                    Mirco Deflorin ist Peer-/Genesungsbegleiter bei der Invalidenversicherung IV in der Schweiz und lebt in Sargans. Seine Leidenschaft gilt dem Schreiben von Mystery-Thrillern, die das Übernatürliche mit psychologischer Tiefe verbinden.
+                </p>
+                <p>
+                    "Der Zeitzeuge" ist sein neuestes Werk – ein düsterer Thriller, der die Grenzen zwischen Realität und Unmöglichem verschwimmen lässt. Mit Hilfe modernster KI-Technologie erschafft er Geschichten, die den Leser fesseln und zum Nachdenken anregen.
+                </p>
+                <p>
+                    Wenn er nicht gerade an seinem nächsten Roman arbeitet, unterstützt er Menschen auf ihrem Weg zur Genesung und findet Inspiration in den mystischen Landschaften der Schweizer Alpen.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="footer">
+        <div class="social-links">
+            <a href="https://www.instagram.com/mirco.deflorin/" class="social-link" title="Instagram" target="_blank">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+            </a>
+            <a href="https://www.facebook.com/mirco.deflorin/" class="social-link" title="Facebook" target="_blank">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+            </a>
+            <a href="https://www.tiktok.com/@mirco.deflorin" class="social-link" title="TikTok" target="_blank">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+                </svg>
+            </a>
+            <a href="https://www.linkedin.com/in/mirco-deflorin-862a79318/" class="social-link" title="LinkedIn" target="_blank">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"/>
+                </svg>
+            </a>
+        </div>
+
+        <div class="footer-links">
+            <a href="#" onclick="openModal('impressum'); return false;">Impressum</a>
+            <a href="#" onclick="openModal('datenschutz'); return false;">Datenschutz</a>
+            <a href="mailto:mirco.deflorin@gmail.com">Kontakt</a>
+        </div>
+
+        <p class="copyright">© 2026 Mirco Deflorin. Alle Rechte vorbehalten.</p>
+    </footer>
+
+    <!-- Impressum Modal -->
+    <div id="impressum-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('impressum')">×</button>
+            <h2 class="modal-title">Impressum</h2>
+            
+            <h3>Angaben gemäss § 5 TMG</h3>
+            <p>
+                <strong>Mirco Deflorin</strong><br>
+                Neue Wangserstrasse 9<br>
+                7320 Sargans<br>
+                Schweiz
+            </p>
+            
+            <h3>Kontakt</h3>
+            <p>
+                E-Mail: <a href="mailto:mirco.deflorin@gmail.com">mirco.deflorin@gmail.com</a>
+            </p>
+            
+            <h3>Verantwortlich für den Inhalt</h3>
+            <p>
+                Mirco Deflorin<br>
+                Neue Wangserstrasse 9<br>
+                7320 Sargans
+            </p>
+            
+            <h3>Haftungsausschluss</h3>
+            <p>
+                <strong>Haftung für Inhalte:</strong><br>
+                Die Inhalte dieser Seiten wurden mit grösster Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte kann ich jedoch keine Gewähr übernehmen.
+            </p>
+            <p>
+                <strong>Haftung für Links:</strong><br>
+                Mein Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte ich keinen Einfluss habe. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.
+            </p>
+            
+            <h3>Urheberrecht</h3>
+            <p>
+                Die durch mich erstellten Inhalte und Werke auf diesen Seiten unterliegen dem Schweizer Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung ausserhalb der Grenzen des Urheberrechtes bedürfen meiner schriftlichen Zustimmung.
+            </p>
+        </div>
+    </div>
+
+    <!-- Datenschutz Modal -->
+    <div id="datenschutz-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('datenschutz')">×</button>
+            <h2 class="modal-title">Datenschutzerklärung</h2>
+            
+            <h3>Grundsatz</h3>
+            <p>
+                Der Schutz Ihrer persönlichen Daten ist mir wichtig. Ich erhebe und verarbeite Ihre personenbezogenen Daten ausschliesslich im Rahmen der gesetzlichen Bestimmungen.
+            </p>
+            
+            <h3>Datenerhebung</h3>
+            <p>
+                Diese Website erhebt grundsätzlich <strong>keine personenbezogenen Daten</strong> von Besuchern. Es werden keine Cookies gesetzt, keine Tracking-Tools verwendet und keine Analyse-Software eingesetzt.
+            </p>
+            
+            <h3>Gewinnspiele</h3>
+            <p>
+                Bei der Teilnahme an Gewinnspielen auf Social-Media-Plattformen (Instagram, Facebook, LinkedIn, TikTok) werden folgende Daten erfasst:
+            </p>
+            <p>
+                • Name/Username<br>
+                • E-Mail-Adresse oder Postadresse (nur bei Gewinnern)<br>
+                • Kommentar zum Gewinnspiel
+            </p>
+            <p>
+                <strong>Verwendung:</strong> Diese Daten werden ausschliesslich zur Durchführung des Gewinnspiels und zur Kontaktaufnahme mit den Gewinnern verwendet.
+            </p>
+            <p>
+                <strong>Löschung:</strong> Alle erhobenen Daten werden unmittelbar nach Abschluss des Gewinnspiels und Versand der Gewinne vollständig gelöscht.
+            </p>
+            <p>
+                <strong>Weitergabe:</strong> Ihre Daten werden nicht an Dritte weitergegeben.
+            </p>
+            
+            <h3>E-Mail-Kontakt</h3>
+            <p>
+                Bei Kontaktaufnahme per E-Mail werden Ihre übermittelten Daten (E-Mail-Adresse, Name, Nachricht) ausschliesslich zur Bearbeitung Ihrer Anfrage gespeichert. Diese Daten werden nicht weitergegeben und nach Abschluss der Kommunikation gelöscht.
+            </p>
+            
+            <h3>Social Media</h3>
+            <p>
+                Auf dieser Website befinden sich Links zu Social-Media-Plattformen (Instagram, Facebook, LinkedIn, TikTok). Beim Klick auf diese Links verlassen Sie diese Website. Es gelten dann die Datenschutzbestimmungen der jeweiligen Plattform.
+            </p>
+            
+            <h3>Ihre Rechte</h3>
+            <p>
+                Sie haben jederzeit das Recht auf:
+            </p>
+            <p>
+                • Auskunft über Ihre gespeicherten Daten<br>
+                • Berichtigung unrichtiger Daten<br>
+                • Löschung Ihrer Daten<br>
+                • Einschränkung der Datenverarbeitung<br>
+                • Datenübertragbarkeit<br>
+                • Widerspruch gegen die Verarbeitung
+            </p>
+            <p>
+                Für alle Anfragen kontaktieren Sie mich bitte unter: <a href="mailto:mirco.deflorin@gmail.com">mirco.deflorin@gmail.com</a>
+            </p>
+            
+            <h3>Änderungen</h3>
+            <p>
+                Ich behalte mir vor, diese Datenschutzerklärung anzupassen, um sie an geänderte Rechtslagen oder bei Änderungen des Dienstes sowie der Datenverarbeitung anzupassen.
+            </p>
+            
+            <p style="margin-top: 2rem; font-size: 0.9rem; color: var(--gray);">
+                Stand: Dezember 2025
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Particle Animation with Clock symbols
+        function createParticles() {
+            const container = document.getElementById('particles');
+            
+            // Regular particles
+            for (let i = 0; i < 40; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                container.appendChild(particle);
+            }
+            
+            // Clock particles
+            const clockSymbols = ['🕐', '🕑', '🕒', '🕓', '🕔', '🕕', '🕖', '🕗', '🕘', '🕙', '🕚', '🕛'];
+            for (let i = 0; i < 8; i++) {
+                const clockParticle = document.createElement('div');
+                clockParticle.className = 'clock-particle';
+                clockParticle.textContent = clockSymbols[Math.floor(Math.random() * clockSymbols.length)];
+                clockParticle.style.left = Math.random() * 100 + '%';
+                clockParticle.style.animationDelay = Math.random() * 25 + 's';
+                clockParticle.style.animationDuration = (20 + Math.random() * 10) + 's';
+                container.appendChild(clockParticle);
+            }
+        }
+        createParticles();
+
+        // Countdown Timer - Set to June 1, 2026 as placeholder
+        function updateCountdown() {
+            const releaseDate = new Date('2026-06-01T00:00:00').getTime();
+            const now = new Date().getTime();
+            const diff = releaseDate - now;
+
+            if (diff > 0) {
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('days').textContent = days.toString().padStart(2, '0');
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            } else {
+                document.getElementById('days').textContent = '00';
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
+            }
+        }
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // Waveform Animation
+        function createWaveform(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            for (let i = 0; i < 25; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'wave-bar';
+                const height = (8 + Math.random() * 32);
+                bar.style.height = height + 'px';
+                bar.style.animationDelay = (Math.random() * 1.5) + 's';
+                container.appendChild(bar);
+            }
+        }
+
+        // Create waveforms for all audio cards
+        createWaveform('waveform-1');
+        createWaveform('waveform-2');
+        createWaveform('waveform-3');
+        createWaveform('waveform-4');
+
+        // Modal Functions
+        function openModal(type) {
+            const modal = document.getElementById(type + '-modal');
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(type) {
+            const modal = document.getElementById(type + '-modal');
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Close modal when clicking outside
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal(this.id.replace('-modal', ''));
+                }
+            });
+        });
+
+        // Close modal with ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal.active').forEach(modal => {
+                    closeModal(modal.id.replace('-modal', ''));
+                });
+            }
+        });
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
