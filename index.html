@@ -810,7 +810,7 @@ footer {
     <div class="hero-content">
         <div class="hero-subtitle">Mystery-Thriller Autor</div>
         <h1 class="hero-title">MIRCO DEFLORIN</h1>
-        <img src="Bild über uns.jpg" alt="Mirco Deflorin" class="author-image-hero">
+        <img src="Autorenphoto_Mirco-Deflorin.jpeg" alt="Mirco Deflorin" class="author-image-hero">
         <p class="hero-tagline">
             Geschichten, die bewegen. Von <span>Mystery-Thriller</span> bis hin zu tiefgreifenden <span>psychologischen Werken</span>.
         </p>
@@ -1380,4 +1380,14 @@ document.querySelectorAll('.modal').forEach(modal => {
 // Close modal with ESC key
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
-        document.querySelectorAll('
+        document.querySelectorAll('.modal').forEach(modal => {
+            if (modal.classList.contains('active')) {
+                closeModal(modal.id.replace('-modal', ''));
+            }
+        });
+    }
+});
+</script>
+
+</body>
+</html>
