@@ -1162,7 +1162,7 @@
         <div class="footer-links">
             <a href="#" onclick="openModal('impressum'); return false;">Impressum</a>
             <a href="#" onclick="openModal('datenschutz'); return false;">Datenschutz</a>
-            <a href="/cdn-cgi/l/email-protection#24494d56474b0a404142484b564d4a6443495c0a474c">Kontakt</a>
+            <a href="/cdn-cgi/l/email-protection#4a2723382925642e2f2c26253823240a2d2732642922">Kontakt</a>
         </div>
 
         <p class="copyright">© 2026 Mirco Deflorin. Alle Rechte vorbehalten.</p>
@@ -1184,7 +1184,7 @@
             
             <h3>Kontakt</h3>
             <p>
-                E-Mail: <a href="/cdn-cgi/l/email-protection#a6cbcfd4c5c988c2c3c0cac9d4cfc8e6c1cbde88c5ce"><span class="__cf_email__" data-cfemail="5a3733283935743e3f3c36352833341a3d3722743932">[email&#160;protected]</span></a>
+                E-Mail: <a href="/cdn-cgi/l/email-protection#9ff2f6edfcf0b1fbfaf9f3f0edf6f1dff8f2e7b1fcf7"><span class="__cf_email__" data-cfemail="86ebeff4e5e9a8e2e3e0eae9f4efe8c6e1ebfea8e5ee">[email&#160;protected]</span></a>
             </p>
             
             <h3>Verantwortlich für den Inhalt</h3>
@@ -1269,7 +1269,7 @@
                 • Widerspruch gegen die Verarbeitung
             </p>
             <p>
-                Für alle Anfragen kontaktieren Sie mich bitte unter: <a href="/cdn-cgi/l/email-protection#d3bebaa1b0bcfdb7b6b5bfbca1babd93b4beabfdb0bb"><span class="__cf_email__" data-cfemail="0f62667d6c60216b6a6963607d66614f686277216c67">[email&#160;protected]</span></a>
+                Für alle Anfragen kontaktieren Sie mich bitte unter: <a href="/cdn-cgi/l/email-protection#224f4b50414d0c4647444e4d504b4c62454f5a0c414a"><span class="__cf_email__" data-cfemail="74191d06171b5a101112181b061d1a3413190c5a171c">[email&#160;protected]</span></a>
             </p>
             
             <h3>Änderungen</h3>
@@ -1329,22 +1329,15 @@
             const releaseDate = new Date('2026-03-09T00:00:00').getTime();
             const now = new Date().getTime();
             const diff = releaseDate - now;
-
             if (diff > 0) {
                 const days = Math.floor(diff / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
                 document.getElementById('days').textContent = days.toString().padStart(2, '0');
                 document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
                 document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
                 document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
-            } else {
-                document.getElementById('days').textContent = '00';
-                document.getElementById('hours').textContent = '00';
-                document.getElementById('minutes').textContent = '00';
-                document.getElementById('seconds').textContent = '00';
             }
         }
         updateCountdown();
