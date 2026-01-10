@@ -1380,13 +1380,21 @@
             }
         });
 
-        // Waveform Animation for audio cards
-        function createWaveform(container) {
-            if (!container) return;
-            for (let i = 0; i < 30; i++) {
+       // Waveform Animation
+        function createWaveform(containerId) {
+            const container = document.getElementById(containerId);
+            for (let i = 0; i < 40; i++) {
                 const bar = document.createElement('div');
                 bar.className = 'wave-bar';
-                const height = (5 + Math.random() * 25);
-                bar.style.height = height + 'px';
-                bar.style.animationDelay = (Math.random() * 1.5) + 's';
-                bar.style
+                bar.style.height = (5 + Math.random() * 20) + 'px';
+                bar.style.animationDelay = (Math.random() * 0.5) + 's';
+                container.appendChild(bar);
+            }
+        }
+        createWaveform('waveform1');
+        createWaveform('waveform2');
+        createWaveform('waveform3');
+        createWaveform('waveform4');
+    </script>
+</body>
+</html>
