@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meine Bücher 2026 - Alle Schauplätze</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        #map {
+            width: 100%;
+            height: 100vh;
+        }
+        .location-popup {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .location-popup h3 {
+            margin: 0 0 8px 0;
+            color: #1a1a1a;
+            font-size: 16px;
+        }
+        .location-popup p {
+            margin: 4px 0;
+            color: #666;
+            font-size: 13px;
+        }
+        .location-popup .role {
+            font-weight: 600;
+        }
+        .location-popup .book-tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 5px;
+        }
+        .book-title {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+        .book-title h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #1a3a5f;
+        }
+        .book-title p {
+            margin: 5px 0 0 0;
+            font-size: 14px;
+            color: #666;
+        }
+        .legend {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .legend h3 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            color: #1a1a1a;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+            font-size: 13px;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 8px;
+            border: 2px solid white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="book-title">
+        <h1>Meine Bücher 2026</h1>
+        <p>Alle Schauplätze auf einen Blick</p>
+    </div>
+    
+    <div id="map"></div>
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Karte initialisieren - Europa-Ansicht
+        const map = L.map('map').setView([51.0, 10.0], 5);
+        
+        // OpenStreetMap Tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors',
+            maxZoom: 18
+        }).addTo(map);
+        
+        // Farbdefinitionen
+        const bookColors = {
+            'optimiert': '#000080',           // Dunkelblau
+            'tonum': '#4A90E2',              // Heller blau
+            'zeitzeuge': '#808080',          // Grau
+            'basement17': '#000000',         // Schwarz
+            'semikolon': '#2ECC71',          // Smaragdgrün
+            'orakel': '#D4A76A',             // Beige
+            'ichwillleben': '#48D1CC'        // Mint blau
+        };
+        
+        // Alle Schauplätze mit Buchzuordnung
+        const locations = [
+            // ICH WILL LEBEN (Mint Blau)
+            {
+                name: "Emanuel-Lasker-Gymnasium",
+                coords: [52.5389, 13.4187],
+                role: "Martinas Schule",
+                description: "Ein Backsteinbau aus den 1920ern im Prenzlauer Berg. Hier unterrichtet Martina Deutsch. Raum 204 wird zum Schauplatz der ersten Begegnung mit Tom.",
+                book: 'ichwillleben',
+                bookName: 'Ich will leben',
+                isMain: true
+            },
+            {
+                name: "Antiquitätenladen 'Alte Schätze'",
+                coords: [52.5234, 13.4020],
+                role: "Der verfluchte Spiegel",
+                description: "Hackescher Markt. In diesem mysteriösen Laden steht der jahrhundertealte Spiegel, der Martinas Leben verändert. Der Ort, wo alles beginnt.",
+                book: 'ichwillleben',
+                bookName: 'Ich will leben',
+                isMain: true
+            },
+            {
+                name: "Martinas Wohnung",
+                coords: [52.5329, 13.4120],
+                role: "Kollwitzplatz",
+                description: "Altbau, dritter Stock im Prenzlauer Berg. Zwei Zimmer voller Bücher. Hier ist Martina allein mit ihren Gedanken und ihrer Depression.",
+                book: 'ichwillleben',
+                bookName: 'Ich will leben',
+                isMain: false
+            },
+            {
+                name: "Staatsbibliothek Berlin",
+                coords: [52.5078, 13.3695],
+                role: "Ort der Recherche",
+                description: "Potsdamer Platz. Moderne Architektur. Hier sucht Martina nach Antworten über den Spiegel und findet die Wahrheit über den 'Speculum Umbrae'.",
+                book: 'ichwillleben',
+                bookName: 'Ich will leben',
+                isMain: false
+            },
+            {
+                name: "Charité - Campus Mitte",
+                coords: [52.5258, 13.3777],
+                role: "Hoffnung und Heilung",
+                description: "Das Krankenhaus, wo Tom nach seinem Suizidversuch behandelt wird. Ein Ort der zweiten Chancen.",
+                book: 'ichwillleben',
+                bookName: 'Ich will leben',
+                isMain: false
+            },
+            {
+                name: "Volkspark Friedrichshain",
+                coords: [52.5266, 13.4341],
+                role: "Der Tiefpunkt",
+                description: "Die Parkbank, wo Martina nach ihrer Alkohol-Nacht aufwacht. Symbol für den absoluten Tiefpunkt vor der Wende.",
+                book: 'ichwillleben',
+                bookName: 'Ich will leben',
+                isMain: false
+            },
+            
+            // OPTIMIERT (Dunkelblau)
+            {
+                name: "Klinik Albula",
+                coords: [46.6470, 9.7420],
+                role: "Hauptschauplatz",
+                description: "Belle-Époque Sanatorium auf natürlicher Waldterrasse (1480m). Ort der mysteriösen Heilungen und verschwundenen Patienten.",
+                book: 'optimiert',
+                bookName: 'OPTIMIERT',
+                isMain: true
+            },
+            {
+                name: "Bergün/Bravuogn",
+                coords: [46.6267, 9.7506],
+                role: "Dorfzentrum",
+                description: "1373m ü.M. Engadinerdorf mit Sgraffiti-Häusern. Kurhaus Bergün, Bahnmuseum Albula (UNESCO-Welterbe), reformierte Kirche.",
+                book: 'optimiert',
+                bookName: 'OPTIMIERT',
+                isMain: true
+            },
+            {
+                name: "Myzel-Stollensystem",
+                coords: [46.6450, 9.7380],
+                role: "Unterirdisches Netzwerk",
+                description: "Historische Val Tisch-Stollen, 200m unter der Erde. Biolumineszente Hauptkammer mit Pilzgeflecht und Symbiose-Kokons.",
+                book: 'optimiert',
+                bookName: 'OPTIMIERT',
+                isMain: true
+            },
+            {
+                name: "Chur",
+                coords: [46.8499, 9.5331],
+                role: "Davids Herkunft",
+                description: "Kantonshauptstadt Graubünden (593m). Davids Heimatstadt, Kantonsbibliothek, psychiatrische Dienste. 49 Min von Bergün.",
+                book: 'optimiert',
+                bookName: 'OPTIMIERT',
+                isMain: false
+            },
+            {
+                name: "Parkplatz God",
+                coords: [46.6380, 9.7460],
+                role: "Knotenpunkt",
+                description: "Ausgangspunkt für Bergtouren. Getarnter Zugang zum Stollensystem, Treffpunkt für heimliche Gespräche.",
+                book: 'optimiert',
+                bookName: 'OPTIMIERT',
+                isMain: false
+            },
+            {
+                name: "Landwasser-Viadukt",
+                coords: [46.6783, 9.6817],
+                role: "UNESCO-Welterbe",
+                description: "Spektakuläres Eisenbahnviadukt 2km von Bergün. Symbolische Brücke zwischen Welten, Ort der Selbstreflexion.",
+                book: 'optimiert',
+                bookName: 'OPTIMIERT',
+                isMain: false
+            },
+            {
+                name: "Weiler Latsch",
+                coords: [46.6300, 9.7400],
+                role: "Traditionelles Dorf",
+                description: "Kleinerer Weiler bei Bergün. Restaurant Schmid - Zentrum für Dorfklatsch und alte Geschichten.",
+                book: 'optimiert',
+                bookName: 'OPTIMIERT',
+                isMain: false
+            },
+            {
+                name: "Albula-Tunnel",
+                coords: [46.6100, 9.8200],
+                role: "Verbindung zur Außenwelt",
+                description: "5.9km langer Eisenbahntunnel nach Preda. Spektakuläre Spiraltunnel, Fluchtmöglichkeit, Symbol der Verbindung.",
+                book: 'optimiert',
+                bookName: 'OPTIMIERT',
+                isMain: false
+            },
+            
+            // DAS TONUM (Heller Blau)
+            {
+                name: "Kloster Säben",
+                coords: [46.6667, 11.5667],
+                role: "Hauptschauplatz",
+                description: "Das mystische Benediktinerinnenkloster auf dem Heiligen Berg im Eisacktal. Hier manifestiert sich das Tonum – eine uralte Frequenz aus den Tiefen der Berge.",
+                book: 'tonum',
+                bookName: 'Das Tonum',
+                isMain: true
+            },
+            {
+                name: "Bozen",
+                coords: [46.4983, 11.3548],
+                role: "Polizeistation",
+                description: "Arbeitsort von Kommissarin Hannah Kronauer. Von hier aus beginnt die Ermittlung zu den mysteriösen Verschwinden im Kloster.",
+                book: 'tonum',
+                bookName: 'Das Tonum',
+                isMain: false
+            },
+            {
+                name: "Brixen",
+                coords: [46.7158, 11.6558],
+                role: "Stadt",
+                description: "Wichtige Stadt in der Nähe des Klosters, die in die Ereignisse verwickelt wird.",
+                book: 'tonum',
+                bookName: 'Das Tonum',
+                isMain: false
+            },
+            {
+                name: "Innsbruck",
+                coords: [47.2692, 11.4041],
+                role: "Universität",
+                description: "Wissenschaftliche Einrichtungen und Forschungsverbindungen. Dr. Reichmann und andere Wissenschaftler haben hier ihre Wurzeln.",
+                book: 'tonum',
+                bookName: 'Das Tonum',
+                isMain: false
+            },
+            {
+                name: "Wien (Tonum)",
+                coords: [48.2082, 16.3738],
+                role: "Wissenschaft",
+                description: "Zentrum wissenschaftlicher Forschung und Verbindungen zur Aufklärung der übernatürlichen Phänomene.",
+                book: 'tonum',
+                bookName: 'Das Tonum',
+                isMain: false
+            },
+            {
+                name: "Moskau (Tonum)",
+                coords: [55.7558, 37.6173],
+                role: "Genesis Group",
+                description: "Ursprung von Ivan Petrov und den dunklen Machenschaften der Genesis Group, die das Tonum für ihre eigenen Zwecke missbrauchen wollen.",
+                book: 'tonum',
+                bookName: 'Das Tonum',
+                isMain: false
+            },
+            
+            // DER ZEITZEUGE (Grau)
+            {
+                name: "Hamburg",
+                coords: [53.5511, 9.9937],
+                role: "Hauptschauplatz",
+                description: "Zentrum der Ermittlungen. Polizeipräsidium Alsterdorf, Speicherstadt, Brenners Wohnung in Ottensen, Steins Villa in Blankenese.",
+                book: 'zeitzeuge',
+                bookName: 'Der Zeitzeuge',
+                isMain: true
+            },
+            {
+                name: "Stockholm",
+                coords: [59.3293, 18.0686],
+                role: "Erster Testmord",
+                description: "Hier führte Stein seinen ersten Zeitmord durch, bevor er nach Hamburg kam.",
+                book: 'zeitzeuge',
+                bookName: 'Der Zeitzeuge',
+                isMain: false
+            },
+            {
+                name: "Kopenhagen",
+                coords: [55.6761, 12.5683],
+                role: "Opfer-Verbindung",
+                description: "Niels-Bohr-Institut. Internationale Forschungskooperation der Mordopfer.",
+                book: 'zeitzeuge',
+                bookName: 'Der Zeitzeuge',
+                isMain: false
+            },
+            {
+                name: "Wien (Zeitzeuge)",
+                coords: [48.2182, 16.3738],
+                role: "Akademische Vergangenheit",
+                description: "Hier begann Steins Karriere als Student von Prof. Kellner.",
+                book: 'zeitzeuge',
+                bookName: 'Der Zeitzeuge',
+                isMain: false
+            },
+            {
+                name: "Prag (Zeitzeuge)",
+                coords: [50.0855, 14.4378],
+                role: "Erfolgreicher Zeitmord",
+                description: "Steins erster perfektionierter Mord durch Zeitschleifen, getarnt als Unfall.",
+                book: 'zeitzeuge',
+                bookName: 'Der Zeitzeuge',
+                isMain: false
+            },
+            {
+                name: "Zürich (Zeitzeuge)",
+                coords: [47.3869, 8.5417],
+                role: "Wendepunkt",
+                description: "Krebsdiagnose in Schweizer Klinik - hier beschloss Stein, Zeit zu manipulieren.",
+                book: 'zeitzeuge',
+                bookName: 'Der Zeitzeuge',
+                isMain: false
+            },
+            {
+                name: "Genf/CERN (Zeitzeuge)",
+                coords: [46.2144, 6.1432],
+                role: "Steins frühere Forschung",
+                description: "Am CERN begann Steins Obsession mit Zeitmanipulation.",
+                book: 'zeitzeuge',
+                bookName: 'Der Zeitzeuge',
+                isMain: false
+            },
+            
+            // BASEMENT 17 (Schwarz)
+            {
+                name: "Berlin (Basement 17)",
+                coords: [52.5300, 13.4050],
+                role: "Hauptschauplatz - BASEMENT 17",
+                description: "17 Stockwerke unter dem ehemaligen Hauptbahnhof. Zentraler Server-Standort von Unterwelt Inc. Hier spielt die gesamte Handlung. Marcus infiltriert die Anlage, um seinen Freund Evan zu retten.",
+                book: 'basement17',
+                bookName: 'Basement 17',
+                isMain: true
+            },
+            {
+                name: "Rapperswil (Basement 17)",
+                coords: [47.2369, 8.8184],
+                role: "Marcus' Heimat",
+                description: "Hier lebt Marcus Dreher in der Schweiz. Von hier aus macht er sich auf den Weg nach Berlin.",
+                book: 'basement17',
+                bookName: 'Basement 17',
+                isMain: false
+            },
+            {
+                name: "London",
+                coords: [51.5074, -0.1278],
+                role: "Unterwelt Inc. Standort",
+                description: "Einer von ~30 globalen Standorten der Gedächtnisbank. Wird von Berlin aus gesteuert.",
+                book: 'basement17',
+                bookName: 'Basement 17',
+                isMain: false
+            },
+            {
+                name: "Paris",
+                coords: [48.8566, 2.3522],
+                role: "Unterwelt Inc. Standort",
+                description: "Einer von ~30 globalen Standorten der Gedächtnisbank. Wird von Berlin aus gesteuert.",
+                book: 'basement17',
+                bookName: 'Basement 17',
+                isMain: false
+            },
+            {
+                name: "Moskau (Basement 17)",
+                coords: [55.7658, 37.6173],
+                role: "Unterwelt Inc. Standort",
+                description: "Einer von ~30 globalen Standorten der Gedächtnisbank. Wird von Berlin aus gesteuert.",
+                book: 'basement17',
+                bookName: 'Basement 17',
+                isMain: false
+            },
+            {
+                name: "Dubai",
+                coords: [25.2048, 55.2708],
+                role: "Dr. Voss' Fluchtort",
+                description: "Hier wird Dr. Helena Voss nach der Explosion gesichtet. Sie ist auf der Flucht vor Interpol.",
+                book: 'basement17',
+                bookName: 'Basement 17',
+                isMain: false
+            },
+            {
+                name: "Tokyo",
+                coords: [35.6762, 139.6503],
+                role: "Unterwelt Inc. Standort",
+                description: "34.892 Erwachte in Japan. Einer der größten Standorte des globalen Netzwerks.",
+                book: 'basement17',
+                bookName: 'Basement 17',
+                isMain: false
+            },
+            {
+                name: "New York",
+                coords: [40.7128, -74.0060],
+                role: "Unterwelt Inc. Standort",
+                description: "48.234 Erwachte in den USA. Wichtiger Standort des globalen Netzwerks.",
+                book: 'basement17',
+                bookName: 'Basement 17',
+                isMain: false
+            },
+            {
+                name: "São Paulo",
+                coords: [-23.5505, -46.6333],
+                role: "Unterwelt Inc. Standort",
+                description: "28.103 Erwachte in Brasilien. Südamerikanischer Hauptstandort.",
+                book: 'basement17',
+                bookName: 'Basement 17',
+                isMain: false
+            },
+            {
+                name: "Mumbai",
+                coords: [19.0760, 72.8777],
+                role: "Unterwelt Inc. Standort (verloren)",
+                description: "Standort ging während der Übertragung verloren. Weniger Erwachte als erwartet in Indien.",
+                book: 'basement17',
+                bookName: 'Basement 17',
+                isMain: false
+            },
+            {
+                name: "Shanghai",
+                coords: [31.2304, 121.4737],
+                role: "Unterwelt Inc. Standort",
+                description: "Wichtiger asiatischer Standort des globalen Netzwerks.",
+                book: 'basement17',
+                bookName: 'Basement 17',
+                isMain: false
+            },
+            {
+                name: "Sydney",
+                coords: [-33.8688, 151.2093],
+                role: "Unterwelt Inc. Standort",
+                description: "Pazifik-Standort des globalen Netzwerks. Wird von Berlin aus gesteuert.",
+                book: 'basement17',
+                bookName: 'Basement 17',
+                isMain: false
+            },
+            
+            // SEMIKOLON (Smaragdgrün)
+            {
+                name: "Lützelbach",
+                coords: [49.7297, 9.0408],
+                role: "Ausgangspunkt",
+                description: "Start der Wanderung. Hier wohnen Holger und Ulli. Treffpunkt der SHG Semikolon nahe der Median Klinik Odenwald.",
+                book: 'semikolon',
+                bookName: 'Semikolon',
+                isMain: false
+            },
+            {
+                name: "Wildweibchenstein",
+                coords: [49.6944, 8.9747],
+                role: "Station 1 – Die versteinerten Frauen",
+                description: "Markante Felsformation im Mossautal. Sage der wilden Kräuterweiblein. Hier beginnt die unheimliche Atmosphäre.",
+                book: 'semikolon',
+                bookName: 'Semikolon',
+                isMain: false
+            },
+            {
+                name: "Lindelbrunnen (Hiltersklingen)",
+                coords: [49.6833, 8.9333],
+                role: "Station 2 – Der falsche Brunnen",
+                description: "Gefasste Quelle an der B460. Hier soll Siegfried ermordet worden sein. Doch ist es der heilende Brunnen aus der Vision?",
+                book: 'semikolon',
+                bookName: 'Semikolon',
+                isMain: false
+            },
+            {
+                name: "Burg Rodenstein",
+                coords: [49.7317, 8.9439],
+                role: "Hauptschauplatz",
+                description: "Camp der Gruppe. Burgruine bei Fränkisch-Crumbach. Hier begegnet Lena der mystischen Spinne. Hier wird Clara tot gefunden.",
+                book: 'semikolon',
+                bookName: 'Semikolon',
+                isMain: true
+            },
+            {
+                name: "Die versunkene Stadt (Lindelfels)",
+                coords: [49.6867, 8.7706],
+                role: "Finale – Der echte Lindelbrunnen",
+                description: "Der heilende Brunnen aus der Sage. Thomas' Geständnis. Die Glocken läuten aus der Tiefe. Heilung oder Halluzination?",
+                book: 'semikolon',
+                bookName: 'Semikolon',
+                isMain: false
+            },
+            
+            // DAS ORAKEL DES UHRMACHERS (Beige)
+            {
+                name: "Rapperswil (Orakel)",
+                coords: [47.2169, 8.8184],
+                role: "Hauptschauplatz",
+                description: "Wilhelms Werkstatt in der Fischergasse mit geheimer Kammer. Hier steht der Automat. Ausgangspunkt der Quest und Schauplatz des Finales.",
+                book: 'orakel',
+                bookName: 'Das Orakel des Uhrmachers',
+                isMain: true
+            },
+            {
+                name: "Zürich (Orakel)",
+                coords: [47.3669, 8.5417],
+                role: "Andreas' & Claras Leben",
+                description: "Universität (Andreas' Forschung), Claras Werkstatt (vom Konsortium verwüstet). Hauptbahnhof als Start des Nachtzugs nach Prag.",
+                book: 'orakel',
+                bookName: 'Das Orakel des Uhrmachers',
+                isMain: false
+            },
+            {
+                name: "St. Gallen",
+                coords: [47.4245, 9.3767],
+                role: "EMP-Vorboten",
+                description: "Mysteriöse Stromausfälle als Zeichen von Wilhelms wachsender Macht. Teil der Schweizer Mystery-Atmosphäre.",
+                book: 'orakel',
+                bookName: 'Das Orakel des Uhrmachers',
+                isMain: false
+            },
+            {
+                name: "Prag (Orakel)",
+                coords: [50.0775, 14.4214],
+                role: "Modul 1: Resonanz-Regulator",
+                description: "Astronomische Uhr (Koordinaten: 50°05'N, 14°25'E). Karlsbrücke, Zlatá ulička-Gassenjagd, Nikolauskirche-Krypta. Wilhelms emotionale Heimkehr nach 240 Jahren.",
+                book: 'orakel',
+                bookName: 'Das Orakel des Uhrmachers',
+                isMain: false
+            },
+            {
+                name: "Genf (Orakel)",
+                coords: [46.1944, 6.1432],
+                role: "Modul 2: Quarz-Balancier",
+                description: "Patek-Philippe-Museum (Koordinaten: 46°12'N, 6°09'E). Hotel Beau-Rivage mit spektakulärer Dachflucht über die Rhône.",
+                book: 'orakel',
+                bookName: 'Das Orakel des Uhrmachers',
+                isMain: false
+            },
+            {
+                name: "Straßburg",
+                coords: [48.5734, 7.7521],
+                role: "Modul 3: Temporale Linse",
+                description: "Münster-Infiltration (Koordinaten: 48°35'N, 7°45'E). Chorraum, Dachflucht bei Gewitter, finale Kampf-Sequenz mit Röthlisbergers Männern.",
+                book: 'orakel',
+                bookName: 'Das Orakel des Uhrmachers',
+                isMain: false
+            }
+        ];
+        
+        // Marker-Icons erstellen
+        function createMarkerIcon(color, isMain) {
+            const size = isMain ? 30 : 20;
+            const borderWidth = isMain ? 3 : 2;
+            return L.divIcon({
+                className: 'custom-marker',
+                html: `<div style="background-color: ${color}; width: ${size}px; height: ${size}px; border-radius: 50%; border: ${borderWidth}px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3);"></div>`,
+                iconSize: [size, size],
+                iconAnchor: [size/2, size/2]
+            });
+        }
+        
+        // Marker hinzufügen
+        locations.forEach(location => {
+            const color = bookColors[location.book];
+            const icon = createMarkerIcon(color, location.isMain);
+            const marker = L.marker(location.coords, { icon: icon }).addTo(map);
+            
+            const popupContent = `
+                <div class="location-popup">
+                    <span class="book-tag" style="background-color: ${color};">${location.bookName}</span>
+                    <h3>${location.name}</h3>
+                    <p class="role" style="color: ${color};">${location.role}</p>
+                    <p>${location.description}</p>
+                </div>
+            `;
+            
+            marker.bindPopup(popupContent, { maxWidth: 300 });
+        });
+        
+        // Legende erstellen (Nordsee zwischen UK und Dänemark)
+        const legendContent = `
+            <div class="legend">
+                <h3>Meine Bücher 2026</h3>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: ${bookColors.optimiert};"></div>
+                    <span>OPTIMIERT</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: ${bookColors.tonum};"></div>
+                    <span>Das Tonum</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: ${bookColors.zeitzeuge};"></div>
+                    <span>Der Zeitzeuge</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: ${bookColors.basement17};"></div>
+                    <span>Basement 17</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: ${bookColors.semikolon};"></div>
+                    <span>Semikolon</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: ${bookColors.orakel};"></div>
+                    <span>Das Orakel des Uhrmachers</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: ${bookColors.ichwillleben};"></div>
+                    <span>Ich will leben</span>
+                </div>
+            </div>
+        `;
+        
+        // Legende zur Karte hinzufügen (Atlantik Position)
+        const legend = L.marker([48.0, -12.0], {
+            icon: L.divIcon({
+                className: 'legend-marker',
+                html: legendContent,
+                iconSize: [200, 280],
+                iconAnchor: [100, 140]
+            })
+        }).addTo(map);
+    </script>
+</body>
+</html>
