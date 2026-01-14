@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rezensionsmaterial – OPTIMIERT von Mirco Deflorin</title>
+    <meta name="description" content="Professionelles Rezensionsmaterial für Buchblogger und Rezensenten. OPTIMIERT - Ein Mystery-Thriller von Mirco Deflorin.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #000000;
+            --dark-blue: #0a1628;
+            --deep-blue: #0d1f3c;
+            --cyan-glow: #00d4ff;
+            --cyan-dark: #0099cc;
+            --blue: #0066cc;
+            --white: #ffffff;
+            --gray: #8899aa;
+            --light-gray: #c0d0e0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Source Sans 3', sans-serif;
+            background: linear-gradient(180deg, var(--black) 0%, var(--dark-blue) 50%, var(--deep-blue) 100%);
+            color: var(--white);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        /* Particle Background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--cyan-glow);
+            border-radius: 50%;
+            opacity: 0;
+            animation: float 15s infinite;
+            box-shadow: 0 0 10px var(--cyan-glow), 0 0 20px var(--cyan-glow);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-100vh) scale(1); opacity: 0; }
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 5rem 5%;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 0 3rem;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--cyan-glow);
+            margin-bottom: 2rem;
+        }
+
+        .hero-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            letter-spacing: 8px;
+            margin-bottom: 1rem;
+            background: linear-gradient(180deg, var(--white) 0%, var(--cyan-glow) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 30px rgba(0, 212, 255, 0.3));
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--light-gray);
+            font-weight: 300;
+            margin-bottom: 1rem;
+        }
+
+        .hero-author {
+            font-size: 1.2rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 3rem;
+        }
+
+        /* Section Styling */
+        .section {
+            margin: 5rem 0;
+            padding: 3rem 0;
+            border-top: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            letter-spacing: 4px;
+            color: var(--cyan-glow);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .section-intro {
+            text-align: center;
+            font-size: 1.1rem;
+            color: var(--light-gray);
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            line-height: 1.8;
+        }
+
+        /* Grid Layouts */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .info-card {
+            background: rgba(13, 31, 60, 0.5);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 10px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--cyan-glow);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+        }
+
+        .info-card h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            color: var(--cyan-glow);
+            margin-bottom: 1rem;
+        }
+
+        .info-card p {
+            color: var(--light-gray);
+            line-height: 1.8;
+        }
+
+        .info-card strong {
+            color: var(--white);
+        }
+
+        /* Quotes Section */
+        .quotes-grid {
+            display: grid;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .quote-card {
+            background: rgba(13, 31, 60, 0.6);
+            border-left: 4px solid var(--cyan-glow);
+            padding: 2rem;
+            border-radius: 5px;
+        }
+
+        .quote-text {
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--cyan-glow);
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        .quote-source {
+            font-size: 0.9rem;
+            color: var(--gray);
+            text-align: right;
+        }
+
+        /* Downloads Section */
+        .downloads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .download-card {
+            background: rgba(13, 31, 60, 0.5);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .download-card:hover {
+            border-color: var(--cyan-glow);
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .download-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .download-card h3 {
+            font-size: 1.1rem;
+            color: var(--cyan-glow);
+            margin-bottom: 0.5rem;
+        }
+
+        .download-card p {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+
+        .download-btn {
+            display: inline-block;
+            padding: 0.6rem 1.5rem;
+            background: linear-gradient(135deg, var(--cyan-glow) 0%, var(--blue) 100%);
+            color: var(--black);
+            font-weight: 600;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .download-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--cyan-glow);
+        }
+
+        /* Author Section */
+        .author-section {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 3rem;
+            align-items: start;
+            margin-top: 3rem;
+        }
+
+        .author-image {
+            width: 100%;
+            border-radius: 10px;
+            border: 2px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .author-content h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--cyan-glow);
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+        }
+
+        .author-content p {
+            color: var(--light-gray);
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        .author-quote {
+            font-style: italic;
+            color: var(--cyan-glow);
+            padding: 1rem;
+            border-left: 3px solid var(--cyan-glow);
+            margin: 1.5rem 0;
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        /* Social Links */
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 25px;
+            color: var(--cyan-glow);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .social-link:hover {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: var(--cyan-glow);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 5%;
+            border-top: 1px solid rgba(0, 212, 255, 0.1);
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .author-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .downloads-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Note Box */
+        .note-box {
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            color: var(--light-gray);
+        }
+
+        .note-box strong {
+            color: var(--cyan-glow);
+        }
+    </style>
+</head>
+<body>
+    <!-- Particles -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Hero -->
+        <div class="hero">
+            <div class="hero-badge">📚 Rezensionsmaterial für Blogger</div>
+            <h1 class="hero-title">OPTIMIERT</h1>
+            <p class="hero-subtitle">Wenn Heilung Menschlichkeit kostet</p>
+            <p class="hero-author">von Mirco Deflorin</p>
+        </div>
+
+        <!-- Intro -->
+        <div class="section-intro">
+            Herzlich willkommen! Diese Seite bietet professionelles Rezensionsmaterial für Buchblogger, 
+            Influencer und Rezensenten. Alle Materialien stehen zum kostenlosen Download bereit.
+        </div>
+
+        <!-- Buchinformationen -->
+        <section class="section">
+            <h2 class="section-title">📖 Buchinformationen</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>Genre & Thema</h3>
+                    <p><strong>Genre:</strong> Mystery-Thriller, Psychological Thriller</p>
+                    <p><strong>Themen:</strong> Mental Health, Psychische Gesundheit, Schweizer Alpen, Heilung vs. Menschlichkeit</p>
+                </div>
+                
+                <div class="info-card">
+                    <h3>Erscheinungsdaten</h3>
+                    <p><strong>Release:</strong> 2. Februar 2026</p>
+                    <p><strong>ISBN:</strong> 9798241818829</p>
+                    <p><strong>Verlag:</strong> Independently published (Amazon KDP)</p>
+                    <p><strong>Format:</strong> Taschenbuch & E-Book</p>
+                </div>
+                
+                <div class="info-card">
+                    <h3>Besonderheiten</h3>
+                    <p>✓ Authentische Schweizer Alpen-Atmosphäre</p>
+                    <p>✓ Rätoromanische Sprache (authentisch geprüft)</p>
+                    <p>✓ Reale Schauplätze: Bergün, Landwasser-Viadukt</p>
+                    <p>✓ Psychologisch fundiert (Autor ist Peerberater)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Klappentext -->
+        <section class="section">
+            <h2 class="section-title">📝 Klappentext</h2>
+            <div class="info-card">
+                <p style="margin-bottom: 1rem; font-style: italic; color: var(--cyan-glow);">
+                    <strong>In den nebelverhangenen Bergen Graubündens verschwindet die Hoffnung spurlos.</strong>
+                </p>
+                <p>
+                    Die Klinik Albula, hoch über dem malerischen Bergün gelegen, gilt als Refugium für Menschen in seelischer Not. 
+                    Doch als drei Patienten auf mysteriöse Weise verschwinden, ahnt Psychiatriepfleger David Kramer, dass sich unter 
+                    den idyllischen Bergen ein dunkles Geheimnis verbirgt.
+                </p>
+                <p>
+                    Seine Ermittlungen führen ihn in die Tiefen alter Bergwerksstollen, wo eine uralte Macht auf hungrige Seelen wartet. 
+                    Was als verzweifelte Suche nach vermissten Patienten beginnt, wird zur erschütternden Entdeckung einer Heilmethode, 
+                    die mehr verspricht, als die Medizin je erreichen konnte.
+                </p>
+                <p style="margin: 1.5rem 0; font-weight: 600; color: var(--cyan-glow);">
+                    Aber jede Heilung hat ihren Preis.
+                </p>
+                <p>
+                    Als die ersten "Geheilten" zurückkehren, jubeln ihre Familien: Endlich keine Depressionen mehr, keine Panikattacken, 
+                    keine emotionalen Probleme. Doch kleine Sophie weint, weil ihr Vater sie nicht mehr umarmt. Emma versteht nicht, warum 
+                    ihre Tante sich an keine gemeinsamen Geheimnisse erinnert.
+                </p>
+            </div>
+        </section>
+
+        <!-- Zitate -->
+        <section class="section">
+            <h2 class="section-title">💬 Originalzitate aus dem Buch</h2>
+            <p class="section-intro">Atmosphärische Ausschnitte für Social Media Posts</p>
+            
+            <div class="quotes-grid">
+                <div class="quote-card">
+                    <p class="quote-text">"Was, wenn die perfekte Heilung der Tod der Seele bedeutet?"</p>
+                    <p class="quote-source">— Aus dem Klappentext</p>
+                </div>
+                
+                <div class="quote-card">
+                    <p class="quote-text">"Hier unten gibt es nur Frieden."</p>
+                    <p class="quote-source">— Marcus, nach der Transformation</p>
+                </div>
+                
+                <div class="quote-card">
+                    <p class="quote-text">"Die Stimme war zurück. Nach fünf Jahren der Stille, der mühsam erkämpften Normalität."</p>
+                    <p class="quote-source">— David Kramer, Protagonist</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Downloads -->
+        <section class="section">
+            <h2 class="section-title">⬇️ Materialien zum Download</h2>
+            <p class="section-intro">Alle Materialien für deine Rezension und Social Media Posts</p>
+            
+            <div class="note-box">
+                <strong>📌 Hinweis für Downloads:</strong> Lade die Dateien herunter und benenne sie wie angegeben. 
+                Alle Materialien sind hochauflösend und für Social Media optimiert.
+            </div>
+            
+            <div class="downloads-grid">
+                <div class="download-card">
+                    <div class="download-icon">📕</div>
+                    <h3>Buchcover</h3>
+                    <p>Hochauflösendes Cover</p>
+                    <a href="cover_optimiert.jpg" class="download-btn" download>Download Cover</a>
+                    <p style="font-size: 0.75rem; margin-top: 0.5rem; color: var(--gray);">Datei: cover_optimiert.jpg</p>
+                </div>
+                
+                <div class="download-card">
+                    <div class="download-icon">📸</div>
+                    <h3>Autorenfoto</h3>
+                    <p>Professionelles Porträt</p>
+                    <a href="autor_mirco_deflorin.jpg" class="download-btn" download>Download Foto</a>
+                    <p style="font-size: 0.75rem; margin-top: 0.5rem; color: var(--gray);">Datei: autor_mirco_deflorin.jpg</p>
+                </div>
+                
+                <div class="download-card">
+                    <div class="download-icon">🎉</div>
+                    <h3>"Jetzt Erhältlich"</h3>
+                    <p>Release-Day Grafik</p>
+                    <a href="jetzt_erhaeltlich.png" class="download-btn" download>Download Grafik</a>
+                    <p style="font-size: 0.75rem; margin-top: 0.5rem; color: var(--gray);">Datei: jetzt_erhaeltlich.png</p>
+                </div>
+                
+                <div class="download-card">
+                    <div class="download-icon">📄</div>
+                    <h3>Rezensionspaket (PDF)</h3>
+                    <p>Alle Infos in einem Dokument</p>
+                    <a href="rezensionspaket_optimiert.pdf" class="download-btn" download>Download PDF</a>
+                    <p style="font-size: 0.75rem; margin-top: 0.5rem; color: var(--gray);">Datei: rezensionspaket_optimiert.pdf</p>
+                </div>
+                
+                <div class="download-card">
+                    <div class="download-icon">🎬</div>
+                    <h3>Kurzvideos</h3>
+                    <p>Atmosphärische Clips</p>
+                    <a href="#" class="download-btn" onclick="alert('Hinweis: Kurzvideos findest du auf Instagram @mircodeflorinautor\nDu kannst sie dort teilen oder für deine Posts nutzen.'); return false;">Info anzeigen</a>
+                    <p style="font-size: 0.75rem; margin-top: 0.5rem; color: var(--gray);">Verfügbar auf Instagram</p>
+                </div>
+                
+                <div class="download-card">
+                    <div class="download-icon">🎁</div>
+                    <h3>Gewinnspiel-Grafik</h3>
+                    <p>3 Signierte Bücher</p>
+                    <a href="gewinnspiel_3_buecher.png" class="download-btn" download>Download Grafik</a>
+                    <p style="font-size: 0.75rem; margin-top: 0.5rem; color: var(--gray);">Datei: gewinnspiel_3_buecher.png</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Schauplätze -->
+        <section class="section">
+            <h2 class="section-title">🗺️ Schauplätze der Geschichte</h2>
+            <p class="section-intro">
+                OPTIMIERT spielt an realen Orten in den Schweizer Alpen. Entdecke auf der interaktiven Karte, 
+                wo die Geschichte spielt – zusammen mit den Schauplätzen aller anderen Bücher von Mirco Deflorin 2026.
+            </p>
+            
+            <div class="note-box">
+                <strong>💡 Interaktive Karte:</strong> Klicke auf die Marker, um Details zu den einzelnen Schauplätzen zu sehen. 
+                Die dunkelblauen Marker zeigen die Orte von OPTIMIERT.
+            </div>
+            
+            <div style="margin-top: 2rem; border: 2px solid rgba(0, 212, 255, 0.3); border-radius: 10px; overflow: hidden; box-shadow: 0 5px 20px rgba(0, 212, 255, 0.2);">
+                <iframe src="landkarte.html" style="width: 100%; height: 600px; border: none;" title="Interaktive Karte der Schauplätze"></iframe>
+            </div>
+            
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="landkarte.html" target="_blank" class="download-btn">📍 Karte in neuem Fenster öffnen</a>
+            </div>
+        </section>
+
+        <!-- Über den Autor -->
+        <section class="section">
+            <h2 class="section-title">✍️ Über den Autor</h2>
+            
+            <div class="author-section">
+                <div>
+                    <!-- PLATZHALTER: Füge hier das Autorenfoto ein -->
+                    <img src="autor_mirco_deflorin.jpg" alt="Mirco Deflorin" class="author-image">
+                </div>
+                
+                <div class="author-content">
+                    <h3>Mirco Deflorin</h3>
+                    
+                    <p>
+                        Mirco Deflorin lebt und arbeitet in den Schweizer Alpen. Als Schriftsteller und Peerberater bei der 
+                        Invalidenversicherung (IV) verbindet er in seinen Werken psychologische Einsichten mit fesselnder Spannung.
+                    </p>
+                    
+                    <p>
+                        Seine Wurzeln liegen in Graubünden, wo auch sein zweiter Roman spielt. "OPTIMIERT" ist mehr als ein Thriller – 
+                        es ist eine Auseinandersetzung mit der Frage, was Heilung wirklich bedeutet und welchen Preis wir für sie zu 
+                        zahlen bereit sind.
+                    </p>
+                    
+                    <div class="author-quote">
+                        "Mental Health ist keine Schwäche – Schweigen darüber schon."
+                    </div>
+                    
+                    <p>
+                        Mirco arbeitet mit KI-Unterstützung, um Geschichten zu erschaffen, die berühren und zum Nachdenken anregen. 
+                        "OPTIMIERT" ist sein zweiter veröffentlichter Roman.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Kauflinks -->
+        <section class="section">
+            <h2 class="section-title">🛒 Kauflinks</h2>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>Amazon Deutschland</h3>
+                    <p style="margin-bottom: 1rem;">E-Book & Taschenbuch</p>
+                    <a href="https://www.amazon.de/dp/9798241818829" class="download-btn" target="_blank" rel="noopener">Zu Amazon.de</a>
+                </div>
+                
+                <div class="info-card">
+                    <h3>Amazon Schweiz</h3>
+                    <p style="margin-bottom: 1rem;">E-Book & Taschenbuch</p>
+                    <a href="https://www.amazon.ch/dp/9798241818829" class="download-btn" target="_blank" rel="noopener">Zu Amazon.ch</a>
+                </div>
+                
+                <div class="info-card">
+                    <h3>Amazon International</h3>
+                    <p style="margin-bottom: 1rem;">Weltweit verfügbar</p>
+                    <a href="https://www.amazon.com/dp/9798241818829" class="download-btn" target="_blank" rel="noopener">Zu Amazon.com</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hashtags -->
+        <section class="section">
+            <h2 class="section-title">#️⃣ Empfohlene Hashtags</h2>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>Primär</h3>
+                    <p>#Optimiert #OptimertBuch #MircoDeflorin</p>
+                </div>
+                
+                <div class="info-card">
+                    <h3>Thematisch</h3>
+                    <p>#MentalHealth #PsychologicalThriller #SwissThriller #Graubünden #Bergün</p>
+                </div>
+                
+                <div class="info-card">
+                    <h3>Community</h3>
+                    <p>#Bookstagram #Buchblogger #Leseliebe #Thriller2026 #Neuerscheinung</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Social Media -->
+        <section class="section">
+            <h2 class="section-title">🌐 Social Media</h2>
+            
+            <div class="social-links">
+                <a href="https://www.instagram.com/mircodeflorinautor/" target="_blank" rel="noopener" class="social-link">
+                    📸 Instagram: @mircodeflorinautor
+                </a>
+                
+                <a href="https://www.facebook.com/mircodeflorinautor" target="_blank" rel="noopener" class="social-link">
+                    👥 Facebook: Mirco Deflorin | Autor
+                </a>
+                
+                <a href="https://mircodeflorin.github.io" target="_blank" rel="noopener" class="social-link">
+                    🌐 Website: mircodeflorin.github.io
+                </a>
+                
+                <a href="https://mircodeflorin.github.io/optimiert" target="_blank" rel="noopener" class="social-link">
+                    📖 Buchwebsite: mircodeflorin.github.io/optimiert
+                </a>
+            </div>
+        </section>
+
+        <!-- Kontakt -->
+        <section class="section">
+            <h2 class="section-title">📧 Kontakt für Rezensionsanfragen</h2>
+            
+            <div class="info-card" style="max-width: 600px; margin: 0 auto; text-align: center;">
+                <p style="margin-bottom: 1rem;">
+                    Für Fragen, Interviewanfragen oder weitere Materialien erreichst du Mirco über:
+                </p>
+                <a href="/cdn-cgi/l/email-protection#bad7d3c8d9d594dedfdcd6d5c8d3d4faddd7c294d9d2" class="download-btn" style="display: inline-block;">
+                    E-Mail: <span class="__cf_email__" data-cfemail="a1ccc8d3c2ce8fc5c4c7cdced3c8cfe1c6ccd98fc2c9">[email&#160;protected]</span>
+                </a>
+                <p style="margin-top: 1.5rem; color: var(--gray); font-size: 0.9rem;">
+                    Oder kontaktiere ihn direkt über Instagram oder Facebook
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p style="margin-bottom: 0.5rem;">© 2026 Mirco Deflorin. Alle Rechte vorbehalten.</p>
+        <p style="font-size: 0.85rem;">ISBN 9798241818829 | Independently published</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // Particle Animation
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animation
