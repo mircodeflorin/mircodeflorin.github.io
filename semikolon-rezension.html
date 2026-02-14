@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blogger-Material – SEMIKOLON von Mirco Deflorin</title>
+    <meta name="description" content="Exklusives Rezensionsmaterial für Buchblogger. SEMIKOLON - Ein Mystery-Thriller von Mirco Deflorin.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Text:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --forest-black: #0a0f0d;
+            --forest-dark: #1a2920;
+            --forest-deep: #2d4436;
+            --moss-glow: #7cb342;
+            --moss-light: #9ccc65;
+            --fog-white: #e8f5e9;
+            --mist-gray: #aabbaa;
+            --earth-brown: #5d4037;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Crimson Text', serif;
+            background: linear-gradient(180deg, var(--forest-black) 0%, var(--forest-dark) 50%, var(--forest-deep) 100%);
+            color: var(--fog-white);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        /* Mystische Partikel */
+        .forest-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--moss-glow);
+            border-radius: 50%;
+            opacity: 0;
+            animation: float-mystical 20s infinite;
+            box-shadow: 0 0 8px var(--moss-glow), 0 0 16px var(--moss-light);
+        }
+
+        @keyframes float-mystical {
+            0% { transform: translateY(100vh) translateX(0) scale(0); opacity: 0; }
+            10% { opacity: 0.4; }
+            50% { transform: translateY(50vh) translateX(30px); opacity: 0.6; }
+            90% { opacity: 0.4; }
+            100% { transform: translateY(-10vh) translateX(-30px) scale(1); opacity: 0; }
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 5rem 5%;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 0 3rem;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: rgba(124, 179, 66, 0.1);
+            border: 1px solid rgba(124, 179, 66, 0.3);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--moss-light);
+            margin-bottom: 2rem;
+        }
+
+        .hero-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            letter-spacing: 12px;
+            margin-bottom: 1rem;
+            background: linear-gradient(180deg, var(--fog-white) 0%, var(--moss-glow) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 30px rgba(124, 179, 66, 0.3));
+        }
+
+        .semicolon-symbol {
+            font-size: clamp(4rem, 10vw, 8rem);
+            color: var(--moss-glow);
+            text-shadow: 0 0 40px rgba(124, 179, 66, 0.6);
+            margin: 1rem 0;
+            display: block;
+        }
+
+        .hero-tagline {
+            font-size: 1.8rem;
+            color: var(--mist-gray);
+            font-weight: 600;
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+
+        .hero-author {
+            font-size: 1.2rem;
+            color: var(--mist-gray);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 3rem;
+        }
+
+        /* Cover Image */
+        .cover-image-container {
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        .cover-image {
+            max-width: 400px;
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(124, 179, 66, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .cover-image:hover {
+            transform: scale(1.05);
+        }
+
+        /* Section Styling */
+        .section {
+            margin: 5rem 0;
+            padding: 3rem 0;
+            border-top: 1px solid rgba(124, 179, 66, 0.2);
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            letter-spacing: 4px;
+            color: var(--moss-glow);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .section-intro {
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--mist-gray);
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            line-height: 1.8;
+        }
+
+        /* Grid Layouts */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .info-card {
+            background: rgba(45, 68, 54, 0.5);
+            border: 1px solid rgba(124, 179, 66, 0.3);
+            border-radius: 10px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--moss-glow);
+            box-shadow: 0 10px 30px rgba(124, 179, 66, 0.3);
+        }
+
+        .info-card h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            color: var(--moss-light);
+            margin-bottom: 1rem;
+        }
+
+        .info-card p {
+            color: var(--mist-gray);
+            line-height: 1.8;
+        }
+
+        .info-card strong {
+            color: var(--fog-white);
+        }
+
+        /* Download Buttons */
+        .download-btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--moss-glow), var(--moss-light));
+            color: var(--forest-black);
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(124, 179, 66, 0.3);
+            margin: 0.5rem;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(124, 179, 66, 0.5);
+        }
+
+        .download-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .download-card {
+            background: rgba(45, 68, 54, 0.5);
+            border: 1px solid rgba(124, 179, 66, 0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .download-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--moss-glow);
+        }
+
+        .download-card h4 {
+            color: var(--moss-light);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        /* Note Box */
+        .note-box {
+            background: rgba(124, 179, 66, 0.1);
+            border-left: 4px solid var(--moss-glow);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 5px;
+        }
+
+        .note-box strong {
+            color: var(--moss-glow);
+        }
+
+        /* Author Section */
+        .author-section {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 3rem;
+            align-items: start;
+            margin-top: 2rem;
+        }
+
+        .author-image {
+            width: 100%;
+            border-radius: 10px;
+            border: 2px solid var(--moss-glow);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .author-content h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--moss-glow);
+            margin-bottom: 1.5rem;
+            letter-spacing: 2px;
+        }
+
+        .author-content p {
+            margin-bottom: 1.5rem;
+            color: var(--mist-gray);
+            line-height: 1.9;
+        }
+
+        .author-quote {
+            background: rgba(124, 179, 66, 0.1);
+            border-left: 4px solid var(--moss-glow);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+            font-size: 1.2rem;
+            color: var(--fog-white);
+        }
+
+        /* Social Links */
+        .social-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            display: block;
+            padding: 1.5rem;
+            background: rgba(45, 68, 54, 0.5);
+            border: 1px solid rgba(124, 179, 66, 0.3);
+            border-radius: 10px;
+            color: var(--fog-white);
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+
+        .social-link:hover {
+            background: rgba(124, 179, 66, 0.2);
+            border-color: var(--moss-glow);
+            transform: translateY(-3px);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            color: var(--mist-gray);
+            border-top: 1px solid rgba(124, 179, 66, 0.2);
+            margin-top: 5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .author-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .download-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="forest-particles" id="particles"></div>
+    
+    <div class="container">
+        <!-- Hero -->
+        <header class="hero">
+            <div class="hero-badge">Blogger-Material</div>
+            <h1 class="hero-title">SEMIKOLON</h1>
+            <span class="semicolon-symbol">;</span>
+            <p class="hero-tagline">Der Satz geht weiter</p>
+            <p class="hero-author">Mirco Deflorin</p>
+        </header>
+
+        <!-- Willkommen -->
+        <section class="section">
+            <h2 class="section-title">💚 Willkommen, liebe Blogger!</h2>
+            
+            <p class="section-intro">
+                Danke, dass du dir die Zeit nimmst, SEMIKOLON zu lesen und zu rezensieren! 
+                Auf dieser Seite findest du alle Materialien, die du für deine Rezension brauchst: 
+                Infos zum Buch, Cover-Downloads, Videos, Bilder und Hintergrundinfos zum Autor.
+            </p>
+            
+            <!-- Cover Image -->
+            <div class="cover-image-container">
+                <img src="Cover_Front_Semikolon-2079x3189.jpg" alt="SEMIKOLON Cover" class="cover-image">
+            </div>
+        </section>
+
+        <!-- Wichtige Hinweise für Blogger -->
+        <section class="section">
+            <h2 class="section-title">📖 Hinweise zum Lesen & Rezensieren</h2>
+            
+            <div class="note-box" style="max-width: 900px; margin: 0 auto;">
+                <p style="margin-bottom: 1rem;">
+                    <strong>Bitte nimm dir Zeit für deine Leseerfahrung!</strong>
+                </p>
+                <p style="margin-bottom: 1rem;">
+                    Während du das Buch liest, möchte ich dich bitten, dich voll auf die Geschichte einzulassen 
+                    und sie als Leser*in zu erleben – nicht mit einem "Lektorenauge". 
+                </p>
+                <p style="margin-bottom: 1rem;">
+                    🙏 <strong>Keine DMs während des Lesens:</strong> Ich möchte dich nicht mit Diskussionen 
+                    über Inhalte, Entscheidungen oder Verbesserungsvorschläge während des Leseprozesses 
+                    unterbrechen. Lass dich einfach auf die Geschichte ein!
+                </p>
+                <p>
+                    💬 <strong>Feedback gerne – aber erst nach der Rezension:</strong> Falls du nach 
+                    Veröffentlichung deiner Rezension zusätzliches konstruktives Feedback geben möchtest, 
+                    freue ich mich sehr darüber. Aber erst danach! 😊
+                </p>
+            </div>
+        </section>
+
+        <!-- Cover Downloads -->
+        <section class="section">
+            <h2 class="section-title">📥 Cover-Downloads</h2>
+            
+            <p class="section-intro">
+                Hier kannst du das Cover in verschiedenen Formaten herunterladen.
+            </p>
+            
+            <div class="download-grid">
+                <div class="download-card">
+                    <h4>📕 Front-Cover</h4>
+                    <p style="color: var(--mist-gray); margin-bottom: 1rem;">Hochauflösend (2079x3189px)</p>
+                    <a href="Cover_Front_Semikolon-2079x3189.jpg" download class="download-btn">Download JPG</a>
+                </div>
+                
+                <div class="download-card">
+                    <h4>📚 3D-Cover</h4>
+                    <p style="color: var(--mist-gray); margin-bottom: 1rem;">3D-Mockup mit Buchrücken</p>
+                    <a href="cover-3D.png" download class="download-btn">Download PNG</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Videos Downloads -->
+        <section class="section">
+            <h2 class="section-title">🎬 Video-Material</h2>
+            
+            <p class="section-intro">
+                Atmosphärische Videos und Cover-Reveal für deine Posts.
+            </p>
+            
+            <div class="download-grid">
+                <div class="download-card">
+                    <h4>🌲 Waldweg-Drohne</h4>
+                    <a href="VIDEO_1_WALDWEG_DROHNE-AUFNAHME.mp4" download class="download-btn">Download</a>
+                </div>
+                
+                <div class="download-card">
+                    <h4>🕷️ Spinnennetz Close-Up</h4>
+                    <a href="VIDEO_2_SPINNENNETZ_CLOSE-UP.mp4" download class="download-btn">Download</a>
+                </div>
+                
+                <div class="download-card">
+                    <h4>🏰 Burg Rodenstein</h4>
+                    <a href="VIDEO_3_BURG_RODENSTEIN_ZEITRAFFER.mp4" download class="download-btn">Download</a>
+                </div>
+                
+                <div class="download-card">
+                    <h4>💧 Lindelbrunnen Wasser</h4>
+                    <a href="VIDEO_4_LINDELBRUNNEN_WASSER.mp4" download class="download-btn">Download</a>
+                </div>
+                
+                <div class="download-card">
+                    <h4>🔥 Lagerfeuer Nacht</h4>
+                    <a href="VIDEO_5_LAGERFEUER_NACHT.mp4" download class="download-btn">Download</a>
+                </div>
+                
+                <div class="download-card">
+                    <h4>🌙 Neumondnacht Sterne</h4>
+                    <a href="VIDEO_6_NEUMONDNACHT_STERNE.mp4" download class="download-btn">Download</a>
+                </div>
+                
+                <div class="download-card">
+                    <h4>🗿 Wildweibchenstein Umkreis</h4>
+                    <a href="VIDEO_7_WILDWEIBCHENSTEIN_UMKREIS_UNG.mp4" download class="download-btn">Download</a>
+                </div>
+                
+                <div class="download-card">
+                    <h4>🗿 Wildweibchenstein V2</h4>
+                    <a href="VIDEO_7_WILDWEIBCHENSTEIN_UMKREIS_UNG-V2.mp4" download class="download-btn">Download</a>
+                </div>
+                
+                <div class="download-card">
+                    <h4>🌫️ Morgennebel Lichtung</h4>
+                    <a href="VIDEO_9_MORGENNEBEL_LICHTUNG.mp4" download class="download-btn">Download</a>
+                </div>
+            </div>
+            
+            <h3 style="text-align: center; color: var(--moss-light); margin-top: 3rem; margin-bottom: 1.5rem; font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 2px;">📖 Cover-Reveal Videos</h3>
+            
+            <div class="download-grid">
+                <div class="download-card">
+                    <h4>🌫️ Nebel-Drehung</h4>
+                    <a href="REVEAL_1_NEBEL-DREHUNG.mp4" download class="download-btn">Download</a>
+                </div>
+                
+                <div class="download-card">
+                    <h4>🍂 Blätterfall</h4>
+                    <a href="REVEAL_2_BLAETTERFALL.mp4" download class="download-btn">Download</a>
+                </div>
+                
+                <div class="download-card">
+                    <h4>⏰ Countdown</h4>
+                    <a href="REVEAL_3_COUNTDOWN.mp4" download class="download-btn">Download</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bilder Downloads -->
+        <section class="section">
+            <h2 class="section-title">🖼️ Bilder & Grafiken</h2>
+            
+            <p class="section-intro">
+                Atmosphärische Bilder vom Odenwald und mystische Motive.
+            </p>
+            
+            <div class="download-grid">
+                <div class="download-card">
+                    <h4>🌄 Odenwald-Panorama</h4>
+                    <a href="BILD_1_ODENWALD-PANORAMA.jpg" download class="download-btn">Download</a>
+                </div>
+                
+                <div class="download-card">
+                    <h4>🕷️ Spinnennetz-Makro</h4>
+                    <a href="BILD_2_SPINNENNETZ-MAKRO.jpg" download class="download-btn">Download</a>
+                </div>
+                
+                <div class="download-card">
+                    <h4>🏰 Burgruine bei Nacht</h4>
+                    <a href="BILD_3_BURGRUINE_BEI_NACHT.jpg" download class="download-btn">Download</a>
+                </div>
+                
+                <div class="download-card">
+                    <h4>; Semikolon im Moos</h4>
+                    <a href="BILD_4_SEMIKOLON_IM_MOOS.jpg" download class="download-btn">Download</a>
+                </div>
+                
+                <div class="download-card">
+                    <h4>🔥 Campfire Stimmung</h4>
+                    <a href="BILD_5_CAMPFIRE_STIMMUNG.jpg" download class="download-btn">Download</a>
+                </div>
+                
+                <div class="download-card">
+                    <h4>🌲 Wildweibchenstein</h4>
+                    <a href="BILD_6_WILDWEIBCHENSTEIN.jpg" download class="download-btn">Download</a>
+                </div>
+                
+                <div class="download-card">
+                    <h4>💧 Brunnen-Detail</h4>
+                    <a href="BILD_7_BRUNNEN_DETAIL.jpg" download class="download-btn">Download</a>
+                </div>
+                
+                <div class="download-card">
+                    <h4>🌫️ Nebel-Silhouette</h4>
+                    <a href="BILD_8_NEBEL-SILHOUETTE.jpg" download class="download-btn">Download</a>
+                </div>
+                
+                <div class="download-card">
+                    <h4>📖 Buch im Wald</h4>
+                    <a href="BILD_9_BUCH_IM_WALD.jpg" download class="download-btn">Download</a>
+                </div>
+                
+                <div class="download-card">
+                    <h4>🌙 Neumondnacht Dunkelheit</h4>
+                    <a href="BILD_10_NEUMONDNACHT_DUNKELHEIT.jpg" download class="download-btn">Download</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Über das Buch -->
+        <section class="section">
+            <h2 class="section-title">📖 Über das Buch</h2>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>📚 Buchdetails</h3>
+                    <p>
+                        <strong>Titel:</strong> SEMIKOLON<br>
+                        <strong>Autor:</strong> Mirco Deflorin<br>
+                        <strong>Genre:</strong> Mystery-Thriller / Magischer Realismus<br>
+                        <strong>Seitenzahl:</strong> ca. 210<br>
+                        <strong>ISBN:</strong> 978-3-8192-6769-7<br>
+                        <strong>Verlag:</strong> BoD – Books on Demand<br>
+                        <strong>Erscheinungsdatum:</strong> 9. März 2026
+                    </p>
+                </div>
+                
+                <div class="info-card">
+                    <h3>🎯 Zielgruppe</h3>
+                    <p>
+                        <strong>Primär:</strong> Erwachsene mit Interesse an Mystery-Thrillern 
+                        und Mental Health Themen<br><br>
+                        <strong>Besonders geeignet für:</strong> Menschen, die selbst Erfahrungen 
+                        mit psychischen Krisen gemacht haben, Angehörige, Fachpersonen im 
+                        Mental-Health-Bereich, Fans von atmosphärischen Thrillern mit Tiefgang
+                    </p>
+                </div>
+                
+                <div class="info-card">
+                    <h3>⚠️ Triggerwarnung</h3>
+                    <p>
+                        Das Buch thematisiert:<br>
+                        • Depression und psychische Krisen<br>
+                        • Suizidgedanken (nicht explizit dargestellt)<br>
+                        • Verlust und Trauer<br>
+                        • Selbstzweifel und Isolation<br><br>
+                        <em style="color: var(--moss-glow);">
+                            Das Buch behandelt diese Themen mit Respekt und Hoffnung. 
+                            Es geht um Heilung und den Mut, weiterzumachen.
+                        </em>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Klappentext -->
+        <section class="section">
+            <h2 class="section-title">📝 Klappentext</h2>
+            
+            <div class="info-card" style="max-width: 900px; margin: 0 auto;">
+                <p style="font-size: 1.1rem; line-height: 1.9; color: var(--mist-gray);">
+                    <strong style="color: var(--fog-white);">Eine Selbsthilfegruppe. Eine Wanderung. 
+                    Eine mystische Spinne. Ein Todesfall.</strong><br><br>
+                    
+                    Jonas, ein Schriftsteller mit Schreibblockade, schließt sich der SHG Semikolon an – 
+                    einer Gruppe für seelische Gesundheit im Odenwald. Gemeinsam machen sie eine 
+                    Camping-Wanderung durch die sagenumwobenen Wälder.<br><br>
+                    
+                    Als Lena nachts einer mystischen Spinne begegnet, die ihr den Weg zu einer heilenden, 
+                    versunkenen Stadt zeigt, wird am nächsten Morgen jemand tot aufgefunden. 
+                    Offiziell Suizid – aber die Gruppe ahnt: Jemand von ihnen will verhindern, 
+                    dass sie geheilt werden.<br><br>
+                    
+                    Ein Wettlauf gegen die Zeit beginnt: Sie haben nur 48 Stunden, um den Lindelbrunnen 
+                    zu finden, bevor die Neumondnacht endet. Doch die größte Gefahr lauert nicht im Wald – 
+                    sondern in der Gruppe selbst.<br><br>
+                    
+                    <em style="color: var(--moss-glow);">
+                        "Ein Semikolon wird genutzt, wenn ein Autor seinen Satz eigentlich hätte beenden können, 
+                        aber gewählt hat, es nicht zu tun. Der Autor bist DU und dieser Satz ist DEIN Leben."
+                    </em>
+                </p>
+            </div>
+        </section>
+
+        <!-- Die Schauplätze -->
+        <section class="section">
+            <h2 class="section-title">🗺️ Die Schauplätze – Reale Orte im Odenwald</h2>
+            
+            <p class="section-intro">
+                SEMIKOLON spielt an realen Orten im Odenwald. Diese Locations sind nicht erfunden – 
+                du kannst sie besuchen!
+            </p>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>🏰 Burg Rodenstein</h3>
+                    <p>
+                        <strong>Ort:</strong> Fränkisch-Crumbach<br>
+                        <strong>Sage:</strong> Das Geisterheer des Rodensteiners zieht in stürmischen Nächten 
+                        durch die Lüfte<br>
+                        <strong>Im Roman:</strong> Hier schlägt die Gruppe ihr Camp auf. Hier begegnet Lena 
+                        der mystischen Spinne. Hier wird Clara gefunden.
+                    </p>
+                </div>
+                
+                <div class="info-card">
+                    <h3>💧 Lindelbrunnen</h3>
+                    <p>
+                        <strong>Ort:</strong> Hiltersklingen (B460)<br>
+                        <strong>Sage:</strong> Hier soll Siegfried aus der Nibelungensage ermordet worden sein<br>
+                        <strong>Im Roman:</strong> Der "offizielle" Brunnen – aber ist es DER heilende Brunnen 
+                        aus der Vision?
+                    </p>
+                </div>
+                
+                <div class="info-card">
+                    <h3>🗿 Wildweibchenstein</h3>
+                    <p>
+                        <strong>Ort:</strong> Mossautal<br>
+                        <strong>Sage:</strong> Die "wilden Kräuterweiblein" – Waldwesen, die hier versteinerten<br>
+                        <strong>Im Roman:</strong> Erste Station der Wanderung. Hier beginnt die unheimliche 
+                        Atmosphäre.
+                    </p>
+                </div>
+                
+                <div class="info-card">
+                    <h3>🌊 Die versunkene Stadt</h3>
+                    <p>
+                        <strong>Ort:</strong> Odenwald (verschiedene Lokalisierungen)<br>
+                        <strong>Sage:</strong> Eine Stadt versank wegen Gottlosigkeit ihrer Bewohner. 
+                        Nachts hört man Glocken aus der Tiefe<br>
+                        <strong>Im Roman:</strong> Das Ziel der Wanderung – nur in der Neumondnacht sichtbar.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Über den Autor -->
+        <section class="section">
+            <h2 class="section-title">✍️ Über den Autor</h2>
+            
+            <div class="author-section">
+                <div>
+                    <img src="Autorenphoto_Mirco-Deflorin.jpeg" alt="Mirco Deflorin" class="author-image">
+                </div>
+                
+                <div class="author-content">
+                    <h3>Mirco Deflorin</h3>
+                    
+                    <p>
+                        Mirco Deflorin lebt und arbeitet in den Schweizer Alpen. Als Peer- und Recovery-Berater 
+                        bei der Invalidenversicherung (IV) kennt er die Realität psychischer Kämpfe aus 
+                        professioneller wie persönlicher Erfahrung.
+                    </p>
+                    
+                    <p>
+                        SEMIKOLON ist eine Hommage an seine Freunde Holger Leitermann und Ulrike "Ulli" Handschuh, 
+                        die im Odenwald die echte SHG Semikolon leiten. Mit ihrer ausdrücklichen Erlaubnis dürfen 
+                        sie im Roman unter ihren echten Namen erscheinen.
+                    </p>
+                    
+                    <div class="author-quote">
+                        "Mental Health ist keine Schwäche – Schweigen darüber schon."
+                    </div>
+                    
+                    <p>
+                        Seine Bücher entstehen in Zusammenarbeit mit KI, wobei er besonderen Wert auf 
+                        psychologische Tiefe und authentische Charaktere legt. SEMIKOLON ist sein dritter 
+                        veröffentlichter Roman (nach "Das Tonum" und "OPTIMIERT").
+                    </p>
+                    
+                    <p>
+                        <strong>Weitere Werke 2026:</strong> "Basement 17", "Der Zeitzeuge", "Das Orakel", "Elia"
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hashtags -->
+        <section class="section">
+            <h2 class="section-title">#️⃣ Empfohlene Hashtags</h2>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>Primär</h3>
+                    <p>#SEMIKOLON #SemikolonBuch #MircoDeflorin</p>
+                </div>
+                
+                <div class="info-card">
+                    <h3>Thematisch</h3>
+                    <p>#MentalHealth #MysteryThriller #Odenwald #MagischerRealismus #Recovery #Hoffnung</p>
+                </div>
+                
+                <div class="info-card">
+                    <h3>Community</h3>
+                    <p>#Bookstagram #Buchblogger #Leseliebe #Thriller2026 #Neuerscheinung #Buchliebe</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Kauflinks -->
+        <section class="section">
+            <h2 class="section-title">🛒 Kauflink (ab 9. März 2026)</h2>
+            
+            <div class="note-box" style="max-width: 700px; margin: 0 auto 2rem auto;">
+                <strong>📅 Hinweis:</strong> Das Buch ist ab dem <strong>9. März 2026</strong> erhältlich. 
+                Der Link ist ab diesem Datum aktiv.
+            </div>
+            
+            <div style="text-align: center; margin-top: 2rem;">
+                <div class="info-card" style="max-width: 500px; margin: 0 auto;">
+                    <h3>Amazon Deutschland</h3>
+                    <p style="margin-bottom: 1rem;">E-Book & Taschenbuch</p>
+                    <a href="https://www.amazon.de/dp/9783819267697" class="download-btn" target="_blank" rel="noopener">Zu Amazon.de</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Social Media -->
+        <section class="section">
+            <h2 class="section-title">🌐 Social Media</h2>
+            
+            <div class="social-links">
+                <a href="https://www.instagram.com/mircodeflorinautor/" target="_blank" rel="noopener" class="social-link">
+                    📸 Instagram: @mircodeflorinautor
+                </a>
+                
+                <a href="https://www.facebook.com/mircodeflorinautor" target="_blank" rel="noopener" class="social-link">
+                    👥 Facebook: Mirco Deflorin | Autor
+                </a>
+                
+                <a href="https://mircodeflorin.github.io" target="_blank" rel="noopener" class="social-link">
+                    🌐 Website: mircodeflorin.github.io
+                </a>
+                
+                <a href="https://mircodeflorin.github.io/semikolon" target="_blank" rel="noopener" class="social-link">
+                    📖 Buchwebsite: mircodeflorin.github.io/semikolon
+                </a>
+            </div>
+        </section>
+
+        <!-- Danke -->
+        <section class="section">
+            <h2 class="section-title">💚 Vielen Dank!</h2>
+            
+            <div class="info-card" style="max-width: 800px; margin: 0 auto; text-align: center;">
+                <p style="font-size: 1.2rem; line-height: 1.9;">
+                    Danke, dass du dir die Zeit nimmst, SEMIKOLON zu lesen und zu teilen! 
+                    Deine Unterstützung bedeutet unglaublich viel. Jede Rezension, jeder Post, 
+                    jede Empfehlung hilft, diese Geschichte zu Menschen zu bringen, die sie 
+                    vielleicht gerade brauchen.<br><br>
+                    
+                    <em style="color: var(--moss-glow);">; Der Satz geht weiter.</em><br><br>
+                    
+                    – Mirco
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p style="margin-bottom: 0.5rem;">© 2026 Mirco Deflorin. Alle Rechte vorbehalten.</p>
+        <p style="font-size: 0.85rem;">ISBN 978-3-8192-6769-7 | BoD – Books on Demand</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Partikel-Animation
+        function createForestParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 40; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                container.appendChild(particle);
+            }
+        }
+        
+        createForestParticles();
+    </script>
+</body>
+</html>
