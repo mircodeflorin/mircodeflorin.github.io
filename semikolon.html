@@ -1400,5 +1400,40 @@
         createWaveform('waveform3');
         createWaveform('waveform4');
     </script>
+
+    <script>
+        function toggleAudio(button, audioId) {
+            const audio = document.getElementById(audioId);
+            const svg = button.querySelector('svg');
+            const timeDisplay = document.getElementById('time' + audioId.slice(-1));
+            
+            if (audio.paused) {
+                // Play
+                audio.play();
+                svg.innerHTML = '<path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>'; // Pause icon
+                
+                // Update time display
+                audio.addEventListener('timeupdate', function() {
+                    const minutes = Math.floor(audio.currentTime / 60);
+                    const seconds = Math.floor(audio.currentTime % 60);
+                    timeDisplay.textContent = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+                });
+            } else {
+                // Pause
+                audio.pause();
+                svg.innerHTML = '<path d="M8 5v14l11-7z"/>'; // Play icon
+            }
+        }
+        
+        function resetButton(audio) {
+            const audioId = audio.id;
+            const button = audio.parentElement.querySelector('.play-button');
+            const svg = button.querySelector('svg');
+            const timeDisplay = document.getElementById('time' + audioId.slice(-1));
+            
+            svg.innerHTML = '<path d="M8 5v14l11-7z"/>'; // Play icon
+            timeDisplay.textContent = '0:00';
+        }
+    </script>
 </body>
 </html>
