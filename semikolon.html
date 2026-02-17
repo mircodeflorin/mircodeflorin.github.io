@@ -1013,56 +1013,60 @@
             <p>Erlebe exklusive Hörproben aus SEMIKOLON! Jeden Donnerstag im März veröffentlichen wir ein neues Kapitel. Tauche ein in die mystische Atmosphäre des Odenwalds und begleite die Gruppe auf ihrer gefährlichen Reise.</p>
         </div>
 
-        <div class="audio-samples">
-            <!-- Sample 1 -->
+                        <div class="audio-samples">
+            <!-- Sample 1 - LIVE -->
             <div class="audio-card">
                 <div class="audio-card-header">
-                    <div class="audio-day">TAG 1 • 13.02.2026</div>
-                    <h3 class="audio-title">Kapitel 1: Die Einladung</h3>
-                    <p class="audio-description">Jonas lernt die SHG Semikolon kennen und erfährt von der geheimnisvollen Heilquelle im Odenwald.</p>
+                    <div class="audio-day">TAG 1 • 17.02.2026</div>
+                    <h3 class="audio-title">Kapitel 1: Der leere Bildschirm</h3>
+                    <p class="audio-description">Jonas sitzt vor dem blinkenden Cursor. Zwei Jahre Schreibblockade. Leere Flaschen, eine Mahnung. Und ein letzter Versuch.</p>
                 </div>
-                <div class="coming-soon">
-                    📅 Veröffentlichung am 13. Februar 2026
+                <div class="audio-player">
+                    <button class="play-button" onclick="toggleAudio(this, 'audio1')">
+                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </button>
+                    <div class="waveform" id="waveform1">
+                        <div class="wave-bar" style="animation-delay:0s"></div>
+                        <div class="wave-bar" style="animation-delay:0.1s"></div>
+                        <div class="wave-bar" style="animation-delay:0.2s"></div>
+                        <div class="wave-bar" style="animation-delay:0.3s"></div>
+                        <div class="wave-bar" style="animation-delay:0.4s"></div>
+                        <div class="wave-bar" style="animation-delay:0.5s"></div>
+                        <div class="wave-bar" style="animation-delay:0.6s"></div>
+                        <div class="wave-bar" style="animation-delay:0.7s"></div>
+                        <div class="wave-bar" style="animation-delay:0.8s"></div>
+                        <div class="wave-bar" style="animation-delay:0.9s"></div>
+                    </div>
+                    <span class="audio-time" id="time1">0:00</span>
+                    <audio id="audio1" src="Kapitel_1.mp3" onended="resetButton(this)"></audio>
                 </div>
             </div>
 
             <!-- Sample 2 -->
             <div class="audio-card">
                 <div class="audio-card-header">
-                    <div class="audio-day">TAG 8 • 20.02.2026</div>
-                    <h3 class="audio-title">Kapitel 8: Wildweibchenstein</h3>
-                    <p class="audio-description">Die Gruppe erreicht den mystischen Ort, wo die Sagen lebendig werden und erste Spannungen aufkommen.</p>
+                    <div class="audio-day">TAG 8 • 24.02.2026</div>
+                    <h3 class="audio-title">Kapitel 8: Die Nacht am Feuer</h3>
+                    <p class="audio-description">Lagerfeuer auf Burg Rodenstein. Lena begegnet einer mystischen Spinne, die ihr den Weg zu einer versunkenen Stadt zeigt. Der Countdown beginnt.</p>
                 </div>
                 <div class="coming-soon">
-                    📅 Veröffentlichung am 20. Februar 2026
+                    📅 Veröffentlichung am 24. Februar 2026
                 </div>
             </div>
 
             <!-- Sample 3 -->
             <div class="audio-card">
                 <div class="audio-card-header">
-                    <div class="audio-day">TAG 15 • 27.02.2026</div>
-                    <h3 class="audio-title">Kapitel 15: Die Entdeckung</h3>
-                    <p class="audio-description">Clara wird tot aufgefunden. War es ein Unfall – oder steckt mehr dahinter?</p>
+                    <div class="audio-day">TAG 15 • 03.03.2026</div>
+                    <h3 class="audio-title">Kapitel 16: Die Glocken</h3>
+                    <p class="audio-description">Aus der Tiefe des Waldes: Glockenläuten. „Die versunkene Stadt“, flüstert Lena. Thomas will zurück. Jonas hört seinen Namen.</p>
                 </div>
                 <div class="coming-soon">
-                    📅 Veröffentlichung am 27. Februar 2026
-                </div>
-            </div>
-
-            <!-- Sample 4 -->
-            <div class="audio-card">
-                <div class="audio-card-header">
-                    <div class="audio-day">TAG 22 • 06.03.2026</div>
-                    <h3 class="audio-title">Kapitel 22: Die Wahrheit</h3>
-                    <p class="audio-description">Thomas' dunkles Geheimnis kommt ans Licht, während die Neumondnacht beginnt.</p>
-                </div>
-                <div class="coming-soon">
-                    📅 Veröffentlichung am 6. März 2026
+                    📅 Veröffentlichung am 3. März 2026
                 </div>
             </div>
         </div>
-    </section>
+        </section>
 
     <!-- Author Section -->
     <section id="author" class="author">
