@@ -529,65 +529,6 @@
         }
 
         /* Contest Section */
-        .contest-section {
-            padding: 6rem 5%;
-            background: linear-gradient(180deg, var(--black) 0%, var(--deep-gray) 100%);
-            position: relative;
-            z-index: 1;
-        }
-
-        .contest-content {
-            max-width: 800px;
-            margin: 3rem auto 0;
-            text-align: center;
-        }
-
-        .contest-box {
-            background: rgba(139, 0, 0, 0.1);
-            border: 2px solid var(--blood-red);
-            border-radius: 8px;
-            padding: 3rem 2rem;
-            margin: 2rem 0;
-        }
-
-        .contest-title {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 2.5rem;
-            letter-spacing: 3px;
-            color: var(--warning-red);
-            margin-bottom: 1rem;
-        }
-
-        .contest-text {
-            font-size: 1.1rem;
-            color: var(--light-gray);
-            line-height: 1.8;
-            margin-bottom: 1.5rem;
-        }
-
-        .contest-period {
-            color: var(--steel-gray);
-            font-size: 0.9rem;
-            margin-top: 2rem;
-        }
-
-        .social-links-contest {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            margin-top: 2rem;
-        }
-
-        .social-link {
-            color: var(--glow-gray);
-            transition: all 0.3s ease;
-        }
-
-        .social-link:hover {
-            color: var(--white);
-            transform: scale(1.1);
-        }
-
         /* Author Section */
         .author-section {
             padding: 6rem 5%;
@@ -651,6 +592,16 @@
             gap: 2rem;
             justify-content: center;
             margin-bottom: 2rem;
+        }
+
+        .social-link {
+            color: var(--glow-gray);
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: var(--white);
+            transform: scale(1.1);
         }
 
         .footer-links {
@@ -778,7 +729,6 @@
             <a href="#home">Home</a>
             <a href="#story">Story</a>
             <a href="#audio">Hörproben</a>
-            <a href="#contest">Gewinnspiel</a>
             <a href="#author">Autor</a>
         </div>
     </nav>
@@ -834,12 +784,12 @@
 
                 <div class="cta-buttons">
                     <a href="#story" class="btn btn-primary">Zur Story</a>
-                    <a href="#contest" class="btn btn-secondary">Gewinnspiel</a>
+                    <a href="#audio" class="btn btn-secondary">Hörproben</a>
                 </div>
             </div>
 
             <div class="hero-visual">
-                <img src="cover-3D_Basement17.png" alt="Basement 17 Cover" class="book-cover">
+                <img src="3D-cover-Basement17.png" alt="Basement 17 Cover" class="book-cover">
             </div>
         </div>
     </section>
@@ -903,55 +853,6 @@
                 <div class="waveform" id="waveform-3"></div>
                 <div class="coming-soon">Demnächst verfügbar</div>
             </div>
-
-            <div class="audio-card">
-                <div class="audio-title">Finale</div>
-                <div class="audio-date">Release: 22. Mai 2026</div>
-                <div class="waveform" id="waveform-4"></div>
-                <div class="coming-soon">Demnächst verfügbar</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contest Section -->
-    <section class="contest-section" id="contest">
-        <h2 class="section-title">Gewinnspiel</h2>
-        <p class="section-subtitle">Gewinne ein signiertes Exemplar & exklusive Extras</p>
-        
-        <div class="contest-content">
-            <div class="contest-box">
-                <div class="contest-title">Der große Launch-Contest</div>
-                <p class="contest-text">
-                    Sichere dir die Chance auf ein <strong>signiertes Exemplar</strong> von BASEMENT 17, 
-                    ein exklusives <strong>Character-Art-Poster</strong> und einen <strong>Gutscheincode</strong> 
-                    für die Hörbuch-Version!
-                </p>
-                <p class="contest-text">
-                    Um teilzunehmen, folge mir auf Social Media und teile deine Lieblingserinnerung 
-                    mit dem Hashtag <strong>#Basement17Erinnerung</strong>
-                </p>
-                <div class="social-links-contest">
-                    <a href="https://www.instagram.com/mirco.deflorin.author/" class="social-link" target="_blank" title="Instagram">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                        </svg>
-                    </a>
-                    <a href="https://www.facebook.com/profile.php?id=61567818193294" class="social-link" target="_blank" title="Facebook">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                        </svg>
-                    </a>
-                    <a href="https://www.linkedin.com/in/mirco-deflorin-862a79318/" class="social-link" target="_blank" title="LinkedIn">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"/>
-                        </svg>
-                    </a>
-                </div>
-                <p class="contest-period">
-                    Teilnahmezeitraum: 1. Mai 2026 bis 29. Mai 2026<br>
-                    Gewinner werden am 29. Mai 2026 bekannt gegeben
-                </p>
-            </div>
         </div>
     </section>
 
@@ -1013,7 +914,7 @@
         <div class="footer-links">
             <a href="#" onclick="openModal('impressum'); return false;">Impressum</a>
             <a href="#" onclick="openModal('datenschutz'); return false;">Datenschutz</a>
-            <a href="mailto:mirco.deflorin@gmx.ch">Kontakt</a>
+            <a href="/cdn-cgi/l/email-protection#402d2932232f6e2425262c2f32292e00272d386e2328">Kontakt</a>
         </div>
 
         <p class="copyright">© 2026 Mirco Deflorin. Alle Rechte vorbehalten.</p>
@@ -1035,7 +936,7 @@
             
             <h3>Kontakt</h3>
             <p>
-                E-Mail: <a href="mailto:mirco.deflorin@gmx.ch">mirco.deflorin@gmx.ch</a>
+                E-Mail: <a href="/cdn-cgi/l/email-protection#d7babea5b4b8f9b3b2b1bbb8a5beb997b0baaff9b4bf"><span class="__cf_email__" data-cfemail="5e33372c3d31703a3b3832312c37301e393326703d36">[email&#160;protected]</span></a>
             </p>
             
             <h3>Verantwortlich für den Inhalt</h3>
@@ -1120,7 +1021,7 @@
                 • Widerspruch gegen die Verarbeitung
             </p>
             <p>
-                Für alle Anfragen kontaktieren Sie mich bitte unter: <a href="mailto:mirco.deflorin@gmx.ch">mirco.deflorin@gmx.ch</a>
+                Für alle Anfragen kontaktieren Sie mich bitte unter: <a href="/cdn-cgi/l/email-protection#503d3922333f7e3435363c3f22393e10373d287e3338"><span class="__cf_email__" data-cfemail="335e5a41505c1d5756555f5c415a5d73545e4b1d505b">[email&#160;protected]</span></a>
             </p>
             
             <h3>Änderungen</h3>
@@ -1135,7 +1036,7 @@
     </div>
 
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // Particle Animation
         function createParticles() {
             const container = document.getElementById('particles');
@@ -1231,7 +1132,6 @@
         createWaveform('waveform-1');
         createWaveform('waveform-2');
         createWaveform('waveform-3');
-        createWaveform('waveform-4');
     </script>
 </body>
 </html>
