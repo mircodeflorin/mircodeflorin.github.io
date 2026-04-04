@@ -772,7 +772,7 @@
         <div class="nav-links">
             <a href="#home">Home</a>
             <a href="#story">Geschichte</a>
-            <a href="#gewinnspiel">Gewinnspiel</a>
+            <a href="https://www.amazon.de/dp/B0GPVT9J92" target="_blank">Jetzt kaufen</a>
             <a href="#autor">Autor</a>
         </div>
     </nav>
@@ -814,7 +814,7 @@
 
                 <!-- CTA Buttons -->
                 <div class="cta-buttons">
-                    <a href="#gewinnspiel" class="btn btn-primary">Zum Gewinnspiel</a>
+                    <a href="https://www.amazon.de/dp/B0GPVT9J92" target="_blank" class="btn btn-primary">Jetzt bei Amazon kaufen</a>
                     <a href="#story" class="btn btn-secondary">Die Geschichte</a>
                 </div>
             </div>
@@ -930,38 +930,6 @@
         </div>
     </section>
 
-    <!-- Gewinnspiel Section -->
-    <section class="gewinnspiel" id="gewinnspiel">
-        <h2 class="section-title">Gewinnspiel</h2>
-        <div class="gewinnspiel-content">
-            <div class="gewinnspiel-box">
-                <div class="gewinnspiel-title-main">✨ Gewinne 1 von 3 signierten Exemplaren ✨</div>
-                <div class="gewinnspiel-prize">3 signierte Bücher "ELIA – Das sanfte Säuseln"</div>
-                
-                <div class="gewinnspiel-details">
-                    <p>
-                        <strong>So nimmst du teil:</strong><br>
-                        Die Teilnahmebedingungen werden in Kürze bekanntgegeben. 
-                        Das Gewinnspiel richtet sich an ausgewählte Teilnehmer aus meiner Gemeinde 
-                        und meinem persönlichen Netzwerk.
-                    </p>
-                    <p>
-                        <strong>Was du gewinnen kannst:</strong><br>
-                        Ein signiertes Exemplar von "ELIA – Das sanfte Säuseln" 
-                        mit persönlicher Widmung des Autors.
-                    </p>
-                    <p>
-                        <strong>Der Rechtsweg ist ausgeschlossen.</strong><br>
-                        Keine Barauszahlung möglich. Die Gewinner werden per E-Mail oder direkt benachrichtigt.
-                    </p>
-                </div>
-
-                <div class="gewinnspiel-period">
-                    Gewinnspiel-Zeitraum: Wird noch bekanntgegeben
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Autor Section -->
     <section class="autor" id="autor">
@@ -1050,7 +1018,7 @@
             
             <h3>Kontakt</h3>
             <p>
-                E-Mail: <a href="mailto:mirco@deflorin.ch">mirco@deflorin.ch</a>
+                E-Mail: <a href="/cdn-cgi/l/email-protection#a7caced5c4c8e7c3c2c1cbc8d5cec989c4cf"><span class="__cf_email__" data-cfemail="a5c8ccd7c6cae5c1c0c3c9cad7cccb8bc6cd">[email&#160;protected]</span></a>
             </p>
             
             <h3>Haftungsausschluss</h3>
@@ -1094,27 +1062,6 @@
                 keine Analyse-Software eingesetzt.
             </p>
             
-            <h3>Gewinnspiele</h3>
-            <p>
-                Bei der Teilnahme an Gewinnspielen werden folgende Daten erfasst:
-            </p>
-            <p>
-                • Name/Username<br>
-                • E-Mail-Adresse oder Postadresse (nur bei Gewinnern)<br>
-                • Kommentar zum Gewinnspiel (falls zutreffend)
-            </p>
-            <p>
-                <strong>Verwendung:</strong> Diese Daten werden ausschliesslich zur Durchführung 
-                des Gewinnspiels und zur Kontaktaufnahme mit den Gewinnern verwendet.
-            </p>
-            <p>
-                <strong>Löschung:</strong> Alle erhobenen Daten werden unmittelbar nach Abschluss 
-                des Gewinnspiels und Versand der Gewinne vollständig gelöscht.
-            </p>
-            <p>
-                <strong>Weitergabe:</strong> Ihre Daten werden nicht an Dritte weitergegeben.
-            </p>
-            
             <h3>E-Mail-Kontakt</h3>
             <p>
                 Bei Kontaktaufnahme per E-Mail werden Ihre übermittelten Daten (E-Mail-Adresse, Name, Nachricht) 
@@ -1142,7 +1089,7 @@
                 • Widerspruch gegen die Verarbeitung
             </p>
             <p>
-                Für alle Anfragen kontaktieren Sie mich bitte unter: <a href="mailto:mirco@deflorin.ch">mirco@deflorin.ch</a>
+                Für alle Anfragen kontaktieren Sie mich bitte unter: <a href="/cdn-cgi/l/email-protection#64090d16070b24000102080b160d0a4a070c"><span class="__cf_email__" data-cfemail="c3aeaab1a0ac83a7a6a5afacb1aaadeda0ab">[email&#160;protected]</span></a>
             </p>
             
             <h3>Änderungen</h3>
@@ -1157,7 +1104,7 @@
         </div>
     </div>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // Particle Animation
         function createParticles() {
             const container = document.getElementById('particles');
@@ -1179,7 +1126,7 @@
 
         // Countdown Timer
         function updateCountdown() {
-            const releaseDate = new Date('2026-04-15T00:00:00').getTime(); // Anpassen auf genaues Datum
+            const releaseDate = new Date('2026-04-07T00:00:00').getTime(); // Release: 7. April 2026
             const now = new Date().getTime();
             const diff = releaseDate - now;
 
@@ -1266,10 +1213,8 @@
             });
         }, observerOptions);
 
-        // Observe all sections
-        document.querySelectorAll('section').forEach(section => {
-            section.classList.add('animate-on-scroll');
-            observer.observe(section);
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
         });
     </script>
 </body>
