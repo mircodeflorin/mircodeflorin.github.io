@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BASEMENT 17 – Die Gedächtnisbank | Mystery-Thriller von Mirco Deflorin</title>
-    <meta name="description" content="Wer deine Erinnerung kauft, besitzt deine Seele. BASEMENT 17 - Ein dystopischer Thriller von Mirco Deflorin. Release: 01.06.2026">
+    <meta name="description" content="Wer deine Erinnerung kauft, besitzt deine Seele. BASEMENT 17 - Ein dystopischer Thriller von Mirco Deflorin. Release: 17.06.2026">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
@@ -528,6 +528,46 @@
             font-weight: 600;
         }
 
+        /* Audio Player */
+        .audio-card-active {
+            border-color: rgba(176, 176, 176, 0.3);
+            background: rgba(176, 176, 176, 0.08);
+        }
+
+        .audio-card-active .audio-date {
+            color: var(--glow-gray);
+            font-weight: 600;
+        }
+
+        .audio-player {
+            width: 100%;
+            margin: 1.5rem 0 0.5rem;
+            outline: none;
+        }
+
+        /* Custom Audio Player Styling */
+        .audio-player::-webkit-media-controls-panel {
+            background: rgba(176, 176, 176, 0.1);
+            border-radius: 4px;
+        }
+
+        .audio-player::-webkit-media-controls-play-button,
+        .audio-player::-webkit-media-controls-mute-button {
+            background-color: var(--glow-gray);
+            border-radius: 50%;
+        }
+
+        .audio-player::-webkit-media-controls-timeline {
+            background: rgba(176, 176, 176, 0.2);
+            border-radius: 2px;
+        }
+
+        .audio-player::-webkit-media-controls-current-time-display,
+        .audio-player::-webkit-media-controls-time-remaining-display {
+            color: var(--glow-gray);
+            text-shadow: none;
+        }
+
         /* Contest Section */
         /* Author Section */
         .author-section {
@@ -833,11 +873,13 @@
         <p class="section-subtitle">Tauche ein in die Atmosphäre von Basement 17</p>
         
         <div class="audio-grid">
-            <div class="audio-card">
+            <div class="audio-card audio-card-active">
                 <div class="audio-title">Kapitel 1</div>
-                <div class="audio-date">Release: 1. Mai 2026</div>
-                <div class="waveform" id="waveform-1"></div>
-                <div class="coming-soon">Demnächst verfügbar</div>
+                <div class="audio-date">Jetzt verfügbar</div>
+                <audio controls class="audio-player">
+                    <source src="Hoerprobe-1-MP4.mp4" type="audio/mp4">
+                    Dein Browser unterstützt das Audio-Element nicht.
+                </audio>
             </div>
 
             <div class="audio-card">
@@ -1053,7 +1095,7 @@
 
         // Countdown Timer
         function updateCountdown() {
-            const releaseDate = new Date('2026-06-01T00:00:00').getTime();
+            const releaseDate = new Date('2026-06-17T00:00:00').getTime();
             const now = new Date().getTime();
             const diff = releaseDate - now;
 
